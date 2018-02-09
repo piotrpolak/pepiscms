@@ -1,5 +1,6 @@
 language: php
-install: composer install
+before_install: composer config -g github-oauth.github.com "$GITHUB_TOKEN"
+install: composer install --prefer-dist
 php:
   - 5.4
   - 5.5
