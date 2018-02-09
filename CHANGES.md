@@ -1,8 +1,8 @@
-# API Changes and upgrade instructions for PepisCMS
+# Breaking API changes and upgrade instructions
 
 ## New in version 1.0.0
 
- * Extended database schema (see upgrade scripts)
+ * Extended database schema (see upgrade scripts [pepiscms/resources/sql/upgrade/1..0.0-stage1.sql](pepiscms/resources/sql/upgrade/1..0.0-stage1.sql))
 * 3rd party backend components are now initialized using Composer, 3rd party frontend components are now moved out of this repository.
 * Generic_model::generateTextId(), DataGrid:;getColumnDefinitions(), DataGrid::getFilterDefinitions(), FormBuilder::reset(), SecurityPolicy::FULL_CONTROLL,
     SimpleSessionMessage::setFormatingFunction(), AdminCRUDController::getItemOrderCollumn(), AdminCRUDController::getItemOrderConstraintCollumn(),
@@ -41,7 +41,6 @@
  * MY_Output cache - added failsafe behavior
  * New methods ModuleRunner::isModuleDisplayedInMenu($name) and ModuleRunner::isModuleDisplayedInUtilities($name) 
  * MY_Email::set_header() removed as it has been implemented in the original CI_Email library
- 
  * Changed icon paths (!) some icons will not work
  * CSS identifiers convention changed to lowercase_underscore
  * Changed file path pepiscms/theme/back_12.png -> pepiscms/theme/img/dialog/actions/back_16.png
@@ -80,11 +79,9 @@
  * Removed Menu_model::getInstalledModulesNamesDisplayedInMenu()
  * Removed ModuleRunner::getInstalledModulesNamesDisplayedInMenuCached()
  * Removed Lang::getAvailableLanguages()
-
  * Removed theme images up.gif and down.gif, use up.png and down.png respectively
  * Removed theme images: exit.png group_32.png group_add_32.png edit.gif open.png sdd.gif user_active_32.png user_add_32.png user_inactive_32.png user_32.png user_16.png
  * Modules users, groups renamed to cms_users, cms_groups, PLEASE REVIEW YOUR SECURITY POLICY ANG GROUP ACCESS
-
  * Direct access to self::$uri_prefix and self::$site_language in subclasses of Dispatches has been deprecated
  * Added Dispatcher::setSiteLanguage()
 
@@ -95,7 +92,6 @@
 	ALTER TABLE `modules` DROP COLUMN `description`;
 	ALTER TABLE `modules` DROP COLUMN `is_configurable`;
 	ALTER TABLE `modules` DROP COLUMN `is_displayed_in_sitemap`;
-
  * Removed deprecated controller constructors AdminController, ModuleController, ModuleAdminController
  * Removed deprecated method EnhancedController::getParam() Use $this->input->getParam( $paramName )
  * Removed deprecated ModuleController::uri_components

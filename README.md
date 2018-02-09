@@ -23,7 +23,7 @@ minimum version is PHP 5.3.
     * [FormBuilder](docs/LIBRARY_FORMBUILDER.md)
     * [DataGrid](docs/LIBRARY_DATAGRID.md)
     * [CrudDefinitionBuilder](docs/LIBRARY_CRUD_DEFINITION_BUILDER.md)
-
+* [Breaking API changes and upgrade instructions](CHANGES.md)
 ## Features
 
 * **Modularity**
