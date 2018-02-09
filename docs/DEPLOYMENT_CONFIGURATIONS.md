@@ -22,6 +22,8 @@ Portal combines the features of a small website and an intranet application. Som
 
 All of the components including business logic are placed on the same machine.
 
-*Advantages*: simple to implement, low cost 
+*Advantages*: simple to implement, low cost
+
 *Disadvantages*: any failure can be deadly, can have scalability issues 
+
 *Example*: blog, online shop 

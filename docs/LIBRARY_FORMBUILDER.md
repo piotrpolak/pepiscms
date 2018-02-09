@@ -119,84 +119,84 @@ callbacks is that image callback is only called when a new image is being upload
 
 Sample callback (taken from admin module CRUD template):
 ```php
-    /**
-     * Callback function changing the name of the file to SEO friendly
-     *
-     * @version: 1.2.3
-     * @date: 2015-06-11
-     *
-     * @param $filename
-     * @param $base_path
-     * @param $data
-     * @param $current_image_field_name
-     * @return bool
-     */
-    public function _fb_callback_make_filename_seo_friendly(&$filename, $base_path, &$data, $current_image_field_name)
-    {
-        // List of the fields to be used, if no value is present for a given key
-        // then the key will be ignored. By default all values of the keys
-        // specified will be concatenated
-        $title_field_names = array('name', 'title', 'label');
+/**
+ * Callback function changing the name of the file to SEO friendly
+ *
+ * @version: 1.2.3
+ * @date: 2015-06-11
+ *
+ * @param $filename
+ * @param $base_path
+ * @param $data
+ * @param $current_image_field_name
+ * @return bool
+ */
+public function _fb_callback_make_filename_seo_friendly(&$filename, $base_path, &$data, $current_image_field_name)
+{
+    // List of the fields to be used, if no value is present for a given key
+    // then the key will be ignored. By default all values of the keys
+    // specified will be concatenated
+    $title_field_names = array('name', 'title', 'label');
 
-        $this->load->helper('string');
-        $path = $base_path . $filename;
-        $path_parts = pathinfo($path);
+    $this->load->helper('string');
+    $path = $base_path . $filename;
+    $path_parts = pathinfo($path);
 
-        // Attempt to build a name
-        $new_base_filename = '';
-        foreach ($title_field_names as $title_field_name) {
-            // Concatenating all the elements
-            if (isset($data[$title_field_name]) && $data[$title_field_name]) {
-                $new_base_filename .= '-' . $data[$title_field_name];
-            }
+    // Attempt to build a name
+    $new_base_filename = '';
+    foreach ($title_field_names as $title_field_name) {
+        // Concatenating all the elements
+        if (isset($data[$title_field_name]) && $data[$title_field_name]) {
+            $new_base_filename .= '-' . $data[$title_field_name];
         }
+    }
 
-        // Making it web safe
-        if ($new_base_filename) {
-            $new_base_filename = niceuri($new_base_filename);
-        }
+    // Making it web safe
+    if ($new_base_filename) {
+        $new_base_filename = niceuri($new_base_filename);
+    }
 
-        // This should not be an else statement as niceuri can return empty string sometimes
-        if (!$new_base_filename) {
-            $new_base_filename = niceuri($path_parts['filename']);
-        }
+    // This should not be an else statement as niceuri can return empty string sometimes
+    if (!$new_base_filename) {
+        $new_base_filename = niceuri($path_parts['filename']);
+    }
 
-        // This should normally never happen, but who knows - this is bulletproof
-        if (!$new_base_filename) {
-            $new_base_filename = md5(time() + rand(1000, 9999));
-        }
+    // This should normally never happen, but who knows - this is bulletproof
+    if (!$new_base_filename) {
+        $new_base_filename = md5(time() + rand(1000, 9999));
+    }
 
-        $new_base_path = '';
+    $new_base_path = '';
 //        $new_base_path = date('Y-m-d') . '/'; // Will create directory based on date
 //        $new_base_path = $new_name_base . '/'; // Will create directory based on the niceuri value
 //        @mkdir($base_path . $new_base_path); // Do not forget!
-        // We don't like upper case extensions
-        $extension = strtolower($path_parts['extension']);
-        $new_name = $new_base_filename . '.' . $extension;
+    // We don't like upper case extensions
+    $extension = strtolower($path_parts['extension']);
+    $new_name = $new_base_filename . '.' . $extension;
 
-        // Protection against existing files
-        $i = 2;
-        while (file_exists($base_path . $new_base_path . $new_name)) {
-            $new_name = $new_base_filename . '-' . $i . '.' . $extension;
-            if ($i++ > 50 || strlen($i) > 2) // strlen is a protection against the infinity loop for md5 checksums
-            {
-                // This is ridiculous but who knowss
-                $i = md5(time() + rand(1000, 9999));
-            }
+    // Protection against existing files
+    $i = 2;
+    while (file_exists($base_path . $new_base_path . $new_name)) {
+        $new_name = $new_base_filename . '-' . $i . '.' . $extension;
+        if ($i++ > 50 || strlen($i) > 2) // strlen is a protection against the infinity loop for md5 checksums
+        {
+            // This is ridiculous but who knowss
+            $i = md5(time() + rand(1000, 9999));
         }
-
-        // No need to change filename? Then we are fine
-        if ($filename == $new_name) {
-            return TRUE;
-        }
-
-        // Finally here we go!
-        if (rename($path, $base_path . $new_base_path . $new_name)) {
-            $data[$current_image_field_name] = $new_base_path . $new_name;
-            $filename = $new_base_path . $new_name;
-
-            return TRUE;
-        }
-        return FALSE;
     }
+
+    // No need to change filename? Then we are fine
+    if ($filename == $new_name) {
+        return TRUE;
+    }
+
+    // Finally here we go!
+    if (rename($path, $base_path . $new_base_path . $new_name)) {
+        $data[$current_image_field_name] = $new_base_path . $new_name;
+        $filename = $new_base_path . $new_name;
+
+        return TRUE;
+    }
+    return FALSE;
+}
 ```

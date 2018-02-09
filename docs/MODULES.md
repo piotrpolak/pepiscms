@@ -1,4 +1,4 @@
-# Built-in modules
+# Modules
 
 There are two types of modules:
 
@@ -6,6 +6,36 @@ There are two types of modules:
 * user modules - user space modules, those are specific to instance of your application
 
 By default all modules are disabled and must be manually installed (during PepisCMS installation or at any later point).
+
+## Module installation
+
+An SQL code can be executed upon module installation/uninstallation. A file containing SQL code can be optionally
+specified in module descriptor.
+
+To view installed modules please navigate to `Start > Utilities > Installed modules`.
+
+## Accessing modules in the browser
+
+### Admin modules
+
+```bash
+http://localhost/admin/<modulename>/<action>
+```
+
+### Public modules
+
+```bash
+http://localhost/<modulename>/<action>
+```
+
+Where `<modulename>` is the module name (directory name) and `<action>` is the method name
+(the method must have public classifier).
+
+If no action is specified, the default action is `index`, i.e. `http://localhost/<modulename>` is equal to
+`http://localhost/<modulename>/index`
+
+Please note that the module must be installed and the `Frontend support (pages and modules)` must be enabled in order
+to access public controllers. This can be enabled from `Start > Utilities > Site's configuration`.
 
 ## Module structure
 
@@ -20,12 +50,9 @@ By default all modules are disabled and must be manually installed (during Pepis
 * Security policy (`security_policy.xml`)
 * Additional resources (like default icons: `<module_name>/resources/icon_16.png` and `<module_name>/resources/icon_32.png`)
 
-## Module installation
+## Below the structure of sample `labels` module:
 
-An SQL code can be executed upon module installation/uninstallation. A file containing SQL code can be optionally
-specified in module descriptor.
-
-To view installed modules please navigate to `Start > Utilities > Installed modules`.
+![Module structure](screens/MODULE_STRUCTURE.png)
 
 ## Built-in modules
 
@@ -43,26 +70,58 @@ An utility for managing and registering new users.
 
 ### Development tools
 
+![Development tools](screens/MODULES_DEVELOPMENT_TOOLS.png)
+
 ### System logs
 
-### SQL conole
+![System logs](screens/MODULES_SYSTEM_LOGS.png)
 
-### Symfony2 bridge
+### SQL console
 
-### Translator
-
-### Backup
-
-### CRUD
-
-### Dmesg
-
-### HTML customization for admin panel
-
-### Remote applications
+![SQL console](screens/MODULES_SQL_CONSOLE.png)
 
 ### System information
 
+Display system information, paths, versions, storage occupied.
+
+![](screens/MODULES_SYSTEM_INFORMATION.png)
+
+### Translator
+
+An utility for translating user interface.
+
+![Translator](screens/MODULES_TRANSLATOR.png)
+
+### Symfony2 bridge
+
+Allows to invalidate Symfony cache and to view Symfony logs.
+
+### Backup
+
+Allows to export/import pages structure to/from XML.
+
+Pages feature must be enabled to use this module.
+
+### CRUD
+
+This module is a base for any other CRUD module. It is not installable.
+
+### Dmesg
+
+Displays system dmesg.
+
+### HTML customization for admin panel
+
+Allows to inject HTML snippets to admin panel header and footer.
+
+### Remote applications
+
+Allows to manage remote applications and their keys.
+
 ### XML-RPC consumer demo
 
+XML-RPC consuler demo. Calls services exposed by `XML-RPC service` module.
+
 ### XML-RPC service
+
+Exposes some sample remote methods.
