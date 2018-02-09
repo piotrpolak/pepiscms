@@ -172,7 +172,7 @@ and then
 **Unit tests**
 
 ```bash
-docker exec -it pepiscms_web_1 ./vendor/bin/phpunit -c ./vendor/piotrpolak/pepiscms/tests/
+docker exec -it pepiscms_web_1 ./vendor/bin/phpunit -c ./vendor/piotrpolak/pepiscms/
 ```
 
 **Smoke tests (behat)**
