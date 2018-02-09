@@ -74,6 +74,20 @@ An utility for managing and registering new users.
 
 ### System logs
 
+All user actions and unexpected application behaviors can be tracked using an advanced log utility.
+
+PepisCMS provides a logging API and a console for analyzing system logs.
+
+Every single log consists of the following entry:
+* **Timestamp** of the event
+* **User ID/email** generating the event
+* **IP address** of the user creating the entry
+* **Modul ename** (if case)
+* **Collection name** – abstract label used for grouping the events and drawing statistics
+* **Debug message**
+* **URL** where the event occurred
+* **Severity** of the event –info, notice, warning, error
+
 ![System logs](screens/MODULES_SYSTEM_LOGS.png)
 
 ### SQL console
@@ -84,7 +98,7 @@ An utility for managing and registering new users.
 
 Display system information, paths, versions, storage occupied.
 
-![](screens/MODULES_SYSTEM_INFORMATION.png)
+![System information](screens/MODULES_SYSTEM_INFORMATION.png)
 
 ### Translator
 

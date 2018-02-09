@@ -1,8 +1,11 @@
 # PepisCMS
 
+
+[![Build Status](https://travis-ci.org/piotrpolak/pepiscms.svg?branch=master)](https://travis-ci.org/piotrpolak/pepiscms)
+
 A legacy project, cleaned up and released as open source on its 10th birthday.
 
-It is written in PHP on top of CodeIgniter framework.
+PepisCMS is written in PHP on top of [CodeIgniter framework](https://codeigniter.com/).
 
 As 2017, the project is fully functional (and really fast) but you should be aware that it is mostly made up from
 **legacy code**.
@@ -14,26 +17,31 @@ minimum version is PHP 5.3.
 * [Modules](docs/MODULES.md)
 * [Generating a CRUD module](docs/GENERATING_A_CRUD_MODULE.md)
 * [Security policy](docs/SECURITY_POLICY.md)
-* [Benchmarking](docs/BENCHMARKING.md)
-* [Naming convention inconsistency](docs/NAMING_CONVENTION_INCONSISTENCY.md)
 * [Deployment configurations](docs/DEPLOYMENT_CONFIGURATIONS.md)
 * [Simplified domain model](docs/SIMPLIFIED_DOMAIN_MODEL.md)
 * [Architecture overview](docs/ARCHITECTURE_OVERVIEW.md)
 * Core libraries:
+    * [Generic model](docs/GENERIC_MODEL.md)
     * [FormBuilder](docs/LIBRARY_FORMBUILDER.md)
     * [DataGrid](docs/LIBRARY_DATAGRID.md)
     * [CrudDefinitionBuilder](docs/LIBRARY_CRUD_DEFINITION_BUILDER.md)
 * [Breaking API changes and upgrade instructions](CHANGES.md)
+* [Benchmarking](docs/BENCHMARKING.md)
+* [Naming convention inconsistency](docs/NAMING_CONVENTION_INCONSISTENCY.md)
+* [Changes comparing to CodeIgniter](docs/CHANGES_COMPARING_TO_CODEIGNITER.md)
+
 ## Features
 
 * **Modularity**
 
-    Modulability and consistency. An external modules can be written independent on the system core.
+    Modularity and consistency. An external modules can be written independent on the system core.
     System core can be upgraded without any modification in the current application at any time.
   
     There are two kinds of modules - builtin (available in all projects) and project-space modules.
     Modules can be enabled or disabled from the admin panel. A typical module consists from both admin and public
-    contollers and support code.
+    controllers and support code.
+    
+    Read more about [modules](docs/MODULES.md).
   
 * **Advanced user and user right management**
 
@@ -41,6 +49,8 @@ minimum version is PHP 5.3.
     Every single method has associated a minimal right above a certain entity. All violations of security policy are
     reported. You can create as many users as you want, you can assign a user to several groups, the security policy can
     be modified at runtime.
+    
+    Read more about [security policy](docs/SECURITY_POLICY.md).
   
 * **Audit logs**
   
@@ -97,8 +107,8 @@ minimum version is PHP 5.3.
   
 * **Build-in components for generating grids and forms.**
   
-    Using these components you have 90% of requested functionalities implemented at start.
-    The data grid supports ordering table by any collumn and implements multiple filters.
+    Using these components you have 90% of requested features implemented at the start.
+    The data grid supports ordering table by any column and implements multiple filters.
     The form generator implements validation, data retrieval and data save, file upload and many others by default.
     You can extend or overwrite behavior of these components using advanced callbacks.
   
@@ -159,13 +169,13 @@ docker-compose up
 
 and then
 
-### Unit tests
+**Unit tests**
 
 ```bash
-docker exec -it pepiscms_web_1 vendor/bin/behat
+docker exec -it pepiscms_web_1 ./vendor/bin/phpunit -c ./vendor/piotrpolak/pepiscms/tests/
 ```
 
-### Smoke tests (behat)
+**Smoke tests (behat)**
 
 ```bash
 docker exec -it pepiscms_web_1 vendor/bin/behat

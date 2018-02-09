@@ -1,0 +1,16 @@
+# Changes comparing to CodeIgniter
+
+| Change                    | Description                                                                                                                                                                                                 |
+|---------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Modularity                | The system provides a way to break the components of the application in separate independent modules. The core of the project can be upgraded independent of the modules as long as its API is compatible.  |
+| Extended Controller       | Modularity support, several types of controllers                                                                                                                                                            |
+| Extended Config           | Modularity support                                                                                                                                                                                          |
+| Extended Loader           | Added possibility to load themes Modularity support Helper methods like resolveModuleDirectory()                                                                                                            |
+| Extended Lang             | Integration with the translator hook Added helper method getCurrentLanguage() Added support for modularity                                                                                                  |
+| Extended Output           | Overwritten cache mechanism                                                                                                                                                                                 |
+| Extended URI              | Added possibility to shift URI components                                                                                                                                                                   |
+| Extended Upload           | Added possibility to accept any file type by setting accepted_file_types to "*" Skipped image size check                                                                                                    |
+| Xmlrpcs (XML RPC Server)  | Added option do not check whether the callback is callable                                                                                                                                                  |
+| Database                  | Removed all database drivers except mysql and mysqli                                                                                                                                                        |
+| Modularity                | The system provides a way to break the components of the application in separate independent modules. The core of the project can be upgraded independent of the modules as long as its API is compatible.  |
+| Extended Controller       | Modularity support, several types of controllers                                                                                                                                                            |

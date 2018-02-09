@@ -1,14 +1,9 @@
 # FormBuilder library
 
-A library that can automatically build advanced forms. You can modify the default layout of the form by registering an
-external renderer.
+A library that can build and handle HTML forms based on the provided definition.
+Form builder can render the form using the default layout or you can register an additional renderer.
 
-Use TemplateRenderer to use your per-form-custom templates (not included in PepisCMS).
-
-Form builder speeds up development of web forms by providing a simple yet extensible API interfaces.
-Form builder requires no HTML code to be written in order to have a form. 
-
-The features of form builder are:
+The main features of form builder are:
 
 * Generates HTML forms from definition 
 * Handles input validation, both on server side (for security) and on client side (JavaScript for increased responsiveness) 
@@ -24,19 +19,19 @@ It is also simpler for the programmer because the order of attributes in the def
 attribute specified its default value is automatically completed. 
 * The definition used for generating FormBuilder is compatible with the definition used by DataGrid so that one definition
 can be written and reused both for the Form and for the Grid. 
-* Form builder is closely coupled with Entitable interface - it uses its saveById and getById methods. 
+* Form builder is closely coupled with Entitable interface - it uses its saveById and getById methods.
 
+See complete [FormBuilder API](pepiscms/application/libraries/FormBuilder.php)
 
-## BoxGenerating a form 
+## Generating a form 
 
 In the most common scenario the customizable Generic_model is used as the feed object for FormBuilder. The scenario looks as follows: 
 
-1. Initialize FormBuilder
-2. Specify the table to be used by setTable( $tableName, $acceptedPostFields=array(), $idFieldName=FALSE ) - you can
-specify accepted POST fields and the ID field name if it differs from ‘id’, example ‘page_id’ 
-3. Specify the value of ID - setId($id) 
-4. Specify the fields and their properties by setDefinition($definition) 
-5. Specify the back link setBackLink($link) - URL that is used for the "Cancel" button and for redirecting the user once
+1. Initialize FormBuilder `$this->load->library('FormBuilder')`
+2. Specify data model or use GenericModel providing the table name
+3. Specify the value of entity ID - `$this->formbuilder->setId($id)` 
+4. Specify the fields and their properties by `$this->formbuilder->setDefinition($definition)` 
+5. Specify the back link `$this->formbuilder->setBackLink($link)` - URL that is used for the "Cancel" button and for redirecting the user once
 the form is saved 
 6. Trigger form populate/save actions and generate the resulting HTML 
 
@@ -59,12 +54,12 @@ define the callback in the controller class it must be public so that it can be 
 
 | Method name               | Description                                                                                                                                                                                                                                                                                                                                                  |
 |---------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| CALLBACK_BEFORE_RENDER    | This callback is called after retrieving the data but before rendering the form. The callback function takes must take the OBJECT parameter as reference.                                                                                                                                                                                                    |
-| CALLBACK_BEFORE_SAVE      | This callback is called before saving the data. The callback function must take the ARRAY parameter as reference.                                                                                                                                                                                                                                            |
-| CALLBACK_AFTER_SAVE       | This callback is called after saving the data. The callback function must take the ARRAY parameter as reference.                                                                                                                                                                                                                                             |
-| CALLBACK_ON_SAVE_FAILURE  | This callback is called when data save fails. It can be using for rollback operations.The callback function takes must take the ARRAY parameter as reference.                                                                                                                                                                                                |
-| CALLBACK_ON_SAVE          | This callback is called on save. This kind of callback should be used when no feed object specified of when you want to overwrite the default SAVE operation. The callback function takes must take the ARRAY parameter as reference and MUST return TRUE or FALSE. If the function returns FALSE, it should also set FormBuilder validation error message.  |
-| CALLBACK_ON_READ          | This callback is called on read. This kind of callback should be used when no feed object specified of when you want to overwrite the default READ operation.The callback function takes must take the OBJECT parameter as reference and to FILL it.The callback does not need to return anything.                                                           |
+| CALLBACK_BEFORE_RENDER    | Called after retrieving the data but before rendering the form. The callback function takes must take the OBJECT parameter as reference.                                                                                                                                                                                                    |
+| CALLBACK_BEFORE_SAVE      | Called before saving the data. The callback function must take the ARRAY parameter as reference.                                                                                                                                                                                                                                            |
+| CALLBACK_AFTER_SAVE       | Called after saving the data. The callback function must take the ARRAY parameter as reference.                                                                                                                                                                                                                                             |
+| CALLBACK_ON_SAVE_FAILURE  | Called when data save fails. It can be using for rollback operations.The callback function takes must take the ARRAY parameter as reference.                                                                                                                                                                                                |
+| CALLBACK_ON_SAVE          | Called on save. This kind of callback should be used when no feed object specified of when you want to overwrite the default SAVE operation. The callback function takes must take the ARRAY parameter as reference and MUST return TRUE or FALSE. If the function returns FALSE, it should also set FormBuilder validation error message.  |
+| CALLBACK_ON_READ          | Called on read. This kind of callback should be used when no feed object specified of when you want to overwrite the default READ operation.The callback function takes must take the OBJECT parameter as reference and to FILL it.The callback does not need to return anything.                                                           |
 
 
 Callback setup:
@@ -113,8 +108,9 @@ public function _fb_callback_on_read( &$object ){}
 public function _fb_callback_before_render( &$object ){} 
 ```
 
-## Image fields’ callbacks 
-You can attach an independent callback to image fields. The difference between form builder generlal callbacks and image
+## Image fields’ callbacks
+
+You can attach an independent callback to the image fields. The difference between form builder general callbacks and image
 callbacks is that image callback is only called when a new image is being uploaded while form builder callback is called each time you save a form. 
 
 Sample callback (taken from admin module CRUD template):

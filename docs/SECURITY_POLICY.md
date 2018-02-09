@@ -33,5 +33,8 @@ There are two types of security policy:
 
 ## User groups 
 
-Once the security policy is created for both core and modules the administrator can create user groups. Creating a group is process similar to building security policy - the administrator picks an access level for every single entity that is granted to anyone who belongs to the group. 
+Once the security policy is created for both core and modules the administrator can create user groups.
+Creating a group is process similar to building security policy - the administrator picks an access level for every
+single entity that is granted to anyone who belongs to the group.
+
 A single user can belong to any number of user groups. This offers high flexibility because you can manage the groups separately. 
