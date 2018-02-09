@@ -13,7 +13,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "git@github.com:piotrpolak/pepiscms-3rdparty.git"
+            "url": "https://github.com/piotrpolak/pepiscms-3rdparty.git"
         }
     ],
     "require": {
