@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-INVALID_FILES_OUTPUT=`find . -type f -name "*.php" -not -path "./pepiscms/resources/module_template/*" -exec php -l {} \; 2>&1 | grep "PHP Parse error"`
+INVALID_FILES_OUTPUT=`find ./pepiscms/ -type f -name "*.php" -not -path "./pepiscms/resources/module_template/*" -exec php -l {} \; 2>&1 | grep "PHP Parse error"`
 
 NUMBER_OF_INVALID_FILES=`echo "$INVALID_FILES_OUTPUT" | grep "PHP Parse error" |  wc -l`
 
