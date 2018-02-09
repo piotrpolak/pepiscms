@@ -1,0 +1,92 @@
+header, #primary_navigation, #content, footer {
+    border: 1px #666 solid;
+    padding: 2px;
+    margin-bottom: 1em;
+}
+
+#wrapper, footer {
+    min-width: 1000px;
+    width: 95%;
+    margin: 0 auto;
+    padding: 2px;
+    border: 1px #666 solid;
+}
+
+header {
+    overflow: hidden;
+    min-height: 40px;
+    text-align: right;
+    .box_content {
+        min-width: 1000px;
+        width: 95%;
+        margin: 0 auto;
+        margin-bottom: 8px;
+        > div {
+            margin: 0 1em;
+        }
+    }
+    ul {
+        list-style: none;
+    }
+}
+
+#home_link {
+    float: left;
+}
+
+header .box_content > div, #logout_link, header li {
+    display: inline-block;
+}
+
+#primary_navigation {
+    ul {
+        list-style: none;
+
+        li {
+            display: inline-block;
+            margin: 0 1em;
+            a {
+                display: block;
+                img {
+                    margin-right: 0.45em;
+                    vertical-align: middle;
+                }
+            }
+            &.no-label {
+                a {
+                    img {
+                        margin: 0;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.breadcrumbs a {
+    display: inline-block;
+}
+
+#two_pane_layout {
+    overflow: hidden;
+    .left_option_pane {
+        float: left;
+        width: 360px;
+        position: relative;
+    }
+    .right_content_pane {
+        margin-left: 370px;
+    }
+}
+
+.steps {
+    border: 1px #900 solid;
+    margin: 1.5em 0 2.5em 0;
+    ul {
+        list-style: none;
+    }
+}
+
+.sep {
+    margin: 0 0.25em;
+}

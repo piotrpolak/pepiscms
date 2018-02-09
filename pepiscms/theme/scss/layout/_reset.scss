@@ -1,0 +1,141 @@
+#updateBrowser {
+    display: none;
+}
+
+/* HTML5 defaults */
+
+header, footer, section, nav, article, aside {
+    margin: 0px;
+    padding: 0px;
+    display: block;
+}
+
+html, body, div, span, h1, h2, h3, h4, h5, h6, p, a, cite, code, img, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    font-weight: inherit;
+    font-style: inherit;
+    font-family: inherit;
+    border: none;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    background: transparent 0 0 repeat-x;
+}
+
+/* reset styles */
+
+:focus {
+    outline: 0;
+}
+
+table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+caption, th, td {
+    text-align: left;
+    font-weight: normal;
+}
+
+blockquote {
+    &:before, &:after {
+        content: "";
+    }
+}
+
+q {
+    &:before, &:after {
+        content: "";
+    }
+}
+
+blockquote, q {
+    quotes: "" "";
+}
+
+.clear {
+    clear: both;
+}
+
+a img {
+    border: 0;
+    vertical-align: middle;
+}
+
+/* useful classes and styles */
+
+.striked {
+    font-style: normal;
+    text-decoration: line-through;
+}
+
+.rFloated {
+    float: right !important;
+}
+
+.lFloated {
+    float: left !important;
+}
+
+.center {
+    text-align: center !important;
+}
+
+.right {
+    text-align: right !important;
+}
+
+.left {
+    text-align: left !important;
+}
+
+.inline {
+    display: inline-block !important;
+    vertical-align: middle !important;
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
+.active {
+    text-decoration: none !important;
+    cursor: default !important;
+}
+
+.asUppercase {
+    text-transform: uppercase !important;
+}
+
+.noMargin {
+    margin: 0 !important;
+}
+
+.noMarginH {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+.noMarginV {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.noPadding {
+    padding: 0 !important;
+}
+
+.noPaddingH {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.noPaddingV {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}

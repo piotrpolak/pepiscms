@@ -1,0 +1,1 @@
+No images here, the remaining images are deprecated as PepisCMS 0.2.4 and should be removed as PepisCMS 0.2.5 together whith this file.

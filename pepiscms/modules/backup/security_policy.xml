@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<security_policy generated_at="2015-04-14 13:31:41" version="1.1">
+  <policy module="backup">
+    <controller name="backup">
+      <method name="index">
+        <entity name="backup" access="FULL_CONTROL"/>
+      </method>
+    </controller>
+    <controller name="backup">
+      <method name="sql_do">
+        <entity name="backup" access="FULL_CONTROL"/>
+      </method>
+    </controller>
+    <controller name="backup">
+      <method name="sql_do_groups_and_rights">
+        <entity name="backup" access="FULL_CONTROL"/>
+      </method>
+    </controller>
+    <controller name="backup">
+      <method name="xml_do">
+        <entity name="backup" access="FULL_CONTROL"/>
+      </method>
+    </controller>
+    <controller name="backup">
+      <method name="xml_restore">
+        <entity name="backup" access="FULL_CONTROL"/>
+      </method>
+    </controller>
+  </policy>
+</security_policy>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<security_policy generated_at="2015-04-14 03:45:55" version="1.1">
+  <policy module="sqlconsole">
+    <controller name="sqlconsole">
+      <method name="index">
+        <entity name="database" access="FULL_CONTROL"/>
+      </method>
+    </controller>
+  </policy>
+</security_policy>

@@ -1,0 +1,353 @@
+/*
+* Datagrid
+*/
+
+.table_wrapper {
+    position: relative;
+    margin: 3.5em 0 1.65em 0;
+    padding: 5px;
+    background: #8f999e;
+    @include background-image(linear-gradient(#8f999e, #778387));
+    @include border-radius(2px);
+    h4 {
+        font: 700 1.05em/1.333 $verdana;
+        color: #fff;
+        @include text-shadow(0 1px 0px #242627);
+        margin: 0 0 0.25em 0;
+        background-color: #8f999e;
+        @include border-radius(2px 2px 0 0);
+        @include absolute(top -1.85em left 10px);
+        padding: 0.35em 1em;
+    }
+}
+
+table {
+    width: 100%;
+    background-color: #fff;
+    padding: 0 0 0.5em 0;
+
+    tr {
+        &:hover td {
+            background-color: #e1f0ff;
+        }
+        &.even {
+            &:hover td {
+                background-color: #e1f0ff;
+            }
+            td {
+                background-color: rgb(245, 245, 245);
+            }
+        }
+
+        th.short, td.short {
+            width: 1em;
+            padding-left: 0;
+            padding-right: 0;
+        }
+        th.narrow, td.narrow {
+            width: 4em;
+            padding-left: 0;
+            padding-right: 0;
+        }
+        th.medium, td.medium {
+            width: 15em;
+        }
+        th.long, td.long {
+            width: 20em;
+        }
+        th.super_long, td.super_long {
+            width: 55em;
+        }
+        th {
+            background: #f9f9f9;
+            @include background-image(linear-gradient(#f9f9f9, #e5e5e5));
+            padding: 0.75em;
+            border-left: 1px #bebfc0 solid;
+            border-right: 1px #fff solid;
+            border-bottom: 1px #bebfc0 solid;
+            &:first-child {
+                border-left: 0;
+            }
+            &:last-child {
+                border-right: 0;
+            }
+        }
+        td {
+            padding: 0.5em 0.75em;
+            &.link {
+                text-align: center;
+            }
+            &.entity_group, &.entity_group:hover {
+                // Important is added due to even/odd
+                background: #8f999e !important;
+                color: #FFF !important;
+                font-weight: bold !important;
+            }
+        }
+    }
+}
+
+.datagrid {
+
+    div.image {
+        display: inline-block;
+        vertical-align: middle;
+        min-width: 50px;
+        min-height: 50px;
+        background: #FFF;
+        padding: 3px;
+        border: #ccc solid 1px;
+        text-align: center;
+    }
+    img.image {
+        display: inline-block;
+        vertical-align: middle;
+    }
+    .details {
+        display: inline-block;
+        margin-left: 1em;
+        vertical-align: middle;
+    }
+    .title {
+        font-weight: bold;
+        white-space: nowrap;
+    }
+    .description {
+        display: block;
+        color: #555;
+    }
+
+    th {
+        &.asc {
+            &:before {
+                content: '\25B2';
+                color: #666;
+                padding-right: .5em;
+            }
+        }
+        &.desc {
+            &:before {
+                content: '\25BC';
+                color: #666;
+                padding-right: .5em;
+            }
+        }
+        &.asc a, &.desc a {
+            color: #444;
+        }
+    }
+    tr {
+        $green_odd: #dbfac6;
+        $green_even: #B5E396;
+        $green_hover: #8EC767;
+        $blue_odd: #CFEEFF;
+        $blue_even: #A4D3ED;
+        $blue_hover: #68ADD4;
+        $orange_odd: #fef0cd;
+        $orange_even: #EDD391;
+        $orange_hover: #CFA94C;
+        $red_odd: #FFDBDB;
+        $red_even: #FF9D9D;
+        $red_hover: #FC7979;
+        $gray_odd: #D1D1D1;
+        $gray_even: #ADADAD;
+        $gray_hover: #8F8F8F;
+        $yellow_odd: #FAFF9C;
+        $yellow_even: #EAF23D;
+        $yellow_hover: #C8CF42;
+
+        &.flash td {
+            background-color: #FAFA78 !important;
+        }
+
+        &.odd {
+            &.green:hover td, &:hover td.green {
+                background-color: $green_hover !important;
+            }
+            &.green td, td.green {
+                background-color: $green_odd !important;
+            }
+        }
+        &.even {
+            &.green:hover td, &:hover td.green {
+                background-color: $green_hover !important;
+            }
+            &.green td, td.green {
+                background-color: $green_even !important;
+            }
+        }
+        &.odd {
+            &.blue:hover td, &:hover td.blue {
+                background-color: $blue_hover !important;
+            }
+            &.blue td, td.blue {
+                background-color: $blue_odd !important;
+            }
+        }
+        &.even {
+            &.blue:hover td, &:hover td.blue {
+                background-color: $blue_hover !important;
+            }
+            &.blue td, td.blue {
+                background-color: $blue_even !important;
+            }
+        }
+        &.odd {
+            &.orange:hover td, &:hover td.orange {
+                background-color: $orange_hover !important;
+            }
+            &.orange td, td.orange {
+                background-color: $orange_odd !important;
+            }
+        }
+        &.even {
+            &.orange:hover td, &:hover td.orange {
+                background-color: $orange_hover !important;
+            }
+            &.orange td, td.orange {
+                background-color: $orange_even !important;
+            }
+        }
+        &.odd {
+            &.red:hover td, &:hover td.red {
+                background-color: $red_hover !important;
+            }
+            &.red td, td.red {
+                background-color: $red_odd !important;
+            }
+        }
+        &.even {
+            &.red:hover td, &:hover td.red {
+                background-color: $red_hover !important;
+            }
+            &.red td, td.red {
+                background-color: $red_even !important;
+            }
+        }
+        &.odd {
+            &.gray:hover td, &:hover td.gray {
+                background-color: $gray_hover !important;
+            }
+            &.gray td, td.gray {
+                background-color: $gray_odd !important;
+            }
+        }
+        &.even {
+            &.gray:hover td, &:hover td.gray {
+                background-color: $gray_hover !important;
+            }
+            &.gray td, td.gray {
+                background-color: $gray_even !important;
+            }
+        }
+        &.odd {
+            &.yellow:hover td, &:hover td.yellow {
+                background-color: $yellow_hover !important;
+            }
+            &.yellow td, td.yellow {
+                background-color: $yellow_odd !important;
+            }
+        }
+        &.even {
+            &.yellow:hover td, &:hover td.yellow {
+                background-color: $yellow_hover !important;
+            }
+            &.yellow td, td.yellow {
+                background-color: $yellow_even !important;
+            }
+        }
+
+        // TODO
+        // Add missing collors following the above pattern
+        &.odd {
+            &.deep_red td, td.deep_red {
+                background-color: #FF7070 !important;
+            }
+        }
+        &.even {
+            &.deep_red td, td.deep_red {
+                background-color: #FF7070 !important;
+            }
+        }
+        &.odd {
+            &.deep_blue td, td.deep_blue {
+                background-color: #8A8DE3 !important;
+            }
+        }
+        &.even {
+            &.deep_blue td, td.deep_blue {
+                background-color: #8A8DE3 !important;
+            }
+        }
+        &.odd {
+            &.deep_green td, td.deep_green {
+                background-color: #9BDB69 !important;
+            }
+        }
+        &.even {
+            &.deep_green td, td.deep_green {
+                background-color: #9BDB69 !important;
+            }
+        }
+    }
+}
+
+/* END Needed? */
+
+/** Deep **/
+
+.filter_form {
+
+    margin: 1.5em 0 0.5em 0;
+
+    .datagrid_filter_box {
+        float: left;
+        min-height: 55px;
+        background: #f4f4f4;
+        @include background-image(linear-gradient(#f4f4f4, $white));
+        @include border-radius(3px);
+        border-top: 1px #e3e3e3 solid;
+        /* padding: 0.85em 1.35em; */
+        padding: 0.2em 1em 0 1em;
+        margin-right: 0.4em;
+
+        input.text, select.text {
+            max-width: 200px;
+        }
+
+        a {
+            display: inline-block;
+            vertical-align: middle;
+            margin: 0 0.5em;
+        }
+        input.date {
+            display: inline-block;
+            width: 80px;
+            vertical-align: middle;
+            margin: 0;
+        }
+    }
+
+    .datagrid_filter_apply {
+        text-align: right;
+        float: left;
+        min-height: 50px;
+        background: #f4f4f4;
+        @include background-image(linear-gradient(#f4f4f4, $white));
+        @include border-radius(3px);
+        border-top: 1px #e3e3e3 solid;
+        /* padding: 0.85em 1.35em; */
+        padding: 1.4em 1em 0 1em;
+        margin-right: 0.4em;
+    }
+}
+
+form {
+    overflow: hidden;
+}
+
+.datagrid_pagination {
+    border: 1px #900 solid;
+    padding: 1em;
+    margin: 1.5em 0;
+}

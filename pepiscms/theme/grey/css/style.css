@@ -1,0 +1,11 @@
+/** Just overwrite DEFAULT values */
+html {
+	background: #999;
+}
+#content_wrapper {
+	box-shadow: none;
+}
+footer, footer a, footer b {
+	color: #333 !important;
+	text-shadow: none;
+}

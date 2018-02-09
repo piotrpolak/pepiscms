@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<security_policy generated_at="2015-04-14 03:45:42" version="1.1">
+  <policy module="development">
+    <controller name="development">
+      <method name="index">
+        <entity name="development_tool" access="FULL_CONTROL"/>
+      </method>
+      <method name="fix_autoincrement_on_cms_tables">
+        <entity name="development_tool" access="FULL_CONTROL"/>
+      </method>
+      <method name="generate_header_file">
+        <entity name="development_tool" access="FULL_CONTROL"/>
+      </method>
+      <method name="fix_missing_translation_files">
+        <entity name="development_tool" access="FULL_CONTROL"/>
+      </method>
+      <method name="send_test_email">
+        <entity name="development_tool" access="FULL_CONTROL"/>
+      </method>
+      <method name="switch_user">
+        <entity name="development_tool" access="FULL_CONTROL"/>
+      </method>
+    </controller>
+  </policy>
+</security_policy>

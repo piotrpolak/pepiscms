@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<security_policy generated_at="2015-04-14 03:46:46" version="1.1">
+  <policy module="cms_users">
+    <controller name="cms_users">
+      <method name="edit">
+        <entity name="cms_user" access="WRITE"/>
+      </method>
+      <method name="inactivate">
+        <entity name="cms_user" access="WRITE"/>
+      </method>
+      <method name="activate">
+        <entity name="cms_user" access="WRITE"/>
+      </method>
+      <method name="unlock">
+        <entity name="cms_user" access="WRITE"/>
+      </method>
+      <method name="reset_password">
+        <entity name="cms_user" access="WRITE"/>
+      </method>
+      <method name="index">
+        <entity name="cms_user" access="READ"/>
+      </method>
+      <method name="revisionrestorefield">
+        <entity name="cms_user" access="NONE"/>
+      </method>
+      <method name="revision">
+        <entity name="cms_user" access="NONE"/>
+      </method>
+      <method name="revisions">
+        <entity name="cms_user" access="NONE"/>
+      </method>
+      <method name="export">
+        <entity name="cms_user" access="FULL_CONTROL"/>
+      </method>
+      <method name="import">
+        <entity name="cms_user" access="FULL_CONTROL"/>
+      </method>
+      <method name="preview">
+        <entity name="cms_user" access="READ"/>
+      </method>
+      <method name="move">
+        <entity name="cms_user" access="FULL_CONTROL"/>
+      </method>
+      <method name="delete">
+        <entity name="cms_user" access="WRITE"/>
+      </method>
+      <method name="star">
+        <entity name="cms_user" access="WRITE"/>
+      </method>
+    </controller>
+  </policy>
+</security_policy>

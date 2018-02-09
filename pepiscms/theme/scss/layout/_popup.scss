@@ -1,0 +1,122 @@
+body.popup, html.popup {
+    margin: 0;
+    background-color: #fff;
+    background-image: none;
+    min-height: 0 !important;
+    overflow: auto;
+}
+
+body.popup {
+    padding-right: 9px;
+    padding-left: 9px;
+    #wrapper {
+        margin: 0;
+        padding: 0;
+        border: none;
+        background-color: #fff;
+        background-image: none;
+    }
+    #content {
+        margin: 0;
+        padding: 0;
+        min-height: 0;
+    }
+    #content_wrapper {
+        box-shadow: none;
+        margin: 0;
+        padding: 0;
+    }
+    .action_bar {
+        margin-top: 0;
+    }
+}
+
+.white_mask, .overlay_mask, #heavy_operation_indicator {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 90;
+}
+
+.white_mask, #heavy_operation_indicator {
+    position: absolute;
+    background-color: #fff;
+    z-index: 90;
+    margin-top: 36px;
+    img {
+        position: absolute;
+        top: 45%;
+        left: 50%;
+        margin-top: -16px;
+        margin-left: -16px;
+    }
+}
+
+#heavy_operation_indicator {
+    position: fixed;
+    margin-top: 0;;
+    display: none;
+    p {
+        position: absolute;
+        top: 45%;
+        margin-top: 30px;
+        width: 100%;
+        text-align: center;
+    }
+}
+
+.overlay_mask {
+    background: #000 0 0 repeat;
+}
+
+.overlay_window {
+    position: fixed;
+    z-index: 999;
+    left: 50%;
+    padding: 4px 4px 9px 4px;
+    border-radius: 1px;
+    box-shadow: 0 0 20px #333;
+
+    display: none;
+    .box_content {
+        background-color: #fff;
+        /* padding: 4px; */
+        position: relative;
+        overflow: hidden;
+    }
+    h4 {
+        background-color: #cee0e9;
+        padding: 6px;
+        font-size: 12px;
+        color: #49606c;
+        font-weight: bold;
+        text-shadow: 0 1px 0px #fff;
+    }
+    a.close_overlay {
+        padding: 0px 5px 2px 5px;
+        border: 1px #9ebac8 solid;
+        border-radius: 2px;
+        box-shadow: 0 1px 0px #fff, 0 0 1px #fff inset;
+        margin-top: -2px;
+        &:active {
+            box-shadow: 0 1px 0px #fff, 0 1px 0px #5b7b8b inset;
+            background-color: #a6c2cf;
+        }
+        img {
+            vertical-align: middle;
+        }
+    }
+    iframe {
+        overflow-x: hidden;
+        border-radius: 1px;
+        height: 100%;
+        border: 0;
+        margin: 0px 0 5px 0;
+        padding-bottom: 2px;
+    }
+    .trigger {
+        float: right;
+    }
+}

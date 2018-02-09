@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<security_policy generated_at="2015-04-14 03:45:37" version="1.1">
+  <policy module="cms_groups">
+    <controller name="cms_groups">
+      <method name="index">
+        <entity name="group" access="READ"/>
+      </method>
+      <method name="edit">
+        <entity name="group" access="WRITE"/>
+      </method>
+      <method name="delete">
+        <entity name="group" access="FULL_CONTROL"/>
+      </method>
+    </controller>
+  </policy>
+</security_policy>

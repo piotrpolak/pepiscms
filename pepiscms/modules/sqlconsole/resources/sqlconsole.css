@@ -1,0 +1,67 @@
+label {
+    font-size: 10px !important;
+}
+#tables_definitions {
+	width: 100%;
+}
+#table_queries li, #query_history li {
+    list-style: none;
+    margin: 0;
+    padding: 4px;
+    border-bottom: #DEDEDE solid 1px;
+}
+
+#table_queries li a:hover, #table_queries li a.active,
+#query_history li a:hover, #query_history li a.active
+{
+    font-weight: bold;
+}
+#table_queries li a.active,
+#query_history li a.active{
+    color: #000;
+}
+#table_names {
+    width: 300px;
+    float: left;
+}
+#table_utilities {
+    width: 100%;
+    min-width: 600px;
+    margin-top: 20px;
+}
+#table_queries {
+    width: 300px;
+    float: left;
+}
+#query_history {
+    width: 600px;
+    float: left;
+}
+#query_history a {
+    color: #666;
+    font-style: italic;
+}
+div.table_queries {
+    display: none;
+}
+#query_separator {
+	display: inline;
+}
+
+nav.file_tree>a {
+  font-weight: bold;
+  color: #111;
+  padding-left: 21px;
+  background: transparent url(./database_16.png) 0 50% no-repeat;
+  text-decoration: none;
+  display: inline-block;
+  line-height: 18px;
+}
+
+nav.file_tree ul a.table {
+  padding-left: 3.8em !important;
+  background: transparent url(./table_16.png) 0 55% no-repeat;
+}
+nav.file_tree ul a.table.active {
+    color: #000;
+}

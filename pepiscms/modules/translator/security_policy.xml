@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<security_policy generated_at="2015-04-14 03:46:23" version="1.1">
+  <policy module="translator">
+    <controller name="translator">
+      <method name="index">
+        <entity name="translations" access="READ"/>
+      </method>
+      <method name="show">
+        <entity name="translations" access="READ"/>
+      </method>
+      <method name="edit">
+        <entity name="translations" access="WRITE"/>
+      </method>
+      <method name="delete">
+        <entity name="translations" access="WRITE"/>
+      </method>
+    </controller>
+  </policy>
+</security_policy>

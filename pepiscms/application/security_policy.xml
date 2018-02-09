@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<security_policy generated_at="2015-04-14 13:35:09" version="1.1">
+  <policy module="system">
+    <controller name="upgradedb">
+      <method name="index">
+        <entity name="DUMMY" access="NONE"/>
+      </method>
+    </controller>
+    <controller name="installer">
+      <method name="index">
+        <entity name="DUMMY" access="NONE"/>
+      </method>
+    </controller>
+    <controller name="installer">
+      <method name="auth_driver">
+        <entity name="DUMMY" access="NONE"/>
+      </method>
+    </controller>
+    <controller name="installer">
+      <method name="admin_account">
+        <entity name="DUMMY" access="NONE"/>
+      </method>
+    </controller>
+    <controller name="installer">
+      <method name="features">
+        <entity name="DUMMY" access="NONE"/>
+      </method>
+    </controller>
+    <controller name="installer">
+      <method name="build">
+        <entity name="DUMMY" access="NONE"/>
+      </method>
+    </controller>
+    <controller name="installer">
+      <method name="installed_modules">
+        <entity name="DUMMY" access="NONE"/>
+      </method>
+    </controller>
+    <controller name="installer">
+      <method name="build_success">
+        <entity name="DUMMY" access="NONE"/>
+      </method>
+    </controller>
+    <controller name="installer">
+      <method name="merge_installation_data">
+        <entity name="DUMMY" access="NONE"/>
+      </method>
+    </controller>
+    <controller name="installer">
+      <method name="get_installation_data">
+        <entity name="DUMMY" access="NONE"/>
+      </method>
+    </controller>
+    <controller name="menu">
+      <method name="edit">
+        <entity name="menu" access="WRITE"/>
+      </method>
+    </controller>
+    <controller name="module">
+      <method name="index">
+        <entity name="module" access="READ"/>
+      </method>
+    </controller>
+    <controller name="module">
+      <method name="move">
+        <entity name="module" access="WRITE"/>
+      </method>
+    </controller>
+    <controller name="module">
+      <method name="make">
+        <entity name="module" access="FULL_CONTROL"/>
+      </method>
+    </controller>
+    <controller name="module">
+      <method name="setup">
+        <entity name="module" access="FULL_CONTROL"/>
+      </method>
+    </controller>
+    <controller name="module">
+      <method name="do_setup">
+        <entity name="module" access="FULL_CONTROL"/>
+      </method>
+    </controller>
+    <controller name="module">
+      <method name="uninstall">
+        <entity name="module" access="FULL_CONTROL"/>
+      </method>
+    </controller>
+    <controller name="module">
+      <method name="configure">
+        <entity name="configuration" access="WRITE"/>
+      </method>
+    </controller>
+    <controller name="module">
+      <method name="run">
+        <entity name="module" access="READ"/>
+      </method>
+    </controller>
+    <controller name="welcome">
+      <method name="index">
+        <entity name="DUMMY" access="NONE"/>
+      </method>
+    </controller>
+    <controller name="logout">
+      <method name="index">
+        <entity name="DUMMY" access="NONE"/>
+      </method>
+    </controller>
+    <controller name="about">
+      <method name="index">
+        <entity name="DUMMY" access="NONE"/>
+      </method>
+    </controller>
+    <controller name="about">
+      <method name="theme">
+        <entity name="DUMMY" access="NONE"/>
+      </method>
+    </controller>
+    <controller name="about">
+      <method name="theme_404">
+        <entity name="DUMMY" access="NONE"/>
+      </method>
+    </controller>
+    <controller name="about">
+      <method name="theme_error">
+        <entity name="DUMMY" access="NONE"/>
+      </method>
+    </controller>
+    <controller name="about">
+      <method name="dashboard">
+        <entity name="DUMMY" access="NONE"/>
+      </method>
+    </controller>
+    <controller name="about">
+      <method name="configuration_tests">
+        <entity name="DUMMY" access="NONE"/>
+      </method>
+    </controller>
+    <controller name="crossdomainlogin">
+      <method name="index">
+        <entity name="cross_domain_login" access="READ"/>
+      </method>
+    </controller>
+    <controller name="crossdomainlogin">
+      <method name="useticket">
+        <entity name="cross_domain_login" access="READ"/>
+      </method>
+    </controller>
+    <controller name="setup">
+      <method name="index">
+        <entity name="configuration" access="FULL_CONTROL"/>
+      </method>
+    </controller>
+    <controller name="utilities">
+      <method name="index">
+        <entity name="utilities_view" access="READ"/>
+      </method>
+    </controller>
+    <controller name="utilities">
+      <method name="flush_html_cache">
+        <entity name="system_cache" access="WRITE"/>
+      </method>
+    </controller>
+    <controller name="utilities">
+      <method name="flush_security_policy_cache">
+        <entity name="system_cache" access="WRITE"/>
+      </method>
+    </controller>
+    <controller name="utilities">
+      <method name="flush_system_cache">
+        <entity name="system_cache" access="WRITE"/>
+      </method>
+    </controller>
+    <controller name="ajaxfilemanager">
+      <method name="index">
+        <entity name="file_system" access="WRITE"/>
+      </method>
+    </controller>
+    <controller name="ajaxfilemanager">
+      <method name="getjsonfilelist">
+        <entity name="file_system" access="WRITE"/>
+      </method>
+    </controller>
+    <controller name="ajaxfilemanager">
+      <method name="editorbrowse">
+        <entity name="file_system" access="WRITE"/>
+      </method>
+    </controller>
+    <controller name="ajaxfilemanager">
+      <method name="browse">
+        <entity name="file_system" access="WRITE"/>
+      </method>
+    </controller>
+    <controller name="ajaxfilemanager">
+      <method name="sendcommand">
+        <entity name="file_system" access="WRITE"/>
+      </method>
+    </controller>
+    <controller name="ajaxfilemanager">
+      <method name="upload">
+        <entity name="file_system" access="WRITE"/>
+      </method>
+    </controller>
+    <controller name="ajaxfilemanager">
+      <method name="genericupload">
+        <entity name="file_system" access="WRITE"/>
+      </method>
+    </controller>
+    <controller name="ajaxfilemanager">
+      <method name="absolutethumb">
+        <entity name="file_system" access="NONE"/>
+      </method>
+    </controller>
+    <controller name="ajaxfilemanager">
+      <method name="thumb">
+        <entity name="file_system" access="NONE"/>
+      </method>
+    </controller>
+    <controller name="ajaxfilemanager">
+      <method name="getpathsjson">
+        <entity name="file_system" access="READ"/>
+      </method>
+    </controller>
+    <controller name="ajaxfilemanager">
+      <method name="getfile">
+        <entity name="file_system" access="READ"/>
+      </method>
+    </controller>
+    <controller name="acl">
+      <method name="index">
+        <entity name="configuration" access="READ"/>
+      </method>
+    </controller>
+    <controller name="acl">
+      <method name="edit">
+        <entity name="configuration" access="READ"/>
+      </method>
+    </controller>
+    <controller name="acl">
+      <method name="checkrights">
+        <entity name="DUMMY" access="NONE"/>
+      </method>
+    </controller>
+    <controller name="login">
+      <method name="refresh_session">
+        <entity name="DUMMY" access="NONE"/>
+      </method>
+    </controller>
+    <controller name="login">
+      <method name="index">
+        <entity name="DUMMY" access="NONE"/>
+      </method>
+    </controller>
+    <controller name="login">
+      <method name="logout">
+        <entity name="DUMMY" access="NONE"/>
+      </method>
+    </controller>
+    <controller name="login">
+      <method name="dologin">
+        <entity name="DUMMY" access="NONE"/>
+      </method>
+    </controller>
+    <controller name="login">
+      <method name="sessionexpired">
+        <entity name="DUMMY" access="NONE"/>
+      </method>
+    </controller>
+    <controller name="login">
+      <method name="json_session_refresh">
+        <entity name="DUMMY" access="NONE"/>
+      </method>
+    </controller>
+    <controller name="pages">
+      <method name="index">
+        <entity name="page" access="READ"/>
+      </method>
+    </controller>
+    <controller name="pages">
+      <method name="setviewtype">
+        <entity name="page" access="NONE"/>
+      </method>
+    </controller>
+    <controller name="pages">
+      <method name="edit">
+        <entity name="page" access="WRITE"/>
+      </method>
+    </controller>
+    <controller name="pages">
+      <method name="delete">
+        <entity name="page" access="WRITE"/>
+      </method>
+    </controller>
+    <controller name="pages">
+      <method name="deletemenuelement">
+        <entity name="menu" access="WRITE"/>
+      </method>
+    </controller>
+    <controller name="pages">
+      <method name="move">
+        <entity name="menu" access="WRITE"/>
+      </method>
+    </controller>
+    <controller name="pages">
+      <method name="setdefault">
+        <entity name="page" access="WRITE"/>
+      </method>
+    </controller>
+    <controller name="language">
+      <method name="set">
+        <entity name="DUMMY" access="NONE"/>
+      </method>
+    </controller>
+    <controller name="changepassword">
+      <method name="index">
+        <entity name="own_account" access="FULL_CONTROL"/>
+      </method>
+    </controller>
+  </policy>
+</security_policy>

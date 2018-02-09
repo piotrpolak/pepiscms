@@ -1,0 +1,43 @@
+version: '2'
+services:
+  web:
+    environment:
+      PEPIS_CMS_DATABASE_CONFIG_TYPE: native
+      PEPIS_CMS_DATABASE_HOSTNAME: db
+      PEPIS_CMS_DATABASE_USERNAME: pepiscms
+      PEPIS_CMS_DATABASE_PASSWORD: pepiscms
+      PEPIS_CMS_DATABASE_DATABASE: pepiscms
+      PEPIS_CMS_AUTH_DRIVER: native
+      PEPIS_CMS_AUTH_EMAIL: piotr@polak.ro
+      PEPIS_CMS_AUTH_PASSWORD: demodemo
+      PEPIS_CMS_SITE_EMAIL: piotr@polak.ro
+      PEPIS_CMS_SITE_NAME: Demonstration
+    ports:
+      - "80:80"
+    links:
+      - db
+    volumes:
+#      - ./app:/app # Uncomment if you want to preview/edit files
+#      - /home/${USER}/.ssh/id_rsa:/root/.ssh/id_rsa # Uncomment if you need to pull any custom composer packages
+      - ./pepiscms:/app/vendor/piotrpolak/pepiscms/pepiscms
+      - ./features:/app/features
+      - ./behat.yml:/app/behat.yml
+      - ./composer.json:/app/vendor/piotrpolak/pepiscms/composer.json
+      - ./tests:/app/vendor/piotrpolak/pepiscms/tests
+      - ./composer.json:/app/composer.json
+    build: ./web/
+    command: /install.sh
+
+  db:
+    image: mariadb
+    restart: always
+# Uncomment this to persist MySQL data between concurrent runs
+#    volumes:
+#      - ./mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: pepiscms
+      MYSQL_PASSWORD: pepiscms
+      MYSQL_DATABASE: pepiscms
+#    ports:
+#      - "3306:3306"

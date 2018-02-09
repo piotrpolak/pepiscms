@@ -1,0 +1,12 @@
+/* { behavior: url(js/pie.htc); } */
+
+.box { 
+    position: relative; 
+    z-index: 1;
+}
+.inline {
+    display: inline !important;
+    zoom: 1;   
+}
+
+

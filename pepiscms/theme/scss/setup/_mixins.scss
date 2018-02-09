@@ -1,0 +1,33 @@
+// positioning shorthand
+// @include absolute(top 10px right 30px);
+// --------------------
+@mixin position($position, $args) {
+    // look for these offsets
+    $offsets: top right bottom left;
+    @each $offset in $offsets {
+        // check if offset found in $args
+        $i: index($args, $offset);
+        // check if offset was found
+        // check if offset is withing list range
+        // check if offset value is valid
+        @if $i
+        and $i + 1 <= length($args)
+        and type-of( nth($args, $i + 1) ) == number {
+            // assign value to offset
+            #{$offset}: nth($args, $i + 1);
+        }
+    }
+    position: $position;
+}
+
+// private mixin for position absolute
+// -----------------------------------
+@mixin absolute($args) {
+    @include position(absolute, $args);
+}
+
+// private mixin for position fixed
+// --------------------------------
+@mixin fixed($args) {
+    @include position(fixed, $args);
+}

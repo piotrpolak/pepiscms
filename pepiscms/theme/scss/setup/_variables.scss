@@ -1,0 +1,33 @@
+// default settings
+// ----------------
+$font-size: 11px;
+$fast: 0.2s;
+
+// colors
+// ------
+$black: rgb(0, 0, 0);
+$white: rgb(255, 255, 255);
+
+$r1: 170;
+$g1: 175;
+$b1: 180;
+$night-light: rgb($r1+45, $g1+50, $b1+55);
+$night: rgb($r1+30, $g1+35, $b1+40);
+$night-dark: rgb($r1+15, $g1+20, $b1+25);
+$night-darker: rgb($r1, $g1, $b1);
+
+$r2: 170;
+$g2: 170;
+$b2: 170;
+$day-lighter: rgb($r2+60, $g2+65, $b2+70);
+$day-light: rgb($r2+45, $g2+50, $b2+55);
+$day: rgb($r2+30, $g2+35, $b2+40);
+$day-dark: rgb($r2+15, $g2+20, $b2+25);
+
+// fonts
+// -----
+$verdana: "Verdana", sans-serif;
+
+// images
+// ------
+$background-pattern: url("../img/background-pattern.png");

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<security_policy generated_at="2015-04-14 03:46:17" version="1.1">
+  <policy module="symfony2_bridge">
+    <controller name="symfony2_bridge">
+      <method name="index">
+        <entity name="configuration" access="READ"/>
+      </method>
+      <method name="logs">
+        <entity name="logs" access="READ"/>
+      </method>
+      <method name="clear_cache">
+        <entity name="configuration" access="FULL_CONTROL"/>
+      </method>
+    </controller>
+  </policy>
+</security_policy>

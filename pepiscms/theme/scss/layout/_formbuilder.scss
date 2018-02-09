@@ -1,0 +1,157 @@
+.floatingform {
+    font-size: 11px;
+    color: #333;
+    margin: 10px auto;
+    border-spacing: 0px;
+    border: solid #EAEAEA 1px;
+    padding: 8px;
+    background-color: #F4F4F4;
+    .field {
+        position: relative;
+        float: left;
+        width: 220px;
+        height: 40px;
+        padding: 10px;
+        .question {
+            position: absolute;
+            right: 0;
+            top: 10px;
+        }
+    }
+    select {
+        max-width: 218px;
+    }
+    .long {
+        height: auto;
+        width: 98%;
+        clear: both;
+    }
+    .autoheight {
+        height: auto;
+    }
+    .autowidth {
+        width: auto;
+        * {
+            width: auto;
+            max-width: none;
+        }
+    }
+
+    .optionsname {
+        width: auto;
+    }
+}
+
+label {
+    color: #333333;
+    display: inline-block;
+}
+
+input {
+    &[type=text], &[type=password] {
+        padding: 3px;
+        border: 1px #8dadcf solid;
+        @include border-radius(2px);
+        display: block;
+        margin: 0.3em 0 0.85em 0;
+        width: 100%;
+        @include box-sizing(border-box);
+    }
+    &.corolpicker {
+        width: 6em;
+    }
+}
+
+textarea {
+    padding: 3px;
+    border: 1px #8dadcf solid;
+    @include border-radius(2px);
+    display: block;
+    margin: 0.3em 0 0.85em 0;
+    width: 100%;
+    @include box-sizing(border-box);
+}
+
+div.input_hidden_description {
+    padding: 3px;
+    border: 1px #8dadcf solid;
+    @include border-radius(2px);
+    display: block;
+    margin: 0.3em 0 0.85em 0;
+    width: 100%;
+    @include box-sizing(border-box);
+    border-color: #AEAEAE;
+    min-height: 2.1em;
+    padding: 5px;
+    overflow: hidden;
+}
+
+select {
+    margin: 0.3em 0 0.85em 0;
+    padding: 3px;
+    display: block;
+    option {
+        padding: 3px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
+
+input.text:focus, textarea:focus {
+    border-color: #597fa7;
+}
+
+select:focus {
+    outline: none;
+}
+
+table {
+    td {
+        img {
+            vertical-align: middle;
+        }
+    }
+    select {
+        min-width: 90px;
+        max-width: 300px;
+        width: 100%;
+        display: inline-block;
+        margin: 0;
+    }
+    a {
+        &.exmplanation {
+            display: inline-block;
+            position: relative;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        &.question {
+            text-decoration: none;
+        }
+    }
+}
+
+.formbuilder {
+    .multipleInput {
+        padding-top: 5px;
+        padding-right: 5px;
+        min-width: 100px;
+        display: inline-block;
+    }
+    td.optionsname, div.optionsname {
+        text-align: left;
+        font-size: 11px;
+        width: 220px;
+        label {
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .inputDescription {
+            display: block;
+            font-size: 11px;
+            line-height: 13px;
+            color: #666;
+            margin-top: 8px;
+        }
+    }
+}

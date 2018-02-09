@@ -1,0 +1,9 @@
+body {
+    font: 400 #{$font-size}/1.333 $verdana;
+    &.hasBigFonts {
+        font-size: $font-size * 1.2;
+    }
+    &.hasSmallFonts {
+        font-size: $font-size * 0.8;
+    }
+}
