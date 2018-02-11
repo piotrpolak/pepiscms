@@ -2,6 +2,7 @@
 
 $config['licence'] = FALSE;
 
+// PepisCMS bypass
 if (file_exists(INSTALLATIONPATH . 'application/config/licence.php')) {
     require_once INSTALLATIONPATH . 'application/config/licence.php';
 }

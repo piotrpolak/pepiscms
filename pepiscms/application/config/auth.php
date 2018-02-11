@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
  * native or cas available
@@ -19,7 +19,6 @@ $config['auth_driver_options'] = array(
 );
 
 // PepisCMS bypass
-if (file_exists(INSTALLATIONPATH . 'application/config/auth.php'))
-{
+if (file_exists(INSTALLATIONPATH . 'application/config/auth.php')) {
     include(INSTALLATIONPATH . 'application/config/auth.php');
 }
