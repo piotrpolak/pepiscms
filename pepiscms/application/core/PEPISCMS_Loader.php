@@ -69,7 +69,11 @@ class PEPISCMS_Loader extends CI_Loader
      */
     public function theme($path, $vars = array(), $return = FALSE)
     {
-        return $this->_ci_load(array('_ci_path' => $path, '_ci_vars' => $this->_ci_object_to_array($vars), '_ci_return' => $return));
+        return $this->_ci_load(array(
+                '_ci_path' => $path,
+                '_ci_vars' => $this->_ci_object_to_array($vars),
+                '_ci_return' => $return)
+        );
     }
 
     /**
@@ -172,6 +176,7 @@ class PEPISCMS_Loader extends CI_Loader
 
     /**
      * Original loader method with hardfail added
+     *
      * @param $model
      * @param string $name
      * @param bool $db_conn

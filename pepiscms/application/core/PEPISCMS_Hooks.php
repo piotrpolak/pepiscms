@@ -13,16 +13,15 @@
  */
 
 /**
- * Enhanced hooks class supporting instance defined hooks
+ * Enhanced hooks class supporting instance defined hooks.
  *
  */
 class PEPISCMS_Hooks extends CI_Hooks
 {
-
     /**
-     * Run Hook
+     * Run Hook.
      *
-     * Runs a particular hook
+     * Runs a particular hook.
      *
      * @param    array $data Hook details
      * @return    bool    TRUE on success or FALSE on failure

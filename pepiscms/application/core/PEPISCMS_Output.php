@@ -13,13 +13,14 @@
  */
 
 /**
- * Provides a way to overwrite default cache mechanisms
+ * Provides a way to overwrite default cache mechanisms.
  */
 class PEPISCMS_Output extends CI_Output
 {
+    const REQUEST_URI_SERVER_ATTRIBUTE_NAME = 'REQUEST_URI';
 
     /**
-     * Write Cache
+     * Write Cache.
      *
      * @param string $output Output data to cache
      * @return void
@@ -29,12 +30,12 @@ class PEPISCMS_Output extends CI_Output
         // Failsafe variable
         $no_fastcacheable = true;
 
-        if (isset($_SERVER['REQUEST_URI'])) {
+        if (isset($_SERVER[self::REQUEST_URI_SERVER_ATTRIBUTE_NAME])) {
             if (is_callable('fast_cache_set_cache_for_uri')) {
                 $no_fastcacheable = false;
 
-                if (fast_cache_set_cache_for_uri($_SERVER['REQUEST_URI'], $output, $this->cache_expiration * 60)) {
-                    log_message('debug', "Cache file written: " . $_SERVER['REQUEST_URI']);
+                if (fast_cache_set_cache_for_uri($_SERVER[self::REQUEST_URI_SERVER_ATTRIBUTE_NAME], $output, $this->cache_expiration * 60)) {
+                    log_message('debug', "Cache file written: " . $_SERVER[self::REQUEST_URI_SERVER_ATTRIBUTE_NAME]);
                 }
             }
         }
@@ -48,7 +49,7 @@ class PEPISCMS_Output extends CI_Output
     }
 
     /**
-     * Update/serve cached output
+     * Update/serve cached output.
      *
      * @uses CI_Config
      * @uses CI_URI
@@ -62,11 +63,11 @@ class PEPISCMS_Output extends CI_Output
         // Failsafe variable
         $no_fastcacheable = true;
 
-        if (isset($_SERVER['REQUEST_URI'])) {
+        if (isset($_SERVER[self::REQUEST_URI_SERVER_ATTRIBUTE_NAME])) {
             if (is_callable('fast_cache_get_cache_for_uri')) {
                 $no_fastcacheable = false;
 
-                $cache = fast_cache_get_cache_for_uri($_SERVER['REQUEST_URI']);
+                $cache = fast_cache_get_cache_for_uri($_SERVER[self::REQUEST_URI_SERVER_ATTRIBUTE_NAME]);
                 if ($cache === FALSE) {
                     return FALSE;
                 }

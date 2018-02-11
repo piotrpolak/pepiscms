@@ -13,31 +13,32 @@
  */
 
 /**
- * MY_Input, provides some extra features
+ * MY_Input, provides some extra features.
  */
 class PEPISCMS_Input extends CI_Input
 {
     /**
-     * Current controller name
+     * Current controller name.
+     *
      * @var string
      */
     protected $controller;
 
     /**
-     * Current method name
+     * Current method name.
+     *
      * @var string
      */
     protected $method;
 
     /**
-     * Representation of GET parameters
-     * -1 meaning it is not initialized
+     * Representation of GET parameters, -1 meaning it is not initialized.
      * @var Array
      */
     protected $get_parameters = -1;
 
     /**
-     * Returns valueof get specified parameter
+     * Returns valueof get specified parameter.
      * The params are of form /param1_name-param1_valie/param2_name-param2_valie/
      *
      * @param string $paramName
@@ -63,7 +64,8 @@ class PEPISCMS_Input extends CI_Input
     }
 
     /**
-     * Returns current controller name
+     * Returns current controller name.
+     *
      * @return string
      */
     public function getControllerName()
@@ -72,7 +74,8 @@ class PEPISCMS_Input extends CI_Input
     }
 
     /**
-     * Returns current method name
+     * Returns current method name.
+     *
      * @return string
      */
     public function getMethodName()
@@ -82,8 +85,7 @@ class PEPISCMS_Input extends CI_Input
 
     /**
      * Sets current controller name
-     * Use this method carefully,
-     * it is intended to be called by controller constructors only
+     * Use this method carefully, it is intended to be called by controller constructors only.
      *
      * @param string $controller
      */
@@ -94,8 +96,7 @@ class PEPISCMS_Input extends CI_Input
 
     /**
      * Sets current method name
-     * Use this method carefully,
-     * it is intended to be called by controller constructors only
+     * Use this method carefully, it is intended to be called by controller constructors only.
      *
      * @param string $method
      */

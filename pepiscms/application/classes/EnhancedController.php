@@ -145,7 +145,8 @@ abstract class EnhancedController extends CI_Controller
             return FALSE;
 
         if (!$view) {
-            $view = $this->uri->segment(1) . '/' . $this->uri->segment(2) . (strlen($this->uri->segment(3)) > 0 ? '_' . $this->uri->segment(3) : '');
+            $view = $this->uri->segment(1) . '/' . $this->uri->segment(2) .
+                (strlen($this->uri->segment(3)) > 0 ? '_' . $this->uri->segment(3) : '');
         }
 
         $this->load->view($view, $this->response_attributes);

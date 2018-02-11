@@ -39,10 +39,17 @@ class PEPISCMS_Lang extends CI_Lang
     }
 
 
-    // Changed parameter order - might be problematic
+    /**
+     * Returns translated label.
+     *
+     * @param string $line
+     * @param null $default_value
+     * @return null|string
+     */
     public function line($line = '', $default_value = NULL)
     {
-        // TODO Revrite for CI3
+        // Changed parameter order - might be problematic
+
         if ($line == '' || !isset($this->language[$line])) {
             //trigger_error('Language field <em>'.$line.'</em> is not defined', E_USER_WARNING);
             if ($default_value === NULL) {

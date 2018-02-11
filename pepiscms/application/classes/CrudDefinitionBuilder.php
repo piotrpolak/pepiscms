@@ -39,6 +39,9 @@ class CrudDefinitionBuilder
      */
     private $isWithImplicitTranslations = false;
 
+    /**
+     * Private constructor.
+     */
     private function __construct()
     {
 

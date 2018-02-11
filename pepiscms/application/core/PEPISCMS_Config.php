@@ -13,12 +13,15 @@
  */
 
 /**
- * MY_Config adds a default config path and possibility to load module config
+ * MY_Config adds a default config path and possibility to load module config.
  */
 class PEPISCMS_Config extends CI_Config
 {
+    const HOST_PATTERN = '/^((\[[0-9a-f:]+\])|(\d{1,3}(\.\d{1,3}){3})|[a-z0-9\-\.]+)(:\d+)?$/i';
+    const HOST_SERVER_ATTRIBUTE = 'HTTP_HOST';
+
     /**
-     * Overwritten constructor adding an extra config path
+     * Overwritten constructor that parses and sets base_url and adn adds an extra config path.
      */
     public function __construct()
     {
@@ -36,8 +39,8 @@ class PEPISCMS_Config extends CI_Config
 
             // The regular expression is only a basic validation for a valid "Host" header.
             // It's not exhaustive, only checks for valid characters.
-            if (isset($_SERVER['HTTP_HOST']) && preg_match('/^((\[[0-9a-f:]+\])|(\d{1,3}(\.\d{1,3}){3})|[a-z0-9\-\.]+)(:\d+)?$/i', $_SERVER['HTTP_HOST'])) {
-                $base_url = $protocol . '://' . $_SERVER['HTTP_HOST']
+            if (isset($_SERVER[self::HOST_SERVER_ATTRIBUTE]) && preg_match(self::HOST_PATTERN, $_SERVER[self::HOST_SERVER_ATTRIBUTE])) {
+                $base_url = $protocol . '://' . $_SERVER[self::HOST_SERVER_ATTRIBUTE]
                     . substr($_SERVER['SCRIPT_NAME'], 0, strpos($_SERVER['SCRIPT_NAME'], basename($_SERVER['SCRIPT_FILENAME'])));
             } else {
                 $base_url = $protocol . '://localhost/';
@@ -54,7 +57,7 @@ class PEPISCMS_Config extends CI_Config
     // --------------------------------------------------------------------
 
     /**
-     * Load Config File
+     * Loads module config file.
      *
      * @param string $module_name
      * @return bool
@@ -79,7 +82,6 @@ class PEPISCMS_Config extends CI_Config
         }
 
         $this->config = array_merge($this->config, $config);
-
 
         unset($config);
 
