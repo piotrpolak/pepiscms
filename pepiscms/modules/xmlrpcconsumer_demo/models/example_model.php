@@ -15,7 +15,7 @@
 /**
  * Class Example_model
  */
-class Example_model extends WebserviceConsumer
+class Example_model extends RemoteConsumer_model
 {
     /**
      * Base URL for all the binds

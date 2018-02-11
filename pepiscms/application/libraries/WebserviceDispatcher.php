@@ -203,13 +203,3 @@ class WebserviceDispatcher
     }
 
 }
-
-/**
- * Web service model, that class must be extended when creating web services
- *
- * @since 0.1.5
- */
-abstract class Remote_model extends Generic_model
-{
-
-}

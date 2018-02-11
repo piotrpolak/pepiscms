@@ -13,29 +13,11 @@
  */
 
 /**
- * Generic remote exception
- *
- * @since 0.1.5
- */
-class RemoteException extends Exception
-{
-}
-
-/**
- * Authorization exception
- *
- * @since 0.1.5
- */
-class RemoteAuthorizationException extends RemoteException
-{
-}
-
-/**
  * Web service consumer wrapper class
  *
  * @since 0.1.5
  */
-class WebserviceConsumer
+class RemoteConsumer_model
 {
     private $api_key = '';
     private $api_secret = '';
@@ -43,12 +25,10 @@ class WebserviceConsumer
 
     /**
      * WebserviceConsumer constructor.
-     *
-     * @param null|array $parameters
      */
-    public function __construct($parameters = NULL)
+    public function __construct()
     {
-        $this->load->library('xmlrpc');
+        CI_Controller::get_instance()->load->library('xmlrpc');
     }
 
     /**

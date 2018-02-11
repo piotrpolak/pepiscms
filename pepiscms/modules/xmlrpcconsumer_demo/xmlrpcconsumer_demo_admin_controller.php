@@ -21,7 +21,7 @@ class XmlrpctestAdmin extends ModuleAdminController
     {
         parent::__construct();
 
-        $this->load->library('WebserviceConsumer');
+        $this->load->library('RemoteConsumer_model');
         $this->load->model('Example_model');
 
         $time = time();

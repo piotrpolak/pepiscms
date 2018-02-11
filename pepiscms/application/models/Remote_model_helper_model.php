@@ -26,6 +26,7 @@ class Remote_model_helper_model extends CI_Model
      * @param string $class_name
      * @param bool $returnNames
      * @return array
+     * @throws ReflectionException
      */
     public function listRemoteMethods($class_name, $returnNames = FALSE)
     {
@@ -78,6 +79,7 @@ class Remote_model_helper_model extends CI_Model
      * @param string $class_name
      * @param bool $returnNames
      * @return bool
+     * @throws ReflectionException
      */
     public function listRemoteMethodsCached($class_name, $returnNames = FALSE)
     {
@@ -100,6 +102,7 @@ class Remote_model_helper_model extends CI_Model
      * @param string $class_name
      * @param string $method_name
      * @return bool
+     * @throws ReflectionException
      */
     public function isMethodRemote($class_name, $method_name)
     {
