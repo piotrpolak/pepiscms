@@ -36,7 +36,7 @@ the form is saved
 6. Trigger form populate/save actions and generate the resulting HTML 
 
 
-## FormBuilder callbacks 
+## Lifecycle callbacks 
 
 Callbacks are used to extend or to overwrite certain operations done by FormBuilder. 
 

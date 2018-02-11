@@ -6,13 +6,13 @@
 
 A legacy project, cleaned up and released as open source on its 10th birthday.
 
-PepisCMS is written in PHP on top of [CodeIgniter framework](https://codeigniter.com/).
+PepisCMS is a content management system written in PHP on top of [CodeIgniter framework](https://codeigniter.com/).
 
-As 2017, the project is fully functional (and really fast) but you should be aware that it is mostly made up from
+As 2018, the project is fully functional (and really fast) but you should be aware that it is mostly made up from
 **legacy code**.
 
 For most of the time the code was fully PHP 5.2 compatible. Currently, as CodeIgniter dropped support for PHP 5.2, the
-minimum version is PHP 5.3.
+minimum version is PHP 5.3 (PHP 5.6 or newer is recommended).
 
 * [Installation](docs/INSTALLATION.md)
 * [Modules](docs/MODULES.md)
@@ -38,29 +38,32 @@ minimum version is PHP 5.3.
     Modularity and consistency. An external modules can be written independent on the system core.
     System core can be upgraded without any modification in the current application at any time.
   
-    There are two kinds of modules - builtin (available in all projects) and project-space modules.
-    Modules can be enabled or disabled from the admin panel. A typical module consists from both admin and public
-    controllers and support code.
+    There are two kinds of modules - builtin (available in all projects) and user-space modules.
+    Modules can be enabled or disabled from the administration panel.
+    A typical module consists from both admin and public controllers and support code.
     
     Read more about [modules](docs/MODULES.md).
   
 * **Advanced user and user right management**
 
     The user is granted a certain right above an entity.
-    Every single method has associated a minimal right above a certain entity. All violations of security policy are
-    reported. You can create as many users as you want, you can assign a user to several groups, the security policy can
+    Every single controller method has associated a minimal right above a certain entity.
+    
+    All violations of security policy are reported in system audit logs.
+    
+    You can create as many users as you want, you can assign a user to several groups, the security policy can
     be modified at runtime.
     
     Read more about [security policy](docs/SECURITY_POLICY.md).
   
 * **Audit logs**
   
-    All user actions and unexpected application behaviors can be tracked using an advanced log utility.
+    All user actions and unexpected application behaviors can be tracked down using an advanced log utility.
     PepisCMS provides a logging API and a console for analyzing system logs.
   
 * **User session security**
 
-    User session will expire after one hour of inactivity and the system will ask the user to authenticate again.
+    User session will expire after one hour of inactivity (configurable).
     The session is protected against session spoofing attack by validating the IP each time the system validates
     the user rights.
   
@@ -71,18 +74,19 @@ minimum version is PHP 5.3.
   
 * **Enhanced SMTP Email sender**
   
-    An utility for reliable sending emails. When the system is unable to connect to the remote SMTP server, an
-    alternative gateway is used and the action is reported.
+    An utility for sending emails in a reliable way reliable.
+    When the system is unable to connect to the remote SMTP server, an alternative gateway is used
+    and the fallback action is reported in audit logs.
   
 * **Multi language native support** 
 
     The application supports internationalization and multi language support by default, both for front-end and backend.
-    An integrated translator using Google Translate API speeds up multi language application development.
+    An integrated [translator](docs/MODULES.md#translator) speeds up multi language application development.
   
 * **Rich Text Editor**
 
     Makes you you feel you are using MS Word while editing web site contents.
-    You can change text formatting as well as attach pictures.
+    You can change text formatting and attach pictures.
 
 * **Configuration tests on startup**
 
@@ -99,19 +103,21 @@ minimum version is PHP 5.3.
   
 * **Intranet options**
 
-    You can block access to front-end contents as well as to uploaded files for unauthenticated users.
+    You can restrict access to public contents and uploaded files for unauthenticated users.
   
 * **SEO Friendly**
 
     PepisCMS generates SEO friendly links and optimized meta tags. It also automatically generates sitemap
-    (both txt and xml) for any web site.
+    (both txt and xml) for the website.
   
 * **Build-in components for generating grids and forms.**
   
-    Using these components you have 90% of requested features implemented at the start.
-    The data grid supports ordering table by any column and implements multiple filters.
-    The form generator implements validation, data retrieval and data save, file upload and many others by default.
-    You can extend or overwrite behavior of these components using advanced callbacks.
+    Using these components you have 90% of requested features implemented from the start.
+    The [data grid](docs/LIBRARY_DATAGRID.md) supports ordering table by any column and implements multiple filters.
+    The [form generator](docs/LIBRARY_FORMBUILDER.md) implements validation, data retrieval and data save,
+    file upload and many others by default.
+    
+    You can extend or overwrite behavior of these components using [advanced callbacks](docs/LIBRARY_FORMBUILDER.md#lifecycle-callbacks).
   
 * **Build-in helpers for generating Excel files and PDF files.**
 

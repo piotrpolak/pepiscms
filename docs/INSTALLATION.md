@@ -11,11 +11,11 @@ Before to proceed to any of the installation pocedures you must first configure 
     "repositories": [
         {
             "type": "vcs",
-            "url": "git@github.com:piotrpolak/pepiscms.git"
+            "url": "https://github.com/piotrpolak/pepiscms.git"
         },
         {
             "type": "vcs",
-            "url": "git@github.com:piotrpolak/pepiscms-3rdparty.git"
+            "url": "https://github.com/piotrpolak/pepiscms-3rdparty.git"
         }
     ],
     "require": {
