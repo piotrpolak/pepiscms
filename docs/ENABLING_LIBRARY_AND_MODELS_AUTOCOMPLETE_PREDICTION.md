@@ -5,13 +5,15 @@ IDE autocomplete predictions and method suggestions.
 
 To enable autocomplete predictions for CodeIgniter in PepisCMS you need to:
 
-1. Install [Development tools](MODULES.md#development-tools) module
-2. Go to *Development tools* module
+1. Install [Development tools](MODULES.md#development-tools) module and navigate to the module's dashboard
+    ![Autocomplete](screens/ENABLING_LIBRARY_AND_MODELS_AUTOCOMPLETE_PREDICTION_1.png)
+
 3. Generate *headers* file, the action will generate a definition file located under `application/dev/_project_headers.php`
-    ![_project_headers.php](screens/ENABLING_LIBRARY_AND_MODELS_AUTOCOMPLETE_PREDICTION_1.png)
+    ![_project_headers.php](screens/ENABLING_LIBRARY_AND_MODELS_AUTOCOMPLETE_PREDICTION_2.png)
     
-4. Disable scanning CodeIgniter and PepisCMS provided Controller (`vendor/codeigniter/framework/system/core/Controller.php`)
-    and `Model` (`vendor/codeigniter/framework/system/core/Model.php`)  by marking the files as text
-    (`Right click -> Mark as plaintext`)
+4. Mark CodeIgniter Controller.php and Model.php as text (`Right click -> Mark as plaintext`).
+    The files paths are `vendor/codeigniter/framework/system/core/Controller.php`
+    and `vendor/codeigniter/framework/system/core/Model.php` respectively.
+    
 5. Benefit from autocomplete predictions and code suggestions :)
-    ![Autocomplete](screens/ENABLING_LIBRARY_AND_MODELS_AUTOCOMPLETE_PREDICTION_2.png)
+    ![Autocomplete](screens/ENABLING_LIBRARY_AND_MODELS_AUTOCOMPLETE_PREDICTION_3.png)
