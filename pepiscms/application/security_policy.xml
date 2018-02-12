@@ -51,9 +51,9 @@
         <entity name="DUMMY" access="NONE"/>
       </method>
     </controller>
-    <controller name="menu">
+    <controller name="menumanager">
       <method name="edit">
-        <entity name="menu" access="WRITE"/>
+        <entity name="menumanager" access="WRITE"/>
       </method>
     </controller>
     <controller name="module">
@@ -293,12 +293,12 @@
     </controller>
     <controller name="pages">
       <method name="deletemenuelement">
-        <entity name="menu" access="WRITE"/>
+        <entity name="menumanager" access="WRITE"/>
       </method>
     </controller>
     <controller name="pages">
       <method name="move">
-        <entity name="menu" access="WRITE"/>
+        <entity name="menumanager" access="WRITE"/>
       </method>
     </controller>
     <controller name="pages">

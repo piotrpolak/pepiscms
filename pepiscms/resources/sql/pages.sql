@@ -28,7 +28,7 @@ DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
 
-CREATE  TABLE IF NOT EXISTS `menu` (
+CREATE TABLE IF NOT EXISTS `menu` (
   `item_id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `item_order` SMALLINT NOT NULL DEFAULT '0' ,
   `parent_item_id` INT UNSIGNED NULL DEFAULT NULL REFERENCES `menu` (`item_id` ),

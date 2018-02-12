@@ -15,7 +15,7 @@
 /**
  * Menu management controller
  */
-class Menu extends AdminController
+class Menumanager extends AdminController
 {
     public function __construct()
     {

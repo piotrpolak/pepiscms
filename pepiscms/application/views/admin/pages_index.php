@@ -68,7 +68,7 @@ function formatCells($menu, $level = 1, &$lang, &$url_suffix, $site_language, $v
             echo '<span class="menu_element_name">';
             if (get_instance()->config->item('feature_is_enabled_menu'))
             {
-                echo '<a href="' . admin_url() . 'menu/edit/item_id-' . $menu_element['item_id'] . '/language_code-' . $site_language->code . '/view-' . $view . '">' . $menu_element['item_name'] . '  <b class="binvisible">[' . $lang->line('pages_link_edit') . ']</b></a>';
+                echo '<a href="' . admin_url() . 'menumanager/edit/item_id-' . $menu_element['item_id'] . '/language_code-' . $site_language->code . '/view-' . $view . '">' . $menu_element['item_name'] . '  <b class="binvisible">[' . $lang->line('pages_link_edit') . ']</b></a>';
             }
             else
             {
@@ -91,7 +91,7 @@ function formatCells($menu, $level = 1, &$lang, &$url_suffix, $site_language, $v
             echo $tabs . "\t" . '<td class="link">';
             if (get_instance()->config->item('feature_is_enabled_menu'))
             {
-                echo '<a href="' . admin_url() . 'menu/edit/item_id-' . $menu_element['item_id'] . '/language_code-' . $site_language->code . '/view-' . $view . '" title="' . $lang->line('pages_link_edit') . '"><img src="pepiscms/theme/img/pages/page_edit_22.png" alt="edit"></a>';
+                echo '<a href="' . admin_url() . 'menumanager/edit/item_id-' . $menu_element['item_id'] . '/language_code-' . $site_language->code . '/view-' . $view . '" title="' . $lang->line('pages_link_edit') . '"><img src="pepiscms/theme/img/pages/page_edit_22.png" alt="edit"></a>';
             }
             echo '</td>' . "\n";
 
@@ -162,7 +162,7 @@ function formatCells($menu, $level = 1, &$lang, &$url_suffix, $site_language, $v
         $actions[] = array(
             'name' => $this->lang->line('pages_menuelement_add'),
             'title' => $this->lang->line('pages_menuelement_add_desc'),
-            'link' => admin_url() . 'menu/edit/language_code-' . $site_language->code . '/view-' . $view,
+            'link' => admin_url() . 'menumanager/edit/language_code-' . $site_language->code . '/view-' . $view,
             'icon' => 'pepiscms/theme/img/dialog/actions/add_16.png',
         );
     }

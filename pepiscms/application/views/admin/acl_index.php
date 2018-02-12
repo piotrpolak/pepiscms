@@ -28,23 +28,26 @@
 
             <?php foreach( $installed_modules as $modules_group_name => $modules): ?>
 
-            <tr>
-                <td colspan="1" class="entity_group"><?=$this->lang->line('acl_'.$modules_group_name)?></td>
-            </tr>
-                <?php foreach ($modules as $module_name): ?>
+                <?php if(count($modules) > 0): ?>
                     <tr>
-                        <td>
-                            <a href="<?= admin_url() ?>acl/edit/section-<?= $module_name ?>"
-                               title="<?= $this->Module_model->getModuleDescription($module_name, $this->lang->getCurrentLanguage()) ?>"><img
-                                    src="<?= module_icon_url($module_name) ?>" alt="icon"></a> <b><a
-                                    href="<?= admin_url() ?>acl/edit/section-<?= $module_name ?>"
-                                    title="<?= $this->Module_model->getModuleDescription($module_name, $this->lang->getCurrentLanguage()) ?>"><?= $this->Module_model->getModuleLabel($module_name, $this->lang->getCurrentLanguage()) ?></a></b>
-                            <?php if (!SecurityPolicy::existsModulePolicy($module_name)): ?>
-                                <?= $this->lang->line('acl_security_policy_not_defined') ?>
-                            <?php endif; ?>
-                        </td>
+                        <td colspan="1" class="entity_group"><?=$this->lang->line('acl_'.$modules_group_name)?></td>
                     </tr>
-                <?php endforeach; ?>
+                    <?php foreach ($modules as $module_name): ?>
+                        <tr>
+                            <td>
+                                <a href="<?= admin_url() ?>acl/edit/section-<?= $module_name ?>"
+                                   title="<?= $this->Module_model->getModuleDescription($module_name, $this->lang->getCurrentLanguage()) ?>"><img
+                                        src="<?= module_icon_url($module_name) ?>" alt="icon"></a> <b><a
+                                        href="<?= admin_url() ?>acl/edit/section-<?= $module_name ?>"
+                                        title="<?= $this->Module_model->getModuleDescription($module_name, $this->lang->getCurrentLanguage()) ?>"><?= $this->Module_model->getModuleLabel($module_name, $this->lang->getCurrentLanguage()) ?></a></b>
+                                <?php if (!SecurityPolicy::existsModulePolicy($module_name)): ?>
+                                    <?= $this->lang->line('acl_security_policy_not_defined') ?>
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+
             <?php endforeach; ?>
 
         <?php endif; ?>

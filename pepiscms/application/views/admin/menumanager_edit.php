@@ -1,4 +1,4 @@
-<?= display_breadcrumb(array(admin_url() . 'pages/index/language_code-' . $site_language->code => $this->lang->line('pages_module_name'), admin_url() . 'menu/edit/item_id-' . $item_id . '/language_code-' . $site_language->code => $this->lang->line('pages_menuelement_edit')), 'pepiscms/theme/img/pages/page_white_world_32.png') ?>
+<?= display_breadcrumb(array(admin_url() . 'pages/index/language_code-' . $site_language->code => $this->lang->line('pages_module_name'), admin_url() . 'menumanager/edit/item_id-' . $item_id . '/language_code-' . $site_language->code => $this->lang->line('pages_menuelement_edit')), 'pepiscms/theme/img/pages/page_white_world_32.png') ?>
 <?php
 
 $actions = array(

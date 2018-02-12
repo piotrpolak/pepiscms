@@ -78,7 +78,7 @@ function formatCells($menu, $level = 1, &$lang, &$url_suffix, $site_language)
         $actions[] = array(
             'name' => $this->lang->line('pages_menuelement_add'),
             'title' => $this->lang->line('pages_menuelement_add_desc'),
-            'link' => admin_url() . 'menu/edit/language_code-' . $site_language->code . '/view-' . $view,
+            'link' => admin_url() . 'menumanager/edit/language_code-' . $site_language->code . '/view-' . $view,
             'icon' => 'pepiscms/theme/img/dialog/actions/add_16.png',
         );
     }
