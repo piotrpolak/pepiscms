@@ -60,6 +60,8 @@ to access public controllers. This can be enabled from `Start > Utilities > Site
 
 An utility for managing user groups and groups access rights.
 
+Read more about [security policy](SECURITY_POLICY.md).
+
 ![Groups](screens/MODULES_GROUPS.png)
 
 ### User accounts
@@ -96,7 +98,7 @@ Every single log consists of the following entry:
 
 ### System information
 
-Display system information, paths, versions, storage occupied.
+Displays system information, paths, versions, storage occupied.
 
 ![System information](screens/MODULES_SYSTEM_INFORMATION.png)
 

@@ -18,4 +18,4 @@
 6. Customize generated controller code (optionally)
 7. Upload custom icons (optionally)
 
-You can find a sample SQL file at [sql/sample.sql](sql/sample.sql).
+You can find a sample SQL file to play with at [sql/sample.sql](sql/sample.sql).
