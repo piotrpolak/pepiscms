@@ -30,6 +30,7 @@ minimum version is PHP 5.3 (PHP 5.6 or newer is recommended).
 * [Benchmarking](docs/BENCHMARKING.md)
 * [Naming convention inconsistency](docs/NAMING_CONVENTION_INCONSISTENCY.md)
 * [Changes comparing to CodeIgniter](docs/CHANGES_COMPARING_TO_CODEIGNITER.md)
+* [Enabling library and models autocomplete predictions](docs/ENABLING_LIBRARY_AND_MODELS_AUTOCOMPLETE_PREDICTION.md)
 
 ## Features
 
