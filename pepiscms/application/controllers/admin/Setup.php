@@ -24,7 +24,7 @@ class Setup extends AdminController
         return $this->menurendor->render('utilities', 'index', $this->input->getParam('language_code'));
     }
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
         if (!$this->config->item('feature_is_enabled_setup')) {
@@ -37,7 +37,7 @@ class Setup extends AdminController
         $this->assign('title', $this->lang->line('setup_module_name'));
     }
 
-    function index()
+    public function index()
     {
         $this->load->library('FormBuilder');
         $this->load->model('Siteconfig_model');
@@ -285,7 +285,7 @@ class Setup extends AdminController
      * @param string $current_image_field_name
      * @return boolean
      */
-    function _fb_callback_make_filename_seo_friendly(&$filename, $base_path, &$data, $current_image_field_name)
+    public function _fb_callback_make_filename_seo_friendly(&$filename, $base_path, &$data, $current_image_field_name)
     {
         $data['name'] = 'customization';
 
