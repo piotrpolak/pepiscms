@@ -33,8 +33,8 @@ It is written on top of the [CodeIgniter framework](https://codeigniter.com/) an
 fluently ported from CodeIgniter version 1.5.4 to 3.0 (and counting).
 
 As 2018, the project is **fully functional** (and really fast) but you should be aware that its source code is quite far
-away from php latest architectural styles and by some it might be considered **legacy code** (with no offence, see its
-[maintainability score](https://api.codeclimate.com/v1/badges/63fd33946e2cd355a561/maintainability) at Code Climate).
+away from php latest architectural styles and by some it might be considered a **legacy** (and that would not be offensive,
+see its [maintainability score](https://api.codeclimate.com/v1/badges/63fd33946e2cd355a561/maintainability) at Code Climate).
 
 ## Development philosophy
 
