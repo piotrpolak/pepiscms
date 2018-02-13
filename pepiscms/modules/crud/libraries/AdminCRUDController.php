@@ -1287,7 +1287,7 @@ abstract class AdminCRUDController extends ModuleAdminController
      */
     function setRelatedModule($related_module_name, $related_module_filter_name)
     {
-        rigger_error('AdminCRUDController::setRelatedModule() is deprecated.', E_USER_DEPRECATED);
+        trigger_error('AdminCRUDController::setRelatedModule() is deprecated.', E_USER_DEPRECATED);
         $this->related_module_name = $related_module_name;
         $this->related_module_filter_name = $related_module_filter_name;
 
@@ -1427,7 +1427,7 @@ abstract class AdminCRUDController extends ModuleAdminController
             if (is_callable($action['label_pattern'])) {
                 $label = call_user_func_array($action['label_pattern'], array($content, $line));
             } else {
-                $label = self::compilePattern($action['label_pattern'], $line, $action['label_pattern_keys']);
+                $label = PatternCompiler::compile($action['label_pattern'], $line, $action['label_pattern_keys']);
             }
 
             if (is_callable($action['link_pattern'])) {
@@ -1435,7 +1435,7 @@ abstract class AdminCRUDController extends ModuleAdminController
                 if (!$link)
                     continue;
             } else {
-                $link = self::compilePattern($action['link_pattern'], $line, $action['link_pattern_keys']);
+                $link = PatternCompiler::compile($action['link_pattern'], $line, $action['link_pattern_keys']);
             }
 
 
@@ -1475,7 +1475,7 @@ abstract class AdminCRUDController extends ModuleAdminController
         if (is_callable($this->meta_title_pattern)) {
             $title = call_user_func_array($this->meta_title_pattern, array($content, $line));
         } else {
-            $title = self::compilePattern($this->meta_title_pattern, $line, $this->meta_title_pattern_keys);
+            $title = PatternCompiler::compile($this->meta_title_pattern, $line, $this->meta_title_pattern_keys);
         }
 
         return $title;
@@ -1498,7 +1498,7 @@ abstract class AdminCRUDController extends ModuleAdminController
             // description_pattern_callback was previously defined
             $title = call_user_func_array($this->meta_description_pattern_callback, array($content, $line));
         } else {
-            $title = self::compilePattern($this->meta_description_pattern, $line, $this->meta_description_pattern_keys);
+            $title = PatternCompiler::compile($this->meta_description_pattern, $line, $this->meta_description_pattern_keys);
             if ($this->meta_description_pattern_callback) {
                 $title = call_user_func_array($this->meta_description_pattern_callback, array($title, $line));
             }
@@ -1514,25 +1514,12 @@ abstract class AdminCRUDController extends ModuleAdminController
      * @param $object_with_data
      * @param array $keys_to_be_replaced
      * @return string
+     * @deprecated as PepisCMS 1.0.0
      */
     protected static function compilePattern($pattern, $object_with_data, $keys_to_be_replaced = array())
     {
-        // TODO Move to StringCompiler, original method from AdminCRUDController
-
-        if (count($keys_to_be_replaced) == 0) {
-            preg_match_all('/{([a-z_0-9]+)}/', $pattern, $matches);
-            $keys_to_be_replaced = $matches[1];
-        }
-
-        foreach ($keys_to_be_replaced as $key) {
-            if (!isset($object_with_data->$key)) {
-                continue; // TODO Remove from keys
-            }
-
-            $pattern = trim(str_replace('{' . $key . '}', $object_with_data->$key, $pattern));
-        }
-
-        return $pattern;
+        trigger_error('AdminCRUDController::compilePattern() is deprecated.', E_USER_DEPRECATED);
+        return PatternCompiler::compile($pattern, $object_with_data, $keys_to_be_replaced);
     }
 
     /**

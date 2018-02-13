@@ -252,7 +252,7 @@ class Module_generator
         // Building and writing model
         $file_model_path = $directory . 'models/' . $module_name_singular . '_model.php';
         if (!file_exists($file_model_path)) {
-            file_put_contents($file_model_path, self::compilePattern(file_get_contents($template_base_path . '_model.php'), $data));
+            file_put_contents($file_model_path, PatternCompiler::compile(file_get_contents($template_base_path . '_model.php'), $data));
         } else {
             $this->generateModuleModel($file_model_path, $data);
 
@@ -305,44 +305,6 @@ class Module_generator
             $method = 'with' . ucfirst(camelize($key));
         }
         return '->' . $method . '(' . $value . ')';
-    }
-
-    /**
-     * Compiles pattern, if keys to be replaced are specified, then the script will not parse pattern (faster)
-     *
-     * @param $pattern
-     * @param $object_with_data
-     * @param array $keys_to_be_replaced
-     * @return string
-     */
-    private static function compilePattern($pattern, $object_with_data, $keys_to_be_replaced = array())
-    {
-        // TODO Move to StringCompiler, original method from AdminCRUDController
-        // V2
-
-        if (count($keys_to_be_replaced) == 0) {
-            preg_match_all('/{([a-z_0-9]+)}/', $pattern, $matches);
-            $keys_to_be_replaced = $matches[1];
-        }
-
-        $is_object = is_object($object_with_data);
-
-        foreach ($keys_to_be_replaced as $key) {
-            if ($is_object) {
-                if (!isset($object_with_data->$key)) {
-                    continue;
-                }
-                $pattern = trim(str_replace('{' . $key . '}', $object_with_data->$key, $pattern));
-            } else // Array
-            {
-                if (!isset($object_with_data[$key])) {
-                    continue;
-                }
-                $pattern = trim(str_replace('{' . $key . '}', $object_with_data[$key], $pattern));
-            }
-        }
-
-        return $pattern;
     }
 
     /**
@@ -581,7 +543,7 @@ class Module_generator
         $file_view_index = $directory . 'views/public/item.php';
         if (!file_exists($file_view_index)) {
             file_put_contents($file_view_index,
-                self::compilePattern(file_get_contents($template_base_path . 'views/public/item.php'), $data));
+                PatternCompiler::compile(file_get_contents($template_base_path . 'views/public/item.php'), $data));
         }
     }
 
@@ -595,7 +557,7 @@ class Module_generator
         $file_view_index = $directory . 'views/public/index.php';
         if (!file_exists($file_view_index)) {
             file_put_contents($file_view_index,
-                self::compilePattern(file_get_contents($template_base_path . 'views/public/index.php'), $data));
+                PatternCompiler::compile(file_get_contents($template_base_path . 'views/public/index.php'), $data));
         }
     }
 
@@ -611,7 +573,7 @@ class Module_generator
         $file_controller = $directory . '' . $module_name_lower_case . '_controller.php';
         if (!file_exists($file_controller)) {
             file_put_contents($file_controller,
-                self::compilePattern(file_get_contents($template_base_path . '_controller.php'), $data));
+                PatternCompiler::compile(file_get_contents($template_base_path . '_controller.php'), $data));
         }
     }
 
@@ -626,7 +588,7 @@ class Module_generator
         $file_view_index = $directory . 'views/admin/index.php';
         if (!file_exists($file_view_index)) {
             file_put_contents($file_view_index,
-                self::compilePattern(file_get_contents($template_base_path . 'views/admin/index_no_crud.php'), $data));
+                PatternCompiler::compile(file_get_contents($template_base_path . 'views/admin/index_no_crud.php'), $data));
         }
     }
 
@@ -641,7 +603,7 @@ class Module_generator
         $file_descriptor = $directory . '' . $module_name_lower_case . '_descriptor.php';
         if (!file_exists($file_descriptor)) {
             file_put_contents($file_descriptor,
-                self::compilePattern(file_get_contents($template_base_path . '_descriptor.php'), $data));
+                PatternCompiler::compile(file_get_contents($template_base_path . '_descriptor.php'), $data));
         }
     }
 
@@ -721,7 +683,7 @@ class Module_generator
         } else {
             $template_file_admin_controller_path = $template_base_path . '_admin_controller_non_crud.php';
         }
-        file_put_contents($file_admin_controller, self::compilePattern(file_get_contents($template_file_admin_controller_path), $data));
+        file_put_contents($file_admin_controller, PatternCompiler::compile(file_get_contents($template_file_admin_controller_path), $data));
     }
 
     /**
