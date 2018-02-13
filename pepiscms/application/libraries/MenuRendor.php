@@ -15,7 +15,7 @@
 /**
  * Menu Rendor used in admin panel
  *
- * @since               0.1.o
+ * @since               0.1.0
  */
 class MenuRendor
 {

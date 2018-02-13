@@ -185,11 +185,15 @@ class Module extends AdminController
         if ($module_databse_table_name) {
             $database_group = ($save_array['database_group'] ? $save_array['database_group'] : FALSE);
 
-            $this->load->model('Module_model');
-            $success = $this->Module_model->makeUserSpaceModule($module_databse_table_name, $module_name, TRUE, ($save_array['parse_database_schema'] == 1), $database_group, array_keys($save_array['translations']), ($save_array['generate_public_controller'] == 1), ($save_array['module_type'] == 'crud'), $save_array['generate_security_policy']);
+            $this->load->library('Module_generator');
+            $success = $this->module_generator->makeUserSpaceModule($module_databse_table_name, $module_name, TRUE,
+                ($save_array['parse_database_schema'] == 1), $database_group, array_keys($save_array['translations']),
+                ($save_array['generate_public_controller'] == 1), ($save_array['module_type'] == 'crud'),
+                $save_array['generate_security_policy']);
 
             if (!$success) {
-                $this->formbuilder->setValidationErrorMessage(sprintf($this->lang->line('modules_unable_to_generate_module_for_table'), $module_databse_table_name));
+                $this->formbuilder->setValidationErrorMessage(
+                    sprintf($this->lang->line('modules_unable_to_generate_module_for_table'), $module_databse_table_name));
                 return FALSE;
             }
 
