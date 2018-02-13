@@ -1,10 +1,5 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
-/**
- * Automatically generated language file
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
- * @date 2015-05-14
- * @file pepiscms_form_validation_lang.php
- */
 $lang['pepiscms_form_validation_even']                     = 'Pole {field} powinno zawierać wartość parzystą';
 $lang['pepiscms_form_validation_max']                      = 'Wartość maksymalna pola {field} to {param}';
 $lang['pepiscms_form_validation_min']                      = 'Wartość minimalna pola {field} to {param}';

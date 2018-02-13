@@ -1,10 +1,5 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
-/**
- * Automatically generated language file
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
- * @date 2015-04-11
- * @file backup_lang.php
- */
 $lang['backup_database_settings_not_found']          = 'Database connection settings not found. Make sure the configuration file is valid. Sometimes it is hard to determine database settings when you do includes in config files.';
 $lang['backup_dump_disabled_on_windows']             = 'Database dump is disabled on Windows';
 $lang['backup_dump_unable_to_make']                  = 'Unable to make database dump. See system logs.';

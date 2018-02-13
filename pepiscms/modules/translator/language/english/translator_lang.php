@@ -1,10 +1,5 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
-/**
- * Automatically generated language file
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
- * @date 2015-04-28
- * @file translator_lang.php
- */
 $lang['translator_available_languages']     = 'Available languages';
 $lang['translator_core_modules']            = 'Core modules';
 $lang['translator_delete_field']            = 'Delete field';

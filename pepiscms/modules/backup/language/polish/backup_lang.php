@@ -1,10 +1,5 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
-/**
- * Automatically generated language file
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
- * @date 2015-04-11
- * @file backup_lang.php
- */
 $lang['backup_database_settings_not_found']          = 'Ustawienia połączenia z bazą danych nie zostały znalezione. Upewnij się, że plik ustawień jest poprawny. Czasami ustawienia bazy danych sypią się jeśli robisz  include w plikach konfiguracyjnych.';
 $lang['backup_dump_disabled_on_windows']             = 'Zrzut bazy danych jest wyłączony na platformie Windows';
 $lang['backup_dump_unable_to_make']                  = 'Nie udało się wykonać zrzut bazy danych. Sprawdź logi systemowe.';

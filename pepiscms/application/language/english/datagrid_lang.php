@@ -1,10 +1,5 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
-/**
- * Automatically generated language file
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
- * @date 2015-02-27
- * @file datagrid_lang.php
- */
 $lang['datagrid_any']                 = 'Any';
 $lang['datagrid_apply_filters']       = 'Apply filters';
 $lang['datagrid_clear_all_filters']   = 'Clear all filters';

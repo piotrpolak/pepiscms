@@ -1,10 +1,5 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
-/**
- * Automatically generated language file
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
- * @date 2015-02-18
- * @file system_info_lang.php
- */
 $lang['system_info_apache_loaded_modules']                  = 'Załadowane moduły apache';
 $lang['system_info_apache_user']                            = 'Użytkownik Apache';
 $lang['system_info_apache_version']                         = 'Wersja Apache';

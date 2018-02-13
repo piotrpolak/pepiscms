@@ -1,10 +1,5 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
-/**
- * Automatically generated language file
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
- * @date 2015-05-14
- * @file global_lang.php
- */
 $lang['about_the_system']                                          = 'About the system';
 $lang['global_about_pepiscms']                                     = 'About PepisCMS';
 $lang['global_breadcrumb_start']                                   = 'Start';

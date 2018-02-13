@@ -1,10 +1,5 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
-/**
- * Automatically generated language file
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
- * @date 2015-02-18
- * @file remote_applications_lang.php
- */
 $lang['remote_applications_add_desc']           = 'Generuje API key i secret dla nowej aplikacji.';
 $lang['remote_applications_add_new_item']       = 'Zarejestruj nową aplikację';
 $lang['remote_applications_api_key']            = 'API klucz';

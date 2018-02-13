@@ -1,10 +1,5 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
-/**
- * Automatically generated language file
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
- * @date 2015-02-26
- * @file crud_lang.php
- */
 $lang['crud_file_to_import']                                    = 'File to import';
 $lang['crud_file_to_import_description']                        = 'Pick a CSV, XLS or XLSX file';
 $lang['crud_import_empty_spreadsheet']                          = 'Spreadsheet does not contain data or file not recognized (%s)';

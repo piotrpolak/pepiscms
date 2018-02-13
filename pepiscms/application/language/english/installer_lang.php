@@ -1,10 +1,5 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
-/**
- * Automatically generated language file
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
- * @date 2015-04-28
- * @file installer_lang.php
- */
 $lang['installer_administrator_account']                               = 'Administrator account';
 $lang['installer_application_already_configured']                      = 'Application is already configured. Access to installer is denied.';
 $lang['installer_auth_driver']                                         = 'Auth driver';

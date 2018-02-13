@@ -1,10 +1,5 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
-/**
- * Automatically generated language file
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
- * @date 2015-05-14
- * @file pepiscms_form_validation_lang.php
- */
 $lang['pepiscms_form_validation_even']                     = 'The {field} field must contain an even value';
 $lang['pepiscms_form_validation_max']                      = 'The {field} field must be at most {param}';
 $lang['pepiscms_form_validation_min']                      = 'The {field} field must be at least {param}';

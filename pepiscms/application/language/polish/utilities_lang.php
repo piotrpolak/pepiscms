@@ -1,10 +1,5 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
-/**
- * Automatically generated language file
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
- * @date 2015-05-14
- * @file utilities_lang.php
- */
 $lang['label_common_utilities']                                         = 'Narzędzia ogólne';
 $lang['label_system_utilities']                                         = 'Narzędzia systemowe';
 $lang['label_utilities_and_settings']                                   = 'Narzędzia';

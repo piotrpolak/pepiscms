@@ -1,10 +1,5 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
-/**
- * Automatically generated language file
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
- * @date 2015-05-14
- * @file acl_lang.php
- */
 $lang['acl_access_granted']                         = 'Access granted';
 $lang['acl_action']                                 = 'Action';
 $lang['acl_available_entities_coma_separated']      = 'Available entities (coma separated)';

@@ -204,8 +204,7 @@ class LanguageHelper
      */
     public function dumpFile($path, $array, $arrayName = 'lang')
     {
-        $contents = "<?php if(!defined('BASEPATH')) exit('No direct script access allowed');\n";
-        $contents .= "/**\n * Automatically generated language file\n *\n * @date " . date('Y-m-d') . "\n * @file " . basename($path) . "\n */";
+        $contents = "<?php if(!defined('BASEPATH')) exit('No direct script access allowed');\n\n";
 
         if (count($array) == 0) {
             $contents .= "\n" . '$' . $arrayName . '[] = \'\'; // Protection against empty translations';

@@ -1,10 +1,5 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
-/**
- * Automatically generated language file
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
- * @date 2015-03-26
- * @file sqlconsole_lang.php
- */
 $lang['sqlconsole_clear']                  = 'Clear';
 $lang['sqlconsole_execute']                = 'Execute';
 $lang['sqlconsole_index_tip']              = 'Executing a mistyped or pasted query can destroy your database. Take care.';

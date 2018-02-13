@@ -1,10 +1,5 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
-/**
- * Automatically generated language file
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
- * @date 2015-05-14
- * @file setup_lang.php
- */
 $lang['setup_cache_expires']                           = 'Cache time to live in minutes for website HTML cache';
 $lang['setup_cache_expires_desc']                      = 'PepisCMS stores pages in its cache for a specified number of minutes to increase efficiency. Set to 0 to disable cache.';
 $lang['setup_cms_customization_login_view_path']       = 'Path of the login form\'s view';

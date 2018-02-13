@@ -1,10 +1,5 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
-/**
- * Automatically generated language file
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
- * @date 2015-04-28
- * @file development_lang.php
- */
 $lang['development_fix_autoincrement_on_cms_tables'] = 'Napraw pola autoincrement w bazie danych';
 $lang['development_fix_missing_translations']        = 'Rozwiąż brakujące tłumaczenia';
 $lang['development_fixed_tables']                    = 'Naprawiono %s tabeli!';

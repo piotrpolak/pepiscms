@@ -1,10 +1,5 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
-/**
- * Automatically generated language file
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
- * @date 2015-05-14
- * @file core_lang.php
- */
 $lang['about_label_theme_preview']                  = 'Podgląd skórki';
 $lang['dashboard_group_default']                    = 'Skróty';
 $lang['dashboard_info']                             = 'To jest standardowa strona pulpitu.';

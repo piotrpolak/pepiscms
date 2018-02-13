@@ -1,10 +1,5 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
-/**
- * Automatically generated language file
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
- * @date 2013-10-23
- * @file changepassword_lang.php
- */
 $lang['changepassword_change_password']                                               = 'Change own password';
 $lang['changepassword_desc']                                                          = 'Here you can change your password. You will be asked for your current password before you change it.';
 $lang['changepassword_dialog_incorrect_current_password']                             = 'The current password does not match!';

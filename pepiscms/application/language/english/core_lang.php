@@ -1,10 +1,5 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
-/**
- * Automatically generated language file
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
- * @date 2015-05-14
- * @file core_lang.php
- */
 $lang['about_label_theme_preview']                  = 'Theme preview';
 $lang['dashboard_group_default']                    = 'Shortcuts';
 $lang['dashboard_info']                             = 'This is the default landing page.';

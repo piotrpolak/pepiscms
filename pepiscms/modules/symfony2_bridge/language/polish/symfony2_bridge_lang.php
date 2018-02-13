@@ -1,10 +1,5 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
-/**
- * Automatically generated language file
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
- * @date 2015-04-28
- * @file symfony2_bridge_lang.php
- */
 $lang['symfony2_bridge_clear_symfony2_cache']        = 'Wyczyść cache Symfony2';
 $lang['symfony2_bridge_datetime']                    = 'Data';
 $lang['symfony2_bridge_datetime_from']               = 'Data od';

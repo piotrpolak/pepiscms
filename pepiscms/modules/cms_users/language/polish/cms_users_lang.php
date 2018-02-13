@@ -1,10 +1,5 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
-/**
- * Automatically generated language file
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
- * @date 2015-03-20
- * @file cms_users_lang.php
- */
 $lang['cms_users_access_denied']                           = 'Brak dostępu';
 $lang['cms_users_activate']                                = 'Aktywuj konto';
 $lang['cms_users_add']                                     = 'Zarejestruj użytkownika';

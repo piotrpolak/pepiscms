@@ -70,7 +70,7 @@ class ConfigBuilder
      */
     public function writeConfig($config_path, $config_variables)
     {
-        $contents = "<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');\n";
+        $contents = "<?php if (!defined('BASEPATH')) exit('No direct script access allowed');\n";
         $contents .= "/**\n * Automatically generated config file\n\n * @date " . date('Y-m-d') . "\n * @file " . basename($config_path) . "\n */\n\n";
 
 

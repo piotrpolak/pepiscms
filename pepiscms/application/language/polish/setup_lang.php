@@ -1,10 +1,5 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
-/**
- * Automatically generated language file
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
- * @date 2015-05-14
- * @file setup_lang.php
- */
 $lang['setup_cache_expires']                           = 'Ważność cache HTML w minutach';
 $lang['setup_cache_expires_desc']                      = 'PepisCMS przechowuje strony w pamięci podręcznej przez określoną liczbę minut dla zwiększenia wydajności. Ustaw 0 aby zrezygnować z pamięci buforowej.';
 $lang['setup_cms_customization_login_view_path']       = 'Ścieżka pliku widoku formularza logowania';

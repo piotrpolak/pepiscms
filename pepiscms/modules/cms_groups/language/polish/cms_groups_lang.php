@@ -1,10 +1,5 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
-/**
- * Automatically generated language file
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
- * @date 2015-04-14
- * @file cms_groups_lang.php
- */
 $lang['cms_groups_add']                         = 'Dodaj nową grupę';
 $lang['cms_groups_add_desc']                    = 'Rejestracja nowej grupy oraz ustalenie praw dostępu.';
 $lang['cms_groups_core_modules']                = 'Moduły wbudowane';

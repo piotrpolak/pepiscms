@@ -1,10 +1,5 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
-/**
- * Automatically generated language file
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
- * @date 2015-05-14
- * @file pages_lang.php
- */
 $lang['pages_cl_document_uri']                                = 'Document URI';
 $lang['pages_cl_name_of_menu_element']                        = 'Name of menu element (URI)';
 $lang['pages_dialog_default_document']                        = 'Default document';

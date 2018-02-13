@@ -1,10 +1,5 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
-/**
- * Automatically generated language file
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
- * @date 2015-05-14
- * @file login_lang.php
- */
 $lang['login_button_login']                          = 'Login';
 $lang['login_dialog_account_is_locked']              = 'Your account is locked.';
 $lang['login_dialog_incorrect_login']                = 'Incorrect login or password. Try again.';

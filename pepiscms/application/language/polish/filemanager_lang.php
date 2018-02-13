@@ -1,10 +1,5 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
-/**
- * Automatically generated language file
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
- * @date 2015-04-28
- * @file filemanager_lang.php
- */
 $lang['filemanager_button_create_folder']                                                                     = 'Utwórz folder';
 $lang['filemanager_button_delete_files']                                                                      = 'Usuń zaznaczone pliki';
 $lang['filemanager_button_move_files']                                                                        = 'Przenieś zaznaczone pliki';

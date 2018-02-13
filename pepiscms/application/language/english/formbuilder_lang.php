@@ -1,10 +1,5 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
-/**
- * Automatically generated language file
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
- * @date 2015-04-16
- * @file formbuilder_lang.php
- */
 $lang['formbuilder_form_successfully_saved'] = 'The form was successfully saved!';
 $lang['formbuilder_label_unable_to_save']    = 'Unable to save the form';
 $lang['formbuilder_remove_file']             = 'Remove file';

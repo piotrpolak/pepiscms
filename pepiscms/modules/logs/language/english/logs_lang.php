@@ -1,10 +1,5 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
-/**
- * Automatically generated language file
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
- * @date 2015-03-02
- * @file logs_lang.php
- */
 $lang['logs_collection']         = 'Collection';
 $lang['logs_country']            = 'Country';
 $lang['logs_domain']             = 'Domain';
