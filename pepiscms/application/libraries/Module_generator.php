@@ -86,11 +86,13 @@ class Module_generator
         $directory = $this->makeDirectories($translations, $module_name_lower_case);
 
         // Used for builder, contains only valid table fields
-        $coma_separated_list_of_fields = array();
+        $list_of_fields = array();
         // Raw Datagrid & Formbuilder definition output
         $definition_output = 'CrudDefinitionBuilder::create()' . "\n";
         // Raw Language definition output
         $language_pairs = array();
+
+        $module_model_name = ucfirst($module_name_singular) . '_model';
 
         if ($parse_database_schema) {
             // Getting constants to be used instead of their numerical values
@@ -153,7 +155,7 @@ class Module_generator
                     // Only for table fields
                     if (!isset($value['foreign_key_table']) || (isset($value['foreign_key_relationship_type'])
                             && $value['foreign_key_relationship_type'] != FormBuilder::FOREIGN_KEY_MANY_TO_MANY)) {
-                        $coma_separated_list_of_fields[] = '\'' . $key . '\'';
+                        $list_of_fields[] = $key;
                     }
 
                     // Generating label, removing _id if present, for FKs
@@ -164,7 +166,8 @@ class Module_generator
                     // Generating line
                     $language_pairs[$module_name . '_' . $key] = $language_label;
 
-                    $definition_output .= $tabs . '->withField(\'' . $key . '\')' . "\n";
+                    $key_representation = $this->getCrudDefinitionLabelKeyRepresentation($key, $list_of_fields, $module_model_name);
+                    $definition_output .= $tabs . '->withField(' . $key_representation . ')' . "\n";
 
                     // For every definition pair
                     foreach ($value as $v_key => $v_value) {
@@ -237,8 +240,9 @@ class Module_generator
         // Variables passed to pattern compiler
         $module_label = ucfirst(str_replace('_', ' ', $module_name));
         $data = $this->prepareReplacementTokens($module_database_table_name, $module_name, $module_label,
-            $module_name_singular, $definition_output, $label_field_name, $coma_separated_list_of_fields,
-            $image_field_name, $description_field_name, $order_field_name, $updated_at_field_name, $filters_element);
+            $module_name_singular, $definition_output, $label_field_name, $list_of_fields,
+            $image_field_name, $description_field_name, $order_field_name, $updated_at_field_name, $filters_element,
+            $module_model_name);
 
         // Making admin controller
         $file_admin_controller = $directory . '' . $module_name_lower_case . '_admin_controller.php';
@@ -693,12 +697,13 @@ class Module_generator
      * @param $module_name_singular
      * @param $definition_output
      * @param $label_field_name
-     * @param $coma_separated_list_of_fields
+     * @param $list_of_fields
      * @param $image_field_name
      * @param $description_field_name
      * @param $order_field_name
      * @param $updated_at_field_name
      * @param $filters_element
+     * @param $module_model_name
      * @return array
      */
     private function prepareReplacementTokens($module_database_table_name,
@@ -707,23 +712,32 @@ class Module_generator
                                               $module_name_singular,
                                               $definition_output,
                                               $label_field_name,
-                                              $coma_separated_list_of_fields,
+                                              $list_of_fields,
                                               $image_field_name,
                                               $description_field_name,
                                               $order_field_name,
                                               $updated_at_field_name,
-                                              $filters_element)
+                                              $filters_element,
+                                              $module_model_name)
     {
+
+        $coma_separated_list = $list_of_fields;
+        array_walk($coma_separated_list, function ($item) {
+            return "'" . $item . "'";
+        });
+        $coma_separated_list = implode(', ', $coma_separated_list);
+
         $data = array(
             'module_name' => $module_name,
             'module_databse_table_name' => $module_database_table_name,
             'module_class_name' => ucfirst($module_name),
             'module_label' => $module_label,
-            'model_class_name' => ucfirst($module_name_singular) . '_model',
+            'model_class_name' => $module_model_name,
             'mudule_singular_name' => $module_name_singular,
             'definition_output' => $definition_output,
             'label_field_name' => $label_field_name,
-            'coma_separated_list_of_fields' => implode(', ', $coma_separated_list_of_fields),
+            'fields_list_output' => $this->generateFieldsListOutputDefinition($list_of_fields),
+            'coma_separated_list_of_fields' => $this->generateFieldsListOutputModelUsageDefinition($list_of_fields),
             'author' => $this->auth->getUserEmail(),
             'date' => date('Y-m-d'),
             'image_meta_code_element' => $image_field_name ? '$this->setMetaImageField(\'' . $image_field_name . '\', $this->uploads_base_path);' : '',
@@ -747,5 +761,66 @@ class Module_generator
             $image_field_name = $this->getImageFieldNameBestMatch($available_field_names, $possible_image_field_names);
         }
         return $image_field_name;
+    }
+
+    /**
+     * @param $module_model_name
+     * @param $key
+     * @return string
+     */
+    private function getFieldModelConstantFullName($module_model_name, $key)
+    {
+        return $module_model_name . '::' . $this->getFieldModelConstantShortName($key);
+    }
+
+    /**
+     * @param $key
+     * @return string
+     */
+    private function getFieldModelConstantShortName($key)
+    {
+        return strtoupper($key) . '_FIELD_NAME';
+    }
+
+    /**
+     * @param $coma_separated_list_of_fields
+     * @return string
+     */
+    private function generateFieldsListOutputDefinition($coma_separated_list_of_fields)
+    {
+        $output = '';
+        foreach ($coma_separated_list_of_fields as $field_name) {
+            $output .= "\t" . 'const ' . $this->getFieldModelConstantShortName($field_name) . " = '" . $field_name . "';\n";
+        }
+        return $output;
+    }
+
+    /**
+     * @param $coma_separated_list_of_fields
+     * @return string
+     */
+    private function generateFieldsListOutputModelUsageDefinition($coma_separated_list_of_fields)
+    {
+        $keys = array();
+        foreach ($coma_separated_list_of_fields as $field_name) {
+            $keys[] = 'self::' . $this->getFieldModelConstantShortName($field_name);
+        }
+        return implode(",\n\t\t\t\t\t", $keys);
+    }
+
+    /**
+     * @param $key
+     * @param $list_of_fields
+     * @param $module_model_name
+     * @return string
+     */
+    private function getCrudDefinitionLabelKeyRepresentation($key, $list_of_fields, $module_model_name)
+    {
+        if (in_array($key, $list_of_fields)) {
+            $key_constant_name = $this->getFieldModelConstantFullName($module_model_name, $key);
+        } else {
+            $key_constant_name = "'" . $key . "'";
+        }
+        return $key_constant_name;
     }
 }

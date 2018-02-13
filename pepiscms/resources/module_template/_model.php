@@ -8,6 +8,7 @@
  */
 class {model_class_name} extends Generic_model
 {
+{fields_list_output}
     public function __construct()
     {
         parent::__construct();
@@ -16,7 +17,10 @@ class {model_class_name} extends Generic_model
 //        $this->enableJournaling();
 
         // Required by saveById method
-        $this->setAcceptedPostFields(array({coma_separated_list_of_fields}));
+        $this->setAcceptedPostFields(array(
+                    {coma_separated_list_of_fields}
+            )
+        );
     }
 
 }
