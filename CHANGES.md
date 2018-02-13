@@ -5,18 +5,28 @@
  * Extended database schema (see upgrade scripts
     [pepiscms/resources/sql/upgrade/1.0.0-stage1.sql](pepiscms/resources/sql/upgrade/1.0.0-stage1.sql))
 * 3rd party backend components are now initialized using Composer, 3rd party frontend components are now moved out of this repository.
-* `Generic_model::generateTextId()`, `DataGrid:;getColumnDefinitions()`, `DataGrid::getFilterDefinitions()`,
-    `FormBuilder::reset()`, `SecurityPolicy::FULL_CONTROLL`,
-    `SimpleSessionMessage::setFormatingFunction()`, `AdminCRUDController::getItemOrderCollumn()`,
+* `Generic_model::generateTextId()`,
+    `DataGrid:;getColumnDefinitions()`,
+    `DataGrid::getFilterDefinitions()`,
+    `FormBuilder::reset()`,
+    `SecurityPolicy::FULL_CONTROLL`,
+    `SimpleSessionMessage::setFormatingFunction()`,
+    `AdminCRUDController::getItemOrderCollumn()`,
     `AdminCRUDController::getItemOrderConstraintCollumn()`,
-    `AdminCRUDController::isDetelable()`, `AdminCRUDController::setDetelable()` deprecated methods removed
+    `AdminCRUDController::isDetelable()`,
+    `AdminCRUDController::setDetelable()`,
+    `FormBuilder::addFileField()`,
+    `FormBuilder::addImageField()`,
+    `FormBuilder::MULTIPLEIMAGES`
+     deprecated methods removed
 * Removed deprecated `AssetMinimifier`, `CrossDomainAuth`, `CommonHook`
 * ModuleAdminController and ModuleController are now abstract.
 * Automatic loading of module models.
 * Removed deprecated customized `MY_DB_Cache`
 * Removed deprecated `Loader::plugin()`
 * New index.php! You must replace the existing file
-* `Auth_Driverable` is renamed to AuthDriverableInterface
+* `Auth_Driverable` is renamed to `AuthDriverableInterface`
+* `FormRenderable` is renamed to `FormRenderableInterface`
 * `Entitable` is now deprecated, please use `EntitableInterface`
 * `Moveable` is now deprecated, please use `MoveableInterface`
 * `Translateable` is now deprecated, please use `TranslateableInterface`
