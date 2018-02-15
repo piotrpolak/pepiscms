@@ -33,13 +33,14 @@ class TableUtility
             if (!isset($db[$params['database_group']])) {
                 return FALSE;
             }
+            /** @noinspection PhpUndefinedVariableInspection */
             $this->db = get_instance()->load->database($db[$params['database_group']], TRUE);
         } else {
             $this->db = get_instance()->db;
         }
 
-        get_instance()->load->library('DataGrid');
-        get_instance()->load->library('FormBuilder');
+        CI_Controller::get_instance()->load->library('DataGrid');
+        CI_Controller::get_instance()->load->library('FormBuilder');
 
         $this->raw_table_description_cache = array();
     }
@@ -57,7 +58,6 @@ class TableUtility
 
         foreach ($tables_a as $table) {
             $table = array_pop($table);
-
             $tables[$table] = $this->getDefinitionFromTable($table);
         }
 
@@ -95,6 +95,10 @@ class TableUtility
         return $this->db->table_exists($table);
     }
 
+    /**
+     * @param $table
+     * @return array
+     */
     public function getForeignKeysRelatedToTable($table)
     {
         $related_foreign_keys = array();
@@ -111,6 +115,10 @@ class TableUtility
         return $related_foreign_keys;
     }
 
+    /**
+     * @param $table
+     * @return array
+     */
     public function getManyToManyRelationshipsRelatedToTable($table)
     {
         $related_foreign_keys = $this->getForeignKeysRelatedToTable($table);
@@ -198,28 +206,26 @@ class TableUtility
 
         foreach ($allowed_labels as $allowed_label) {
             if (isset($fk_table_definition[$allowed_label])) {
-                $foreign_key_label_field = $allowed_label;
+                return $allowed_label;
                 break;
             }
         }
 
         // Not found in the first trial
-        if (!$foreign_key_label_field) {
-            // Find element that is not ID,
-            foreach ($fk_table_definition as $key => $value) {
-                if (in_array($key, $exclude_field_names)) {
-                    continue;
-                }
+        // Find element that is not ID,
+        foreach ($fk_table_definition as $key => $value) {
+            if (in_array($key, $exclude_field_names)) {
+                continue;
+            }
 
-                // Must contain name OR not numeric and required
-                if (strpos($key, 'name') !== FALSE || (strpos($value['validation_rules'], 'required') !== FALSE && strpos($value['validation_rules'], 'numeric') === FALSE && $value['input_type'] == FormBuilder::TEXTFIELD)) {
-                    $foreign_key_label_field = $key;
-                    break;
-                }
+            // Must contain name OR not numeric and required
+            if (strpos($key, 'name') !== FALSE
+                || (strpos($value['validation_rules'], 'required') !== FALSE
+                    && strpos($value['validation_rules'], 'numeric') === FALSE
+                    && $value['input_type'] == FormBuilder::TEXTFIELD)) {
+                return $key;
             }
         }
-
-        return $foreign_key_label_field;
     }
 
     /**
@@ -251,20 +257,20 @@ class TableUtility
         // Taking raw collums and transforming them into definition
         foreach ($collumns_a as $collumn) {
             $show_in_grid = $show_in_form = TRUE;
-            $field = $collumn['Field'];
+            $field_name = $collumn['Field'];
             $is_null = strtolower($collumn['Null']) == 'yes';
             $validation_rules = array();
             $db_type = self::resolveDBType($collumn['Type']);
             $max_input_length = self::resolveLengthFronDBType($collumn['Type']);
-            $input_type = self::getInputType(self::resolveDBType($collumn['Type']));
+            $input_type = self::getInputType(self::resolveDBType($collumn['Type']), $field_name);
             $is_numeric = self::isDbTypeNumeric($db_type);
             $is_boolean = $is_numeric && ($db_type == 'smallint' || $db_type == 'tinyint');
             $is_unique = strpos(strtoupper($collumn['Key']), 'UNI') !== FALSE;
             $is_primary_key = strpos(strtoupper($collumn['Key']), 'PRI') !== FALSE;
 
-            $definition[$field] = array();
+            $definition[$field_name] = array();
             if ($collumn['Default']) {
-                $definition[$field]['input_default_value'] = $collumn['Default'];
+                $definition[$field_name]['input_default_value'] = $collumn['Default'];
             }
 
 //            if ($is_unique)
@@ -276,7 +282,7 @@ class TableUtility
                 $validation_rules[] = 'required';
             }
 
-            if (strpos(strtolower($field), 'email') !== FALSE) {
+            if (strpos(strtolower($field_name), 'email') !== FALSE) {
                 $validation_rules[] = 'valid_email';
             }
 
@@ -285,7 +291,7 @@ class TableUtility
                 $validation_rules[] = 'numeric';
                 if ($is_boolean) {
                     $input_type = FormBuilder::CHECKBOX;
-                    $definition[$field]['filter_type'] = DataGrid::FILTER_SELECT;
+                    $definition[$field_name]['filter_type'] = DataGrid::FILTER_SELECT;
                 }
             } else {
                 // For text fields
@@ -293,26 +299,26 @@ class TableUtility
                     $validation_rules[] = 'max_length[' . $max_input_length . ']';
                 }
 
-                if (strpos($field, 'color') !== FALSE || strpos($field, 'colour') !== FALSE) {
+                if (strpos($field_name, 'color') !== FALSE || strpos($field_name, 'colour') !== FALSE) {
                     $input_type = FormBuilder::COLORPICKER;
-                } elseif (strpos($field, 'path') !== FALSE || strpos($field, 'image') !== FALSE || strpos($field, 'file') !== FALSE || strpos($field, 'icon') !== FALSE || strpos($field, 'logo') !== FALSE || strpos($field, 'baner') !== FALSE || strpos($field, 'thumb') !== FALSE || strpos($field, 'img') !== FALSE) {
+                } elseif (strpos($field_name, 'path') !== FALSE || strpos($field_name, 'image') !== FALSE || strpos($field_name, 'file') !== FALSE || strpos($field_name, 'icon') !== FALSE || strpos($field_name, 'logo') !== FALSE || strpos($field_name, 'baner') !== FALSE || strpos($field_name, 'thumb') !== FALSE || strpos($field_name, 'img') !== FALSE) {
                     $input_type = FormBuilder::FILE;
-                    $definition[$field]['upload_path'] = 'uploads/';
-                    $definition[$field]['upload_display_path'] = 'uploads/';
+                    $definition[$field_name]['upload_path'] = 'uploads/';
+                    $definition[$field_name]['upload_display_path'] = 'uploads/';
 
-                    if (strpos($field, 'image') !== FALSE || strpos($field, 'icon') !== FALSE || strpos($field, 'logo') !== FALSE || strpos($field, 'baner') !== FALSE || strpos($field, 'thumb') !== FALSE) {
+                    if (strpos($field_name, 'image') !== FALSE || strpos($field_name, 'icon') !== FALSE || strpos($field_name, 'logo') !== FALSE || strpos($field_name, 'baner') !== FALSE || strpos($field_name, 'thumb') !== FALSE) {
                         $input_type = FormBuilder::IMAGE;
                     } else {
-                        $definition[$field]['upload_allowed_types'] = '*';
+                        $definition[$field_name]['upload_allowed_types'] = '*';
                     }
                 }
 
                 if ($input_type == FormBuilder::DATE || $input_type == FormBuilder::TIMESTAMP) {
-                    $definition[$field]['filter_type'] = DataGrid::FILTER_DATE;
+                    $definition[$field_name]['filter_type'] = DataGrid::FILTER_DATE;
                 } elseif ($input_type == FormBuilder::IMAGE || $input_type == FormBuilder::FILE || $input_type == FormBuilder::COLORPICKER) {
-                    unset($definition[$field]['filter_type']);
+                    unset($definition[$field_name]['filter_type']);
                 } else {
-                    $definition[$field]['filter_type'] = DataGrid::FILTER_BASIC;
+                    $definition[$field_name]['filter_type'] = DataGrid::FILTER_BASIC;
                 }
             }
 
@@ -329,16 +335,16 @@ class TableUtility
                     }
 
                     $input_type = FormBuilder::SELECTBOX;
-                    $definition[$field]['foreign_key_relationship_type'] = FormBuilder::FOREIGN_KEY_ONE_TO_MANY;
-                    $definition[$field]['foreign_key_table'] = $foreign_key[0];
-                    $definition[$field]['foreign_key_field'] = $foreign_key[1];
-                    $definition[$field]['foreign_key_label_field'] = $foreign_key_label_field;
-                    $definition[$field]['filter_type'] = DataGrid::FILTER_SELECT;
-                    $definition[$field]['foreign_key_accept_null'] = TRUE;
+                    $definition[$field_name]['foreign_key_relationship_type'] = FormBuilder::FOREIGN_KEY_ONE_TO_MANY;
+                    $definition[$field_name]['foreign_key_table'] = $foreign_key[0];
+                    $definition[$field_name]['foreign_key_field'] = $foreign_key[1];
+                    $definition[$field_name]['foreign_key_label_field'] = $foreign_key_label_field;
+                    $definition[$field_name]['filter_type'] = DataGrid::FILTER_SELECT;
+                    $definition[$field_name]['foreign_key_accept_null'] = TRUE;
                 }
             }
 
-            // Transfering longer textfields into textareas
+            // Transforming longer textfields into textareas
             if ($input_type == FormBuilder::TEXTFIELD) {
                 if ($max_input_length > 255) {
                     $input_type = FormBuilder::TEXTAREA;
@@ -351,21 +357,21 @@ class TableUtility
             }
 
 
-            $definition[$field]['show_in_grid'] = $show_in_grid;
-            $definition[$field]['show_in_form'] = $show_in_form;
-            $definition[$field]['input_type'] = $input_type;
-            $definition[$field]['validation_rules'] = implode('|', $validation_rules);
+            $definition[$field_name]['show_in_grid'] = $show_in_grid;
+            $definition[$field_name]['show_in_form'] = $show_in_form;
+            $definition[$field_name]['input_type'] = $input_type;
+            $definition[$field_name]['validation_rules'] = implode('|', $validation_rules);
         }
 
         foreach ($many_to_many_fks as $many_to_many_fk) {
-            $field = $many_to_many_fk['foreign_key_junction_table'];
-            $definition[$field] = $many_to_many_fk;
-            $definition[$field]['foreign_key_relationship_type'] = FormBuilder::FOREIGN_KEY_MANY_TO_MANY;
-            $definition[$field]['show_in_grid'] = TRUE;
-            $definition[$field]['show_in_form'] = TRUE;
-            $definition[$field]['input_type'] = FormBuilder::MULTIPLECHECKBOX;
-            $definition[$field]['validation_rules'] = '';
-            $definition[$field]['filter_type'] = DataGrid::FILTER_SELECT;
+            $field_name = $many_to_many_fk['foreign_key_junction_table'];
+            $definition[$field_name] = $many_to_many_fk;
+            $definition[$field_name]['foreign_key_relationship_type'] = FormBuilder::FOREIGN_KEY_MANY_TO_MANY;
+            $definition[$field_name]['show_in_grid'] = TRUE;
+            $definition[$field_name]['show_in_form'] = TRUE;
+            $definition[$field_name]['input_type'] = FormBuilder::MULTIPLECHECKBOX;
+            $definition[$field_name]['validation_rules'] = '';
+            $definition[$field_name]['filter_type'] = DataGrid::FILTER_SELECT;
         }
 
         return $definition;
@@ -389,25 +395,26 @@ class TableUtility
     /**
      * Returns input type based on database type
      *
-     * @param String $type
+     * @param string $type
+     * @param string $field_name
      * @return Integer
      */
-    public static function getInputType($type)
+    public static function getInputType($type, $field_name)
     {
         if ($type == 'smallint') {
             return FormBuilder::CHECKBOX;
-        }
-        if (self::isDbTypeNumeric($type)) {
+        } elseif (self::isDbTypeNumeric($type)) {
             return FormBuilder::TEXTFIELD;
-        }
-        if ($type == 'longtext' || $type == 'text' || $type == 'mediumtext') {
+        } elseif ($type == 'longtext' || $type == 'text' || $type == 'mediumtext') {
             return FormBuilder::RTF;
-        }
-        if ($type == 'date') {
+        } elseif ($type == 'date') {
             return FormBuilder::DATE;
-        }
-        if ($type == 'datetime' || $type == 'timestamp') {
+        } elseif ($type == 'datetime' || $type == 'timestamp') {
             return FormBuilder::TIMESTAMP;
+        }
+
+        if (strpos($field_name, 'passw') !== FALSE) {
+            return FormBuilder::PASSWORD;
         }
 
         return FormBuilder::TEXTFIELD;

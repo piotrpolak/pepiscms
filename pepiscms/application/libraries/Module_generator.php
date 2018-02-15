@@ -135,6 +135,11 @@ class Module_generator
                         $value['show_in_grid'] = FALSE;
                     }
 
+                    // Do not show password fields
+                    if ($value['input_type'] == FormBuilder::PASSWORD) {
+                        $value['show_in_grid'] = FALSE;
+                    }
+
                     // Order field - hide and set default value
                     if ($key == $order_field_name) {
                         $value['show_in_grid'] = FALSE;
