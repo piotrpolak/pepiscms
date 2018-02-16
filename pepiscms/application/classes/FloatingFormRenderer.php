@@ -18,7 +18,7 @@
  * Floating form renders inputs in the same row.
  * @since 0.1.5
  */
-class FloatingFormRenderer extends DefaultFormRendererInterface
+class FloatingFormRenderer extends DefaultFormRenderer
 {
 
     public function __construct($template_absolute_path = FALSE)

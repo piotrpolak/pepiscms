@@ -942,7 +942,7 @@ class FormBuilder
     {
         // Initializing default renderer
         if ($this->renderer == null) {
-            $this->renderer = new DefaultFormRendererInterface();
+            $this->renderer = new DefaultFormRenderer();
         }
         return $this->renderer;
     }
