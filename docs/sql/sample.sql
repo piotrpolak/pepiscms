@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS `items` (
   `created_datetime` DATETIME NULL DEFAULT NULL,
   `updated_datetime` DATETIME NULL DEFAULT NULL,
   `published_since_datetime` DATETIME NULL DEFAULT NULL,
+  `quantity` INT(11) NOT NULL,
   `image_path` VARCHAR(500) NULL DEFAULT NULL,
   `password` VARCHAR(64) NULL DEFAULT NULL,
   `item_order` INT(11) NULL DEFAULT NULL,
