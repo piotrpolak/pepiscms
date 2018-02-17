@@ -43,8 +43,6 @@ class File extends AbstractComponent
         if ($valueEscaped) {
             $extension = $this->getExtension($valueEscaped);
 
-            $image_path = 'pepiscms/theme/img/ajaxfilemanager/broken_image_50.png';
-
             $is_real_image = FALSE;
             if (in_array($extension, array('jpg', 'jpeg', 'png', 'bmp', 'tiff'))) {
                 $is_real_image = TRUE;
@@ -52,8 +50,8 @@ class File extends AbstractComponent
 
             if ($is_real_image) {
                 $image_path = 'admin/ajaxfilemanager/absolutethumb/100/' . $field['upload_display_path'] . $valueEscaped;
-            } else if (file_exists(APPPATH . '/../theme/file_extensions/file_extension_' . $extension . '.png')) {
-                $image_path = 'pepiscms/theme/file_extensions/file_extension_' . $extension . '.png';
+            } else {
+                $image_path = $this->findImagePath($extension);
             }
 
             $output_element .= '<div class="form_image">' . "\n"; // Leave it as it is..
@@ -100,5 +98,25 @@ class File extends AbstractComponent
             $extension = FALSE;
         }
         return $extension;
+    }
+
+    /**
+     * @param $extension
+     * @return string
+     */
+    private function findImagePath($extension)
+    {
+        $extensions = array(
+            $extension,
+            substr($extension, 0, 3)
+        );
+
+        foreach ($extensions as $ext) {
+            if (file_exists(APPPATH . '/../theme/file_extensions/file_extension_' . $ext . '.png')) {
+                return 'pepiscms/theme/file_extensions/file_extension_' . $ext . '.png';
+            }
+        }
+
+        return 'pepiscms/theme/img/ajaxfilemanager/broken_image_50.png';
     }
 }
