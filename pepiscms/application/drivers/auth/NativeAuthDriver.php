@@ -17,7 +17,7 @@
  *
  * @since 0.2.2
  */
-class Native_Auth_Driver implements AuthDriverableInterface
+class NativeAuthDriver implements AuthDriverableInterface
 {
     /**
      * Constructs auth driver

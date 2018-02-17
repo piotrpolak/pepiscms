@@ -19,7 +19,6 @@
  */
 class Backup
 {
-
     private $CI;
     private $current_version = '1.3';
     private $supported_name = 'pepis_cms_backup';

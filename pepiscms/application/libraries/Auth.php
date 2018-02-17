@@ -15,7 +15,7 @@
 /**
  * User authentication library
  *
- * @since 0.1
+ * @since 0.1.0
  */
 class Auth
 {
@@ -69,20 +69,21 @@ class Auth
     {
         @session_start();
 
-        get_instance()->load->model('User_model');
-        get_instance()->load->library('Logger'); // To prevent fatal errors
-        $this->session_must_match_ip = get_instance()->config->item('security_session_must_match_ip');
+        CI_Controller::get_instance()->load->model('User_model');
+        CI_Controller::get_instance()->load->library('Logger'); // To prevent fatal errors
+        $this->session_must_match_ip = CI_Controller::get_instance()->config->item('security_session_must_match_ip');
 
-        get_instance()->load->config('auth');
+        CI_Controller::get_instance()->load->config('auth');
 
-        $driver_type = get_instance()->config->item('auth_driver');
-        $driver_path = APPPATH . 'drivers/auth/' . $driver_type . '_auth_driver.php';
+        $driver_type = CI_Controller::get_instance()->config->item('auth_driver');
+
+        $driver_class_name = ucfirst($driver_type) . 'AuthDriver';
+
+        $driver_path = APPPATH . 'drivers/auth/' . $driver_class_name . '.php';
         if (!file_exists($driver_path)) {
             show_error('Auth driver specified does not exist on the filesystem or driver name empty ' . $driver_path);
         }
 
-        require_once($driver_path);
-        $driver_class_name = ucfirst($driver_type) . '_Auth_Driver';
         $this->driver = new $driver_class_name($this);
     }
 
@@ -105,7 +106,7 @@ class Auth
      */
     public function authorize($user_email_or_login, $password)
     {
-        $CI = &get_instance();
+        $CI = CI_Controller::get_instance();
         $CI->load->model('User_model');
 
         $row = $this->driver->authorize($user_email_or_login, $password);

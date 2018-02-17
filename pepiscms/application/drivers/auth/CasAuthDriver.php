@@ -17,7 +17,7 @@
  *
  * @since 0.2.2
  */
-class Cas_Auth_Driver implements AuthDriverableInterface
+class CasAuthDriver implements AuthDriverableInterface
 {
     private $is_initialized = FALSE;
     private $config = array();

@@ -37,6 +37,7 @@
             "pepiscms/application/classes/",
             "pepiscms/application/models/",
             "pepiscms/application/libraries/",
+            "pepiscms/application/drivers/",
             "pepiscms/modules/symfony2_bridge/libraries/",
             "pepiscms/modules/crud/libraries/",
             "pepiscms/modules/translator/libraries/",
