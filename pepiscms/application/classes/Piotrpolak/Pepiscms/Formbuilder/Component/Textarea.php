@@ -41,6 +41,7 @@ class Textarea extends AbstractComponent
             $extra_attributes = 'maxlength="' . $match[2] . '"';
         }
 
-        return '<textarea name="' . $field['field'] . '" id="' . $field['field'] . '" class="text' . $extra_css_classes . '" rows="8" ' . $extra_attributes . '>' . $valueEscaped . '</textarea>';
+        return '<textarea name="' . $field['field'] . '" id="' . $field['field'] . '" class="text' . $extra_css_classes .
+            '" rows="8" ' . $extra_attributes . '>' . $valueEscaped . '</textarea>';
     }
 }

@@ -36,9 +36,10 @@ class Image extends AbstractComponent
      */
     public function renderComponent($field, $valueEscaped, &$object, $extra_css_classes)
     {
-        \CI_CONTROLLER::get_instance()->load->helper('number');
+        \CI_Controller::get_instance()->load->helper('number');
 
-        $output_element = '<input type="file" name="' . $field['field'] . '" id="' . $field['field'] . '" class="inputImage' . ($valueEscaped ? ' hidden' : '') . '" />';
+        $output_element = '<input type="file" name="' . $field['field'] . '" id="' . $field['field'] .
+            '" class="inputImage' . ($valueEscaped ? ' hidden' : '') . '" />';
         if ($valueEscaped) {
             // Determining image extension
             $image_extension = explode('.', $valueEscaped);
@@ -66,26 +67,30 @@ class Image extends AbstractComponent
             $output_element .= '    <div>' . "\n";
 
 
-            $output_element .= '        <a href="' . $field['upload_display_path'] . $valueEscaped . '"' . ($is_real_image ? 'class=" image"' : 'class=" image_like" target="_blank"') . '><img src="' . $image_path . '" alt="" /></a>' . "\n";
-            $output_element .= '    </div>' . "\n";
-            $output_element .= '<div class="summary">';
+            $output_element .= '        <a href="' . $field['upload_display_path'] . $valueEscaped . '"' .
+                ($is_real_image ? 'class=" image"' : 'class=" image_like" target="_blank"') . '><img src="' .
+                $image_path . '" alt="" /></a>' . "\n" .
+                '    </div>' . "\n" .
+                '<div class="summary">';
 
             $file_size = '';
-            $last_modified_at = \CI_CONTROLLER::get_instance()->lang->line('formbuilder_file_not_found');
+            $last_modified_at = \CI_Controller::get_instance()->lang->line('formbuilder_file_not_found');
             if (file_exists($field['upload_path'] . $valueEscaped)) {
                 $file_size = byte_format(filesize($field['upload_path'] . $valueEscaped));
                 $filemtime = filemtime($field['upload_path'] . $valueEscaped);
                 $last_modified_at = date('Y-m-d', $filemtime) . '<br>' . date('H:i:s', $filemtime);
             }
 
-            $output_element .= '<a href="#" class="remove_form_image" rel="' . $field['field'] . '" title="' . \CI_CONTROLLER::get_instance()->lang->line('formbuilder_remove_file') . '">' . \CI_CONTROLLER::get_instance()->lang->line('formbuilder_remove_file') . '</a><br>' . "\n";
-            $output_element .= strtoupper($image_extension) . ' ' . $file_size . '<br><br>' . $last_modified_at . '</div>';
-            $output_element .= '</div>';
+            $output_element .= '<a href="#" class="remove_form_image" rel="' . $field['field'] . '" title="' .
+                \CI_Controller::get_instance()->lang->line('formbuilder_remove_file') . '">' .
+                \CI_Controller::get_instance()->lang->line('formbuilder_remove_file') . '</a><br>' . "\n" .
+                strtoupper($image_extension) . ' ' . $file_size . '<br><br>' . $last_modified_at . '</div>' .
+                '</div>';
 
         }
 
-        $output_element .= '<input type="hidden" name="form_builder_files[' . $field['field'] . ']" value="' . $valueEscaped . '" />' . "\n";
-        $output_element .= '<input type="hidden" name="form_builder_files_remove[' . $field['field'] . ']" value="0" />' . "\n";
+        $output_element .= '<input type="hidden" name="form_builder_files[' . $field['field'] . ']" value="' . $valueEscaped . '" />' . "\n" .
+            '<input type="hidden" name="form_builder_files_remove[' . $field['field'] . ']" value="0" />' . "\n";
         return $output_element;
     }
 }

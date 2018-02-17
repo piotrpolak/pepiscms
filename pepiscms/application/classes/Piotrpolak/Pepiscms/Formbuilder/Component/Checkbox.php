@@ -41,7 +41,11 @@ class Checkbox extends AbstractComponent
         if (!$valueEscaped) {
             $valueEscaped = 1;
         }
-        $is_checked = $valueEscaped && isset($object->$field['field']) ? $valueEscaped == $object->$field['field'] : $valueEscaped == $field['input_default_value'];
-        return '<input type="checkbox" name="' . $field['field'] . '" id="' . $field['field'] . '" value="' . $valueEscaped . '"' . ($is_checked ? ' checked="checked"' : '') . ' class="' . $extra_css_classes . '"/>';
+        $is_checked = $valueEscaped && isset($object->$field['field']) ?
+            $valueEscaped == $object->$field['field'] :
+            $valueEscaped == $field['input_default_value'];
+
+        return '<input type="checkbox" name="' . $field['field'] . '" id="' . $field['field'] . '" value="' .
+            $valueEscaped . '"' . ($is_checked ? ' checked="checked"' : '') . ' class="' . $extra_css_classes . '"/>';
     }
 }

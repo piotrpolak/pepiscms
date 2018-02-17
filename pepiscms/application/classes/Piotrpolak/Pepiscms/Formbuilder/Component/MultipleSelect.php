@@ -21,7 +21,7 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
  *
  * @since 1.0.0
  */
-class MultipleSelectbox extends AbstractComponent
+class MultipleSelect extends AbstractComponent
 {
     /**
      * @inheritDoc

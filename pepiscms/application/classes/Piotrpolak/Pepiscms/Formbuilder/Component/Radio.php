@@ -46,7 +46,11 @@ class Radio extends AbstractComponent
             $valueEscaped = is_array($valueEscaped) ? $valueEscaped : array($valueEscaped);
 
             foreach ($field['values'] as $key => $val) {
-                $output_element .= '<span class="multipleInput radio"><input type="radio" name="' . $field['field'] . '" id="' . $field['field'] . '[' . $key . ']" value="' . $key . '" ' . (in_array($key, $valueEscaped) ? ' checked="checked"' : '') . ' class="text' . $extra_css_classes . '" /> <label for="' . $field['field'] . '[' . $key . ']">' . $val . '</label></span>' . "\n";
+                $output_element .= '<span class="multipleInput radio"><input type="radio" name="' . $field['field'] .
+                    '" id="' . $field['field'] . '[' . $key . ']" value="' . $key . '" ' .
+                    (in_array($key, $valueEscaped) ? ' checked="checked"' : '') .
+                    ' class="text' . $extra_css_classes . '" /> <label for="' . $field['field'] . '[' . $key . ']">' .
+                    $val . '</label></span>' . "\n";
             }
         }
         return $output_element;

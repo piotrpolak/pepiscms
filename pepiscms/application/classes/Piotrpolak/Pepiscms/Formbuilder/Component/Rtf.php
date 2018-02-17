@@ -52,19 +52,19 @@ class Rtf extends AbstractComponent
      */
     public function renderComponent($field, $valueEscaped, &$object, $extra_css_classes)
     {
-        \CI_CONTROLLER::get_instance()->load->library('RTFEditor');
-        \CI_CONTROLLER::get_instance()->rtfeditor->setupDefaultConfig();
+        \CI_Controller::get_instance()->load->library('RTFEditor');
+        \CI_Controller::get_instance()->rtfeditor->setupDefaultConfig();
         if ($this->isFull) {
-            \CI_CONTROLLER::get_instance()->rtfeditor->setFull();
+            \CI_Controller::get_instance()->rtfeditor->setFull();
         }
 
         if (isset($field['options']['rtf'])) {
             foreach ($field['options']['rtf'] as $option_key => $option_value) {
-                \CI_CONTROLLER::get_instance()->rtfeditor->setConfig($option_key, $option_value);
+                \CI_Controller::get_instance()->rtfeditor->setConfig($option_key, $option_value);
             }
         }
 
         // FIXME Set user defined default value
-        return \CI_CONTROLLER::get_instance()->rtfeditor->generate(htmlspecialchars_decode($valueEscaped), 500, $field['field']);
+        return \CI_Controller::get_instance()->rtfeditor->generate(htmlspecialchars_decode($valueEscaped), 500, $field['field']);
     }
 }

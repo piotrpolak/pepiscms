@@ -43,8 +43,8 @@ class File extends AbstractComponent
             $output_element .= '<div class="form_image"><a href="' . $field['upload_path'] . $valueEscaped . '">' .
                 end($exploded_path) . '</a>' .
                 '<a href="#" class="remove_form_file" rel="' . $field['field'] . '" title="' .
-                \CI_CONTROLLER::get_instance()->lang->line('formbuilder_remove_file') . '">' .
-                \CI_CONTROLLER::get_instance()->lang->line('formbuilder_remove_file') . '</a></div>';
+                \CI_Controller::get_instance()->lang->line('formbuilder_remove_file') . '">' .
+                \CI_Controller::get_instance()->lang->line('formbuilder_remove_file') . '</a></div>';
         }
 
         $output_element .= '<input type="hidden" name="form_builder_files[' . $field['field'] . ']" value="' . $valueEscaped . '" />' . "\n" .

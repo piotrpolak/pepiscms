@@ -46,6 +46,7 @@ class TextfieldAutocomplete extends AbstractComponent
     {
         return '<input type="text" name="' . $field['field'] . '" id="' . $field['field'] . '" value="' . $valueEscaped .
             '" class="text' . $extra_css_classes . '" />' .
-            '<script type="text/javascript">$("#' . $field['field'] . '").autocomplete({source: "' . $field['autocomplete_source'] . '", minLength: 1});</script>';
+            '<script type="text/javascript">$("#' . $field['field'] . '").autocomplete({source: "' .
+            $field['autocomplete_source'] . '", minLength: 1});</script>';
     }
 }

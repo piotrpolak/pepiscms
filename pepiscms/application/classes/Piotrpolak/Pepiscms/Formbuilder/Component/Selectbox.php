@@ -39,7 +39,8 @@ class Selectbox extends AbstractComponent
         $output_element = '';
         if (is_array($field['values'])) {
             //FIXME Set user defined default value in validation
-            $output_element .= '<select name="' . $field['field'] . '" id="' . $field['field'] . '" class="text' . $extra_css_classes . '" >' . "\n";
+            $output_element .= '<select name="' . $field['field'] . '" id="' . $field['field'] . '" class="text' .
+                $extra_css_classes . '" >' . "\n";
             $was_selected = FALSE;
             $selected_code = '';
             foreach ($field['values'] as $key => $val) {
