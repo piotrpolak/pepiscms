@@ -36,20 +36,69 @@ class File extends AbstractComponent
      */
     public function renderComponent($field, $valueEscaped, &$object, $extra_css_classes)
     {
-        $output_element = '<input type="file" name="' . $field['field'] .
-            '" id="' . $field['field'] . '" class="inputFile' . ($valueEscaped ? ' hidden' : '') . '" />';
+        \CI_Controller::get_instance()->load->helper('number');
+
+        $output_element = '<input type="file" name="' . $field['field'] . '" id="' . $field['field'] .
+            '" class="inputImage' . ($valueEscaped ? ' hidden' : '') . '" />';
         if ($valueEscaped) {
-            $exploded_path = explode('/', $valueEscaped);
-            $output_element .= '<div class="form_image"><a href="' . $field['upload_path'] . $valueEscaped . '">' .
-                end($exploded_path) . '</a>' .
-                '<a href="#" class="remove_form_file" rel="' . $field['field'] . '" title="' .
+            $extension = $this->getExtension($valueEscaped);
+
+            $image_path = 'pepiscms/theme/img/ajaxfilemanager/broken_image_50.png';
+
+            $is_real_image = FALSE;
+            if (in_array($extension, array('jpg', 'jpeg', 'png', 'bmp', 'tiff'))) {
+                $is_real_image = TRUE;
+            }
+
+            if ($is_real_image) {
+                $image_path = 'admin/ajaxfilemanager/absolutethumb/100/' . $field['upload_display_path'] . $valueEscaped;
+            } else if (file_exists(APPPATH . '/../theme/file_extensions/file_extension_' . $extension . '.png')) {
+                $image_path = 'pepiscms/theme/file_extensions/file_extension_' . $extension . '.png';
+            }
+
+            $output_element .= '<div class="form_image">' . "\n"; // Leave it as it is..
+            $output_element .= '    <div>' . "\n";
+
+            $output_element .= '        <a href="' . $field['upload_display_path'] . $valueEscaped . '"' .
+                ($is_real_image ? 'class=" image"' : 'class=" image_like" target="_blank"') . '><img src="' .
+                $image_path . '" alt="" /></a>' . "\n" .
+                '    </div>' . "\n" .
+                '<div class="summary">';
+
+            $file_size = '';
+            $last_modified_at = \CI_Controller::get_instance()->lang->line('formbuilder_file_not_found');
+            if (file_exists($field['upload_path'] . $valueEscaped)) {
+                $file_size = byte_format(filesize($field['upload_path'] . $valueEscaped));
+                $filemtime = filemtime($field['upload_path'] . $valueEscaped);
+                $last_modified_at = date('Y-m-d', $filemtime) . '<br>' . date('H:i:s', $filemtime);
+            }
+
+            $output_element .= '<a href="#" class="remove_form_image" rel="' . $field['field'] . '" title="' .
                 \CI_Controller::get_instance()->lang->line('formbuilder_remove_file') . '">' .
-                \CI_Controller::get_instance()->lang->line('formbuilder_remove_file') . '</a></div>';
+                \CI_Controller::get_instance()->lang->line('formbuilder_remove_file') . '</a><br>' . "\n" .
+                strtoupper($extension) . ' ' . $file_size . '<br><br>' . $last_modified_at . '</div>' .
+                '</div>';
+
         }
 
         $output_element .= '<input type="hidden" name="form_builder_files[' . $field['field'] . ']" value="' . $valueEscaped . '" />' . "\n" .
             '<input type="hidden" name="form_builder_files_remove[' . $field['field'] . ']" value="0" />' . "\n";
-
         return $output_element;
+    }
+
+    /**
+     * @param $valueEscaped
+     * @return array|bool|mixed|string
+     */
+    private function getExtension($valueEscaped)
+    {
+        $extension = explode('.', $valueEscaped);
+        if (count($extension) > 1) {
+            $extension = end($extension);
+            $extension = strtolower($extension);
+        } else {
+            $extension = FALSE;
+        }
+        return $extension;
     }
 }

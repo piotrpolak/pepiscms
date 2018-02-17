@@ -147,8 +147,8 @@ var ppLib = {
 
             var name = $(this).attr('rel');
             $('input[name=\'form_builder_files_remove[' + name + ']\']').val(1);
-            $(this).parent().parent().children('input.inputImage, input.inputFile').fadeIn(500);
-            $(this).parent().fadeOut(500);
+            $(this).closest('.input').find('input.inputImage, input.inputFile').fadeIn(500);
+            $(this).closest('.form_image').fadeOut(500);
 
         });
 
