@@ -863,7 +863,8 @@ class FormBuilder
     {
         if ($this->instance_code === null) {
             // TODO Rewrite POST parameter access
-            $this->instance_code = isset($_POST['form_builder_instance_code']) ? $_POST['form_builder_instance_code'] : time() . '' . rand(10000, 99999);
+            $this->instance_code = isset($_POST['form_builder_instance_code']) ?
+                $_POST['form_builder_instance_code'] : time() . '' . rand(10000, 99999);
         }
         return $this->instance_code;
     }
@@ -1056,59 +1057,10 @@ class FormBuilder
         CI_Controller::get_instance()->load->language('formbuilder');
         CI_Controller::get_instance()->load->library('form_validation');
 
-        // Sending no-cache header
-        CI_Controller::get_instance()->output->set_header('Last-Modified: ' . gmdate('D, d M Y H:i:s', time()) . ' GMT');
-        CI_Controller::get_instance()->output->set_header('Cache-Control: no-store, no-cache, must-revalidate');
-        CI_Controller::get_instance()->output->set_header('Cache-Control: post-check=0, pre-check=0');
-        CI_Controller::get_instance()->output->set_header('Pragma: no-cache');
+        $this->generateSetNoCacheHeaders();
 
         // Default value
         $save_success = TRUE;
-
-        // Computing rules, avoiding to pass a possibly huge array to the form validation method
-        $is_ci3 = version_compare(CI_VERSION, '3', '>=');
-
-        $validation_rules = array();
-
-        // When there are no validation rules, it makes no sense to test the form if valid
-        $validation_has_any_rules = FALSE;
-
-        // For every defined field
-        foreach ($this->fields as &$field) {
-            $field_name = $field['field'];
-
-            // CI3 Validation has changed the way it validates arrays
-            if ($is_ci3) {
-                if (in_array($field['input_type'], array(FormBuilder::MULTIPLECHECKBOX, FormBuilder::MULTIPLESELECT))) {
-                    $field_name = $field['field'] . '[]';
-                }
-            }
-
-            // Protection against empty string, required by CI3
-            $field_validation_rules = $field['validation_rules'] ? $field['validation_rules'] : FALSE;
-
-            // Reducing
-            $validation_rules[] = array(
-                'field' => $field_name,
-                'label' => $field['label'],
-                'rules' => $field_validation_rules,
-            );
-
-            // We need to save a variable indicating there are validation rules
-            if ($field_validation_rules) {
-                $validation_has_any_rules = TRUE;
-            }
-
-            // Filtering numeric input before validation and replacing coma with a dot
-            if (strpos($field['validation_rules'], 'numeric') !== FALSE && isset($_POST[$field['field']])) {
-                $_POST[$field['field']] = str_replace(',', '.', $_POST[$field['field']]);
-            }
-        }
-
-        // Setting validation rules if any of them exist
-        if ($validation_has_any_rules) {
-            CI_Controller::get_instance()->form_validation->set_rules($validation_rules);
-        }
 
 
         // Checking if the request was sent by a form builder generated form
@@ -1117,189 +1069,22 @@ class FormBuilder
             $this->setId($_POST['form_builder_id']);
             unset($_POST['form_builder_id']);
 
+            $validation_rules = $this->generateBuildUpValidationRules();
+
             // IMPORTANT!
             // Save array contains fields defined in form definition only!
-            $save_array = array();
+            $save_array = $this->generateComputeSaveArrayFromPost();
 
-            // Checking foreign keys for null values
-            foreach ($this->fields as &$field) {
-                $save_array[$field['field']] = isset($_POST[$field['field']]) ? CI_Controller::get_instance()->input->post($field['field']) : '';
-
-                if (!$save_array[$field['field']] && $field['foreign_key_accept_null']) {
-                    $save_array[$field['field']] = NULL;
-                }
-            }
+            $isValid = $this->generateComputeIsValid($validation_rules);
 
             // Validating input
-            if (!$validation_has_any_rules || CI_Controller::get_instance()->form_validation->run() === TRUE) {
-                // Saving
-                // Checking if there are any file upload  fields to handle
-                if (count($this->file_upload_fields) > 0) {
-                    CI_Controller::get_instance()->load->library('upload');
-
-                    foreach ($this->file_upload_fields as &$field) {
-                        // If file exist, then checking if not a directory
-                        if (file_exists($this->fields[$field]['upload_path'])) {
-                            // Checking if something else than a directory
-                            if (!is_dir($this->fields[$field]['upload_path'])) {
-                                Logger::error('Upload path is a regular file and not a directory ' . $this->fields[$field]['upload_path'], 'FORMBUILDER');
-                                continue;
-                            }
-                        } else {
-                            // If the file does not exist, attempt to create the path
-                            if (!@mkdir($this->fields[$field]['upload_path'])) {
-                                Logger::error('Unable to create directory ' . $this->fields[$field]['upload_path'], 'FORMBUILDER');
-                                continue;
-                            }
-                        }
-
-
-                        // Messy code, do not touch
-                        // $fileIndexesToRemove start with 1! not with 0
-                        $file_indexes_to_remove = array();
-
-                        // Checking if a given field was marked as to be deleted
-                        // $_POST['form_builder_files_remove'] field is a hidden field generated by the JavaScript
-                        if (isset($_POST['form_builder_files_remove'][$field])) {
-                            if (!is_array($_POST['form_builder_files_remove'][$field])) {
-                                $_POST['form_builder_files_remove'][$field] = array($_POST['form_builder_files_remove'][$field]);
-                            }
-
-                            foreach ($_POST['form_builder_files_remove'][$field] as $i) {
-                                if ($i > 0) {
-                                    $file_indexes_to_remove[] = $i;
-                                }
-                            }
-                        }
-
-                        // $form_builder_files must be an array
-                        // TODO Remove multiple file
-                        $form_builder_field_files = array();
-                        if (isset($_POST['form_builder_files'][$field])) {
-                            // TODO Standardize array file fields
-                            if (!is_array($_POST['form_builder_files'][$field]) && strlen($_POST['form_builder_files'][$field]) > 0) {
-                                // TODO Standardize array file fields
-                                $form_builder_field_files = array($_POST['form_builder_files'][$field]);
-                            }
-                        }
-
-                        //die(var_dump($fbFiles));
-                        //END Messy code, do not touch
-
-                        // TODO $this->fields[$field] might be dangerous when no keys are specified (field name specified as an element of the array)
-                        $config['upload_path'] = $this->fields[$field]['upload_path'];
-                        $config['allowed_types'] = $this->fields[$field]['upload_allowed_types'];
-                        $config['encrypt_name'] = $this->fields[$field]['upload_encrypt_name'];
-
-                        // Reinitializing upload - necessary for consequent file uploads
-                        CI_Controller::get_instance()->upload->initialize($config);
-
-                        // Needed for resetting field value, especially for the case when we do not overwrite the previous files
-                        $is_any_file_removed = false;
-
-                        $path_to_remove = false;
-                        // Removing user marked files
-                        // TODO Check if array is needed
-                        foreach ($file_indexes_to_remove as $file_index_to_remove) {
-                            $i = $file_index_to_remove - 1;
-                            $path_to_remove = $this->fields[$field]['upload_path'] . $form_builder_field_files[$i];
-                            // Checking if the file exists and really a file
-                            if (file_exists($path_to_remove) && is_file($path_to_remove)) {
-                                // Delete the file only if the overwrite option is true
-                                if ($this->isOverwriteFilesOnUpload()) {
-                                    // Delete file that was marked as DELETED
-                                    if (!@unlink($path_to_remove)) {
-                                        Logger::error('Unable to remove file ' . $path_to_remove, 'FORMBUILDER');
-                                    }
-                                }
-                            }
-                            $is_any_file_removed = TRUE;
-
-                            // Removing the index no matter the file exists or no
-                            unset($form_builder_field_files[$i]);
-                        }
-
-
-                        $upload = CI_Controller::get_instance()->upload->do_upload($field);
-
-                        if (!$upload) {
-                            // Logging all errors except upload_no_file_selected
-                            if (isset(CI_Controller::get_instance()->upload->error_msg[0]) && CI_Controller::get_instance()->upload->error_msg[0] != CI_Controller::get_instance()->lang->line('upload_no_file_selected')) {
-                                // Logging error
-                                $this->upload_warnings += CI_Controller::get_instance()->upload->error_msg;
-                            }
-
-                            // On failure removing field, so that the original image is kept
-                            if (!$is_any_file_removed) {
-                                unset($save_array[$field]);
-                            }
-                        } else {
-                            $data = CI_Controller::get_instance()->upload->data();
-                            $filename = $data['file_name'];
-
-                            // Removing the previous image/file - overwriting
-                            if (($this->fields[$field]['input_type'] == FormBuilder::IMAGE || $this->fields[$field]['input_type'] == FormBuilder::FILE) && isset($form_builder_field_files[0])) {
-                                $file_to_remove = $this->fields[$field]['upload_path'] . $form_builder_field_files[0];
-                                if (file_exists($file_to_remove) && is_file($file_to_remove)) {
-                                    // Delete the file only if the overwrite option is true
-                                    if ($this->isOverwriteFilesOnUpload() && $path_to_remove) {
-                                        // Delete file that was just OVERWRITTEN
-                                        if (!@unlink($path_to_remove)) {
-                                            Logger::error('Unable to remove file ' . $path_to_remove, 'FORMBUILDER');
-                                        }
-                                    }
-                                }
-                                unset($form_builder_field_files[0]); // In case the new file has different name
-                            }
-
-
-                            // Calling a callback function after file upload
-                            // The callback function must take 3 parameters, $filename, $basepath and $data containing form data
-                            if ($this->fields[$field]['upload_complete_callback']) {
-                                call_user_func_array($this->fields[$field]['upload_complete_callback'], array(&$filename, &$this->fields[$field]['upload_path'], &$save_array, $field));
-                            }
-                            $form_builder_field_files[] = $filename;
-
-                        }// End uploading
-
-                        // Unsetting files that were not really uploaded, elements that are empty strings
-                        foreach ($form_builder_field_files as &$form_builder_file) {
-                            // Checking if the file is really set
-                            if (strlen(trim($form_builder_file)) == 0) {
-                                $form_builder_file = NULL;
-                                unset($form_builder_file);
-                            }
-                        }
-
-
-                        $count_form_builder_field_files = count($form_builder_field_files);
-
-                        // If there are no field files - reset the field value
-                        if ($count_form_builder_field_files == 0) {
-                            if ($is_any_file_removed) {
-                                $save_array[$field] = '';
-                            }
-                        } // If there is a single file, add only the given file
-                        elseif ($count_form_builder_field_files == 1 && isset($form_builder_field_files[0])) {
-                            $save_array[$field] = $form_builder_field_files[0];
-                        } // Otherwise glue the files
-                        else {
-                            // TODO Remove multiple files
-                            $save_array[$field] = implode(';', $form_builder_field_files);
-                        }
-                    }
-                } // END Checking if there are any file upload  fields to handle
-
+            if ($isValid) {
+                $this->generateHandleFileUpload($save_array);
 
                 // TODO Check if the file field is editable, if not, remove it from the save array
 
 
-                // Fixing boolean field values, assigning TRUE or FALSE values
-                foreach ($this->fields as &$field) {
-                    if ($field['input_type'] == FormBuilder::CHECKBOX) {
-                        $save_array[$field['field']] = (isset($save_array[$field['field']]) && $save_array[$field['field']] ? TRUE : FALSE);
-                    }
-                }
+                $this->generateFixBooleanTypes($save_array);
 
                 // CALLBACK before save
                 if (isset($this->callbacks[self::CALLBACK_BEFORE_SAVE])) {
@@ -1307,25 +1092,14 @@ class FormBuilder
                 }
 
                 try {
-                    // For forms that are not saved in database directly // The order of these rows matter
-                    if (($use_callback = isset($this->callbacks[self::CALLBACK_ON_SAVE])) || !$this->feed_object) {
-                        // CALLBACK on save
-                        if ($use_callback) {
-                            $save_success = call_user_func_array($this->callbacks[self::CALLBACK_ON_SAVE], array(&$save_array));
-                        }
-                    } else {
-                        // No callback, use plain object save
-                        $save_success = $this->feed_object->saveById($this->id, $save_array);
-                    }
+                    $save_success = $this->generateDoSave($save_array);
                 } catch (Exception $e) {
                     $save_success = FALSE;
                     $this->setValidationErrorMessage($e->getMessage());
-                    Logger::error('Unable to save. Exception ' . get_class($e) . ' ' . $e->getTraceAsString(), 'FORMBUILDER');
-
+                    Logger::error('Unable to save. Exception ' . get_class($e) . ' ' . $e->getTraceAsString(),
+                        'FORMBUILDER');
                 }
 
-
-                // Saving user data
                 if ($save_success) {
                     // TODO Rewrite POST parameter access
                     $is_apply = isset($_POST['apply']);
@@ -1343,104 +1117,30 @@ class FormBuilder
                         }
                     }
 
-                    // Saving many to many relationships
                     if ($this->getId()) {
-                        foreach ($this->fields as $key => $aField) {
-                            // As we are already looping, lets do some magic
-                            if ($aField['foreign_key_table'] && $aField['foreign_key_junction_id_field_left'] && $aField['foreign_key_junction_id_field_right'] && $aField['foreign_key_junction_table'] && $aField['foreign_key_relationship_type'] == FormBuilder::FOREIGN_KEY_MANY_TO_MANY) {
-                                // Building where conditions based on the user input and the object ID
-                                // Since 0.2.4.3
-                                $where_conditions = (is_array($aField['foreign_key_junction_where_conditions']) ? $aField['foreign_key_junction_where_conditions'] : array());
-
-                                // First removing old entries
-                                CI_Controller::get_instance()->db->where($aField['foreign_key_junction_id_field_left'], $this->getId());
-                                // The following if allows to have multiple form fields having relations with the same foreign_key_junction_table
-                                if (count($where_conditions) > 0) {
-                                    CI_Controller::get_instance()->db->where($where_conditions);
-                                }
-                                CI_Controller::get_instance()->db->delete($aField['foreign_key_junction_table']);
-
-                                if (is_array($save_array[$aField['field']])) {
-                                    foreach ($save_array[$aField['field']] as $right_id) {
-                                        // There is no value specified, skip the cycle
-                                        if (!$right_id) {
-                                            continue;
-                                        }
-
-                                        // TODO Consider situation then there is a non-db model
-
-                                        // Saving new entry
-                                        CI_Controller::get_instance()->db->set($aField['foreign_key_junction_id_field_left'], $this->getId());
-                                        // The following if allows to have multiple form fields having relations with the same foreign_key_junction_table
-                                        if (count($where_conditions) > 0) {
-                                            CI_Controller::get_instance()->db->set($where_conditions);
-                                        }
-                                        CI_Controller::get_instance()->db->set($aField['foreign_key_junction_id_field_right'], $right_id)
-                                            ->insert($aField['foreign_key_junction_table']);
-                                    }
-                                }
-                            }
-                        }
-                    } // END Saving many to many relationships
-
-                    // Set simple session message on success, if enabled
-                    if ($this->use_simple_session_message_on_save_success) {
-                        // TODO Try to abstract it out from the FormBuilder class
-                        CI_Controller::get_instance()->load->library('SimpleSessionMessage');
-
-                        if (count($this->getUploadWarnings())) {
-                            CI_Controller::get_instance()->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_NOTIFICATION);
-                            CI_Controller::get_instance()->simplesessionmessage->setRawMessage(CI_Controller::get_instance()->lang->line('formbuilder_form_successfully_saved') . '<br><br><b>' . CI_Controller::get_instance()->lang->line('formbuilder_upload_warnings') . ':</b><br>' . implode('<br>', $this->getUploadWarnings()));
-                        } else {
-                            CI_Controller::get_instance()->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS);
-                            CI_Controller::get_instance()->simplesessionmessage->setMessage('formbuilder_form_successfully_saved');
-                        }
+                        $this->generateHandleForeignKeyManyToManyUpdate($save_array);
                     }
 
-                    // CALLBACK
+                    if ($this->use_simple_session_message_on_save_success) {
+                        $this->generateSetSuccessMessage();
+                    }
+
                     if (isset($this->callbacks[self::CALLBACK_AFTER_SAVE])) {
                         call_user_func_array($this->callbacks[self::CALLBACK_AFTER_SAVE], array(&$save_array));
                     }
 
-                    // Prevent from redirecting on apply
-                    if (!$is_apply) {
-                        // For non-apply save, redirect to the back link
-                        if ($this->back_link && $this->redirect_on_save_success) {
-                            redirect($this->back_link);
-                        }
+                    $this->generateHandleRedirectOnSuccess($is_apply);
 
-                    } else {
-                        // END Prevent from redirecting on apply
-                        CI_Controller::get_instance()->output->set_header('X-XSS-Protection: 0');
-                    }
-                } // Otherwise for save failure
-                else {
-                    // CALLBACK on failure
+                } else {
                     if (isset($this->callbacks[self::CALLBACK_ON_SAVE_FAILURE])) {
                         call_user_func_array($this->callbacks[self::CALLBACK_ON_SAVE_FAILURE], array(&$save_array));
                     }
                 }
             }
 
-            // If there were no object, lets generate it from a dummy class to prevent useless errors
-            if (!$this->object) {
-                $this->object = new stdClass();
-            }
-
             // !
             // Regenerating the object from POST
-            foreach ($this->fields as &$field) {
-                if (isset($save_array[$field['field']])) {
-                    $this->object->$field['field'] = $save_array[$field['field']];
-                } elseif (isset($_POST['form_builder_files'][$field['field']])) {
-                    $this->object->$field['field'] = $_POST['form_builder_files'][$field['field']];
-                } elseif ($field['input_type'] == FormBuilder::CHECKBOX || $field['input_type'] == FormBuilder::MULTIPLESELECT) {
-                    // Meaning no POST variable was set
-                    //FIXME Check validation of multiselect/multicheckbox when not selecting any values
-                    //echo $field['field'] . '=' . FALSE."<br>";
-                    $this->object->$field['field'] = FALSE;
-                }
-            }
+            $this->generateRecreateObjectFromSaveArray($save_array);
         } // END POST, END OF FORM SAVE
 
 
@@ -1448,70 +1148,18 @@ class FormBuilder
             // Executed for situation where not a POST save and no object found
             // This is called if there is no POST - reading object from the database
             if (!$this->object) {
-                // CALLBACK
-                if (isset($this->callbacks[self::CALLBACK_ON_READ])) {
-                    // There is on read callback, the object is retrieved using the callback function
-                    // The callback function must take the object (empty) by reference and must fill it
-                    call_user_func_array($this->callbacks[self::CALLBACK_ON_READ], array(&$this->object));
-                } elseif ($this->feed_object && $this->id) {
-                    // No callback, read the object from the feed
-                    $this->object = $this->feed_object->getById($this->id);
-                }
-
-                // Assigning default values for fields that have no value storied in the database
-                if ($this->object) {
-                    // For every field from the form definition
-                    foreach ($this->fields as &$field) {
-                        // If there is no value, lets try to get the implicit value
-                        if (!isset($this->object->$field['field'])) {
-                            $this->object->$field['field'] = (isset($field['input_default_value']) && $field['input_default_value'] !== FALSE ? $field['input_default_value'] : '');
-                        }
-                    }
-                } // END is object
+                $this->generateDoReadObject();
+                $this->generateDoAssignDefaultValuesForEmptyReadFields();
             }
         }
 
-        // For every field from the form definition
         foreach ($this->fields as &$field) {
-            // As we are already looping, lets do some magic
             if ($field['foreign_key_table']) {
-                // Resolving FOREIGN_KEY_MANY_TO_MANY relationship for a valid definition
-                if ($field['foreign_key_relationship_type'] == FormBuilder::FOREIGN_KEY_MANY_TO_MANY && $field['foreign_key_junction_table'] && $field['foreign_key_junction_id_field_right'] && $field['foreign_key_junction_id_field_left']) {
-                    // This IF prevents from overwriting when the validation fails
-                    if (isset($this->object->$field['field']) && !$this->object->$field['field']) {
-                        // Building where conditions based on the user input and the object ID
-                        // Since 0.2.4.3 $where_conditions is read from foreign_key_junction_where_conditions instead of foreign_key_where_conditions
-                        // The elseif( is_array($field['foreign_key_where_conditions']) ) remains ONLY for backward compatibility
-                        if (is_array($field['foreign_key_junction_where_conditions'])) {
-                            $where_conditions = $field['foreign_key_junction_where_conditions'];
-                        } elseif (is_array($field['foreign_key_where_conditions'])) {
-                            $where_conditions = $field['foreign_key_where_conditions'];
-                        } else {
-                            $where_conditions = array();
-                        }
-
-                        if ($this->getId()) {
-                            $where_conditions += array($field['foreign_key_junction_id_field_left'] => $this->getId());
-                        }
-
-                        $this->object->$field['field'] = CI_Controller::get_instance()->Generic_model->getAssocPairs($field['foreign_key_junction_id_field_right'], $field['foreign_key_junction_id_field_right'], $field['foreign_key_junction_table'], FALSE, FALSE, $where_conditions);
-                    }
-                }
-
-                if (!$field['input_is_editable']) {
-                    // is_array is required for multiple checkbox fields, etc
-                    $possible_values = isset($this->object->$field['field']) ? (is_array($this->object->$field['field']) ? $this->object->$field['field'] : array($this->object->$field['field'])) : array($field['input_default_value']); // Avoiding error
-                    $field['values'] = CI_Controller::get_instance()->Generic_model->getAssocPairs($field['foreign_key_field'], $field['foreign_key_label_field'], $field['foreign_key_table'], FALSE, $possible_values, $field['foreign_key_where_conditions']);
-                } elseif (!is_array($field['values'])) {
-                    $field['values'] = CI_Controller::get_instance()->Generic_model->getAssocPairs($field['foreign_key_field'], $field['foreign_key_label_field'], $field['foreign_key_table'], FALSE, FALSE, $field['foreign_key_where_conditions']);
-                }
-
-                // Adding an empty element for fields that accept null
-                if ($field['foreign_key_accept_null']) {
-                    $field['values'] = array('' => '----') + $field['values'];
-                }
+                $this->generateForeignKeyFetchObjectValues($field);
+                $this->generateForeignKeyFillFieldPossibleValues($field);
             }
         }
+
 
         // CALLBACK
         if (isset($this->callbacks[self::CALLBACK_BEFORE_RENDER])) {
@@ -1520,5 +1168,543 @@ class FormBuilder
 
         // Returns rendered HTML
         return $this->getRenderer()->render($this, $save_success);
+    }
+
+    /**
+     * @return array
+     */
+    private function generateComputeSaveArrayFromPost()
+    {
+        $save_array = array();
+
+        // Checking foreign keys for null values
+        foreach ($this->fields as &$field) {
+            $save_array[$field['field']] = isset($_POST[$field['field']]) ? CI_Controller::get_instance()->input->post($field['field']) : '';
+
+            if (!$save_array[$field['field']] && $field['foreign_key_accept_null']) {
+                $save_array[$field['field']] = NULL;
+            }
+        }
+        return $save_array;
+    }
+
+    /**
+     * @param $is_ci3
+     * @param $field
+     * @return string
+     */
+    private function generateGetMappedFieldName($is_ci3, $field)
+    {
+        $field_name = $field['field'];
+        // CI3 Validation has changed the way it validates arrays
+        if ($is_ci3) {
+            if (in_array($field['input_type'], array(FormBuilder::MULTIPLECHECKBOX, FormBuilder::MULTIPLESELECT))) {
+                $field_name = $field['field'] . '[]';
+            }
+        }
+        return $field_name;
+    }
+
+    private function generateSetSuccessMessage()
+    {
+        CI_Controller::get_instance()->load->library('SimpleSessionMessage');
+
+        if (count($this->getUploadWarnings())) {
+            CI_Controller::get_instance()->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_NOTIFICATION);
+            CI_Controller::get_instance()->simplesessionmessage->setRawMessage(CI_Controller::get_instance()->lang->line('formbuilder_form_successfully_saved') . '<br><br><b>' . CI_Controller::get_instance()->lang->line('formbuilder_upload_warnings') . ':</b><br>' . implode('<br>', $this->getUploadWarnings()));
+        } else {
+            CI_Controller::get_instance()->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS);
+            CI_Controller::get_instance()->simplesessionmessage->setMessage('formbuilder_form_successfully_saved');
+        }
+    }
+
+    /**
+     * @param $save_array
+     * @return mixed
+     */
+    private function generateRecreateObjectFromSaveArray($save_array)
+    {
+        // If there were no object, lets generate it from a dummy class to prevent useless errors
+        if (!$this->object) {
+            $this->object = new stdClass();
+        }
+
+        foreach ($this->fields as $field) {
+            if (isset($save_array[$field['field']])) {
+                $this->object->$field['field'] = $save_array[$field['field']];
+            } elseif (isset($_POST['form_builder_files'][$field['field']])) {
+                $this->object->$field['field'] = $_POST['form_builder_files'][$field['field']];
+            } elseif ($field['input_type'] == FormBuilder::CHECKBOX || $field['input_type'] == FormBuilder::MULTIPLESELECT) {
+                // Meaning no POST variable was set
+                //FIXME Check validation of multiselect/multicheckbox when not selecting any values
+                //echo $field['field'] . '=' . FALSE."<br>";
+                $this->object->$field['field'] = FALSE;
+            }
+        }
+    }
+
+    /**
+     * @param $field
+     * @return bool
+     */
+    private function generateEnsureUploadDirectoryExits($field)
+    {
+        // If file exist, then checking if not a directory
+        if (file_exists($field['upload_path'])) {
+            // Checking if something else than a directory
+            if (!is_dir($field['upload_path'])) {
+                Logger::error('Upload path is a regular file and not a directory ' . $field['upload_path'], 'FORMBUILDER');
+                return FALSE;
+            }
+        } else {
+            // If the file does not exist, attempt to create the path
+            if (!@mkdir($field['upload_path'])) {
+                Logger::error('Unable to create directory ' . $field['upload_path'], 'FORMBUILDER');
+                return FALSE;
+            }
+        }
+
+        return TRUE;
+    }
+
+    /**
+     * @param $field_name
+     * @return array
+     */
+    private function generateUploadComputeIndexesToRemove($field_name)
+    {
+        // Messy code, do not touch
+        // $fileIndexesToRemove start with 1! not with 0
+        $file_indexes_to_remove = array();
+
+        // Checking if a given field was marked as to be deleted
+        // $_POST['form_builder_files_remove'] field is a hidden field generated by the JavaScript
+        if (isset($_POST['form_builder_files_remove'][$field_name])) {
+            if (!is_array($_POST['form_builder_files_remove'][$field_name])) {
+                $_POST['form_builder_files_remove'][$field_name] = array($_POST['form_builder_files_remove'][$field_name]);
+            }
+
+            foreach ($_POST['form_builder_files_remove'][$field_name] as $i) {
+                if ($i > 0) {
+                    $file_indexes_to_remove[] = $i;
+                }
+            }
+        }
+        return $file_indexes_to_remove;
+    }
+
+    /**
+     * @param $field_name
+     * @return array
+     */
+    private function generateComputeFileFields($field_name)
+    {
+        // $form_builder_files must be an array
+        // TODO Remove multiple file
+        $form_builder_field_files = array();
+        if (isset($_POST['form_builder_files'][$field_name])) {
+            // TODO Standardize array file fields
+            if (!is_array($_POST['form_builder_files'][$field_name]) && strlen($_POST['form_builder_files'][$field_name]) > 0) {
+                // TODO Standardize array file fields
+                $form_builder_field_files = array($_POST['form_builder_files'][$field_name]);
+            }
+        }
+        return $form_builder_field_files;
+    }
+
+    /**
+     * @param $save_id_values
+     * @param $field
+     * @param $where_conditions
+     */
+    private function generateForeignKeyManyToManyDoInsert($save_id_values, $field, $where_conditions)
+    {
+        foreach ($save_id_values as $right_id) {
+            // There is no value specified, skip the cycle
+            if (!$right_id) {
+                continue;
+            }
+
+            // TODO Consider situation then there is a non-db model
+
+            // Saving new entry
+            CI_Controller::get_instance()->db->set($field['foreign_key_junction_id_field_left'], $this->getId());
+            // The following if allows to have multiple form fields having relations with the same foreign_key_junction_table
+            if (count($where_conditions) > 0) {
+                CI_Controller::get_instance()->db->set($where_conditions);
+            }
+            CI_Controller::get_instance()->db->set($field['foreign_key_junction_id_field_right'], $right_id)
+                ->insert($field['foreign_key_junction_table']);
+        }
+    }
+
+    /**
+     * @param $field
+     * @param $where_conditions
+     */
+    private function generateForeignKeyManyToManyDoDelete($field, $where_conditions)
+    {
+        CI_Controller::get_instance()->db->where($field['foreign_key_junction_id_field_left'], $this->getId());
+        // The following if allows to have multiple form fields having relations with the same foreign_key_junction_table
+        if (count($where_conditions) > 0) {
+            CI_Controller::get_instance()->db->where($where_conditions);
+        }
+        CI_Controller::get_instance()->db->delete($field['foreign_key_junction_table']);
+    }
+
+    /**
+     * @param $save_array
+     * @return void
+     */
+    private function generateHandleForeignKeyManyToManyUpdate($save_array)
+    {
+        foreach ($this->fields as $field) {
+            // As we are already looping, lets do some magic
+            if ($field['foreign_key_table']
+                && $field['foreign_key_junction_id_field_left']
+                && $field['foreign_key_junction_id_field_right']
+                && $field['foreign_key_junction_table']
+                && $field['foreign_key_relationship_type'] == FormBuilder::FOREIGN_KEY_MANY_TO_MANY) {
+
+                // Building where conditions based on the user input and the object ID
+                // Since 0.2.4.3
+                $where_conditions = (is_array($field['foreign_key_junction_where_conditions']) ?
+                    $field['foreign_key_junction_where_conditions'] :
+                    array());
+
+                $this->generateForeignKeyManyToManyDoDelete($field, $where_conditions);
+
+
+                if (is_array($save_array[$field['field']])) {
+                    $this->generateForeignKeyManyToManyDoInsert($save_array[$field['field']], $field, $where_conditions);
+                }
+            }
+        }
+    }
+
+    private function generateDoReadObject()
+    {
+        // CALLBACK
+        if (isset($this->callbacks[self::CALLBACK_ON_READ])) {
+            // There is on read callback, the object is retrieved using the callback function
+            // The callback function must take the object (empty) by reference and must fill it
+            call_user_func_array($this->callbacks[self::CALLBACK_ON_READ], array(&$this->object));
+        } elseif ($this->feed_object && $this->id) {
+            // No callback, read the object from the feed
+            $this->object = $this->feed_object->getById($this->id);
+        }
+    }
+
+    private function generateDoAssignDefaultValuesForEmptyReadFields()
+    {
+        // Assigning default values for fields that have no value storied in the database
+        if ($this->object) {
+            // For every field from the form definition
+            foreach ($this->fields as &$field) {
+                // If there is no value, lets try to get the implicit value
+                if (!isset($this->object->$field['field'])) {
+                    $this->object->$field['field'] = (isset($field['input_default_value']) && $field['input_default_value'] !== FALSE ? $field['input_default_value'] : '');
+                }
+            }
+        }
+    }
+
+    private function generateSetNoCacheHeaders()
+    {
+        CI_Controller::get_instance()->output->set_header('Last-Modified: ' . gmdate('D, d M Y H:i:s', time()) . ' GMT');
+        CI_Controller::get_instance()->output->set_header('Cache-Control: no-store, no-cache, must-revalidate');
+        CI_Controller::get_instance()->output->set_header('Cache-Control: post-check=0, pre-check=0');
+        CI_Controller::get_instance()->output->set_header('Pragma: no-cache');
+    }
+
+    /**
+     * @param $save_array
+     * @return void
+     */
+    private function generateHandleFileUpload(&$save_array)
+    {
+        if (count($this->file_upload_fields) == 0) {
+            return;
+        }
+
+        CI_Controller::get_instance()->load->library('upload');
+        foreach ($this->file_upload_fields as $upload_field_name) {
+            if (!$this->generateEnsureUploadDirectoryExits($this->fields[$upload_field_name])) {
+                continue;
+            }
+
+            $file_indexes_to_remove = $this->generateUploadComputeIndexesToRemove($upload_field_name);
+
+            // TODO $this->fields[$field] might be dangerous when no keys are specified (field name specified as an element of the array)
+            // Reinitializing upload - necessary for consequent file uploads
+            CI_Controller::get_instance()->upload->initialize($this->generateGetUploadConfig($upload_field_name));
+
+            // Needed for resetting field value, especially for the case when we do not overwrite the previous files
+            $is_any_file_removed = false;
+
+            $path_to_remove = false;
+            $form_builder_field_files = $this->generateComputeFileFields($upload_field_name);
+            // Removing user marked files
+            // TODO Check if array is needed
+            foreach ($file_indexes_to_remove as $file_index_to_remove) {
+                $i = $file_index_to_remove - 1;
+                $path_to_remove = $this->fields[$upload_field_name]['upload_path'] . $form_builder_field_files[$i];
+                // Checking if the file exists and really a file
+                if (file_exists($path_to_remove) && is_file($path_to_remove)) {
+                    // Delete the file only if the overwrite option is true
+                    if ($this->isOverwriteFilesOnUpload()) {
+                        // Delete file that was marked as DELETED
+                        if (!@unlink($path_to_remove)) {
+                            Logger::error('Unable to remove file ' . $path_to_remove, 'FORMBUILDER');
+                        }
+                    }
+                }
+                $is_any_file_removed = TRUE;
+
+                // Removing the index no matter the file exists or no
+                unset($form_builder_field_files[$i]);
+            }
+
+
+            $upload = CI_Controller::get_instance()->upload->do_upload($upload_field_name);
+
+            if (!$upload) {
+                // Logging all errors except upload_no_file_selected
+                if (isset(CI_Controller::get_instance()->upload->error_msg[0])
+                    && CI_Controller::get_instance()->upload->error_msg[0] != CI_Controller::get_instance()->lang->line('upload_no_file_selected')) {
+                    // Logging error
+                    $this->upload_warnings += CI_Controller::get_instance()->upload->error_msg;
+                }
+
+                // On failure removing field, so that the original image is kept
+                if (!$is_any_file_removed) {
+                    unset($save_array[$upload_field_name]);
+                }
+            } else {
+                $data = CI_Controller::get_instance()->upload->data();
+                $filename = $data['file_name'];
+
+                // Removing the previous image/file - overwriting
+                if (($this->fields[$upload_field_name]['input_type'] == FormBuilder::IMAGE || $this->fields[$upload_field_name]['input_type'] == FormBuilder::FILE) && isset($form_builder_field_files[0])) {
+                    $file_to_remove = $this->fields[$upload_field_name]['upload_path'] . $form_builder_field_files[0];
+                    if (file_exists($file_to_remove) && is_file($file_to_remove)) {
+                        // Delete the file only if the overwrite option is true
+                        if ($this->isOverwriteFilesOnUpload() && $path_to_remove) {
+                            // Delete file that was just OVERWRITTEN
+                            if (!@unlink($path_to_remove)) {
+                                Logger::error('Unable to remove file ' . $path_to_remove, 'FORMBUILDER');
+                            }
+                        }
+                    }
+                    unset($form_builder_field_files[0]); // In case the new file has different name
+                }
+
+
+                // Calling a callback function after file upload
+                // The callback function must take 3 parameters, $filename, $basepath and $data containing form data
+                if ($this->fields[$upload_field_name]['upload_complete_callback']) {
+                    call_user_func_array($this->fields[$upload_field_name]['upload_complete_callback'], array(&$filename, &$this->fields[$upload_field_name]['upload_path'], &$save_array, $upload_field_name));
+                }
+                $form_builder_field_files[] = $filename;
+
+            }// End uploading
+
+            // Unsetting files that were not really uploaded, elements that are empty strings
+            foreach ($form_builder_field_files as &$form_builder_file) {
+                // Checking if the file is really set
+                if (strlen(trim($form_builder_file)) == 0) {
+                    $form_builder_file = NULL;
+                    unset($form_builder_file);
+                }
+            }
+
+
+            $count_form_builder_field_files = count($form_builder_field_files);
+
+            // If there are no field files - reset the field value
+            if ($count_form_builder_field_files == 0) {
+                if ($is_any_file_removed) {
+                    $save_array[$upload_field_name] = '';
+                }
+            } // If there is a single file, add only the given file
+            elseif ($count_form_builder_field_files == 1 && isset($form_builder_field_files[0])) {
+                $save_array[$upload_field_name] = $form_builder_field_files[0];
+            } // Otherwise glue the files
+            else {
+                // TODO Remove multiple files
+                $save_array[$upload_field_name] = implode(';', $form_builder_field_files);
+            }
+        }
+    }
+
+    /**
+     * @param $upload_field_name
+     * @return array
+     */
+    private function generateGetUploadConfig($upload_field_name)
+    {
+        $config = array();
+        $config['upload_path'] = $this->fields[$upload_field_name]['upload_path'];
+        $config['allowed_types'] = $this->fields[$upload_field_name]['upload_allowed_types'];
+        $config['encrypt_name'] = $this->fields[$upload_field_name]['upload_encrypt_name'];
+        return $config;
+    }
+
+    /**
+     * @param $save_array
+     * @return void
+     */
+    private function generateFixBooleanTypes(&$save_array)
+    {
+        // Fixing boolean field values, assigning TRUE or FALSE values
+        foreach ($this->fields as &$field) {
+            if ($field['input_type'] == FormBuilder::CHECKBOX) {
+                $save_array[$field['field']] = (isset($save_array[$field['field']]) && $save_array[$field['field']] ? TRUE : FALSE);
+            }
+        }
+    }
+
+    /**
+     * @param $field
+     */
+    private function generateConvertComasIntoDotsForNumericTypes($field)
+    {
+        if (strpos($field['validation_rules'], 'numeric') !== FALSE && isset($_POST[$field['field']])) {
+            $_POST[$field['field']] = str_replace(',', '.', $_POST[$field['field']]);
+        }
+    }
+
+    /**
+     * @param $is_ci3
+     * @return array
+     */
+    private function generateBuildUpValidationRules()
+    {
+        // Computing rules, avoiding to pass a possibly huge array to the form validation method
+        $is_ci3 = version_compare(CI_VERSION, '3', '>=');
+
+        $validation_rules = array();
+
+        foreach ($this->fields as $field) {
+            // Protection against empty string, required by CI3
+            $field_validation_rules = $field['validation_rules'] ? $field['validation_rules'] : FALSE;
+
+            // We need to save a variable indicating there are validation rules
+            if ($field_validation_rules) {
+                $validation_rules[] = array(
+                    'field' => $this->generateGetMappedFieldName($is_ci3, $field),
+                    'label' => $field['label'],
+                    'rules' => $field_validation_rules,
+                );
+            }
+
+            $this->generateConvertComasIntoDotsForNumericTypes($field);
+        }
+        return $validation_rules;
+    }
+
+    /**
+     * @param $save_array
+     * @return mixed
+     */
+    private function generateDoSave(&$save_array)
+    {
+        $save_success = FALSE;
+        // For forms that are not saved in database directly // The order of these rows matter
+        if (($use_callback = isset($this->callbacks[self::CALLBACK_ON_SAVE])) || !$this->feed_object) {
+            // CALLBACK on save
+            if ($use_callback) {
+                $save_success = call_user_func_array($this->callbacks[self::CALLBACK_ON_SAVE], array(&$save_array));
+            }
+        } else {
+            // No callback, use plain object save
+            $save_success = $this->feed_object->saveById($this->id, $save_array);
+        }
+        return $save_success;
+    }
+
+    /**
+     * @param $is_apply
+     */
+    private function generateHandleRedirectOnSuccess($is_apply)
+    {
+        // Prevent from redirecting on apply
+        if (!$is_apply) {
+            // For non-apply save, redirect to the back link
+            if ($this->back_link && $this->redirect_on_save_success) {
+                redirect($this->back_link);
+            }
+
+        } else {
+            // END Prevent from redirecting on apply
+            CI_Controller::get_instance()->output->set_header('X-XSS-Protection: 0');
+        }
+    }
+
+    /**
+     * @param $field
+     */
+    private function generateForeignKeyFetchObjectValues($field)
+    {
+        // Resolving FOREIGN_KEY_MANY_TO_MANY relationship for a valid definition
+        if ($field['foreign_key_relationship_type'] == FormBuilder::FOREIGN_KEY_MANY_TO_MANY
+            && $field['foreign_key_junction_table']
+            && $field['foreign_key_junction_id_field_right']
+            && $field['foreign_key_junction_id_field_left']) {
+            // This IF prevents from overwriting when the validation fails
+            if (isset($this->object->$field['field']) && !$this->object->$field['field']) {
+                // Building where conditions based on the user input and the object ID
+                // Since 0.2.4.3 $where_conditions is read from foreign_key_junction_where_conditions instead of foreign_key_where_conditions
+                // The elseif( is_array($field['foreign_key_where_conditions']) ) remains ONLY for backward compatibility
+                if (is_array($field['foreign_key_junction_where_conditions'])) {
+                    $where_conditions = $field['foreign_key_junction_where_conditions'];
+                } elseif (is_array($field['foreign_key_where_conditions'])) {
+                    $where_conditions = $field['foreign_key_where_conditions'];
+                } else {
+                    $where_conditions = array();
+                }
+
+                if ($this->getId()) {
+                    $where_conditions += array($field['foreign_key_junction_id_field_left'] => $this->getId());
+                }
+
+                $this->object->$field['field'] = CI_Controller::get_instance()->Generic_model->getAssocPairs($field['foreign_key_junction_id_field_right'], $field['foreign_key_junction_id_field_right'], $field['foreign_key_junction_table'], FALSE, FALSE, $where_conditions);
+            }
+        }
+    }
+
+    /**
+     * @param $validation_rules
+     * @return bool
+     */
+    private function generateComputeIsValid($validation_rules)
+    {
+        $isValid = TRUE;
+        // Setting validation rules if any of them exist
+        if (count($validation_rules) > 0) {
+            CI_Controller::get_instance()->form_validation->set_rules($validation_rules);
+            $isValid = CI_Controller::get_instance()->form_validation->run() === TRUE;
+        }
+        return $isValid;
+    }
+
+    /**
+     * @param $field
+     * @return mixed
+     */
+    private function generateForeignKeyFillFieldPossibleValues(&$field)
+    {
+        if (!$field['input_is_editable']) {
+            // is_array is required for multiple checkbox fields, etc
+            $possible_values = isset($this->object->$field['field']) ? (is_array($this->object->$field['field']) ? $this->object->$field['field'] : array($this->object->$field['field'])) : array($field['input_default_value']); // Avoiding error
+            $field['values'] = CI_Controller::get_instance()->Generic_model->getAssocPairs($field['foreign_key_field'], $field['foreign_key_label_field'], $field['foreign_key_table'], FALSE, $possible_values, $field['foreign_key_where_conditions']);
+        } elseif (!is_array($field['values'])) {
+            $field['values'] = CI_Controller::get_instance()->Generic_model->getAssocPairs($field['foreign_key_field'], $field['foreign_key_label_field'], $field['foreign_key_table'], FALSE, FALSE, $field['foreign_key_where_conditions']);
+        }
+
+        // Adding an empty element for fields that accept null
+        if ($field['foreign_key_accept_null']) {
+            $field['values'] = array('' => '----') + $field['values'];
+        }
     }
 }
