@@ -433,9 +433,10 @@ class DefaultFormRenderer implements FormRenderableInterface
          */
         $registeredComponents = array(
             new \Piotrpolak\Pepiscms\Formbuilder\Component\Textfield(),
+            new \Piotrpolak\Pepiscms\Formbuilder\Component\Password(),
             new \Piotrpolak\Pepiscms\Formbuilder\Component\Checkbox(),
             new \Piotrpolak\Pepiscms\Formbuilder\Component\Selectbox(),
-            new \Piotrpolak\Pepiscms\Formbuilder\Component\MultipleSelectbox(),
+            new \Piotrpolak\Pepiscms\Formbuilder\Component\MultipleSelect(),
             new \Piotrpolak\Pepiscms\Formbuilder\Component\Radio(),
             new \Piotrpolak\Pepiscms\Formbuilder\Component\Textarea(),
             new \Piotrpolak\Pepiscms\Formbuilder\Component\Image(),
@@ -450,8 +451,7 @@ class DefaultFormRenderer implements FormRenderableInterface
             new \Piotrpolak\Pepiscms\Formbuilder\Component\TextfieldAutocomplete(),
             new \Piotrpolak\Pepiscms\Formbuilder\Component\SelectboxAutocomplete(),
         );
-
-
+        
         foreach ($registeredComponents as $registeredComponent) {
             if ($registeredComponent->getComponentId() == $componentId) {
                 return $registeredComponent;
