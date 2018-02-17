@@ -33,6 +33,11 @@ class ModuleRunner
     private static $module_instance = null;
 
     /**
+     * @var \Piotrpolak\Pepiscms\Modulerunner\ModuleLocatorInterface[]
+     */
+    private $moduleLocators = array();
+
+    /**
      * Default constructor, empty
      * @param array $params
      */
@@ -41,6 +46,9 @@ class ModuleRunner
         $CI = get_instance();
         $CI->load->library('Logger');
         $CI->load->library('WebserviceDispatcher');
+
+        $this->moduleLocators[] = new \Piotrpolak\Pepiscms\Modulerunner\ModuleLocator();
+        $this->moduleLocators[] = new \Piotrpolak\Pepiscms\Modulerunner\LegacyModuleLocator();
     }
 
     /**
@@ -104,10 +112,22 @@ class ModuleRunner
             die($out);
         }
 
-        $controller_file = $module_name . '_admin_controller.php';
 
-        if (file_exists($module_directory . '/' . $controller_file)) {
-            include_once($module_directory . '/' . $controller_file);
+        $controller_path = FALSE;
+        $checked_files = array();
+        foreach ($this->moduleLocators as $moduleLocator) {
+            $resolved_file = $moduleLocator->getAdminControllerRelativePath($module_name);
+
+            $checked_files[] = $resolved_file;
+            $resolved_path = $module_directory . '/' . $resolved_file;
+            if (file_exists($resolved_path)) {
+                $controller_path = $resolved_path;
+                break;
+            }
+        }
+
+        if ($controller_path) {
+            include_once($controller_path);
 
             $class = ucfirst($module_name) . 'Admin';
 
@@ -139,7 +159,7 @@ class ModuleRunner
                 show_error($error_msg);
             }
         } else {
-            $error_msg = 'Unable to run module ' . $module_name . '. Controller file ' . $controller_file . ' not found.';
+            $error_msg = 'Unable to run module ' . $module_name . '. Controller file ' . implode(',', $checked_files) . ' not found.';
             Logger::error($error_msg, 'MODULE');
             show_error($error_msg);
         }
@@ -158,8 +178,6 @@ class ModuleRunner
      */
     public function runModule($module_name, $method, $site_language, $uri = FALSE)
     {
-        $file_suffix = '_controller';
-
         $CI = get_instance();
 
         $CI->load->model('Module_model');
@@ -175,11 +193,23 @@ class ModuleRunner
             show_error($error_msg);
         }
 
-        $controller_file = $module_name . $file_suffix . '.php';
+        $controller_path = FALSE;
+        $checked_files = array();
+        foreach ($this->moduleLocators as $moduleLocator) {
+            $resolved_file = $moduleLocator->getPublicControllerRelativePath($module_name);
 
-        if (file_exists($module_directory . '/' . $controller_file)) {
-            include_once($module_directory . '/' . $controller_file);
-            $class = ucfirst($module_name); // Building class name
+            $checked_files[] = $resolved_file;
+            $resolved_path = $module_directory . '/' . $resolved_file;
+            if (file_exists($resolved_path)) {
+                $controller_path = $resolved_path;
+                break;
+            }
+        }
+
+        if ($controller_path) {
+            include_once($controller_path);
+
+            $class = ucfirst($module_name);
 
             if (class_exists($class)) {
                 if (!in_array(strtolower($method), array_map('strtolower', get_class_methods($class)))) {
@@ -214,7 +244,7 @@ class ModuleRunner
                 show_error($error_msg);
             }
         } else {
-            $error_msg = 'Unable to run module ' . $module_name . '. Controller file ' . $controller_file . ' not found.';
+            $error_msg = 'Unable to run module ' . $module_name . '. Controller file ' . implode(',', $checked_files) . ' not found.';
             Logger::error($error_msg, 'MODULE');
             show_error($error_msg);
         }
@@ -493,6 +523,14 @@ class ModuleRunner
         }
 
         return FALSE;
+    }
+
+    /**
+     * @return \Piotrpolak\Pepiscms\Modulerunner\ModuleLocatorInterface[]
+     */
+    public function getModuleLocators()
+    {
+        return $this->moduleLocators;
     }
 
 }

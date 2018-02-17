@@ -363,13 +363,26 @@ class Module_model extends CI_Model
             return new $class_name();
         }
 
-        $path = $this->load->resolveModuleDirectory($module_name) . $module_name . '_descriptor.php';
+        $module_directory = $this->load->resolveModuleDirectory($module_name);
 
-        if (!file_exists($path)) {
+        $descriptor_path = FALSE;
+        $checked_files = array();
+        foreach ($this->modulerunner->getModuleLocators() as $moduleLocator) {
+            $resolved_file = $moduleLocator->getDescriptorRelativePath($module_name);
+
+            $checked_files[] = $resolved_file;
+            $resolved_path = $module_directory . '/' . $resolved_file;
+            if (file_exists($resolved_path)) {
+                $descriptor_path = $resolved_path;
+                break;
+            }
+        }
+
+        if (!file_exists($descriptor_path)) {
             return FALSE;
         }
 
-        require_once($path);
+        require_once($descriptor_path);
 
         if (!class_exists($class_name)) {
             return FALSE;
