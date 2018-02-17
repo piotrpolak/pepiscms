@@ -149,7 +149,7 @@ class {module_class_name}Admin extends AdminCRUDController
 
 //        // Generating form fields for translations
 //        // Only if the feed object is translateable and the getLocales function exists
-//        if (($this->getFeedObject() instanceof Translateable) && is_callable(array($this, 'getLocales'))) {
+//        if (($this->getFeedObject() instanceof TranslateableInterface) && is_callable(array($this, 'getLocales'))) {
 //            // Overwriting the default group
 //            foreach ($definition as &$field) {
 //                // Only when there is no group specified
