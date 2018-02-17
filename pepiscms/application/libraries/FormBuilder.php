@@ -774,7 +774,11 @@ class FormBuilder
             $defaults['input_group'] = 'default';
         }
         if (!isset($this->input_groups[$defaults['input_group']])) {
-            $this->input_groups[$defaults['input_group']] = array('label' => ucfirst(str_replace('_', ' ', $defaults['input_group'])), 'description' => FALSE, 'fields' => array());
+            $this->input_groups[$defaults['input_group']] = array(
+                'label' => ucfirst(str_replace('_', ' ', $defaults['input_group'])),
+                'description' => FALSE,
+                'fields' => array()
+            );
         }
         $this->input_groups[$defaults['input_group']]['fields'][] = $defaults['field'];
 
@@ -787,7 +791,9 @@ class FormBuilder
             }
         }
 
-        $defaults['label'] = $defaults['label'] !== FALSE ? $defaults['label'] : ucfirst(str_replace('_', ' ', $defaults['field']));
+        $defaults['label'] = $defaults['label'] !== FALSE ?
+            $defaults['label'] : ucfirst(str_replace('_', ' ', $defaults['field']));
+
         $this->fields[$defaults['field']] = $defaults;
 
         return true;
@@ -1101,20 +1107,10 @@ class FormBuilder
                 }
 
                 if ($save_success) {
-                    // TODO Rewrite POST parameter access
-                    $is_apply = isset($_POST['apply']);
+                    $is_apply = CI_Controller::get_instance()->input->post('apply') !== NULL;
 
-                    // There were no ID, try to determine it after the form is saved
-                    if (!$this->id) // $is_apply
-                    {
-                        // Default ID comes from the database class
-                        // TODO Consider situation then there is a non-db model
-                        $this->id = CI_Controller::get_instance()->db->insert_id();
-
-                        // Assigning ID when the success is a valid numeric value only
-                        if (is_numeric($save_success)) {
-                            $this->id = $save_success;
-                        }
+                    if (!$this->getId()) { // There were no ID, try to determine it after the form is saved
+                        $this->generateRefreshId($save_success);
                     }
 
                     if ($this->getId()) {
@@ -1179,7 +1175,8 @@ class FormBuilder
 
         // Checking foreign keys for null values
         foreach ($this->fields as &$field) {
-            $save_array[$field['field']] = isset($_POST[$field['field']]) ? CI_Controller::get_instance()->input->post($field['field']) : '';
+            $save_array[$field['field']] = CI_Controller::get_instance()->input->post($field['field']) !== NULL ?
+                CI_Controller::get_instance()->input->post($field['field']) : '';
 
             if (!$save_array[$field['field']] && $field['foreign_key_accept_null']) {
                 $save_array[$field['field']] = NULL;
@@ -1470,9 +1467,7 @@ class FormBuilder
 
             if (!$upload) {
                 // Logging all errors except upload_no_file_selected
-                if (isset(CI_Controller::get_instance()->upload->error_msg[0])
-                    && CI_Controller::get_instance()->upload->error_msg[0] != CI_Controller::get_instance()->lang->line('upload_no_file_selected')) {
-                    // Logging error
+                if ($this->hasSignificantUploadError()) {
                     $this->upload_warnings += CI_Controller::get_instance()->upload->error_msg;
                 }
 
@@ -1485,7 +1480,10 @@ class FormBuilder
                 $filename = $data['file_name'];
 
                 // Removing the previous image/file - overwriting
-                if (($this->fields[$upload_field_name]['input_type'] == FormBuilder::IMAGE || $this->fields[$upload_field_name]['input_type'] == FormBuilder::FILE) && isset($form_builder_field_files[0])) {
+                if (($this->fields[$upload_field_name]['input_type'] == FormBuilder::IMAGE
+                        || $this->fields[$upload_field_name]['input_type'] == FormBuilder::FILE)
+                    && isset($form_builder_field_files[0])) {
+
                     $file_to_remove = $this->fields[$upload_field_name]['upload_path'] . $form_builder_field_files[0];
                     if (file_exists($file_to_remove) && is_file($file_to_remove)) {
                         // Delete the file only if the overwrite option is true
@@ -1503,7 +1501,11 @@ class FormBuilder
                 // Calling a callback function after file upload
                 // The callback function must take 3 parameters, $filename, $basepath and $data containing form data
                 if ($this->fields[$upload_field_name]['upload_complete_callback']) {
-                    call_user_func_array($this->fields[$upload_field_name]['upload_complete_callback'], array(&$filename, &$this->fields[$upload_field_name]['upload_path'], &$save_array, $upload_field_name));
+                    call_user_func_array($this->fields[$upload_field_name]['upload_complete_callback'],
+                        array(&$filename,
+                            &$this->fields[$upload_field_name]['upload_path'],
+                            &$save_array,
+                            $upload_field_name));
                 }
                 $form_builder_field_files[] = $filename;
 
@@ -1517,7 +1519,6 @@ class FormBuilder
                     unset($form_builder_file);
                 }
             }
-
 
             $count_form_builder_field_files = count($form_builder_field_files);
 
@@ -1569,8 +1570,10 @@ class FormBuilder
      */
     private function generateConvertComasIntoDotsForNumericTypes($field)
     {
-        if (strpos($field['validation_rules'], 'numeric') !== FALSE && isset($_POST[$field['field']])) {
-            $_POST[$field['field']] = str_replace(',', '.', $_POST[$field['field']]);
+        if (strpos($field['validation_rules'], 'numeric') !== FALSE
+            && CI_Controller::get_instance()->input->post($field['field']) !== NULL) {
+            $replaced = str_replace(',', '.', CI_Controller::get_instance()->input->post($field['field']));
+            $_POST[$field['field']] = $replaced;
         }
     }
 
@@ -1582,14 +1585,12 @@ class FormBuilder
     {
         // Computing rules, avoiding to pass a possibly huge array to the form validation method
         $is_ci3 = version_compare(CI_VERSION, '3', '>=');
-
         $validation_rules = array();
 
         foreach ($this->fields as $field) {
             // Protection against empty string, required by CI3
             $field_validation_rules = $field['validation_rules'] ? $field['validation_rules'] : FALSE;
 
-            // We need to save a variable indicating there are validation rules
             if ($field_validation_rules) {
                 $validation_rules[] = array(
                     'field' => $this->generateGetMappedFieldName($is_ci3, $field),
@@ -1668,7 +1669,12 @@ class FormBuilder
                     $where_conditions += array($field['foreign_key_junction_id_field_left'] => $this->getId());
                 }
 
-                $this->object->$field['field'] = CI_Controller::get_instance()->Generic_model->getAssocPairs($field['foreign_key_junction_id_field_right'], $field['foreign_key_junction_id_field_right'], $field['foreign_key_junction_table'], FALSE, FALSE, $where_conditions);
+                $this->object->$field['field'] = CI_Controller::get_instance()
+                    ->Generic_model->getAssocPairs($field['foreign_key_junction_id_field_right'],
+                        $field['foreign_key_junction_id_field_right'], $field['foreign_key_junction_table'],
+                        FALSE,
+                        FALSE,
+                        $where_conditions);
             }
         }
     }
@@ -1694,17 +1700,59 @@ class FormBuilder
      */
     private function generateForeignKeyFillFieldPossibleValues(&$field)
     {
+        $should_fetch = FALSE;
         if (!$field['input_is_editable']) {
-            // is_array is required for multiple checkbox fields, etc
-            $possible_values = isset($this->object->$field['field']) ? (is_array($this->object->$field['field']) ? $this->object->$field['field'] : array($this->object->$field['field'])) : array($field['input_default_value']); // Avoiding error
-            $field['values'] = CI_Controller::get_instance()->Generic_model->getAssocPairs($field['foreign_key_field'], $field['foreign_key_label_field'], $field['foreign_key_table'], FALSE, $possible_values, $field['foreign_key_where_conditions']);
+            // is_array is required for multiple checkbox fields, etc - avoiding errors
+            if (isset($this->object->$field['field'])) {
+                $possible_values = (is_array($this->object->$field['field'])
+                    ? $this->object->$field['field'] : array($this->object->$field['field']));
+            } else {
+                $possible_values = array($field['input_default_value']);
+            }
+            $should_fetch = true;
+
         } elseif (!is_array($field['values'])) {
-            $field['values'] = CI_Controller::get_instance()->Generic_model->getAssocPairs($field['foreign_key_field'], $field['foreign_key_label_field'], $field['foreign_key_table'], FALSE, FALSE, $field['foreign_key_where_conditions']);
+            $should_fetch = true;
+            $possible_values = FALSE;
         }
+
+
+        if ($should_fetch) {
+            $field['values'] = CI_Controller::get_instance()->Generic_model->getAssocPairs($field['foreign_key_field'],
+                $field['foreign_key_label_field'],
+                $field['foreign_key_table'],
+                FALSE,
+                $possible_values,
+                $field['foreign_key_where_conditions']);
+        }
+
 
         // Adding an empty element for fields that accept null
         if ($field['foreign_key_accept_null']) {
             $field['values'] = array('' => '----') + $field['values'];
         }
+    }
+
+    /**
+     * @param $save_success
+     */
+    private function generateRefreshId($save_success)
+    {
+        // Default ID comes from the database class
+        $this->id = CI_Controller::get_instance()->db->insert_id();
+
+        // Assigning ID when the success is a valid numeric value only
+        if (is_numeric($save_success)) {
+            $this->id = $save_success;
+        }
+    }
+
+    /**
+     * @return bool
+     */
+    private function hasSignificantUploadError()
+    {
+        $CI = CI_Controller::get_instance();
+        return isset($CI->upload->error_msg[0]) && $CI->upload->error_msg[0] != $CI->lang->line('upload_no_file_selected');
     }
 }
