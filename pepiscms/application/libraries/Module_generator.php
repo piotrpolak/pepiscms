@@ -61,6 +61,8 @@ class Module_generator
             if (!$definition) {
                 return FALSE;
             }
+
+            $definition = $this->tableutility->orderFieldsByImportance($definition);
         }
 
         $template_base_path = APPPATH . '../resources/module_template/';
@@ -103,7 +105,7 @@ class Module_generator
             $refl = new ReflectionClass('FormBuilder');
             $formbuilder_constants = array_flip($refl->getConstants());
 
-            // If there is any definition
+
             if ($definition) {
                 // NOTE this also includes FKs that are not writable!!!
                 $available_field_names = array_keys($definition);
@@ -115,8 +117,7 @@ class Module_generator
                 $created_at_field_name = $this->getCreatedAtFieldName($available_field_names, $definition);
                 $updated_at_field_name = $this->getUpdatedAtFieldName($available_field_names, $definition);
 
-                // Default ON checkbox fields
-                $boolean_default_true_field_names = array('is_active', 'is_enabled', 'is_on');
+                $was_last_field_of_upload_type = FALSE;
 
                 $tabs = "            ";
                 foreach ($definition as $key => $value) {
@@ -124,38 +125,13 @@ class Module_generator
                     if ($key == 'id') {
                         continue;
                     }
+                    $value = $this->hideMetadataField($key, $label_field_name, $value, $description_field_name);
+                    $value = $this->hidePasswordField($value);
+                    $value = $this->hideOrderField($key, $order_field_name, $value);
+                    $value = $this->makeTimestampStatisticsDate($key, $updated_at_field_name, $created_at_field_name, $value);
+                    $value = $this->setDefaultOnForCheckboxFields($value, $key);
 
-                    // Do not show label field
-                    if ($key == $label_field_name) {
-                        $value['show_in_grid'] = FALSE;
-                    }
-
-                    // Do not show description field
-                    if ($key == $description_field_name) {
-                        $value['show_in_grid'] = FALSE;
-                    }
-
-                    // Do not show password fields
-                    if ($value['input_type'] == FormBuilder::PASSWORD) {
-                        $value['show_in_grid'] = FALSE;
-                    }
-
-                    // Order field - hide and set default value
-                    if ($key == $order_field_name) {
-                        $value['show_in_grid'] = FALSE;
-                        $value['input_type'] = FormBuilder::HIDDEN;
-                    }
-
-                    // Make the time marking fields non editable on purpose
-                    if ($key == $updated_at_field_name || $key == $created_at_field_name) {
-                        $value['input_is_editable'] = FALSE;
-                    }
-
-                    // Default ON checkbox fields
-                    if ($value['input_type'] == FormBuilder::CHECKBOX && !isset($value['input_default_value'])
-                        && in_array($key, $boolean_default_true_field_names)) {
-                        $value['input_default_value'] = 1;
-                    }
+                    $is_field_of_upload_type = in_array($value['input_type'], array(FormBuilder::IMAGE, FormBuilder::FILE));
 
                     // Only for table fields
                     if (!isset($value['foreign_key_table']) || (isset($value['foreign_key_relationship_type'])
@@ -163,48 +139,18 @@ class Module_generator
                         $list_of_fields[] = $key;
                     }
 
-                    // Generating label, removing _id if present, for FKs
-                    $language_label = $key;
-                    $language_label = preg_replace('/' . preg_quote('_id', '/') . '$/', '', $language_label);
-                    $language_label = ucfirst(trim(str_replace('_', ' ', $language_label)));
-
                     // Generating line
-                    $language_pairs[$module_name . '_' . $key] = $language_label;
+                    $language_pairs[$module_name . '_' . $key] = $this->generateLanguageLabel($key);
+
+                    if ($is_field_of_upload_type != $was_last_field_of_upload_type) {
+                        $definition_output .= $tabs . '->withLineBreak()' . "\n\n";
+                    }
 
                     $key_representation = $this->getCrudDefinitionLabelKeyRepresentation($key, $list_of_fields, $module_model_name);
                     $definition_output .= $tabs . '->withField(' . $key_representation . ')' . "\n";
 
-                    // For every definition pair
-                    foreach ($value as $v_key => $v_value) {
-                        if ($v_key == 'filter_type') {
-                            // for date filters we define extra filters
-                            if ($v_value == DataGrid::FILTER_DATE) {
-                                $filters_element .=
-                                    '        $this->datagrid->addFilter($this->lang->line($module_name.\'_' . $key . '\').\' (\'.$this->lang->line(\'crud_label_from\').\')\', \'' . $key . '\', DataGrid::FILTER_DATE, FALSE, DataGrid::FILTER_CONDITION_GREATER_OR_EQUAL);
-        $this->datagrid->addFilter($this->lang->line($module_name.\'_' . $key . '\').\' (\'.$this->lang->line(\'crud_label_to\').\')\', \'' . $key . '\', DataGrid::FILTER_DATE, FALSE, DataGrid::FILTER_CONDITION_LESS_OR_EQUAL);
-';
-                                continue;
-                            }
-
-                            // else
-                            $v_value = 'DataGrid::' . $datagrid_constants[$v_value];
-                        } // For these fields we want to keep constansts instead of numerical values
-                        elseif ($v_key == 'input_type' || $v_key == 'foreign_key_relationship_type') {
-                            $v_value = 'FormBuilder::' . $formbuilder_constants[$v_value];
-                        } // To keep the uploads path in a single place
-                        elseif ($v_key == 'upload_path' || $v_key == 'upload_display_path') {
-                            $v_value = '$this->uploads_base_path';
-                        } // Resolve boolan variables
-                        elseif (is_bool($v_value)) {
-                            $v_value = ($v_value ? 'TRUE' : 'FALSE');
-                        } // Wrap non numeric values
-                        elseif (!is_numeric($v_value)) {
-                            $v_value = '\'' . str_replace('\'', '\\\'', $v_value) . '\'';
-                        }
-
-                        $definition_output .= $tabs . '    ' . $this->generateBuilderMethodCall($v_key, $v_value) . "\n";
-                    }
-
+                    $definition_output .= $this->generateCall($value, $datagrid_constants, $formbuilder_constants, $tabs);
+                    $filters_element .= $this->generateFilterElement($value, $key);
 
                     // Adding SEO friendly callback for images and files
                     if ($value['input_type'] == FormBuilder::IMAGE || $value['input_type'] == FormBuilder::FILE) {
@@ -233,6 +179,9 @@ class Module_generator
                     }
 
                     $definition_output .= $tabs . '->end()' . "\n";
+
+
+                    $was_last_field_of_upload_type = $is_field_of_upload_type;
                 }
             }
 
@@ -725,13 +674,6 @@ class Module_generator
                                               $filters_element,
                                               $module_model_name)
     {
-
-        $coma_separated_list = $list_of_fields;
-        array_walk($coma_separated_list, function ($item) {
-            return "'" . $item . "'";
-        });
-        $coma_separated_list = implode(', ', $coma_separated_list);
-
         $data = array(
             'module_name' => $module_name,
             'module_databse_table_name' => $module_database_table_name,
@@ -827,5 +769,162 @@ class Module_generator
             $key_constant_name = "'" . $key . "'";
         }
         return $key_constant_name;
+    }
+
+    /**
+     * @param $key
+     * @param $label_field_name
+     * @param $value
+     * @param $description_field_name
+     * @return mixed
+     */
+    private function hideMetadataField($key, $label_field_name, $value, $description_field_name)
+    {
+        // Do not show label field
+        if ($key == $label_field_name) {
+            $value['show_in_grid'] = FALSE;
+        }
+
+        // Do not show description field
+        if ($key == $description_field_name) {
+            $value['show_in_grid'] = FALSE;
+        }
+        return $value;
+    }
+
+    /**
+     * @param $value
+     * @return mixed
+     */
+    private function hidePasswordField($value)
+    {
+        // Do not show password fields
+        if ($value['input_type'] == FormBuilder::PASSWORD) {
+            $value['show_in_grid'] = FALSE;
+        }
+        return $value;
+    }
+
+    /**
+     * @param $key
+     * @param $order_field_name
+     * @param $value
+     * @return mixed
+     */
+    private function hideOrderField($key, $order_field_name, $value)
+    {
+        // Order field - hide and set default value
+        if ($key == $order_field_name) {
+            $value['show_in_grid'] = FALSE;
+            $value['input_type'] = FormBuilder::HIDDEN;
+        }
+        return $value;
+    }
+
+    /**
+     * @param $key
+     * @param $updated_at_field_name
+     * @param $created_at_field_name
+     * @param $value
+     * @return mixed
+     */
+    private function makeTimestampStatisticsDate($key, $updated_at_field_name, $created_at_field_name, $value)
+    {
+        // Make the time marking fields non editable on purpose
+        if ($key == $updated_at_field_name || $key == $created_at_field_name) {
+            $value['input_is_editable'] = FALSE;
+        }
+        return $value;
+    }
+
+    /**
+     * @param $value
+     * @param $key
+     * @return mixed
+     */
+    private function setDefaultOnForCheckboxFields($value, $key)
+    {
+        // Default ON checkbox fields
+        $boolean_default_true_field_names = array('is_active', 'is_enabled', 'is_on');
+        // Default ON checkbox fields
+        if ($value['input_type'] == FormBuilder::CHECKBOX && !isset($value['input_default_value'])
+            && in_array($key, $boolean_default_true_field_names)) {
+            $value['input_default_value'] = 1;
+        }
+        return $value;
+    }
+
+    /**
+     * @param $key
+     * @return null|string|string[]
+     */
+    private function generateLanguageLabel($key)
+    {
+        // Generating label, removing _id if present, for FKs
+        $language_label = $key;
+        $language_label = preg_replace('/' . preg_quote('_id', '/') . '$/', '', $language_label);
+        $language_label = ucfirst(trim(str_replace('_', ' ', $language_label)));
+        return $language_label;
+    }
+
+    /**
+     * @param $value
+     * @param $key
+     * @return string
+     */
+    private function generateFilterElement($value, $key)
+    {
+        $filters_element = '';
+        foreach ($value as $v_key => $v_value) {
+            if ($v_key == 'filter_type') {
+                // for date filters we define extra filters
+                if ($v_value == DataGrid::FILTER_DATE) {
+                    $filters_element .=
+                        '        $this->datagrid->addFilter($this->lang->line($module_name.\'_' . $key . '\').\' (\'.$this->lang->line(\'crud_label_from\').\')\', \'' . $key . '\', DataGrid::FILTER_DATE, FALSE, DataGrid::FILTER_CONDITION_GREATER_OR_EQUAL);
+        $this->datagrid->addFilter($this->lang->line($module_name.\'_' . $key . '\').\' (\'.$this->lang->line(\'crud_label_to\').\')\', \'' . $key . '\', DataGrid::FILTER_DATE, FALSE, DataGrid::FILTER_CONDITION_LESS_OR_EQUAL);
+';
+                    continue;
+                }
+            }
+        }
+        return $filters_element;
+    }
+
+    /**
+     * @param $value
+     * @param $datagrid_constants
+     * @param $formbuilder_constants
+     * @param $tabs
+     * @return string
+     */
+    private function generateCall($value, $datagrid_constants, $formbuilder_constants, $tabs)
+    {
+        $definition_output = '';
+        foreach ($value as $v_key => $v_value) {
+            if ($v_key == 'filter_type') {
+                // for date filters we define extra filters
+                if ($v_value == DataGrid::FILTER_DATE) {
+                    continue;
+                }
+
+                // else
+                $v_value = 'DataGrid::' . $datagrid_constants[$v_value];
+            } // For these fields we want to keep constansts instead of numerical values
+            elseif ($v_key == 'input_type' || $v_key == 'foreign_key_relationship_type') {
+                $v_value = 'FormBuilder::' . $formbuilder_constants[$v_value];
+            } // To keep the uploads path in a single place
+            elseif ($v_key == 'upload_path' || $v_key == 'upload_display_path') {
+                $v_value = '$this->uploads_base_path';
+            } // Resolve boolan variables
+            elseif (is_bool($v_value)) {
+                $v_value = ($v_value ? 'TRUE' : 'FALSE');
+            } // Wrap non numeric values
+            elseif (!is_numeric($v_value)) {
+                $v_value = '\'' . str_replace('\'', '\\\'', $v_value) . '\'';
+            }
+
+            $definition_output .= $tabs . '    ' . $this->generateBuilderMethodCall($v_key, $v_value) . "\n";
+        }
+        return $definition_output;
     }
 }

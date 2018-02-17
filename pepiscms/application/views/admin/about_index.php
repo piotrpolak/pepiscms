@@ -47,6 +47,7 @@ $actions = array(
             <li>Implemented command line installer</li>
             <li>Added basic Behat smoke tests</li>
             <li>Implemented CrudDefinitionBuilder and CrudFieldDefinitionBuilder aiming to simplify CRUD definition setup</li>
+            <li>Improved module generation</li>
             <li>Fixed file manager previews</li>
         </ul>
         <h2>0.2.4.4 (04.01.2017)</h2>

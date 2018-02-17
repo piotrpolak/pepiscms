@@ -457,4 +457,48 @@ class TableUtility
         }
     }
 
+
+    /**
+     * Orders fields by predefined order
+     *
+     * @param $definition
+     * @return mixed
+     */
+    public function orderFieldsByImportance($definition)
+    {
+        $order = array(
+            FormBuilder::TEXTFIELD,
+            FormBuilder::PASSWORD,
+            FormBuilder::COLORPICKER,
+            FormBuilder::SELECTBOX,
+            FormBuilder::CHECKBOX,
+            FormBuilder::MULTIPLECHECKBOX,
+            FormBuilder::TEXTAREA,
+            FormBuilder::IMAGE,
+            FormBuilder::FILE,
+            FormBuilder::DATE,
+            FormBuilder::TIMESTAMP,
+            FormBuilder::RTF,
+            FormBuilder::RTF_FULL,
+        );
+
+        $def_ref = $definition;
+        uasort($def_ref, function ($a, $b) use ($order) {
+            $posA = array_search($a['input_type'], $order);
+            $posB = array_search($b['input_type'], $order);
+
+            if ($posA === FALSE) {
+                return 1;
+            }
+
+            if ($posB === FALSE) {
+                return -1;
+            }
+
+            return $posA - $posB;
+        });
+
+        return $def_ref;
+    }
+
 }

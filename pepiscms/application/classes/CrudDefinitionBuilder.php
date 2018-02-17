@@ -19,6 +19,8 @@
  */
 class CrudDefinitionBuilder
 {
+    private $newlineCounter = 1;
+
     /**
      * @var CrudFieldDefinitionBuilder[]
      */
@@ -61,6 +63,23 @@ class CrudDefinitionBuilder
         $fieldBuilder = new CrudFieldDefinitionBuilder($fieldName, $this);
         $this->fieldBuilders[$fieldName] = $fieldBuilder;
         return $fieldBuilder;
+    }
+
+    /**
+     * @return CrudDefinitionBuilder
+     */
+    public function withLineBreak()
+    {
+        $fieldName = 'newline' . $this->newlineCounter;
+
+        $this->newlineCounter++;
+
+        $fieldBuilder = new CrudFieldDefinitionBuilder($fieldName, $this);
+        $fieldBuilder->withValidationRules('')
+            ->withShowInGrid(FALSE)
+            ->withInputType(FormBuilder::LINE_BREAK);
+        $this->fieldBuilders[$fieldName] = $fieldBuilder;
+        return $fieldBuilder->end();
     }
 
     /**
