@@ -217,6 +217,12 @@ docker exec -it pepiscms_web_1 vendor/bin/behat
 docker-compose rm --stop
 ```
 
+## Regenerating autoload
+
+```bash
+docker exec -it pepiscms_web_1 composer dump-autoload
+```
+
 ## Using PepisCMS command line commands
 
 ```bash

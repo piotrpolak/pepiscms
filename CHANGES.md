@@ -18,7 +18,7 @@
     `FormBuilder::addFileField()`,
     `FormBuilder::addImageField()`,
     `FormBuilder::MULTIPLEIMAGES`,
-    `MenuRendor::getMenuModules()`,
+    `MenuRendor::getMenuModules() b`,
      deprecated methods removed
 * Removed deprecated `AssetMinimifier`, `CrossDomainAuth`, `CommonHook`
 * ModuleAdminController and ModuleController are now abstract.
