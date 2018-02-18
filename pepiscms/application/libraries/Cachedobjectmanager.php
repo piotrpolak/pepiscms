@@ -15,7 +15,7 @@
 /**
  * Library for managing cached objects
  *
- * @since               0.1
+ * @since 0.1.0
  */
 class Cachedobjectmanager
 {
@@ -29,7 +29,7 @@ class Cachedobjectmanager
      */
     public function __construct($parameters = array())
     {
-        $CI = &get_instance();
+        $CI = &CI_Controller::getInstance();
 
         // Getting cache path from configuration
         $path = $CI->config->item('cache_path');
@@ -55,8 +55,6 @@ class Cachedobjectmanager
 
     /**
      * Storing all the objects at destruction
-     *
-     *
      */
     function __destruct()
     {
@@ -77,25 +75,25 @@ class Cachedobjectmanager
      */
     public function getObject($name, $time_to_live, $collection = '')
     {
-        $hash = md5($name);
-        $path = $this->cache_path . $collection . '_' . $hash . '.php';
+        $hash = $this->computeHash($name);
+        $path = $this->computePath($collection, $hash);
 
-        get_instance()->benchmark->mark('cached_object_manager_get_object_' . $collection . '_' . $hash . '_start');
+        CI_Controller::getInstance()->benchmark->mark('cached_object_manager_get_object_' . $collection . '_' . $hash . '_start');
 
         if (!file_exists($path)) {
-            get_instance()->benchmark->mark('cached_object_manager_get_object_' . $collection . '_' . $hash . '_end');
+            CI_Controller::getInstance()->benchmark->mark('cached_object_manager_get_object_' . $collection . '_' . $hash . '_end');
             return FALSE;
         }
 
         // Comparing timestamps
         if (filemtime($path) < time() - $time_to_live) {
-            get_instance()->benchmark->mark('cached_object_manager_get_object_' . $collection . '_' . $hash . '_end');
+            CI_Controller::getInstance()->benchmark->mark('cached_object_manager_get_object_' . $collection . '_' . $hash . '_end');
             return FALSE;
         }
 
         $object = FALSE; // Supposed to be overwritten
         @include($path);
-        get_instance()->benchmark->mark('cached_object_manager_get_object_' . $collection . '_' . $hash . '_end');
+        CI_Controller::getInstance()->benchmark->mark('cached_object_manager_get_object_' . $collection . '_' . $hash . '_end');
         return $object;
     }
 
@@ -115,7 +113,11 @@ class Cachedobjectmanager
             return $this->storeObject($name, $object, $collection);
         }
 
-        $this->objects[] = array('name' => $name, 'object' => $object, 'collection' => $collection);
+        $this->objects[] = array(
+            'name' => $name,
+            'object' => $object,
+            'collection' => $collection
+        );
 
         return TRUE;
     }
@@ -130,10 +132,10 @@ class Cachedobjectmanager
      */
     protected function storeObject($name, $object_to_write, $collection = '')
     {
-        $hash = md5($name);
-        $path = $this->cache_path . $collection . '_' . $hash . '.php';
+        $hash = $this->computeHash($name);
+        $path = $this->computePath($collection, $hash);
 
-        get_instance()->benchmark->mark('cached_object_manager_store_object_' . $collection . '_' . $hash . '_start');
+        CI_Controller::getInstance()->benchmark->mark('cached_object_manager_store_object_' . $collection . '_' . $hash . '_start');
 
         $error = false;
 
@@ -149,18 +151,18 @@ class Cachedobjectmanager
             @include($path);
             /** @noinspection PhpUndefinedVariableInspection */
             if (!$object) {
-                get_instance()->benchmark->mark('cached_object_manager_failsafe_store_object_' . $collection . '_' . $hash . '_start');
+                CI_Controller::getInstance()->benchmark->mark('cached_object_manager_failsafe_store_object_' . $collection . '_' . $hash . '_start');
 
                 // Serializing and saving - method #2
                 $contents = '<?php // ' . $name . ' - Written at ' . date('Y-m-d, H:i:s') . "\n" . ' $object = @unserialize(base64_decode(\'' . base64_encode(serialize($object_to_write)) . '\'));';
                 if (!file_put_contents($path, $contents, LOCK_EX)) {
                     $error = true;
                 }
-                get_instance()->benchmark->mark('cached_object_manager_failsafe_store_object_' . $collection . '_' . $hash . '_end');
+                CI_Controller::getInstance()->benchmark->mark('cached_object_manager_failsafe_store_object_' . $collection . '_' . $hash . '_end');
             }
         }
 
-        get_instance()->benchmark->mark('cached_object_manager_store_object_' . $collection . '_' . $hash . '_end');
+        CI_Controller::getInstance()->benchmark->mark('cached_object_manager_store_object_' . $collection . '_' . $hash . '_end');
 
         if ($error) {
             Logger::error('Unable to write system cache ' . $path, 'SYSTEM');
@@ -179,7 +181,10 @@ class Cachedobjectmanager
      */
     public function cleanup($collection = '')
     {
-        $return = array('size' => 0, 'count' => 0);
+        $return = array(
+            'size' => 0,
+            'count' => 0
+        );
 
         $cache_files = glob($this->cache_path . $collection . '*.php');
 
@@ -200,6 +205,26 @@ class Cachedobjectmanager
         }
 
         return $return;
+    }
+
+    /**
+     * @param $collection
+     * @param $hash
+     * @return string
+     */
+    private function computePath($collection, $hash)
+    {
+        return $this->cache_path . $collection . '_' . $hash . '.php';
+    }
+
+    /**
+     * @param $name
+     * @return string
+     */
+    private function computeHash($name)
+    {
+        $hash = md5($name);
+        return $hash;
     }
 
 }
