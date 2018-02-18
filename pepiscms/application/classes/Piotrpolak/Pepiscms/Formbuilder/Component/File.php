@@ -36,48 +36,9 @@ class File extends AbstractComponent
      */
     public function renderComponent($field, $value, $valueEscaped, &$object, $extra_css_classes)
     {
-        \CI_Controller::get_instance()->load->helper('number');
-
         $output_element = '<input type="file" name="' . $field['field'] . '" id="' . $field['field'] .
             '" class="inputImage' . ($valueEscaped ? ' hidden' : '') . '" />';
-        if ($valueEscaped) {
-            $extension = $this->getExtension($valueEscaped);
-
-            $is_real_image = FALSE;
-            if (in_array($extension, array('jpg', 'jpeg', 'png', 'bmp', 'tiff'))) {
-                $is_real_image = TRUE;
-            }
-
-            if ($is_real_image) {
-                $image_path = 'admin/ajaxfilemanager/absolutethumb/100/' . $field['upload_display_path'] . $valueEscaped;
-            } else {
-                $image_path = $this->findImagePath($extension);
-            }
-
-            $output_element .= '<div class="form_image">' . "\n"; // Leave it as it is..
-            $output_element .= '    <div>' . "\n";
-
-            $output_element .= '        <a href="' . $field['upload_display_path'] . $valueEscaped . '"' .
-                ($is_real_image ? 'class=" image"' : 'class=" image_like" target="_blank"') . '><img src="' .
-                $image_path . '" alt="" /></a>' . "\n" .
-                '    </div>' . "\n" .
-                '<div class="summary">';
-
-            $file_size = '';
-            $last_modified_at = \CI_Controller::get_instance()->lang->line('formbuilder_file_not_found');
-            if (file_exists($field['upload_path'] . $valueEscaped)) {
-                $file_size = byte_format(filesize($field['upload_path'] . $valueEscaped));
-                $filemtime = filemtime($field['upload_path'] . $valueEscaped);
-                $last_modified_at = date('Y-m-d', $filemtime) . '<br>' . date('H:i:s', $filemtime);
-            }
-
-            $output_element .= '<a href="#" class="remove_form_image" rel="' . $field['field'] . '" title="' .
-                \CI_Controller::get_instance()->lang->line('formbuilder_remove_file') . '">' .
-                \CI_Controller::get_instance()->lang->line('formbuilder_remove_file') . '</a><br>' . "\n" .
-                strtoupper($extension) . ' ' . $file_size . '<br><br>' . $last_modified_at . '</div>' .
-                '</div>';
-
-        }
+        $output_element .= $this->generateFilePreview($field, $valueEscaped, true);
 
         $output_element .= '<input type="hidden" name="form_builder_files[' . $field['field'] . ']" value="' . $valueEscaped . '" />' . "\n" .
             '<input type="hidden" name="form_builder_files_remove[' . $field['field'] . ']" value="0" />' . "\n";
@@ -89,13 +50,8 @@ class File extends AbstractComponent
      */
     public function renderReadOnlyComponent($field, $value, $valueEscaped, &$object)
     {
-        if ($valueEscaped) {
-            return '<a href="' . $field['upload_display_path'] . $valueEscaped . '" class="image"><img src="admin/ajaxfilemanager/absolutethumb/100/' . $field['upload_display_path'] . $valueEscaped . '" alt="" /></a>';
-        } else {
-            return '';
-        }
+        return $this->generateFilePreview($field, $valueEscaped, false);
     }
-
 
     /**
      * @param $valueEscaped
@@ -131,5 +87,59 @@ class File extends AbstractComponent
         }
 
         return 'pepiscms/theme/img/ajaxfilemanager/broken_image_50.png';
+    }
+
+    /**
+     * @param $field
+     * @param $valueEscaped
+     * @param $display_delete_file_link
+     * @return string
+     */
+    private function generateFilePreview($field, $valueEscaped, $display_delete_file_link)
+    {
+        \CI_Controller::get_instance()->load->helper('number');
+        $output_element = '';
+        if ($valueEscaped) {
+            $extension = $this->getExtension($valueEscaped);
+
+            $is_real_image = FALSE;
+            if (in_array($extension, array('jpg', 'jpeg', 'png', 'bmp', 'tiff'))) {
+                $is_real_image = TRUE;
+            }
+
+            if ($is_real_image) {
+                $image_path = 'admin/ajaxfilemanager/absolutethumb/100/' . $field['upload_display_path'] . $valueEscaped;
+            } else {
+                $image_path = $this->findImagePath($extension);
+            }
+
+            $output_element .= '<div class="form_image">' . "\n"; // Leave it as it is..
+            $output_element .= '    <div>' . "\n";
+
+            $output_element .= '        <a href="' . $field['upload_display_path'] . $valueEscaped . '"' .
+                ($is_real_image ? 'class=" image"' : 'class=" image_like" target="_blank"') . '><img src="' .
+                $image_path . '" alt="" /></a>' . "\n" .
+                '    </div>' . "\n" .
+                '<div class="summary">';
+
+            $file_size = '';
+            $last_modified_at = \CI_Controller::get_instance()->lang->line('formbuilder_file_not_found');
+            if (file_exists($field['upload_path'] . $valueEscaped)) {
+                $file_size = byte_format(filesize($field['upload_path'] . $valueEscaped));
+                $filemtime = filemtime($field['upload_path'] . $valueEscaped);
+                $last_modified_at = date('Y-m-d', $filemtime) . '<br>' . date('H:i:s', $filemtime);
+            }
+
+            if ($display_delete_file_link) {
+                $output_element .= '<a href="#" class="remove_form_image" rel="' . $field['field'] . '" title="' .
+                    \CI_Controller::get_instance()->lang->line('formbuilder_remove_file') . '">' .
+                    \CI_Controller::get_instance()->lang->line('formbuilder_remove_file') . '</a><br>' . "\n";
+            }
+
+            $output_element .= strtoupper($extension) . ' ' . $file_size . '<br><br>' . $last_modified_at . '</div>' .
+                '</div>';
+
+        }
+        return $output_element;
     }
 }
