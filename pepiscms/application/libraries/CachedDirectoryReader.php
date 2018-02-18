@@ -15,11 +15,10 @@
 /**
  * Reads and caches directory content and caches it.
  *
- * @since 0.1
+ * @since 0.1.
  */
 class CachedDirectoryReader
 {
-
     private $cache_directory;
     private $cache_expires;
 
@@ -43,7 +42,7 @@ class CachedDirectoryReader
     {
         $file_path = $this->cache_directory . '/dircache_' . md5($directory);
 
-        if (file_exists($file_path) && time() - filemtime($file_path) < $this->cache_expires) {
+        if (file_exists($file_path) && $this->isCacheFileNonExpired($file_path)) {
             return unserialize(file_get_contents($file_path));
         } else {
             $files = $this->readDirectoryContents($directory);
@@ -73,12 +72,30 @@ class CachedDirectoryReader
 
             if (is_dir($directory . $file)) {
                 $files = array_merge($files, $this->readDirectoryContents($directory . $file . '/'));
-            } elseif (substr($file, strlen($file) - 5) == '.html' || substr($file, strlen($file) - 4) == '.htm') {
+            } elseif ($this->isHtmlFile($file)) {
                 $files[] = $directory . $file;
             }
         }
 
         return $files;
+    }
+
+    /**
+     * @param $file
+     * @return bool
+     */
+    private function isHtmlFile($file)
+    {
+        return substr($file, strlen($file) - 5) == '.html' || substr($file, strlen($file) - 4) == '.htm';
+    }
+
+    /**
+     * @param $file_path
+     * @return bool
+     */
+    private function isCacheFileNonExpired($file_path)
+    {
+        return time() - filemtime($file_path) < $this->cache_expires;
     }
 
 }
