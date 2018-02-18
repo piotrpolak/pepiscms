@@ -1,7 +1,8 @@
 # Generating a CRUD module
 
 1. Execute SQL DDL against the database. You can use a bundled `SQL console` module.
-2. Navigate to `Start > Utilities > Installed modules > Build a new module`
+2. Make sure [development tools](MODULES.md#development-tools) module is installed.
+2. Navigate to `Start > Utilities > Development tools > Build a new module`.
 3. Provide mandatory `database table name` and optional module details:
 
     ![Generating a CRUD module](screens/GENERATING_A_CRUD_MODULE_1.png)
