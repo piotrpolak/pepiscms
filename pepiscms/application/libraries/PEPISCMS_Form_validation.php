@@ -20,7 +20,12 @@
  */
 class PEPISCMS_Form_validation extends CI_Form_validation
 {
-    function __construct($rules = array())
+
+    /**
+     * PEPISCMS_Form_validation constructor.
+     * @param array $rules
+     */
+    public function __construct($rules = array())
     {
         parent::__construct($rules);
 

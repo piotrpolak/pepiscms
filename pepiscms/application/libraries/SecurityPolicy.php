@@ -83,7 +83,7 @@ class SecurityPolicy
      * @param array $policy
      * @return array
      */
-    protected function getAvailableEntities($policy)
+    private function getAvailableEntities($policy)
     {
         $available_entities = array();
 
@@ -102,7 +102,7 @@ class SecurityPolicy
      * @param string $path
      * @return array
      */
-    protected function parsePolicy($path)
+    private function parsePolicy($path)
     {
         if (!file_exists($path)) {
             return FALSE;
@@ -257,6 +257,7 @@ class SecurityPolicy
      *
      * @param string $module_name
      * @return array
+     * @throws ReflectionException
      */
     public function describeModuleControllers($module_name)
     {
@@ -264,6 +265,7 @@ class SecurityPolicy
         if (!$module_file) {
             return array();
         }
+        /** @noinspection PhpIncludeInspection */
         include($module_file);
 
         $class = ucfirst($module_name) . 'Admin';
@@ -285,6 +287,7 @@ class SecurityPolicy
      * Returns an array of controllers containing the list of all public methods
      *
      * @return array
+     * @throws ReflectionException
      */
     public function describeSystemControllers()
     {
@@ -300,6 +303,7 @@ class SecurityPolicy
 
             $class = ucfirst(substr($file, 0, strlen($file) - 4));
             if (!class_exists($class)) {
+                /** @noinspection PhpIncludeInspection */
                 include($path . $file);
             }
 
@@ -316,8 +320,9 @@ class SecurityPolicy
      * @param string $class
      * @param bool $must_be_declaring
      * @return object
+     * @throws ReflectionException
      */
-    protected function describeClass($class, $must_be_declaring = TRUE)
+    private function describeClass($class, $must_be_declaring = TRUE)
     {
         $ignored_methods = array(
             'ModuleAdminController',
