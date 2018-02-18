@@ -15,11 +15,10 @@
 /**
  * Menu Rendor used in admin panel
  *
- * @since               0.1.0
+ * @since 0.1.0
  */
 class MenuRendor
 {
-
     private $CI;
     private $use_cache = TRUE;
 
@@ -53,20 +52,6 @@ class MenuRendor
     public function setUseCache($use_cache)
     {
         $this->use_cache = $use_cache;
-    }
-
-    /**
-     * Returns the list of modules to be displayed in menu
-     *
-     * @deprecated as PepisCMS 0.2.4
-     * @return array
-     */
-    public static function getMenuModules()
-    {
-        trigger_error('MenuRendor::getMenuModules() is deprecated. Consider using ModuleRunner::getInstalledModulesNamesDisplayedInMenuCached()', E_USER_DEPRECATED);
-        $CI = &get_instance();
-        $CI->load->library('ModuleRunner');
-        return ModuleRunner::getInstalledModulesNamesDisplayedInMenuCached();
     }
 
     /**
