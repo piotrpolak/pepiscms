@@ -215,7 +215,7 @@ class Module_generator
             $module_model_name);
 
         // Making admin controller
-        $file_admin_controller = $directory . '' . $this->moduleLocator->getAdminControllerPath($module_name_lower_case);
+        $file_admin_controller = $directory . $this->moduleLocator->getAdminControllerPath($module_name_lower_case);
         if (!file_exists($file_admin_controller)) {
             $this->generateAdminCrudController($is_crud, $template_base_path, $file_admin_controller, $data);
         }
@@ -544,7 +544,7 @@ class Module_generator
     private function generatePublicController($directory, $module_name_lower_case, $template_base_path, $data)
     {
         @mkdir($directory . 'views/public');
-        $file_controller = $directory . '' . $this->moduleLocator->getPublicControllerRelativePath($module_name_lower_case);
+        $file_controller = $directory . $this->moduleLocator->getPublicControllerRelativePath($module_name_lower_case);
         if (!file_exists($file_controller)) {
             file_put_contents($file_controller,
                 PatternCompiler::compile(file_get_contents($template_base_path . '_controller.php'), $data));
@@ -574,7 +574,7 @@ class Module_generator
      */
     private function generateModuleDescriptor($directory, $module_name_lower_case, $template_base_path, $data)
     {
-        $file_descriptor = $directory . '' . $module_name_lower_case . $this->moduleLocator->getDescriptorPath($module_name_lower_case);
+        $file_descriptor = $directory . $this->moduleLocator->getDescriptorPath($module_name_lower_case);
         if (!file_exists($file_descriptor)) {
             file_put_contents($file_descriptor,
                 PatternCompiler::compile(file_get_contents($template_base_path . '_descriptor.php'), $data));
