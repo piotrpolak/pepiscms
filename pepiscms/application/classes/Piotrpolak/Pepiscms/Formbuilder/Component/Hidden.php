@@ -34,7 +34,7 @@ class Hidden extends AbstractComponent
     /**
      * @inheritDoc
      */
-    public function renderComponent($field, $valueEscaped, &$object, $extra_css_classes)
+    public function renderComponent($field, $value, $valueEscaped, &$object, $extra_css_classes)
     {
         $output_element = '';
         if (is_array($valueEscaped)) {

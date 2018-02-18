@@ -34,10 +34,25 @@ class Password extends AbstractComponent
     /**
      * @inheritDoc
      */
-    public function renderComponent($field, $valueEscaped, &$object, $extra_css_classes)
+    public function renderComponent($field, $value, $valueEscaped, &$object, $extra_css_classes)
     {
         return '<input type="password" name="' . $field['field'] . '" id="' . $field['field'] .
             '" value="" autocomplete="off" class="text' . $extra_css_classes . '" />';
+    }
 
+    /**
+     * @inheritDoc
+     */
+    public function renderReadOnlyComponent($field, $value, $valueEscaped, &$object)
+    {
+        return parent::renderReadOnlyComponent($field, '', '', $object);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function shouldRenderHiddenForReadOnly()
+    {
+        return FALSE;
     }
 }

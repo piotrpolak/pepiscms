@@ -34,7 +34,7 @@ class Textarea extends AbstractComponent
     /**
      * @inheritDoc
      */
-    public function renderComponent($field, $valueEscaped, &$object, $extra_css_classes)
+    public function renderComponent($field, $value, $valueEscaped, &$object, $extra_css_classes)
     {
         $extra_attributes = '';
         if (preg_match("/(exact_length|max_length)\[(.*)\]/", $field['validation_rules'], $match)) {

@@ -34,13 +34,14 @@ class Textfield extends AbstractComponent
     /**
      * @inheritDoc
      */
-    public function renderComponent($field, $valueEscaped, &$object, $extra_css_classes)
+    public function renderComponent($field, $value, $valueEscaped, &$object, $extra_css_classes)
     {
         $extra_attributes = '';
         if (preg_match("/(exact_length|max_length)\[(.*)\]/", $field['validation_rules'], $match)) {
             $extra_attributes = 'maxlength="' . $match[2] . '"';
         }
 
-        return '<input type="text" name="' . $field['field'] . '" id="' . $field['field'] . '" value="' . $valueEscaped . '" class="text' . $extra_css_classes . '" ' . $extra_attributes . ' />';
+        return '<input type="text" name="' . $field['field'] . '" id="' . $field['field'] . '" value="' . $valueEscaped .
+            '" class="text' . $extra_css_classes . '" ' . $extra_attributes . ' />';
     }
 }

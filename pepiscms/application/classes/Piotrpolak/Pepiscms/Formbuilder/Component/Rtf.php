@@ -50,7 +50,7 @@ class Rtf extends AbstractComponent
     /**
      * @inheritDoc
      */
-    public function renderComponent($field, $valueEscaped, &$object, $extra_css_classes)
+    public function renderComponent($field, $value, $valueEscaped, &$object, $extra_css_classes)
     {
         \CI_Controller::get_instance()->load->library('RTFEditor');
         \CI_Controller::get_instance()->rtfeditor->setupDefaultConfig();
@@ -65,6 +65,6 @@ class Rtf extends AbstractComponent
         }
 
         // FIXME Set user defined default value
-        return \CI_Controller::get_instance()->rtfeditor->generate(htmlspecialchars_decode($valueEscaped), 500, $field['field']);
+        return \CI_Controller::get_instance()->rtfeditor->generate($value, 500, $field['field']);
     }
 }

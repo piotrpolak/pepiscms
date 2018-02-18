@@ -34,25 +34,23 @@ class MultipleCheckbox extends AbstractComponent
     /**
      * @inheritDoc
      */
-    public function renderComponent($field, $valueEscaped, &$object, $extra_css_classes)
+    public function renderComponent($field, $value, $valueEscaped, &$object, $extra_css_classes)
     {
         $output_element = '';
         if (is_array($field['values'])) {
-            // TODO Check validation - when field is required and no value is checked,
-            // TODO the form builder selects all the fields (for example in system installer)
-
-            // Setting default value
             if ($field['input_default_value'] === FALSE) {
                 $field['input_default_value'] = NULL;
             }
-            $valueEscaped = $valueEscaped ? $valueEscaped : $field['input_default_value'];
-            $valueEscaped = is_array($valueEscaped) ? array_merge(array(), $valueEscaped) : array($valueEscaped);
+            $value = $value ? $value : $field['input_default_value'];
+            $value = is_array($value) ? array_merge(array(), $value) : array($value);
 
             foreach ($field['values'] as $key => $val) {
+                $key_escaped = htmlspecialchars($key);
+
                 $output_element .= '<span class="multipleInput checkbox"><input type="checkbox" name="' .
-                    $field['field'] . '[' . $key . ']" id="' . $field['field'] . '[' . $key . ']" value="' . $key .
-                    '" ' . (in_array($key, $valueEscaped) ? ' checked="checked"' : '') . ' /> <label for="' . $field['field'] .
-                    '[' . $key . ']">' . $val . '</label></span>' . "\n";
+                    $field['field'] . '[' . $key_escaped . ']" id="' . $field['field'] . '[' . $key_escaped . ']" value="' . $key_escaped .
+                    '" ' . (in_array($key, $value) ? ' checked="checked"' : '') . ' /> <label for="' . $field['field'] .
+                    '[' . $key_escaped . ']">' . $val . '</label></span>' . "\n";
             }
         }
         return $output_element;

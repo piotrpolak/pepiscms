@@ -34,22 +34,23 @@ class Radio extends AbstractComponent
     /**
      * @inheritDoc
      */
-    public function renderComponent($field, $valueEscaped, &$object, $extra_css_classes)
+    public function renderComponent($field, $value, $valueEscaped, &$object, $extra_css_classes)
     {
         $output_element = '';
         if (is_array($field['values'])) {
-            // Setting default value
             if ($field['input_default_value'] === FALSE) {
                 $field['input_default_value'] = NULL;
             }
-            $valueEscaped = $valueEscaped ? $valueEscaped : $field['input_default_value'];
-            $valueEscaped = is_array($valueEscaped) ? $valueEscaped : array($valueEscaped);
+            $value = $value ? $value : $field['input_default_value'];
+            $value = is_array($value) ? $value : array($value);
 
             foreach ($field['values'] as $key => $val) {
+                $key_escaped = htmlspecialchars($key);
+
                 $output_element .= '<span class="multipleInput radio"><input type="radio" name="' . $field['field'] .
-                    '" id="' . $field['field'] . '[' . $key . ']" value="' . $key . '" ' .
-                    (in_array($key, $valueEscaped) ? ' checked="checked"' : '') .
-                    ' class="text' . $extra_css_classes . '" /> <label for="' . $field['field'] . '[' . $key . ']">' .
+                    '" id="' . $field['field'] . '[' . $key_escaped . ']" value="' . $key_escaped . '" ' .
+                    (in_array($key, $value) ? ' checked="checked"' : '') .
+                    ' class="text' . $extra_css_classes . '" /> <label for="' . $field['field'] . '[' . $key_escaped . ']">' .
                     $val . '</label></span>' . "\n";
             }
         }

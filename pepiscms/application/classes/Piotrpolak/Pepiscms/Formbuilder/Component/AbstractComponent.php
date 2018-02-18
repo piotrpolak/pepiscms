@@ -26,9 +26,29 @@ abstract class AbstractComponent implements ComponentInterface
     /**
      * @inheritDoc
      */
-    public function renderReadOnlyComponent($field, $valueEscaped, &$object, $extra_css_classes)
+    public function renderReadOnlyComponent($field, $value, $valueEscaped, &$object)
     {
-        return $valueEscaped;
+        $output_element = '';
+        if (is_array($valueEscaped)) {
+            // Multiple select etc
+            foreach ($valueEscaped as $v) {
+                if (isset($field['values'][$v])) {
+                    $output_element .= '<span class="multipleInput">' . htmlspecialchars($field['values'][$v]) . '</span>' . "\n";
+                }
+            }
+        } else {
+            if (isset($field['values'][$valueEscaped])) {
+                $output_element = '<div class="input_hidden_description">' . htmlspecialchars($field['values'][$valueEscaped]) . '</div>';
+            } else {
+                $value_html = $valueEscaped;
+                if (!$value_html && $value_html !== 0) {
+                    $value_html = '-';
+                }
+                $output_element = '<div class="input_hidden_description">' . $value_html . '</div>';
+            }
+        }
+
+        return $output_element;
     }
 
     /**
@@ -37,5 +57,13 @@ abstract class AbstractComponent implements ComponentInterface
     public function shouldAttachAdditionalJavaScript()
     {
         return FALSE;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function shouldRenderHiddenForReadOnly()
+    {
+        return TRUE;
     }
 }

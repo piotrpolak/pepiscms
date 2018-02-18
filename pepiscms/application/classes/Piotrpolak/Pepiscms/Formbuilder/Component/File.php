@@ -34,7 +34,7 @@ class File extends AbstractComponent
     /**
      * @inheritDoc
      */
-    public function renderComponent($field, $valueEscaped, &$object, $extra_css_classes)
+    public function renderComponent($field, $value, $valueEscaped, &$object, $extra_css_classes)
     {
         \CI_Controller::get_instance()->load->helper('number');
 
@@ -83,6 +83,19 @@ class File extends AbstractComponent
             '<input type="hidden" name="form_builder_files_remove[' . $field['field'] . ']" value="0" />' . "\n";
         return $output_element;
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function renderReadOnlyComponent($field, $value, $valueEscaped, &$object)
+    {
+        if ($valueEscaped) {
+            return '<a href="' . $field['upload_display_path'] . $valueEscaped . '" class="image"><img src="admin/ajaxfilemanager/absolutethumb/100/' . $field['upload_display_path'] . $valueEscaped . '" alt="" /></a>';
+        } else {
+            return '';
+        }
+    }
+
 
     /**
      * @param $valueEscaped

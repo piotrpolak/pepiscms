@@ -46,11 +46,7 @@ class DefaultFormRenderer implements FormRenderableInterface
     }
 
     /**
-     * Renders the form and returns HTML code
-     *
-     * @param FormBuilder $formbuilder
-     * @param bool $success
-     * @return string
+     * @inheritdoc
      */
     public function render($formbuilder, $success)
     {
@@ -58,7 +54,6 @@ class DefaultFormRenderer implements FormRenderableInterface
         $this->success = $success;
 
         if (!$this->template_absolute_path || !file_exists($this->template_absolute_path)) {
-            // TODO throw exception instead of die
             trigger_error('Specified template file ' . $this->template_absolute_path . ' does not exit. Unable to render FormBuilder template.', E_USER_ERROR);
             return '';
         }
@@ -224,74 +219,16 @@ class DefaultFormRenderer implements FormRenderableInterface
         }
 
         //TODO Check if this is not redundant, see the object population on database read
-        $value = ($object && isset($object->$field_name) ? $object->$field_name : (isset($field['input_default_value']) && $field['input_default_value'] !== FALSE ? $field['input_default_value'] : ''));
+        $value = $this->computeValue($field_name, $object, $field);
 
         $component = $this->resolveComponent($field['input_type']);
 
-        if ($field['input_type'] == FormBuilder::HIDDEN) {
-            // Rendering hidden fields separately
-            return $this->renderInput($field, $value, $object, $component);
-        }
-
-        $output_element = '';
-        if ($this->formbuilder->isReadOnly() || !$field['input_is_editable']) {
-            switch ($field['input_type']) {
-                case FormBuilder::IMAGE:
-                    if ($value) {
-                        $output_element .= '<a href="' . $field['upload_display_path'] . $value . '" class="image"><img src="admin/ajaxfilemanager/absolutethumb/100/' . $field['upload_display_path'] . $value . '" alt="" /></a>';
-                    } else {
-                        $output_element .= '';
-                    }
-
-                    break;
-                case FormBuilder::SELECTBOX:
-                    $output_element .= '<div class="input_hidden_description">';
-                    if (isset($field['values'][$value])) {
-                        $output_element .= $field['values'][$value];
-                    } else {
-                        $output_element .= '-';
-                    }
-                    $output_element .= '</div>';
-
-                    break;
-
-                default:
-                    if (is_callable($formatting_function_for_uneditable)) {
-                        $output_element .= call_user_func_array($formatting_function_for_uneditable, array($value));
-                    } else {
-                        if (is_array($value)) {
-                            // Multiple select etc
-                            foreach ($value as $v) {
-                                if (isset($field['values'][$v])) {
-                                    $output_element .= '<span class="multipleInput">' . htmlspecialchars($field['values'][$v]) . '</span>' . "\n";
-                                }
-                            }
-                        } else {
-                            if (isset($field['values'][$value])) {
-                                $output_element = '<div class="input_hidden_description">' . htmlspecialchars($field['values'][$value]) . '</div>';
-                            } else {
-                                $value_html = $value;
-                                if (!$value_html && $value_html !== 0) {
-                                    $value_html = '-';
-                                }
-                                $output_element = '<div class="input_hidden_description">' . htmlspecialchars($value_html) . '</div>';
-                            }
-                        }
-                    }
-
-                    // Wrapping readonly value
-                    $output_element = '<span id="' . $field['field'] . '_readonly">' . $output_element . '</span>';
-
-                    break;
-            }
-            $hidden_field = $field;
-            $output_element .= $this->renderInput($hidden_field, $value, $object, new \Piotrpolak\Pepiscms\Formbuilder\Component\Hidden());
+        if (($this->formbuilder->isReadOnly() || !$field['input_is_editable']) && $field['input_type'] != FormBuilder::HIDDEN) {
+            $component_html = $this->computeReadOnlyComponentHtml($field, $value, $object, $component, $formatting_function_for_uneditable);
+            return $this->wrapReadOnlyComponent($field, $component_html);
         } else {
-            // Rendering input
-            $output_element = $this->renderInput($field, $value, $object, $component);
+            return $this->renderInput($field, $value, $object, $component, FALSE);
         }
-
-        return $output_element;
     }
 
     /**
@@ -394,39 +331,41 @@ class DefaultFormRenderer implements FormRenderableInterface
      * @param $component
      * @return string
      */
-    protected function renderInput($field, $value, &$object, $component)
+    private function renderInput($field, $value, &$object, $component, $readOnly)
     {
-        $validationRulesTranslator = new Piotrpolak\Pepiscms\Formbuilder\Component\ValidationRulesTranslator();
-        $extra_css_classes = $validationRulesTranslator->translateCIValidationRulesToJSValidationEngineRules($field['validation_rules']);
-
-        if ($field['input_css_class']) {
-            $extra_css_classes .= ' ' . $field['input_css_class'];
-        }
+        $extra_css_classes = $this->computeExtraCssClasses($field);
 
         // Encoding if necessary
         if (!is_array($value)) {
-            $value = htmlspecialchars($value);
+            $valueEscaped = htmlspecialchars($value);
         } else {
+            $valueEscaped = array();
             foreach ($value as $key => $val) // Important do not use reference as the in_array function goes crazy!
             {
-                $value[$key] = htmlspecialchars($val);
+                $valueEscaped[$key] = htmlspecialchars($val);
             }
         }
 
         $output = '';
-        if ($component->shouldAttachAdditionalJavaScript()) {
-            $output .= $this->includeJavaScript();
+
+        if ($readOnly) {
+            $output .= $component->renderReadOnlyComponent($field, $value, $valueEscaped, $object);
+        } else {
+            if ($component->shouldAttachAdditionalJavaScript()) {
+                $output .= $this->includeJavaScript();
+            }
+
+            $output .= $component->renderComponent($field, $value, $valueEscaped, $object, $extra_css_classes);
         }
 
-        $output .= $component->renderComponent($field, $value, $object, $extra_css_classes);;
         return $output;
     }
 
     /**
-     * @param $field
+     * @param $componentId
      * @return null|\Piotrpolak\Pepiscms\Formbuilder\Component\ComponentInterface
      */
-    protected function resolveComponent($componentId)
+    private function resolveComponent($componentId)
     {
         /**
          * @var $registeredComponents \Piotrpolak\Pepiscms\Formbuilder\Component\ComponentInterface[]
@@ -451,7 +390,7 @@ class DefaultFormRenderer implements FormRenderableInterface
             new \Piotrpolak\Pepiscms\Formbuilder\Component\TextfieldAutocomplete(),
             new \Piotrpolak\Pepiscms\Formbuilder\Component\SelectboxAutocomplete(),
         );
-        
+
         foreach ($registeredComponents as $registeredComponent) {
             if ($registeredComponent->getComponentId() == $componentId) {
                 return $registeredComponent;
@@ -483,5 +422,73 @@ class DefaultFormRenderer implements FormRenderableInterface
         }
 
         return $output_element;
+    }
+
+    /**
+     * @param $field
+     * @param $output_element
+     * @return string
+     */
+    private function wrapReadOnlyComponent($field, $output_element)
+    {
+        return '<span id="' . $field['field'] . '_readonly">' . $output_element . '</span>';
+    }
+
+    /**
+     * @param $field
+     * @param $valueEscaped
+     * @param $object
+     * @param $component
+     * @param $formatting_function_for_uneditable
+     * @return array
+     */
+    private function computeReadOnlyComponentHtml($field, $valueEscaped, $object, \Piotrpolak\Pepiscms\Formbuilder\Component\ComponentInterface $component, $formatting_function_for_uneditable)
+    {
+        if (is_callable($formatting_function_for_uneditable)) {
+            return call_user_func_array($formatting_function_for_uneditable, array($valueEscaped));
+        } else {
+            $output = $this->renderInput($field, $valueEscaped, $object, $component, TRUE);
+
+            if ($component->shouldRenderHiddenForReadOnly()) {
+                $output .= $this->renderInput($field, $valueEscaped, $object, new \Piotrpolak\Pepiscms\Formbuilder\Component\Hidden(), FALSE);
+            }
+
+            return $output;
+        }
+    }
+
+    /**
+     * @param $field_name
+     * @param $object
+     * @param $field
+     * @return string
+     */
+    private function computeValue($field_name, $object, $field)
+    {
+        if ($object && isset($object->$field_name)) {
+            $value = $object->$field_name;
+        } else {
+            if (isset($field['input_default_value']) && $field['input_default_value']) {
+                $value = $field['input_default_value'];
+            } else {
+                $value = '';
+            }
+        }
+        return $value;
+    }
+
+    /**
+     * @param $field
+     * @return string
+     */
+    private function computeExtraCssClasses($field)
+    {
+        $validationRulesTranslator = new Piotrpolak\Pepiscms\Formbuilder\Component\ValidationRulesTranslator();
+        $extra_css_classes = $validationRulesTranslator->translateCIValidationRulesToJSValidationEngineRules($field['validation_rules']);
+
+        if ($field['input_css_class']) {
+            $extra_css_classes .= ' ' . $field['input_css_class'];
+        }
+        return $extra_css_classes;
     }
 }
