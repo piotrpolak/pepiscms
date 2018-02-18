@@ -15,7 +15,7 @@
 /**
  * Utility library for sending emails
  *
- * @since               0.1.4
+ * @since 0.1.4
  */
 class EmailSender
 {

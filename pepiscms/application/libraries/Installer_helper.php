@@ -33,6 +33,10 @@ class Installer_helper
     const ENV_PEPIS_CMS_DATABASE_HOSTNAME = 'PEPIS_CMS_DATABASE_HOSTNAME';
     const ENV_PEPIS_CMS_DATABASE_CONFIG_TYPE = 'PEPIS_CMS_DATABASE_CONFIG_TYPE';
 
+    /**
+     * @param $base_path
+     * @throws Exception
+     */
     public function buildFileStructure($base_path)
     {
         $mainpage_module_path = $base_path . 'modules/mainpage/';
@@ -81,6 +85,11 @@ class Installer_helper
         }
     }
 
+    /**
+     * @param $data
+     * @param $base_path
+     * @return bool|string
+     */
     public function writeConfigFiles($data, $base_path)
     {
         list($hostname, $port) = $this->explodeHostname($data['hostname']);
@@ -177,6 +186,9 @@ class Installer_helper
         return $error;
     }
 
+    /**
+     * @return array
+     */
     public function getDefaultInstallationValues()
     {
         return array(
@@ -200,6 +212,10 @@ class Installer_helper
         );
     }
 
+    /**
+     * @param $data
+     * @return bool|string
+     */
     public function writeDatabase($data)
     {
         $db = get_instance()->load->database($this->getDefaultDatabaseConfig($data), TRUE);
@@ -245,6 +261,11 @@ class Installer_helper
         return $error;
     }
 
+    /**
+     * @param $email
+     * @param $password
+     * @return bool
+     */
     public function registerAdmin($email, $password)
     {
         $email = strtolower($email);
@@ -255,6 +276,10 @@ class Installer_helper
         return FALSE;
     }
 
+    /**
+     * @param $data
+     * @return array
+     */
     private function getDefaultDatabaseConfig($data)
     {
         list($hostname, $port) = $this->explodeHostname($data['hostname']);

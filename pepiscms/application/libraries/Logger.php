@@ -275,32 +275,6 @@ class Logger
     }
 
     /**
-     * getCaller
-     *
-     * gets the calling function of the function it was called from,
-     * i.e., this function's grandparent.
-     *
-     * @param int $levels
-     * @returns string Name of calling function
-     */
-    private static function getCaller($levels = 2)
-    {
-        $bt = debug_backtrace();
-
-        if (isset($bt[$levels])) {
-            $caller = $bt[$levels]['function'];
-
-            if (isset($bt[$levels]['class'])) {
-                $caller = $bt[$levels]['class'] . "::" . $caller;
-            }
-        } else {
-            $caller = 'main';
-        }
-
-        return $caller;
-    }
-
-    /**
      * Returns name of calling function
      *
      * gets the calling line of the function it was called from,

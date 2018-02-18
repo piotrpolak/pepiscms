@@ -533,7 +533,8 @@ class FormBuilder
      */
     public function isApplyEventFired()
     {
-        return (CI_Controller::get_instance()->input->get('apply', NULL) !== NULL && CI_Controller::get_instance()->input->get('apply') == '');
+        return (CI_Controller::get_instance()->input->get('apply', NULL) !== NULL
+            && CI_Controller::get_instance()->input->get('apply') == '');
     }
 
     /**
