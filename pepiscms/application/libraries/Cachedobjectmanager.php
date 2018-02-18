@@ -92,6 +92,7 @@ class Cachedobjectmanager
         }
 
         $object = FALSE; // Supposed to be overwritten
+        /** @noinspection PhpIncludeInspection */
         @include($path);
         CI_Controller::getInstance()->benchmark->mark('cached_object_manager_get_object_' . $collection . '_' . $hash . '_end');
         return $object;

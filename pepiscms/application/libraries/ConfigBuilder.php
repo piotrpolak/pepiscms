@@ -35,9 +35,8 @@ class ConfigBuilder
             return false;
         }
 
-
         foreach ($config_variables as $key => $value) {
-            $contents = str_replace('{$' . $key . '}', self::protectString($value), $contents);
+            $contents = str_replace('{$' . $key . '}', $this->protectString($value), $contents);
         }
 
         return file_put_contents($config_path, $contents);
@@ -52,10 +51,12 @@ class ConfigBuilder
     public function readConfig($config_path)
     {
         if (file_exists($config_path)) {
+            /** @noinspection PhpIncludeInspection */
             include($config_path);
 
-            if (isset($config) && is_array($config))
+            if (isset($config) && is_array($config)) {
                 return $config;
+            }
         }
 
         return false;
@@ -70,16 +71,12 @@ class ConfigBuilder
      */
     public function writeConfig($config_path, $config_variables)
     {
-        $contents = "<?php if (!defined('BASEPATH')) exit('No direct script access allowed');\n";
-        $contents .= "/**\n * Automatically generated config file\n\n * @date " . date('Y-m-d') . "\n * @file " . basename($config_path) . "\n */\n\n";
-
+        $contents = "<?php if (!defined('BASEPATH')) exit('No direct script access allowed');\n" .
+            "/**\n * Automatically generated config file\n\n * @date " . date('Y-m-d') .
+            "\n * @file " . basename($config_path) . "\n */\n\n";
 
         foreach ($config_variables as $key => $value) {
-            if (is_bool($value)) {
-                $contents .= '$config[ \'' . self::protectString($key) . '\' ] = ' . ($value ? 'TRUE' : 'FALSE') . ';' . "\n";
-            } else {
-                $contents .= '$config[ \'' . self::protectString($key) . '\' ] = \'' . self::protectString($value) . '\';' . "\n";
-            }
+            $contents .= '$config[ \'' . $this->protectString($key) . '\' ] = \'' . $this->getValue($value) . '\';' . "\n";
         }
 
         return file_put_contents($config_path, $contents);
@@ -91,8 +88,21 @@ class ConfigBuilder
      * @param string $value
      * @return string
      */
-    private static function protectString($value)
+    private function protectString($value)
     {
         return str_replace("'", "\\'", $value);
+    }
+
+    /**
+     * @param $value
+     * @return string
+     */
+    private function getValue($value)
+    {
+        if (is_bool($value)) {
+            return ($value ? 'TRUE' : 'FALSE');
+        } else {
+            return $this->protectString($value);
+        }
     }
 }
