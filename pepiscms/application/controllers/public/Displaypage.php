@@ -72,23 +72,6 @@ class DisplayPage extends Dispatcher
         $this->execute($language_code);
     }
 
-    public function api()
-    {
-        $this->load->library('ModuleRunner');
-        $this->load->library('WebserviceDispatcher');
-
-        $module_name = $this->uri->segment(4);
-        $model_name = $this->uri->segment(5);
-
-        // If there is no model specified, lets get the model out of the module name
-        if (!$model_name) {
-            $model_name = ucfirst($module_name);
-        }
-
-        // Dispatching webservice, if it fails, showing 404 error
-        $this->modulerunner->dispatchWebservice($module_name, $model_name) OR show_404();
-    }
-
     public function page()
     {
         // there is no language code prefix

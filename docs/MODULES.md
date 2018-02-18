@@ -129,15 +129,3 @@ Displays system dmesg.
 ### HTML customization for admin panel
 
 Allows to inject HTML snippets to admin panel header and footer.
-
-### Remote applications
-
-Allows to manage remote applications and their keys.
-
-### XML-RPC consumer demo
-
-XML-RPC consuler demo. Calls services exposed by `XML-RPC service` module.
-
-### XML-RPC service
-
-Exposes some sample remote methods.

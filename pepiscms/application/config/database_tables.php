@@ -8,7 +8,6 @@ $config['database_table_modules'] = 'cms_modules';
 $config['database_table_logs'] = 'cms_logs';
 $config['database_table_menu'] = 'cms_menu';
 $config['database_table_pages'] = 'cms_pages';
-$config['database_table_remote_applications'] = 'cms_remote_applications';
 $config['database_table_site_languages'] = 'cms_site_languages';
 $config['database_table_journal'] = 'cms_journal';
 

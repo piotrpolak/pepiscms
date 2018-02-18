@@ -40,7 +40,6 @@ class DevelopmentAdmin extends ModuleAdminController
             'database_table_logs' => array('id', 'BIGINT UNSIGNED'),
             'database_table_menu' => array('item_id', 'INT UNSIGNED'),
             'database_table_pages' => array('page_id', 'INT UNSIGNED'),
-            'database_table_remote_applications' => array('id', 'INT'),
             'database_table_journal' => array('id', 'INT'),
         );
 

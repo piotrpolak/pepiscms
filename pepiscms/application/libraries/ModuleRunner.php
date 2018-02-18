@@ -40,7 +40,6 @@ class ModuleRunner
     {
         $CI = get_instance();
         $CI->load->library('Logger');
-        $CI->load->library('WebserviceDispatcher');
         $CI->load->library('ModulePathResolver');
     }
 
@@ -433,65 +432,5 @@ class ModuleRunner
         $CI->load->library('Cachedobjectmanager');
 
         return $CI->cachedobjectmanager->cleanup('modules');
-    }
-
-    /**
-     * Dispatches webservice by module name. Only one webservice per module is accepted
-     *
-     * @param string $module_name
-     * @param string $model_name
-     * @return bool
-     */
-    public function dispatchWebservice($module_name, $model_name)
-    {
-        $file_suffix = '_model';
-        $class_suffix = '_model';
-
-        $CI = get_instance();
-        $CI->load->model('Module_model');
-        if (!$module_name || !self::isModuleInstalled($module_name)) {
-            return FALSE;
-        }
-
-        $module_directory = $CI->load->resolveModuleDirectory($module_name);
-        // TODO Use resolver
-        $model_file = strtolower($model_name) . $file_suffix . '.php';
-
-        if (file_exists($module_directory . 'models/' . $model_file)) {
-            // Including controller class definition
-            include_once($module_directory . 'models/' . $model_file);
-            $class = ucfirst($model_name) . $class_suffix; // Building class name
-
-            if (class_exists($class)) {
-                // You need this kind of "recurency" in cases when you run a module from inside another module
-                $previously_running_module = $this->getRunningModuleName();
-                $this->setRunningModuleName($module_name);
-                $CI->load->moduleConfig($module_name);
-
-
-                $webservice_instance = new $class();
-                if (!($webservice_instance instanceof Remote_model)) {
-                    $error_msg = 'Unable to dispatch webservice ' . $module_name . '. Class ' . $class . ' found but does not extend Remote_model.';
-                    Logger::error($error_msg, 'WEBSERVICE');
-                    show_error($error_msg);
-                }
-
-                $dispatcher = new WebserviceDispatcher();
-                $dispatcher->dispatch($webservice_instance);
-
-                $this->setRunningModuleName($previously_running_module);
-                return TRUE;
-            } else {
-                $error_msg = 'Unable to dispatch webservice ' . $module_name . '. Class ' . $class . ' not found.';
-                Logger::error($error_msg, 'WEBSERVICE');
-                show_error($error_msg);
-            }
-        } else {
-            $error_msg = 'Unable to dispatch webservice ' . $module_name . '. There is no such file as ' . $model_file . ' not found.';
-            Logger::warning($error_msg, 'WEBSERVICE');
-            show_error($error_msg);
-        }
-
-        return FALSE;
     }
 }
