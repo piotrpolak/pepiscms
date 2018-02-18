@@ -305,11 +305,9 @@ class Siteconfig_model extends CI_Model implements EntitableInterface
 
         $logs_path = INSTALLATIONPATH . 'application/logs/';
 
-        $this->load->library('CMSMemcache');
         $configuration_tests = array();
         $configuration_tests['error_php_reporting_enabled'] = ENVIRONMENT !== 'production' && PEPISCMS_PRODUCTION_RELEASE;
         $configuration_tests['error_development_release'] = !PEPISCMS_PRODUCTION_RELEASE;
-        $configuration_tests['error_memcache_misconfig'] = $this->cmsmemcache->isEnabled() && !$this->cmsmemcache->checkConnection();
         $configuration_tests['error_wrong_uri_protocol'] = $this->config->item('uri_protocol') != 'QUERY_STRING';
         $configuration_tests['error_cache_not_writeable'] = FALSE;
         $configuration_tests['error_logs_not_writeable'] = FALSE;

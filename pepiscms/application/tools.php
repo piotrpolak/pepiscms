@@ -5,9 +5,8 @@
 | INITIALIZATION OF HTML CACHE SYSTEM
 |---------------------------------------------------------------
 |
-| Use one of the following lines, memcache and filesystem they are
-| mutually exclusive. When using memcache please update the config
-| file application/config/memcache.php
+| Contains fast cache methods
+|
 */
 require_once APPPATH . 'tools/fast_cache_filesystem.php';
 

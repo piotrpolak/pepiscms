@@ -147,7 +147,6 @@ class Installer_helper
             'database.php' => 'database.php',
             '_pepiscms.php' => '_pepiscms.php',
             'email.php' => 'email.php',
-            'memcache.php' => 'memcache.php',
             'debug.php' => 'debug.php',
             'auth.php' => 'auth.php',
             'config.php' => 'config.php'
