@@ -39,9 +39,9 @@ class Backup
      */
     function __construct($params = NULL)
     {
-        CI_Controller::getInstance()->load->model('Page_model');
-        CI_Controller::getInstance()->load->model('Menu_model');
-        CI_Controller::getInstance()->load->model('Site_language_model');
+        CI_Controller::get_instance()->load->model('Page_model');
+        CI_Controller::get_instance()->load->model('Menu_model');
+        CI_Controller::get_instance()->load->model('Site_language_model');
     }
 
     /**
@@ -70,33 +70,33 @@ class Backup
                 BackupCompatibilityTransformationUtility::transform($sxe, $attributes->version, Backup::getSupportedVersions());
             }
 
-            CI_Controller::getInstance()->db->trans_start();
+            CI_Controller::get_instance()->db->trans_start();
 
             // Truncating tables
-            CI_Controller::getInstance()->Page_model->doBackupPrepare();
-            CI_Controller::getInstance()->Menu_model->doBackupPrepare();
-            CI_Controller::getInstance()->Site_language_model->doBackupPrepare();
+            CI_Controller::get_instance()->Page_model->doBackupPrepare();
+            CI_Controller::get_instance()->Menu_model->doBackupPrepare();
+            CI_Controller::get_instance()->Site_language_model->doBackupPrepare();
 
 
             // Restoring languages
             if (isset($sxe->sitelanguages->item)) {
-                CI_Controller::getInstance()->Site_language_model->doBackupRestore($sxe->sitelanguages->item);
+                CI_Controller::get_instance()->Site_language_model->doBackupRestore($sxe->sitelanguages->item);
             }
 
             // Restoring pages
             if (isset($sxe->pages->item)) {
-                CI_Controller::getInstance()->Page_model->doBackupRestore($sxe->pages->item, $user_id);
+                CI_Controller::get_instance()->Page_model->doBackupRestore($sxe->pages->item, $user_id);
             }
 
 
             // Restoring menu
             if (isset($sxe->menu->item)) {
-                CI_Controller::getInstance()->Menu_model->doBackupRestore($sxe->menu->item);
+                CI_Controller::get_instance()->Menu_model->doBackupRestore($sxe->menu->item);
             }
 
-            CI_Controller::getInstance()->db->trans_complete();
+            CI_Controller::get_instance()->db->trans_complete();
 
-            return !(CI_Controller::getInstance()->db->trans_status() === FALSE);
+            return !(CI_Controller::get_instance()->db->trans_status() === FALSE);
         }
     }
 
@@ -107,7 +107,7 @@ class Backup
      */
     function create()
     {
-        CI_Controller::getInstance()->load->helper('xml');
+        CI_Controller::get_instance()->load->helper('xml');
 
         $backup = '';
 
@@ -117,17 +117,17 @@ class Backup
         $backup_items = array();
         $backup_items[] = array(
             'pages',
-            CI_Controller::getInstance()->Page_model->doBackupProjection(),
+            CI_Controller::get_instance()->Page_model->doBackupProjection(),
             array('page_id', 'page_uri', 'page_title', 'page_description', 'page_keywords', 'page_contents', 'page_is_default', 'page_is_displayed_in_sitemap', 'language_code')
         );
         $backup_items[] = array(
             'menu',
-            CI_Controller::getInstance()->Menu_model->doBackupProjection(),
+            CI_Controller::get_instance()->Menu_model->doBackupProjection(),
             array('item_id', 'item_order', 'parent_item_id', 'item_name', 'language_code', 'item_url', 'page_id')
         );
         $backup_items[] = array(
             'sitelanguages',
-            CI_Controller::getInstance()->Site_language_model->doBackupProjection(),
+            CI_Controller::get_instance()->Site_language_model->doBackupProjection(),
             array('code', 'label', 'is_default', 'ci_language')
         );
 
