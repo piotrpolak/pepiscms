@@ -25,6 +25,7 @@ class Module_model extends CI_Model
     public function __construct()
     {
         $this->load->helper('inflector');
+        $this->load->library('ModulePathResolver');
     }
 
 
@@ -363,22 +364,9 @@ class Module_model extends CI_Model
             return new $class_name();
         }
 
-        $module_directory = $this->load->resolveModuleDirectory($module_name);
+        $descriptor_path = CI_Controller::get_instance()->modulepathresolver->getDescriptorPath($module_name);
 
-        $descriptor_path = FALSE;
-        $checked_files = array();
-        foreach ($this->modulerunner->getModuleLocators() as $moduleLocator) {
-            $resolved_file = $moduleLocator->getDescriptorRelativePath($module_name);
-
-            $checked_files[] = $resolved_file;
-            $resolved_path = $module_directory . '/' . $resolved_file;
-            if (file_exists($resolved_path)) {
-                $descriptor_path = $resolved_path;
-                break;
-            }
-        }
-
-        if (!file_exists($descriptor_path)) {
+        if (!$descriptor_path) {
             return FALSE;
         }
 
@@ -399,8 +387,7 @@ class Module_model extends CI_Model
      */
     public function isAdminControllerRunnable($module_name)
     {
-        $path = $this->load->resolveModuleDirectory($module_name) . $module_name . '_admin_controller.php';
-        return file_exists($path);
+        return $this->modulepathresolver->getAdminControllerPath($module_name) !== FALSE;
     }
 
     /**
@@ -411,8 +398,7 @@ class Module_model extends CI_Model
      */
     public function isPublicControllerRunnable($module_name)
     {
-        $path = $this->load->resolveModuleDirectory($module_name) . $module_name . '_controller.php';
-        return file_exists($path);
+        return $this->modulepathresolver->getPublicControllerPath($module_name) !== FALSE;
     }
 
     /**

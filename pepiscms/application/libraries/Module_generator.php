@@ -14,6 +14,8 @@
 
 /**
  * An utility for generating CRUD modules.
+ *
+ * @since 1.0.0
  */
 class Module_generator
 {
@@ -213,7 +215,7 @@ class Module_generator
             $module_model_name);
 
         // Making admin controller
-        $file_admin_controller = $directory . '' . $this->moduleLocator->getAdminControllerRelativePath($module_name_lower_case);
+        $file_admin_controller = $directory . '' . $this->moduleLocator->getAdminControllerPath($module_name_lower_case);
         if (!file_exists($file_admin_controller)) {
             $this->generateAdminCrudController($is_crud, $template_base_path, $file_admin_controller, $data);
         }
@@ -222,7 +224,7 @@ class Module_generator
 
 
         // Building and writing model
-        $file_model_path = $directory . 'models/' . $module_name_singular . '_model.php';
+        $file_model_path = $directory . $this->moduleLocator->getModelPath($module_name_lower_case, $module_name_singular . '_model');
         if (!file_exists($file_model_path)) {
             file_put_contents($file_model_path, PatternCompiler::compile(file_get_contents($template_base_path . '_model.php'), $data));
         } else {
@@ -572,7 +574,7 @@ class Module_generator
      */
     private function generateModuleDescriptor($directory, $module_name_lower_case, $template_base_path, $data)
     {
-        $file_descriptor = $directory . '' . $module_name_lower_case . $this->moduleLocator->getDescriptorRelativePath($module_name_lower_case);
+        $file_descriptor = $directory . '' . $module_name_lower_case . $this->moduleLocator->getDescriptorPath($module_name_lower_case);
         if (!file_exists($file_descriptor)) {
             file_put_contents($file_descriptor,
                 PatternCompiler::compile(file_get_contents($template_base_path . '_descriptor.php'), $data));

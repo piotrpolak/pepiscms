@@ -29,7 +29,7 @@ interface ModuleLocatorInterface
      * @param string $module_name
      * @return string
      */
-    public function getPublicControllerRelativePath($module_name);
+    public function getPublicControllerPath($module_name);
 
     /**
      * Locates module's admin controller
@@ -37,7 +37,7 @@ interface ModuleLocatorInterface
      * @param string $module_name
      * @return string
      */
-    public function getAdminControllerRelativePath($module_name);
+    public function getAdminControllerPath($module_name);
 
     /**
      * Locates module's descriptor
@@ -45,5 +45,14 @@ interface ModuleLocatorInterface
      * @param string $module_name
      * @return string
      */
-    public function getDescriptorRelativePath($module_name);
+    public function getDescriptorPath($module_name);
+
+    /**
+     * Locates module's model
+     *
+     * @param string $module_name
+     * @param $model_name
+     * @return string
+     */
+    public function getModelPath($module_name, $model_name);
 }

@@ -95,8 +95,8 @@ class PEPISCMS_Loader extends CI_Loader
         $original_db_conn = $db_conn;
 
         $CI = &get_instance();
-        if (isset($CI->modulerunner) && $CI->modulerunner->getRunningModuleName()) {
 
+        if (isset($CI->modulerunner) && $CI->modulerunner->getRunningModuleName()) {
             if (is_array($model)) {
                 foreach ($model as $babe) {
                     $this->model($babe);
@@ -126,26 +126,27 @@ class PEPISCMS_Loader extends CI_Loader
                 return;
             }
 
-            $CI = &get_instance();
             if (isset($CI->$name)) {
                 show_error('The model name you are loading is the name of a resource that is already being used: ' . $name);
             }
 
-            $model = strtolower($model);
+            $running_module_name = $CI->modulerunner->getRunningModuleName();
 
-            $model_directory = FALSE;
+            $model_path = FALSE;
             $model_directories = array(
-                $this->resolveModuleDirectory($CI->modulerunner->getRunningModuleName()) . 'models/',
-                INSTALLATIONPATH . 'application/models/'
+                $this->resolveModuleDirectory($running_module_name),
+                INSTALLATIONPATH . 'application/'
             );
 
-            foreach ($model_directories as $m_d) {
-                if (file_exists($m_d . $path . $model . '.php')) {
-                    $model_directory = $m_d;
+            $CI->load->library('ModulePathResolver');
+            foreach ($model_directories as $_model_directory) {
+                $model_path = $CI->modulepathresolver->getModelPathUsingBaseDir($running_module_name, $model, $_model_directory);
+                if ($model_path) {
+                    break;
                 }
             }
 
-            if ($model_directory) {
+            if ($model_path) {
                 if ($db_conn !== FALSE AND !class_exists('CI_DB')) {
                     if ($db_conn === TRUE)
                         $db_conn = '';
@@ -153,24 +154,22 @@ class PEPISCMS_Loader extends CI_Loader
                     $CI->load->database($db_conn, FALSE, TRUE);
                 }
 
-                if (!class_exists('Model')) {
-                    load_class('Model', FALSE);
+                if (!class_exists('CI_Model')) {
+                    load_class('CI_Model', FALSE);
                 }
 
-                require_once($model_directory . $path . $model . '.php');
+                require_once($model_path);
 
-                $model = ucfirst($model);
+                $model_class_name = ucfirst($model);
 
-                $CI->$name = new $model();
+                $CI->$name = new $model_class_name();
 
-                $this->_ci_models[] = $name;
+                $this->_ci_models[] = $model_class_name;
 
                 return;
             }
         }
 
-
-        //parent::model( $original_model, $original_name, $original_db_conn );
         $this->_model($original_model, $original_name, $original_db_conn, $hardfail);
     }
 
@@ -218,8 +217,6 @@ class PEPISCMS_Loader extends CI_Loader
         if (isset($CI->$name)) {
             show_error('The model name you are loading is the name of a resource that is already being used: ' . $name);
         }
-
-        //$model = strtolower($model);
 
         foreach ($this->_ci_model_paths as $mod_path) {
             if (!file_exists($mod_path . 'models/' . $path . $model . '.php')) {
@@ -373,14 +370,11 @@ class PEPISCMS_Loader extends CI_Loader
 
         // We'll test for both lowercase and capitalized versions of the file name
         foreach (array(ucfirst($class), strtolower($class)) as $class) {
-            // Lets search for the requested library file and load it.
-            $is_duplicate = FALSE;
             $library_file_path = $this->resolveModuleDirectory($module_name) . 'libraries/' . $class . '.php';
 
             if (file_exists($library_file_path)) {
                 // Safety:  Was the class already loaded by a previous call?
                 if (in_array($library_file_path, $this->_ci_classes)) {
-                    $is_duplicate = TRUE;
                     log_message('debug', $class . " class already loaded. Second attempt ignored.");
                     return;
                 }

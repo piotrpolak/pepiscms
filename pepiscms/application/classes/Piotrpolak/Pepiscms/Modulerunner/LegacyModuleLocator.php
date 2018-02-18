@@ -27,24 +27,32 @@ class LegacyModuleLocator implements ModuleLocatorInterface
     /**
      * @inheritDoc
      */
-    public function getPublicControllerRelativePath($module_name)
+    public function getPublicControllerPath($module_name)
     {
-        return $module_name . '_controller.php';
+        return strtolower($module_name) . '_controller.php';
     }
 
     /**
      * @inheritDoc
      */
-    public function getAdminControllerRelativePath($module_name)
+    public function getAdminControllerPath($module_name)
     {
-        return $module_name . '_admin_controller.php';
+        return strtolower($module_name) . '_admin_controller.php';
     }
 
     /**
      * @inheritDoc
      */
-    public function getDescriptorRelativePath($module_name)
+    public function getDescriptorPath($module_name)
     {
-        return $module_name . '_descriptor.php';
+        return strtolower($module_name) . '_descriptor.php';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getModelPath($module_name, $model_name)
+    {
+        return 'models/' . strtolower($model_name) . '.php';
     }
 }

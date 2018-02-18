@@ -27,7 +27,7 @@ class ModuleLocator implements ModuleLocatorInterface
     /**
      * @inheritDoc
      */
-    public function getPublicControllerRelativePath($module_name)
+    public function getPublicControllerPath($module_name)
     {
         return ucfirst($module_name) . 'Controller.php';
     }
@@ -35,7 +35,7 @@ class ModuleLocator implements ModuleLocatorInterface
     /**
      * @inheritDoc
      */
-    public function getAdminControllerRelativePath($module_name)
+    public function getAdminControllerPath($module_name)
     {
         return ucfirst($module_name) . 'AdminController.php';
     }
@@ -43,8 +43,16 @@ class ModuleLocator implements ModuleLocatorInterface
     /**
      * @inheritDoc
      */
-    public function getDescriptorRelativePath($module_name)
+    public function getDescriptorPath($module_name)
     {
         return ucfirst($module_name) . 'Descriptor.php';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getModelPath($module_name, $model_name)
+    {
+        return 'models/' . ucfirst($model_name) . '.php';
     }
 }

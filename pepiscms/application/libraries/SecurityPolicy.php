@@ -260,8 +260,8 @@ class SecurityPolicy
      */
     public function describeModuleControllers($module_name)
     {
-        $module_file = $this->CI->load->resolveModuleDirectory($module_name) . '/' . $module_name . '_admin_controller.php';
-        if (!is_file($module_file)) {
+        $module_file = $this->CI->modulepathresolver->getAdminControllerPath($module_name);
+        if (!$module_file) {
             return array();
         }
         include($module_file);

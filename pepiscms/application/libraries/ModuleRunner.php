@@ -33,11 +33,6 @@ class ModuleRunner
     private static $module_instance = null;
 
     /**
-     * @var \Piotrpolak\Pepiscms\Modulerunner\ModuleLocatorInterface[]
-     */
-    private $moduleLocators = array();
-
-    /**
      * Default constructor, empty
      * @param array $params
      */
@@ -46,9 +41,7 @@ class ModuleRunner
         $CI = get_instance();
         $CI->load->library('Logger');
         $CI->load->library('WebserviceDispatcher');
-
-        $this->moduleLocators[] = new \Piotrpolak\Pepiscms\Modulerunner\ModuleLocator();
-        $this->moduleLocators[] = new \Piotrpolak\Pepiscms\Modulerunner\LegacyModuleLocator();
+        $CI->load->library('ModulePathResolver');
     }
 
     /**
@@ -113,20 +106,8 @@ class ModuleRunner
         }
 
 
-        $controller_path = FALSE;
-        $checked_files = array();
-        foreach ($this->moduleLocators as $moduleLocator) {
-            $resolved_file = $moduleLocator->getAdminControllerRelativePath($module_name);
-
-            $checked_files[] = $resolved_file;
-            $resolved_path = $module_directory . '/' . $resolved_file;
-            if (file_exists($resolved_path)) {
-                $controller_path = $resolved_path;
-                break;
-            }
-        }
-
-        if ($controller_path) {
+        $controller_path = CI_Controller::get_instance()->modulepathresolver->getAdminControllerPath($module_name);
+        if ($controller_path !== FALSE) {
             include_once($controller_path);
 
             $class = ucfirst($module_name) . 'Admin';
@@ -159,7 +140,7 @@ class ModuleRunner
                 show_error($error_msg);
             }
         } else {
-            $error_msg = 'Unable to run module ' . $module_name . '. Controller file ' . implode(',', $checked_files) . ' not found.';
+            $error_msg = 'Unable to run module ' . $module_name . '. Controller file not found.';
             Logger::error($error_msg, 'MODULE');
             show_error($error_msg);
         }
@@ -193,20 +174,8 @@ class ModuleRunner
             show_error($error_msg);
         }
 
-        $controller_path = FALSE;
-        $checked_files = array();
-        foreach ($this->moduleLocators as $moduleLocator) {
-            $resolved_file = $moduleLocator->getPublicControllerRelativePath($module_name);
-
-            $checked_files[] = $resolved_file;
-            $resolved_path = $module_directory . '/' . $resolved_file;
-            if (file_exists($resolved_path)) {
-                $controller_path = $resolved_path;
-                break;
-            }
-        }
-
-        if ($controller_path) {
+        $controller_path = CI_Controller::get_instance()->modulepathresolver->getPublicControllerPath($module_name);
+        if ($controller_path !== FALSE) {
             include_once($controller_path);
 
             $class = ucfirst($module_name);
@@ -244,7 +213,7 @@ class ModuleRunner
                 show_error($error_msg);
             }
         } else {
-            $error_msg = 'Unable to run module ' . $module_name . '. Controller file ' . implode(',', $checked_files) . ' not found.';
+            $error_msg = 'Unable to run module ' . $module_name . '. Controller file not found.';
             Logger::error($error_msg, 'MODULE');
             show_error($error_msg);
         }
@@ -485,6 +454,7 @@ class ModuleRunner
         }
 
         $module_directory = $CI->load->resolveModuleDirectory($module_name);
+        // TODO Use resolver
         $model_file = strtolower($model_name) . $file_suffix . '.php';
 
         if (file_exists($module_directory . 'models/' . $model_file)) {
@@ -524,13 +494,4 @@ class ModuleRunner
 
         return FALSE;
     }
-
-    /**
-     * @return \Piotrpolak\Pepiscms\Modulerunner\ModuleLocatorInterface[]
-     */
-    public function getModuleLocators()
-    {
-        return $this->moduleLocators;
-    }
-
 }
