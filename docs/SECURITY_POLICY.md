@@ -41,8 +41,8 @@ Security policy is serialized onto XML file that is platform independent and can
 In order to reduce time needed for parsing XML file with each request,the security policy is storied in a processed and
 serialized cached format on the permanent storage or directly in the memory.
 
-See [security policy file for the core](pepiscms/application/security_policy.xml) and a sample module policy
-[user accounts](pepiscms/modules/cms_users/security_policy.xml).
+See [security policy file for the core](../../../tree/master/pepiscms/application/security_policy.xml) and a sample module policy
+[user accounts](../../../tree/master/pepiscms/modules/cms_users/security_policy.xml).
 
 
 ## Types of security policy

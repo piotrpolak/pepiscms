@@ -6,33 +6,38 @@ Form builder can render the form using the default layout or you can register an
 The main features of form builder are:
 
 * Generates HTML forms from definition 
-* Handles input validation, both on server side (for security) and on client side (JavaScript for increased responsiveness) 
+* Handles input validation, both on server side (for security) and on client side (JavaScript for increased
+    responsiveness) 
 * Handles database read/update/insert 
 * Can be customized using templates 
-* Can be extended using callbacks and custom feed objects that implement the [EntitableInterface](pepiscms/application/classes/EntitableInterface.php)
+* Can be extended using callbacks and custom feed objects that implement the
+    [EntitableInterface](../../../tree/master/pepiscms/application/classes/EntitableInterface.php)
 * Can handle database foreign keys 
 * When using FormBuilder you can specify the fields of the form and their attributes in two manners: by API methods or
-by definition. The API methods were first that were developed but they are not recommended to use in new projects.
-Initializing the form from definition that is an associative array (multidimensional hash table) makes it much more
-flexible and reusable – when new attributes are implemented, the previously defined forms work with no problems.
-It is also simpler for the programmer because the order of attributes in the definition does not matter. If there is no
-attribute specified its default value is automatically completed. 
-* The definition used for generating FormBuilder is compatible with the definition used by DataGrid so that one definition
-can be written and reused both for the Form and for the Grid. 
-* Form builder is closely coupled with [EntitableInterface](pepiscms/application/classes/EntitableInterface.php) - it uses its saveById and getById methods.
+    by definition. The API methods were first that were developed but they are not recommended to use in new projects.
+    Initializing the form from definition that is an associative array (multidimensional hash table) makes it much more
+    flexible and reusable – when new attributes are implemented, the previously defined forms work with no problems.
+    It is also simpler for the programmer because the order of attributes in the definition does not matter. If there is
+    no attribute specified its default value is automatically completed. 
+* The definition used for generating FormBuilder is compatible with the definition used by DataGrid so that one
+    definition can be written and reused both for the Form and for the Grid. 
+* Form builder is closely coupled with
+    [EntitableInterface](../../../tree/master/pepiscms/application/classes/EntitableInterface.php) - it uses its
+    `saveById()` and `getById()` methods.
 
-See complete [FormBuilder API](pepiscms/application/libraries/FormBuilder.php)
+See complete [FormBuilder API](../../../tree/master/pepiscms/application/libraries/FormBuilder.php)
 
 ## Generating a form 
 
-In the most common scenario the customizable Generic_model is used as the feed object for FormBuilder. The scenario looks as follows: 
+In the most common scenario the customizable Generic_model is used as the feed object for FormBuilder. The scenario
+looks as follows: 
 
 1. Initialize FormBuilder `$this->load->library('FormBuilder')`
 2. Specify data model or use GenericModel providing the table name
 3. Specify the value of entity ID - `$this->formbuilder->setId($id)` 
 4. Specify the fields and their properties by `$this->formbuilder->setDefinition($definition)` 
-5. Specify the back link `$this->formbuilder->setBackLink($link)` - URL that is used for the "Cancel" button and for redirecting the user once
-the form is saved 
+5. Specify the back link `$this->formbuilder->setBackLink($link)` - URL that is used for the "Cancel" button and for
+    redirecting the user once the form is saved 
 6. Trigger form populate/save actions and generate the resulting HTML 
 
 
@@ -110,8 +115,9 @@ public function _fb_callback_before_render( &$object ){}
 
 ## Image fields’ callbacks
 
-You can attach an independent callback to the image fields. The difference between form builder general callbacks and image
-callbacks is that image callback is only called when a new image is being uploaded while form builder callback is called each time you save a form. 
+You can attach an independent callback to the image fields. The difference between form builder general callbacks and
+image callbacks is that image callback is only called when a new image is being uploaded while form builder callback
+is called each time you save a form. 
 
 Sample callback (taken from admin module CRUD template):
 ```php

@@ -1,11 +1,12 @@
 # Generic model
 
-[Generic_model](../../../tree/master/pepiscms/application/models/Generic_model.php) is an extended Model that implements interface
-[EntitableInterface](../../../tree/master/pepiscms/application/classes/EntitableInterface.php) required by [FormBuilder](../../../tree/master/pepiscms/application/libraries/FormBuilder.php).
+[Generic_model](../../../tree/master/pepiscms/application/models/Generic_model.php) is an extended Model that implements
+[EntitableInterface](../../../tree/master/pepiscms/application/classes/EntitableInterface.php) required by
+[FormBuilder](../../../tree/master/pepiscms/application/libraries/FormBuilder.php).
 
 The `EntitableInterface` interface specifies the 3 basic methods: `saveById()`, `deleteById()` and `getById()`.
-You can implement the `EntitableInterface` class by default but for most of the cases Generic_model with its helper methods is more
-than enough – in most situations Generic_model should only be extended. 
+You can implement the `EntitableInterface` class by default but for most of the cases Generic_model with its helper
+methods is more than enough – in most situations Generic_model should only be extended. 
 
 Generic_model also implements [AdvancedDataFeedableInterface](../../../tree/master/pepiscms/application/classes/AdvancedDataFeedableInterface.php)
 interface that is needed by [DataGrid](../../../tree/master/pepiscms/application/libraries/DataGrid.php) component.
@@ -30,4 +31,5 @@ Methods of the generic model are worth to mention because they are present in al
 | `setDatabase($database_group)`                                                                                                | Sets the database connection to be used by the model, database group must be defined in database config. Since 0.2.2                                                                                                                                                                                                                                                                                                                        |
 
 Sometimes it is not desired to use the default Generic_model methods, for example when you need to obtain minimalistic
-data set. [Generic_model](../../../tree/master/pepiscms/application/models/Generic_model.php) by default selects all from your database using the "*" sign.
+data set. [Generic_model](../../../tree/master/pepiscms/application/models/Generic_model.php) by default selects all
+from your database using the "*" sign.

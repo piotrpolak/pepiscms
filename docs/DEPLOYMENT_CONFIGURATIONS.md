@@ -18,7 +18,9 @@ The framework can manage several databases of different types at the same time. 
 
 ## Portal/eCommerce application (Content Management System, Web)
 
-Portal combines the features of a small website and an intranet application. Some pages of the portal are generated dynamically; there can be some kind of interaction between the platform and the visitor (comments, user login, order processing etc.). Administrator of such applications has some extra features and dedicated modules available. 
+Portal combines the features of a small website and an intranet application. Some pages of the portal are generated
+dynamically; there can be some kind of interaction between the platform and the visitor (comments, user login, order
+processing etc.). Administrator of such applications has some extra features and dedicated modules available. 
 
 All of the components including business logic are placed on the same machine.
 
