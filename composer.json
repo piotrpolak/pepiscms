@@ -43,9 +43,7 @@
             "pepiscms/modules/translator/libraries/",
             "pepiscms/modules/symfony2_bridge/models/",
             "pepiscms/modules/sqlconsole/models/",
-            "pepiscms/modules/xmlrpcdemo/models/",
             "pepiscms/modules/html_customization/models/",
-            "pepiscms/modules/xmlrpcconsumer_demo/models/",
             "pepiscms/modules/backup/models/"
         ]
     }
