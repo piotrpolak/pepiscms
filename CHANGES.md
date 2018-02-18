@@ -17,7 +17,8 @@
     `AdminCRUDController::setDetelable()`,
     `FormBuilder::addFileField()`,
     `FormBuilder::addImageField()`,
-    `FormBuilder::MULTIPLEIMAGES`
+    `FormBuilder::MULTIPLEIMAGES`,
+    `MenuRendor::getMenuModules()`,
      deprecated methods removed
 * Removed deprecated `AssetMinimifier`, `CrossDomainAuth`, `CommonHook`
 * ModuleAdminController and ModuleController are now abstract.
