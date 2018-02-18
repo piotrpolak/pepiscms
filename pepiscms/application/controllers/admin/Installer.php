@@ -166,17 +166,17 @@ class Installer extends AdminController
 
             if ($data_array['database_config_type'] != 'symfony_import') {
                 // Default connection
-                list($hostname, $port) = $this->installer_helper->explodeHostname($that->get_installation_data('hostname'));
+                list($hostname, $port) = $that->installer_helper->explodeHostname($that->get_installation_data('hostname'));
                 $username = $that->get_installation_data('username');
                 $password = $that->get_installation_data('password');
                 $database = $that->get_installation_data('database');
             } else {
                 // Symfony connection
                 $conf = array();
-                if (!file_exists($this->symfony_database_file_path)) {
-                    show_error(sprintf($this->lang->line('installer_database_config_file_not_found'), $this->symfony_database_file_path));
+                if (!file_exists($that->symfony_database_file_path)) {
+                    show_error(sprintf($that->lang->line('installer_database_config_file_not_found'), $that->symfony_database_file_path));
                 }
-                $values = file_get_contents($this->symfony_database_file_path);
+                $values = file_get_contents($that->symfony_database_file_path);
                 $values = explode("\n", $values);
                 array_walk($values, 'trim');
                 foreach ($values as $row) {
@@ -196,7 +196,7 @@ class Installer extends AdminController
 
             $link = @mysqli_connect($hostname, $username, $password, $database, $port);
             if (mysqli_connect_errno($link)) {
-                $that->formbuilder->setValidationErrorMessage(sprintf($this->lang->line('installer_unable_to_establish_connection_to_database'), mysqli_connect_error()));
+                $that->formbuilder->setValidationErrorMessage(sprintf($that->lang->line('installer_unable_to_establish_connection_to_database'), mysqli_connect_error()));
                 return FALSE;
             }
 
@@ -209,11 +209,14 @@ class Installer extends AdminController
         $definition = array(
             'database_config_type' => array(
                 'input_type' => FormBuilder::SELECTBOX,
-                'values' => $database_config_types,),
+                'values' => $database_config_types,
+            ),
             'hostname' => array(
-                'validation_rules' => $validation_rules,),
+                'validation_rules' => $validation_rules,
+            ),
             'username' => array(
-                'validation_rules' => $validation_rules,),
+                'validation_rules' => $validation_rules,
+            ),
             'password' => array(
                 'validation_rules' => '',
             ),
