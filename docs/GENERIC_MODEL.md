@@ -1,19 +1,20 @@
 # Generic model
 
-[Generic_model](pepiscms/application/models/Generic_model.php) is an extended Model that implements interface
-[Entitable](pepiscms/application/classes/Entitable.php) required by [FormBuilder](pepiscms/application/libraries/FormBuilder.php).
-The `Entitable` interface specifies the 3 basic methods: `saveById()`, `deleteById()` and `getById()`.
-You can implement the `Entitable` class by default but for most of the cases Generic_model with its helper methods is more
+[Generic_model](../../../tree/master/pepiscms/application/models/Generic_model.php) is an extended Model that implements interface
+[EntitableInterface](../../../tree/master/pepiscms/application/classes/EntitableInterface.php) required by [FormBuilder](../../../tree/master/pepiscms/application/libraries/FormBuilder.php).
+
+The `EntitableInterface` interface specifies the 3 basic methods: `saveById()`, `deleteById()` and `getById()`.
+You can implement the `EntitableInterface` class by default but for most of the cases Generic_model with its helper methods is more
 than enough – in most situations Generic_model should only be extended. 
 
-Generic_model also implements [AdvancedDataFeedable](pepiscms/application/classes/AdvancedDataFeedableInterface.php)
-interface that is needed by [DataGrid](pepiscms/application/libraries/DataGrid.php) component.
+Generic_model also implements [AdvancedDataFeedableInterface](../../../tree/master/pepiscms/application/classes/AdvancedDataFeedableInterface.php)
+interface that is needed by [DataGrid](../../../tree/master/pepiscms/application/libraries/DataGrid.php) component.
 
 Methods of the generic model are worth to mention because they are present in all the models used by PepisCMS.
 
 | Method name                                                                                                                   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 |-------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `setTable($table)                                                                                                             | Sets table name on which the model will operate. Table name must be explicitly specified before the model is usable.                                                                                                                                                                                                                                                                                                                        |
+| `setTable($table)`                                                                                                            | Sets table name on which the model will operate. Table name must be explicitly specified before the model is usable.                                                                                                                                                                                                                                                                                                                        |
 | `setIdFieldName($idField)`                                                                                                    | Overwrites the name of the ID field. The default ID field is called id. Specify id field if your database table's id field is non standard (example personal_number).                                                                                                                                                                                                                                                                       |
 | `setWhere($where_conditions)`                                                                                                 | Sets where conditions that will be used when obtaining the data for DataGrid. Where conditions should be of the same form as passed to the Database query object. The parameter must be an associative array where the keys specify the field names and the values are the desired values.                                                                                                                                                  |
 | `setAcceptedPostFields($fields)`                                                                                              | Sets the list of accepted POST fields' names. The default saveById method accepts only fields that were previously defined as accepted. FormBuilder automatically sets the accepted post fields based on the defined inputs.                                                                                                                                                                                                                |
@@ -29,4 +30,4 @@ Methods of the generic model are worth to mention because they are present in al
 | `setDatabase($database_group)`                                                                                                | Sets the database connection to be used by the model, database group must be defined in database config. Since 0.2.2                                                                                                                                                                                                                                                                                                                        |
 
 Sometimes it is not desired to use the default Generic_model methods, for example when you need to obtain minimalistic
-data set. [Generic_model](pepiscms/application/models/Generic_model.php) by default selects all from your database using the "*" sign.
+data set. [Generic_model](../../../tree/master/pepiscms/application/models/Generic_model.php) by default selects all from your database using the "*" sign.

@@ -9,7 +9,7 @@ The main features of form builder are:
 * Handles input validation, both on server side (for security) and on client side (JavaScript for increased responsiveness) 
 * Handles database read/update/insert 
 * Can be customized using templates 
-* Can be extended using callbacks and custom feed objects that implement the Entitable interface 
+* Can be extended using callbacks and custom feed objects that implement the [EntitableInterface](pepiscms/application/classes/EntitableInterface.php)
 * Can handle database foreign keys 
 * When using FormBuilder you can specify the fields of the form and their attributes in two manners: by API methods or
 by definition. The API methods were first that were developed but they are not recommended to use in new projects.
@@ -19,7 +19,7 @@ It is also simpler for the programmer because the order of attributes in the def
 attribute specified its default value is automatically completed. 
 * The definition used for generating FormBuilder is compatible with the definition used by DataGrid so that one definition
 can be written and reused both for the Form and for the Grid. 
-* Form builder is closely coupled with Entitable interface - it uses its saveById and getById methods.
+* Form builder is closely coupled with [EntitableInterface](pepiscms/application/classes/EntitableInterface.php) - it uses its saveById and getById methods.
 
 See complete [FormBuilder API](pepiscms/application/libraries/FormBuilder.php)
 

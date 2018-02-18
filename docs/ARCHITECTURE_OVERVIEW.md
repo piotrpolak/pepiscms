@@ -3,21 +3,21 @@
 ## Core of the system
 
 Core implements most of the base features and it is supposed to be stable over the time.
-The core takes advantage of CodeIgniter framework that provides basic architecture, input security and database
-ActiveRecord access method.
+The core takes advantage of [CodeIgniter framework](https://codeigniter.com/) that provides basic architecture,
+input security and database ActiveRecord access method.
 
 Specifically for the core of PepisCMS some of the classes were overloaded or rewritten
 (see [overwritten core libraries](pepiscms/application/core/).
 
 PepisCMS distinguishes between 4 types of controllers:
 
-
 * **Basic controller** (same as for CodeIgniter)
-* **ModuleController** - public module controller
-* **AdminController** - for core administration panel, handles security check transparently
-* **ModuleAdminController** - module administration panel controller that supports "hotplug" and a kind of
-visualization where the original AdminController acts as a host and maps all accessible resources (translates)
-to ModuleAdminController instance without duplicating them in memory
+* **[ModuleController](pepiscms/application/classes/ModuleController.php)** - public module controller
+* **[AdminController](pepiscms/application/classes/AdminController.php)** - for core administration panel,
+    handles security check transparently
+* **[ModuleAdminController](pepiscms/application/classes/ModuleAdminController.php)** - module administration panel
+    controller that supports "hotplug" and a kind of visualization where the original AdminController acts as a host
+    and maps all accessible resources (translates) to ModuleAdminController instance without duplicating them in memory
 
 ## Modules
 
@@ -32,35 +32,37 @@ you can overwrite the default users and logs modules.
 
 Read more about [Modules](MODULES.md).
 
-## Model-View-Controller architectural pattern
+## Model-View-Presenter architectural pattern
 
-The application will be built around MVC pattern (Model View Controller). The basing idea behind MVC is that the
-presentation layer (view) is completely isolated from the business logic layer (controller) and the domain-specific
-representation of the information on which the application operates (model). 
-MVC results high flexibility, by modifying models, we can adopt the application to any data source,
-for example we can story all the contents in the raw txt files or XML file. 
+The application is built around [Model View Presenter pattern](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter)).
+
+A request triggers a presenter (controller) method that uses logic encapsulated in models (and libraries) to prepare
+data for the view layer.
 
 ### Model 
 
-Model represents application logic. In context of web and PepisCMS model can be interpreted as the database access and
-manipulation layer. Models' code must be kept as simple as possible and should not refer to external resources
-or server input. Doing so makes it easy to reuse models for different purposes than a simple website. 
-When using PepisCMS you should think of models as set of methods that operate on entities.
+Model encapsulates data access using the [Data Access Object](https://en.wikipedia.org/wiki/Data_access_object) pattern.
 
-A model itself is not an entity - entities are represented with instances of dedicated classes or stdClass
-(parent class of all classes in PHP) that have no methods and all its attributes are public.
-Attributes usually represent the database structure but this is not a rule.
-You can load a model as many times you want; models are initialized as singleton for performance reasons. 
+Models provide methods that read, update and delete entities. CodeIgniter uses instances of stdClass to represent entities.
+
+Entities:
+
+* have no methods
+* have fields that reflect database structure (query result set structure)
+
 All models must start with a capital letter and must be suffixed with _model. Unlike libraries,
 the model instance names are case sensitive (this comes from CodeIgniter engine). 
 
 Read more about [CodeIgniter models](https://www.codeigniter.com/user_guide/general/models.html).
 
-| Name                                                                          | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-|-------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [Generic_model](pepiscms/application/models/Generic_model.php))               | Generic model is the improved version od CodeIgniter model. It implements methods specified by both [EntitableInterface](pepiscms/application/classes/EntitableInterface.php) and [AdvancedDataFeedableInterface](pepiscms/application/classes/AdvancedDataFeedableInterface.php) interfaces. In most cases this class should be extended and parametrized in the constructor but it is left as a non-abstract for DataGrid and FormBuilder components that initialize and parametrize Generic_model "on-the-fly" using prototype design pattern. |
-| [Array_model](pepiscms/application/models/Array_model.php)                    | Provides Generic_model capabilities that can be applied to data sources other than database.                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| [Ssh_model](pepiscms/application/models/Ssh_model.php)                        | Provides Generic_model and Array_model capabilities for data parsed over SSH                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+PepisCMS provides some base models that can be extended in order make development simpler:
+
+| Name                                                       | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+|------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Generic_model](GENERIC_MODEL.md)                          | Generic model is the improved version od CodeIgniter model. It implements methods specified by both [EntitableInterface](pepiscms/application/classes/EntitableInterface.php) and [AdvancedDataFeedableInterface](pepiscms/application/classes/AdvancedDataFeedableInterface.php) interfaces. In most cases this class should be extended and parametrized in the constructor but it is left as a non-abstract for DataGrid and FormBuilder components that initialize and parametrize Generic_model "on-the-fly" using prototype design pattern. |
+| [Array_model](pepiscms/application/models/Array_model.php) | Provides Generic_model capabilities that can be applied to data sources other than database.                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| [Ssh_model](pepiscms/application/models/Ssh_model.php)     | Provides Generic_model and Array_model capabilities for data parsed over SSH                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+
 ### View 
 
 View is used as the presentation layer. It is fully controlled by controller but it can also pull some data provided by
@@ -82,7 +84,6 @@ Controller implements some of the logic and pulls data from different locations 
 Controllers take advantage of libraries and models they load, they should not manipulate the database directly but by using models. 
 
 PepisCMS distinguishes 4 types of controllers:
-
 
 | Name                                                                                                     | Description                                                                                                         |
 |----------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
