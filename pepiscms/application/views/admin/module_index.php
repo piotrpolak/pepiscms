@@ -18,11 +18,6 @@
         'link' => admin_url() . 'module/setup/view-'.$view,
         'icon' => 'pepiscms/theme/img/module/install_16.png',
     );
-    $actions[] = array(
-        'name' => $this->lang->line('modules_make_a_new_module'),
-        'link' => admin_url() . 'module/make/view-'.$view,
-        'icon' => 'pepiscms/theme/img/module/make_16.png',
-    );
     ?>
 <?php endif; ?>
 

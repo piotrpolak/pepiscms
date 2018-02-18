@@ -15,7 +15,7 @@
 /**
  * Abstract class for building module descriptors
  *
- * @since 0.2
+ * @since 0.2.0
  */
 abstract class ModuleDescriptor implements ModuleDescriptableInterface
 {

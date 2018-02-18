@@ -275,4 +275,114 @@ class DevelopmentAdmin extends ModuleAdminController
         $this->display();
     }
 
+    public function module_make()
+    {
+        $this->assign('title', $this->lang->line('development_modules_make_a_new_module'));
+        $this->assign('success', FALSE);
+
+        $database_groups = array('0' => $this->lang->line('development_modules_database_group_implicit'));
+        require INSTALLATIONPATH . 'application/config/database.php';
+        if (isset($db)) {
+            $keys = array_keys($db);
+            if (count($keys) > 1) {
+                foreach ($keys as $key) {
+                    $database_groups[$key] = $key;
+                }
+            }
+        }
+
+        $this->formbuilder->setTitle($this->lang->line('development_modules_make_a_new_module'));
+        $this->formbuilder->setBackLink(module_url());
+        $this->formbuilder->setCallback(array($this, '_fb_callback_on_make_save'), FormBuilder::CALLBACK_ON_SAVE);
+        $this->formbuilder->setDefinition(array(
+            'database_table_name' => array(
+                'label' => $this->lang->line('development_modules_database_table_name'),
+            ),
+            'module_name' => array(
+                'label' => $this->lang->line('development_modules_module_name'),
+                'description' => $this->lang->line('development_modules_module_name_description'),
+                'validation_rules' => '',
+            ),
+            'parse_database_schema' => array(
+                'input_type' => FormBuilder::CHECKBOX,
+                'input_default_value' => 1,
+                'validation_rules' => '',
+                'label' => $this->lang->line('development_modules_parse_database_schema'),
+            ),
+            'generate_security_policy' => array(
+                'input_type' => FormBuilder::CHECKBOX,
+                'validation_rules' => '',
+                'label' => $this->lang->line('modules_generate_security_policy'),
+            ),
+            'module_type' => array(
+                'input_type' => FormBuilder::SELECTBOX,
+                'input_default_value' => 'crud',
+                'validation_rules' => '',
+                'label' => $this->lang->line('development_modules_module_type'),
+                'values' => array(
+                    'crud' => $this->lang->line('development_modules_module_type_crud'),
+                    'default' => $this->lang->line('development_modules_module_type_basic'))
+            ),
+            'database_group' => array(
+                'input_type' => FormBuilder::SELECTBOX,
+                'values' => $database_groups,
+                'label' => $this->lang->line('development_modules_database_group'),
+            ),
+            'translations' => array(
+                'input_type' => FormBuilder::MULTIPLECHECKBOX,
+                'values' => array('polish' => 'Polish', 'english' => 'English'),
+                'input_default_value' => 'polish',
+                'label' => $this->lang->line('development_modules_translations'),
+            ),
+            'generate_public_controller' => array(
+                'input_type' => FormBuilder::CHECKBOX,
+                'validation_rules' => '',
+                'label' => $this->lang->line('development_modules_generate_public_controller'),
+            ),
+        ));
+
+        $this->assign('form', $this->formbuilder->generate());
+        $this->display();
+    }
+
+    /**
+     * Must overwrite the save procedure and return true or false
+     *
+     * @param array $save_array associative array made of filtered POST variables
+     * @return boolean
+     * @throws ReflectionException
+     */
+    public function _fb_callback_on_make_save(&$save_array)
+    {
+        $module_databse_table_name = trim($save_array['database_table_name']);
+        $module_name = trim($save_array['module_name']);
+        if (!$module_name) {
+            $module_name = $module_databse_table_name;
+        }
+
+        if ($module_databse_table_name) {
+            $database_group = ($save_array['database_group'] ? $save_array['database_group'] : FALSE);
+
+            $this->load->library('Module_generator');
+            $success = $this->module_generator->makeUserSpaceModule($module_databse_table_name, $module_name, TRUE,
+                ($save_array['parse_database_schema'] == 1), $database_group, array_keys($save_array['translations']),
+                ($save_array['generate_public_controller'] == 1), ($save_array['module_type'] == 'crud'),
+                $save_array['generate_security_policy']);
+
+            if (!$success) {
+                $this->formbuilder->setValidationErrorMessage(
+                    sprintf($this->lang->line('development_modules_unable_to_generate_module_for_table'), $module_databse_table_name));
+                return FALSE;
+            }
+
+            $this->assign('adminmenu', $this->renderMenu());
+            $this->assign('success', TRUE);
+            $this->assign('module_name', $module_name);
+        } else {
+            return FALSE;
+        }
+
+        return TRUE;
+    }
+
 }

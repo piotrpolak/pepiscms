@@ -1,7 +1,7 @@
 <?php $is_utilities_only_module = FALSE; ?>
 <?php if ($this->input->getParam('layout') != 'popup'): ?>
     <?php
-    $breadcrumb_array = array(module_url() => $title);
+    $breadcrumb_array = array(module_url() => $this->lang->line('development_module_name'), module_url().'switch_user/' => $title);
 
     if( ModuleRunner::isModuleDisplayedInMenu() )
     {
@@ -27,14 +27,11 @@
 
 <?php
 $actions = array();
-if( $is_utilities_only_module )
-{
-    $actions[] = array(
-        'name' => $this->lang->line('global_button_back_to_utilities'),
-        'link' => admin_url() . 'utilities',
-        'icon' => 'pepiscms/theme/img/dialog/actions/back_16.png'
-    );
-}
+$actions[] = array(
+    'name' => $this->lang->line('global_button_back'),
+    'link' => module_url(),
+    'icon' => 'pepiscms/theme/img/dialog/actions/back_16.png'
+);
 ?>
 <?php if(count($actions)): ?>
     <?= display_action_bar($actions) ?>
@@ -42,10 +39,14 @@ if( $is_utilities_only_module )
 
 <?=display_session_message()?>
 
-<?= display_tip($this->lang->line('development_index_tip')) ?>
-
-<ul class="dashboard_actions clear">
-    <?php foreach($this->Module_model->getModuleAdminSubmenuElements($this->modulerunner->getRunningModuleName(), 'dontcare') as $descriptor): ?>
-        <?= dashboard_box($descriptor['label'], module_url($descriptor['controller']) . $descriptor['method'], str_replace('_16.', '_32.', $descriptor['icon_url']), $descriptor['description']) ?>
-    <?php endforeach ?>
- </ul>
+<?php if (!$success): ?>
+    <?= display_tip($this->lang->line('development_modules_make_tip')) ?>
+    <?= $form ?>
+<?php else: ?>
+    <?= display_notification($this->lang->line('development_modules_make_success')) ?>
+    <ul>
+        <li><a href="<?= module_url($module_name) ?>"><?=sprintf($this->lang->line('modules_go_to_module'), $module_name)?></a></li>
+        <li><a href="<?= module_url('translator') ?>show/module-<?= $module_name ?>/file_name-<?= $module_name ?>_lang.php"><?=sprintf($this->lang->line('development_modules_edit_module_translation'), $module_name)?></a></li>
+        <li><a href="<?= admin_url() ?>module/make/view-<?=$view?>"><?= $this->lang->line('development_modules_make_a_new_module') ?></a></li>
+    </ul>
+<?php endif; ?>

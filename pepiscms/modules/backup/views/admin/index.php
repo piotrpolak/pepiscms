@@ -45,11 +45,14 @@ if( $is_utilities_only_module )
 
 <?= display_tip($this->lang->line('backup_index_tip')) ?>
 
-<h1 class="contrasted"><?=$this->lang->line('backup_sql_backup')?></h1>
+<?php if ($this->config->item('cms_enable_pages')): ?>
+    <h1 class="contrasted"><?=$this->lang->line('backup_sql_backup')?></h1>
+<?php endif; ?>
 
 <ul class="dashboard_actions clear">
-    <?= dashboard_box($this->lang->line('backup_sql_do'), module_url() . 'sql_do', module_resources_url() . 'do_backup_32.png', $this->lang->line('backup_sql_do_description')) ?>
-    <?= dashboard_box($this->lang->line('backup_sql_do_groups_and_rights'), module_url() . 'sql_do_groups_and_rights', module_resources_url() . 'do_backup_32.png', $this->lang->line('backup_sql_do_groups_and_rights_description')) ?>
+    <?php foreach($this->Module_model->getModuleAdminSubmenuElements($this->modulerunner->getRunningModuleName(), 'dontcare') as $descriptor): ?>
+        <?= dashboard_box($descriptor['label'], module_url($descriptor['controller']) . $descriptor['method'], str_replace('_16.', '_32.', $descriptor['icon_url']), $descriptor['description']) ?>
+    <?php endforeach ?>
 </ul>
 
 <?php if ($this->config->item('cms_enable_pages')): ?>

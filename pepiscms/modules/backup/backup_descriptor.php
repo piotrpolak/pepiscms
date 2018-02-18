@@ -17,7 +17,6 @@
  */
 class BackupDescriptor extends ModuleDescriptor
 {
-
     /**
      * Cached variable
      *
@@ -90,7 +89,22 @@ class BackupDescriptor extends ModuleDescriptor
      */
     public function getAdminSubmenuElements($language)
     {
-        return FALSE;
+        return array(
+            array(
+                'controller' => $this->module_name,
+                'method' => 'sql_do',
+                'label' => get_instance()->lang->line($this->module_name . '_sql_do'),
+                'description' => get_instance()->lang->line($this->module_name . '_sql_do_description'),
+                'icon_url' => module_resources_url($this->module_name) . 'do_backup_16.png',
+            ),
+            array(
+                'controller' => $this->module_name,
+                'method' => 'sql_do',
+                'label' => get_instance()->lang->line($this->module_name . '_sql_do_groups_and_rights'),
+                'description' => get_instance()->lang->line($this->module_name . '_sql_do_groups_and_rights_description'),
+                'icon_url' => module_resources_url($this->module_name) . 'do_backup_16.png',
+            ),
+        );
     }
 
     /**
