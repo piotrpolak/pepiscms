@@ -334,11 +334,20 @@ class Auth
         return $_SESSION[$this->session_variable_preffix][$name];
     }
 
+    /**
+     * Method called on auth request
+     */
     public function onAuthRequest()
     {
         $this->driver->onAuthRequest();
     }
 
+    /**
+     * Authenticates user without password
+     *
+     * @param $user_id
+     * @return bool
+     */
     public function forceLogin($user_id)
     {
         $success = $this->renewUserData($user_id);
@@ -398,6 +407,9 @@ class Auth
         return FALSE;
     }
 
+    /**
+     * Unsets session variables and removes session cookie
+     */
     public function unsetSession()
     {
         setcookie('pepiscms_logged', 0, 20, '/');

@@ -15,11 +15,10 @@
 /**
  * Utility for generating and parsing PepisCMS specific XML backup files
  *
- * @since 0.1
+ * @since 0.1.0
  */
 class Backup
 {
-    private $CI;
     private $current_version = '1.3';
     private $supported_name = 'pepis_cms_backup';
 
@@ -40,11 +39,9 @@ class Backup
      */
     function __construct($params = NULL)
     {
-        $this->CI = &get_instance();
-
-        $this->CI->load->model('Page_model');
-        $this->CI->load->model('Menu_model');
-        $this->CI->load->model('Site_language_model');
+        CI_Controller::getInstance()->load->model('Page_model');
+        CI_Controller::getInstance()->load->model('Menu_model');
+        CI_Controller::getInstance()->load->model('Site_language_model');
     }
 
     /**
@@ -73,33 +70,33 @@ class Backup
                 BackupCompatibilityTransformationUtility::transform($sxe, $attributes->version, Backup::getSupportedVersions());
             }
 
-            $this->CI->db->trans_start();
+            CI_Controller::getInstance()->db->trans_start();
 
             // Truncating tables
-            $this->CI->Page_model->doBackupPrepare();
-            $this->CI->Menu_model->doBackupPrepare();
-            $this->CI->Site_language_model->doBackupPrepare();
+            CI_Controller::getInstance()->Page_model->doBackupPrepare();
+            CI_Controller::getInstance()->Menu_model->doBackupPrepare();
+            CI_Controller::getInstance()->Site_language_model->doBackupPrepare();
 
 
             // Restoring languages
             if (isset($sxe->sitelanguages->item)) {
-                $this->CI->Site_language_model->doBackupRestore($sxe->sitelanguages->item);
+                CI_Controller::getInstance()->Site_language_model->doBackupRestore($sxe->sitelanguages->item);
             }
 
             // Restoring pages
             if (isset($sxe->pages->item)) {
-                $this->CI->Page_model->doBackupRestore($sxe->pages->item, $user_id);
+                CI_Controller::getInstance()->Page_model->doBackupRestore($sxe->pages->item, $user_id);
             }
 
 
             // Restoring menu
             if (isset($sxe->menu->item)) {
-                $this->CI->Menu_model->doBackupRestore($sxe->menu->item);
+                CI_Controller::getInstance()->Menu_model->doBackupRestore($sxe->menu->item);
             }
 
-            $this->CI->db->trans_complete();
+            CI_Controller::getInstance()->db->trans_complete();
 
-            return !($this->CI->db->trans_status() === FALSE);
+            return !(CI_Controller::getInstance()->db->trans_status() === FALSE);
         }
     }
 
@@ -110,7 +107,7 @@ class Backup
      */
     function create()
     {
-        $this->CI->load->helper('xml');
+        CI_Controller::getInstance()->load->helper('xml');
 
         $backup = '';
 
@@ -120,17 +117,17 @@ class Backup
         $backup_items = array();
         $backup_items[] = array(
             'pages',
-            $this->CI->Page_model->doBackupProjection(),
+            CI_Controller::getInstance()->Page_model->doBackupProjection(),
             array('page_id', 'page_uri', 'page_title', 'page_description', 'page_keywords', 'page_contents', 'page_is_default', 'page_is_displayed_in_sitemap', 'language_code')
         );
         $backup_items[] = array(
             'menu',
-            $this->CI->Menu_model->doBackupProjection(),
+            CI_Controller::getInstance()->Menu_model->doBackupProjection(),
             array('item_id', 'item_order', 'parent_item_id', 'item_name', 'language_code', 'item_url', 'page_id')
         );
         $backup_items[] = array(
             'sitelanguages',
-            $this->CI->Site_language_model->doBackupProjection(),
+            CI_Controller::getInstance()->Site_language_model->doBackupProjection(),
             array('code', 'label', 'is_default', 'ci_language')
         );
 
@@ -166,122 +163,4 @@ class Backup
         return $backup;
     }
 
-}
-
-/**
- * Utility class to "upgrade" old backup files to the most current version.
- * Progressive upgrades are done in a row.
- *
- * @since 0.1.5
- */
-class BackupCompatibilityTransformationUtility
-{
-
-    /**
-     * Upgrades object backup object to desired format
-     *
-     * @param object $sxe
-     * @param float $from_version
-     * @param array $supported_versions
-     */
-    public static function transform(&$sxe, $from_version, $supported_versions)
-    {
-        $transformation_sequence = array();
-        foreach ($supported_versions as $supported_version) {
-            if (count($transformation_sequence) > 0 || $from_version == $supported_version) {
-                $transformation_sequence[] = $supported_version;
-            }
-        }
-
-        $count = count($transformation_sequence);
-        $i = 0;
-
-        while (true) {
-            if (++$i >= $count) {
-                break; // Important, do not mess
-            }
-
-            $to_version = $transformation_sequence[$i];
-
-            self::doTransform($sxe, $from_version, $to_version);
-            $from_version = $to_version;
-        }
-    }
-
-    protected static function doTransform(&$sxe, $from_version, $to_version)
-    {
-        if ($from_version == '1.2' && $to_version == '1.3') {
-            $menu2uri_map = array();
-            if (isset($sxe->menu2uri->item)) {
-                foreach ($sxe->menu2uri->item as $item) {
-                    $key = '' . $item->item_id;
-                    if (!$key) {
-                        continue;
-                    }
-
-                    $menu2uri_map[$key] = '' . $item->item_uri;
-                }
-            }
-
-            if (isset($sxe->page2menu->item)) {
-                foreach ($sxe->page2menu->item as $item) {
-                    $key = '' . $item->item_id;
-                    if (!$key) {
-                        continue;
-                    }
-
-                    $page2menu_map[$key] = '' . $item->page_id;
-                }
-            }
-
-            if (isset($sxe->menu->item)) {
-                foreach ($sxe->menu->item as $item) {
-                    $key = '' . $item->item_id;
-                    $item->item_url = isset($menu2uri_map[$key]) ? '' . $menu2uri_map[$key] : NULL;
-                    $item->page_id = isset($page2menu_map[$key]) ? '' . $page2menu_map[$key] : NULL;
-                }
-            }
-
-            return TRUE;
-        } elseif ($from_version == '1.1' && $to_version == '1.2') {
-            if (isset($sxe->pages->item)) {
-                foreach ($sxe->pages->item as $item) {
-                    $item->language_code = 'en';
-                }
-            }
-            if (isset($sxe->menu->item)) {
-                foreach ($sxe->menu->item as $item) {
-                    $item->language_code = 'en';
-                }
-            }
-
-
-            $sitelanguages = $sxe->addChild('sitelanguages');
-            $item = $sitelanguages->addChild('item');
-
-            $item->addChild('code', 'en');
-            $item->addChild('label', 'English');
-            $item->addChild('is_default', '1');
-            $item->addChild('ci_language', 'english');
-
-
-            return TRUE;
-        } elseif ($from_version == '1.0' && $to_version == '1.1') {
-            if (isset($sxe->pages->item)) {
-                foreach ($sxe->pages->item as $item) {
-                    $item->page_is_displayed_in_sitemap = '1';
-
-                    if ($item->page_is_default == 'Y') {
-                        $item->page_is_default = 1;
-                    } else {
-                        $item->page_is_default = 0;
-                    }
-                }
-            }
-
-            return TRUE;
-        }
-
-        return FALSE;
-    }
 }
