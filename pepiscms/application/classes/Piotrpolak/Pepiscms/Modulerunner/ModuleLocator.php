@@ -29,7 +29,7 @@ class ModuleLocator implements ModuleLocatorInterface
      */
     public function getPublicControllerPath($module_name)
     {
-        return ucfirst($module_name) . 'Controller.php';
+        return ucfirst($module_name) . '.php';
     }
 
     /**
@@ -37,7 +37,7 @@ class ModuleLocator implements ModuleLocatorInterface
      */
     public function getAdminControllerPath($module_name)
     {
-        return ucfirst($module_name) . 'AdminController.php';
+        return ucfirst($module_name) . 'Admin.php';
     }
 
     /**
