@@ -57,4 +57,12 @@ class System_infoDescriptor extends ModuleDescriptor
 
         return $description;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isDisplayedInUtilities()
+    {
+        return TRUE;
+    }
 }

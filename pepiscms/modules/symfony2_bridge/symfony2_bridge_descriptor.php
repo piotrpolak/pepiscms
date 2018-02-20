@@ -57,4 +57,12 @@ class Symfony2_bridgeDescriptor extends ModuleDescriptor
     {
         return '1.1';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isDisplayedInUtilities()
+    {
+        return TRUE;
+    }
 }

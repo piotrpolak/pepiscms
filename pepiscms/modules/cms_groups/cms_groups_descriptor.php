@@ -58,4 +58,11 @@ class Cms_groupsDescriptor extends ModuleDescriptor
         return $description;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function isDisplayedInUtilities()
+    {
+        return TRUE;
+    }
 }

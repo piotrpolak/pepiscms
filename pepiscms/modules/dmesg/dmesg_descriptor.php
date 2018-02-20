@@ -33,4 +33,11 @@ class DmesgDescriptor extends ModuleDescriptor
         return 'Dmesg output preview';
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function isDisplayedInUtilities()
+    {
+        return TRUE;
+    }
 }

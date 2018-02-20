@@ -61,6 +61,14 @@ class BackupDescriptor extends ModuleDescriptor
     /**
      * {@inheritdoc}
      */
+    public function isDisplayedInUtilities()
+    {
+        return TRUE;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function onInstall()
     {
         $path = get_instance()->load->resolveModuleDirectory($this->module_name, FALSE) . '/resources/install.sql';

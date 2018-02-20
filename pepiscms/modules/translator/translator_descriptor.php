@@ -50,4 +50,11 @@ class TranslatorDescriptor extends ModuleDescriptor
         return '1.2.1';
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function isDisplayedInUtilities()
+    {
+        return TRUE;
+    }
 }

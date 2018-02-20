@@ -58,4 +58,11 @@ class Cms_usersDescriptor extends ModuleDescriptor
         return $description;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function isDisplayedInUtilities()
+    {
+        return TRUE;
+    }
 }

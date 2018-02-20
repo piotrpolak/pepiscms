@@ -57,4 +57,12 @@ class Html_customizationDescriptor extends ModuleDescriptor
 
         return $description;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isDisplayedInUtilities()
+    {
+        return TRUE;
+    }
 }

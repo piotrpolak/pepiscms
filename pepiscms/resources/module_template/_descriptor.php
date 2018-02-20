@@ -54,6 +54,14 @@ class {module_class_name}Descriptor extends ModuleDescriptor {
     /**
      * {@inheritdoc}
      */
+    public function isDisplayedInMenu()
+    {
+        return TRUE;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function onInstall()
     {
         $path = get_instance()->load->resolveModuleDirectory($this->module_name, FALSE) . '/resources/install.sql';

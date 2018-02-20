@@ -100,4 +100,11 @@ class LogsDescriptor extends ModuleDescriptor
         return FALSE;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function isDisplayedInUtilities()
+    {
+        return TRUE;
+    }
 }

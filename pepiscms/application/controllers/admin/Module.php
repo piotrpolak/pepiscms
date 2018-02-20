@@ -152,6 +152,14 @@ class Module extends AdminController
             $modules_with_no_parent[$module_with_no_parent->module_id] = $this->Module_model->getModuleLabel($module_with_no_parent->name, $this->lang->getCurrentLanguage());
         }
 
+        $is_displayed_in_menu = FALSE;
+        $is_displayed_in_utilities = FALSE;
+        $moduleDescriptor = $this->Module_model->getModuleDescriptor($module);
+        if($moduleDescriptor) {
+            $is_displayed_in_menu = $moduleDescriptor->isDisplayedInMenu();
+            $is_displayed_in_utilities = $moduleDescriptor->isDisplayedInUtilities();
+        }
+
         $this->formbuilder->setId($module);
         $this->formbuilder->setTitle($this->lang->line('label_module_setup'));
         $this->formbuilder->setCallback(array($this, '_fb_callback_setup_on_save'), FormBuilder::CALLBACK_ON_SAVE);
@@ -167,6 +175,7 @@ class Module extends AdminController
                     'input_type' => FormBuilder::CHECKBOX,
                     'validation_rules' => '',
                     'label' => $this->lang->line('label_display_in_main_menu'),
+                    'input_default_value' => $is_displayed_in_menu,
                 ),
                 'parent_module_id' => array(
                     'input_type' => FormBuilder::SELECTBOX,
@@ -180,6 +189,7 @@ class Module extends AdminController
                     'input_type' => FormBuilder::CHECKBOX,
                     'validation_rules' => '',
                     'label' => $this->lang->line('label_display_in_utilities'),
+                    'input_default_value' => $is_displayed_in_utilities,
                 ),
             )
         );

@@ -47,14 +47,14 @@ interface ModuleDescriptableInterface
      *
      * @return bool
      */
-    public function isDisplayedInMenu(); // TODO Not implemented
+    public function isDisplayedInMenu();
 
     /**
      * Tells whether the module should be displayed in utilities
      *
      * @return bool
      */
-    public function isDisplayedInUtilities(); // TODO Not implemented
+    public function isDisplayedInUtilities();
 
     /**
      * Returns the list of module submenu elements

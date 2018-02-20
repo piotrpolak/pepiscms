@@ -57,4 +57,12 @@ class SqlconsoleDescriptor extends ModuleDescriptor
     {
         return '1.0.1';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isDisplayedInUtilities()
+    {
+        return TRUE;
+    }
 }

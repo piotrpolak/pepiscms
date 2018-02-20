@@ -53,6 +53,14 @@ class DevelopmentDescriptor extends ModuleDescriptor
     /**
      * {@inheritdoc}
      */
+    public function isDisplayedInUtilities()
+    {
+        return TRUE;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getAdminSubmenuElements($language)
     {
         return array(

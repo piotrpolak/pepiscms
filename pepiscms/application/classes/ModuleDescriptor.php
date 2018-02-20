@@ -53,7 +53,7 @@ abstract class ModuleDescriptor implements ModuleDescriptableInterface
      */
     public function isDisplayedInMenu()
     {
-        return TRUE;
+        return FALSE;
     }
 
     /**
@@ -61,7 +61,7 @@ abstract class ModuleDescriptor implements ModuleDescriptableInterface
      */
     public function isDisplayedInUtilities()
     {
-        return TRUE;
+        return FALSE;
     }
 
     /**
