@@ -1,16 +1,15 @@
 # DataGrid library
 
-A library that along with GenericDataFeedable_model builds advanced database mapping. Implements pagination, sort,
-filters (search). You can register callbacks to form cell contents.
+A library for generating rich data grid views.
 
-Features of DataGrid:
+## Features
 
-* Generate database HTML views with minimum effort using grid definition
-* Customize cell values by passing them by registered callbacks
-* Generate filters for restricting result set
-* Order data set by column (ASC and DESC)
-* Pagination of the results – result set is split into pages
-* Can handle database foreign keys
+* Generate HTML views with minimum effort using grid definition
+* Cell value formatting callback
+* Data filtering
+* Pagination
+* Sorting by columns
+* Handles OneToMany and ManyToMany foreign keys
 
 ## DataGrid filters
 
@@ -48,6 +47,9 @@ same time.
 
 ## Usage
 
+DataGrid definition is an associative array and it is best to be build using
+[CrudDefinitionBuilder](LIBRARY_CRUD_DEFINITION_BUILDER.md).
+
 Complete
 
 ```php
@@ -57,12 +59,15 @@ echo $this->datagrid->setFiltersShownBeforeGrid(TRUE)
     ->setOrderable(TRUE)
     ->setTableHeadVisible(TRUE)
     ->setTitle("My Table")
-    ->setBaseUrl(admin_url() . 'somepage/edit') // All links will be generated with respect to this base URL
+    // All links will be generated with respect to this base URL
+    ->setBaseUrl(admin_url() . 'somepage/edit')
     ->setDefaultOrder('id', 'asc')
     ->setItemsPerPage(300)
     ->setDefinition($definition) 
-    ->addFilter('Since', 'published_since_datetime', DataGrid::FILTER_DATE, FALSE, DataGrid::FILTER_CONDITION_LESS_OR_EQUAL)
-    ->addFilter('To', 'published_since_datetime', DataGrid::FILTER_DATE, FALSE, DataGrid::FILTER_CONDITION_GREATER_OR_EQUAL)
+    ->addFilter('Since', 'published_since_datetime',DataGrid::FILTER_DATE, FALSE,
+        DataGrid::FILTER_CONDITION_LESS_OR_EQUAL)
+    ->addFilter('To', 'published_since_datetime', DataGrid::FILTER_DATE, FALSE,
+        DataGrid::FILTER_CONDITION_GREATER_OR_EQUAL)
     ->setRowCssClassFormattingFunction(function ($line) {
         if ($line->is_active == 1) {
             return DataGrid::ROW_COLOR_GREEN;
@@ -74,15 +79,18 @@ echo $this->datagrid->setFiltersShownBeforeGrid(TRUE)
     ->generate();
 ```
 
-Minimalistic, with implicite values
+Minimalistic, with implicit values
 
 ```php
 $this->load->library('DataGrid');
-echo $this->datagrid->setBaseUrl(admin_url() . 'somepage/edit') // All links will be generated with respect to this base URL
+// All links will be generated with respect to this base URL
+echo $this->datagrid->setBaseUrl(admin_url() . 'somepage/edit')
     ->setDefinition($definition)
     ->setTable('items') // Will automatically instantiate Generic_model for 'items' table
     ->generate();
 ```
+
+See complete [DataGrid API](../../../tree/master/pepiscms/application/libraries/DataGrid.php)
 
 ## DataGrid cell value formatting callbacks
 
