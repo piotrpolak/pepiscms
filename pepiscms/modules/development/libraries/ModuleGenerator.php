@@ -17,7 +17,7 @@
  *
  * @since 1.0.0
  */
-class Module_generator
+class ModuleGenerator
 {
     /**
      * @var \Piotrpolak\Pepiscms\Modulerunner\ModuleLocatorInterface

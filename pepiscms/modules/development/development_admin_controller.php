@@ -367,8 +367,8 @@ class DevelopmentAdmin extends ModuleAdminController
         if ($module_databse_table_name) {
             $database_group = ($save_array['database_group'] ? $save_array['database_group'] : FALSE);
 
-            $this->load->library('Module_generator');
-            $success = $this->module_generator->makeUserSpaceModule($module_databse_table_name, $module_database_name, TRUE,
+            $this->load->library('ModuleGenerator');
+            $success = $this->modulegenerator->makeUserSpaceModule($module_databse_table_name, $module_database_name, TRUE,
                 ($save_array['parse_database_schema'] == 1), $database_group, array_keys($save_array['translations']),
                 ($save_array['generate_public_controller'] == 1), ($save_array['module_type'] == 'crud'),
                 $save_array['generate_security_policy']);
