@@ -430,6 +430,7 @@ class Module_generator
         $directory = INSTALLATIONPATH . 'modules/' . $module_name_lower_case . '/';
         @mkdir($directory);
         @mkdir($directory . 'models');
+        @mkdir($directory . 'controllers');
         @mkdir($directory . 'views');
         @mkdir($directory . 'resources');
         @mkdir($directory . 'language');
