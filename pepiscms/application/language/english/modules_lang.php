@@ -20,7 +20,6 @@ $lang['label_there_are_no_installed_modules']              = 'There are no insta
 $lang['label_there_are_no_modules_that_are_not_installed'] = 'There are no modules that are not installed.';
 $lang['label_uninstall_module']                            = 'Uninstall a module';
 $lang['module_not_configurable']                           = 'Module not configurable!';
-$lang['modules_generate_security_policy']                  = 'Generate security policy';
 $lang['modules_go_to_module']                              = 'Go to module %s';
 $lang['modules_install']                                   = 'Install';
 $lang['modules_install_a_new_module']                      = 'Install a new module';

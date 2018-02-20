@@ -28,3 +28,4 @@ $lang['development_send_test_email']                             = 'Wyślij test
 $lang['development_switch_user']                                 = 'Przełącz użytkownika';
 $lang['development_switch_user_tip']                             = 'Zachowaj ostrożność. Przełączenie się na konto innego użytkownika zostanie odnotowane w logach systemowych. Tylko użytkownicy root mogą przełączać się na inne konta.';
 $lang['development_you_must_be_root']                            = 'Musisz być zalogowany jako root żeby móc wykonać tę akcję';
+$lang['modules_generate_security_policy']                  = 'Wygeneruj politykę bezpieczeństwa';

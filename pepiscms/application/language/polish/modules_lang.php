@@ -20,7 +20,6 @@ $lang['label_there_are_no_installed_modules']              = 'Nie ma zainstalowa
 $lang['label_there_are_no_modules_that_are_not_installed'] = 'Nie ma modułów, które nie są zainstalowane.';
 $lang['label_uninstall_module']                            = 'Odinstaluj moduł';
 $lang['module_not_configurable']                           = 'Moduł nie konfigurowalny!';
-$lang['modules_generate_security_policy']                  = 'Wygeneruj politykę bezpieczeństwa';
 $lang['modules_go_to_module']                              = 'Przejdź do modułu %s';
 $lang['modules_install']                                   = 'Zainstaluj';
 $lang['modules_install_a_new_module']                      = 'Zainstaluj nowy moduł';

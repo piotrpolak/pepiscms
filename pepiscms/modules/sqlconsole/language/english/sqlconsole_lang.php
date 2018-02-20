@@ -1,4 +1,5 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if(!defined('BASEPATH')) exit('No direct script access allowed');
+
 
 $lang['sqlconsole_clear']                  = 'Clear';
 $lang['sqlconsole_execute']                = 'Execute';

@@ -28,3 +28,4 @@ $lang['development_send_test_email']                             = 'Send test em
 $lang['development_switch_user']                                 = 'Switch user';
 $lang['development_switch_user_tip']                             = 'Use with caution. Switching to another account will be logged. Only roots can switch to another account.';
 $lang['development_you_must_be_root']                            = 'You must be root to do that';
+$lang['modules_generate_security_policy']                  = 'Generate security policy';

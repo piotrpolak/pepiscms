@@ -291,6 +291,11 @@ class DevelopmentAdmin extends ModuleAdminController
             }
         }
 
+        $languages = array();
+        foreach ($this->lang->getEnabledAdminLanguages() as $key => $value) {
+            $languages[$key] = $value[1];
+        }
+
         $this->formbuilder->setTitle($this->lang->line('development_modules_make_a_new_module'));
         $this->formbuilder->setBackLink(module_url());
         $this->formbuilder->setCallback(array($this, '_fb_callback_on_make_save'), FormBuilder::CALLBACK_ON_SAVE);
@@ -330,8 +335,8 @@ class DevelopmentAdmin extends ModuleAdminController
             ),
             'translations' => array(
                 'input_type' => FormBuilder::MULTIPLECHECKBOX,
-                'values' => array('polish' => 'Polish', 'english' => 'English'),
-                'input_default_value' => 'polish',
+                'values' => $languages,
+                'input_default_value' => array_keys($languages),
                 'label' => $this->lang->line('development_modules_translations'),
             ),
             'generate_public_controller' => array(
