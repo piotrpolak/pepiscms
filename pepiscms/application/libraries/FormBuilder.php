@@ -426,10 +426,12 @@ class FormBuilder
      * Sets the table title
      *
      * @param string $title
+     * @return FormBuilder
      */
     public function setTitle($title)
     {
         $this->title = $title;
+        return $this;
     }
 
     /**
@@ -446,10 +448,12 @@ class FormBuilder
      * Sets form action
      *
      * @param string $action
+     * @return FormBuilder
      */
     public function setAction($action)
     {
         $this->form_action = $action;
+        return $this;
     }
 
     /**
@@ -466,10 +470,12 @@ class FormBuilder
      * Sets submit label
      *
      * @param string $label
+     * @return FormBuilder
      */
     public function setSubmitLabel($label)
     {
         $this->form_submit_label = $label;
+        return $this;
     }
 
     /**
@@ -490,10 +496,12 @@ class FormBuilder
      * Enable or disable default submit, default is TRUE
      *
      * @param bool $is_submit_button_enabled
+     * @return FormBuilder
      */
     public function setSubmitButtonEnabled($is_submit_button_enabled = TRUE)
     {
         $this->is_submit_button_enabled = $is_submit_button_enabled;
+        return $this;
     }
 
     /**
@@ -510,10 +518,12 @@ class FormBuilder
      * Enable or disable apply button, default is FALSE
      *
      * @param bool $is_apply_button_enabled
+     * @return FormBuilder
      */
     public function setApplyButtonEnabled($is_apply_button_enabled = TRUE)
     {
         $this->is_apply_button_enabled = $is_apply_button_enabled;
+        return $this;
     }
 
     /**
@@ -601,7 +611,7 @@ class FormBuilder
      * @param bool $default_value
      * @param bool $rules
      * @param bool $values
-     * @return bool
+     * @return FormBuilder
      */
     public function addField($field, $label = FALSE, $type = FALSE, $default_value = FALSE, $rules = FALSE, $values = FALSE)
     {
@@ -716,7 +726,7 @@ class FormBuilder
      * Sets fields by definition
      *
      * @param array $fields
-     * @return bool
+     * @return FormBuilder
      */
     public function setDefinition($fields)
     {
@@ -732,13 +742,13 @@ class FormBuilder
             $this->addFieldByDefinition($field);
         }
 
-        return TRUE;
+        return $this;
     }
 
     /**
      * Sets field by array definition
      * @param array $field
-     * @return bool
+     * @return FormBuilder
      */
     public function addFieldByDefinition($field)
     {
@@ -759,7 +769,7 @@ class FormBuilder
         }
 
         if (!$defaults['show_in_form']) {
-            return FALSE;
+            return $this;
         }
 
         // Useful for debugging, prevents from using misspelled keys
@@ -797,19 +807,19 @@ class FormBuilder
 
         $this->fields[$defaults['field']] = $defaults;
 
-        return true;
+        return $this;
     }
 
     /**
      * Sets the feed object implementing feedable interface
      *
      * @param EntitableInterface $feed_object
-     * @return bool
+     * @return FormBuilder
      */
     public function setFeedObject(EntitableInterface $feed_object)
     {
         $this->feed_object = $feed_object;
-        return TRUE;
+        return $this;
     }
 
     /**
@@ -828,7 +838,7 @@ class FormBuilder
      * @param string $tableName
      * @param array $acceptedPostFields
      * @param bool|string $idFieldName
-     * @return bool
+     * @return FormBuilder
      */
     public function setTable($tableName, $acceptedPostFields = array(), $idFieldName = FALSE)
     {
@@ -843,22 +853,23 @@ class FormBuilder
 
         $feed_object->setAcceptedPostFields($acceptedPostFields);
         $this->setFeedObject($feed_object);
-        return TRUE;
+        return $this;
     }
 
     /**
      * Adds accepted post field, useful in callbacks
      *
      * @param string $field
-     * @return bool
+     * @return FormBuilder
+     * @throws Exception
      */
     public function addAcceptedPostField($field)
     {
         if ($this->feed_object instanceof Generic_model) {
             $this->feed_object->addAcceptedPostField($field);
-            return TRUE;
+            return $this;
         }
-        return FALSE;
+        throw new Exception("Feed object must be an instance of Generic_model to use this method");
     }
 
     /**
@@ -880,16 +891,12 @@ class FormBuilder
      * Sets ID used for representing working object using the feed object
      *
      * @param int $id
-     * @return bool
+     * @return FormBuilder
      */
     public function setId($id)
     {
-        if (!$id && $id !== 0) {
-            return FALSE;
-        }
-
         $this->id = $id;
-        return TRUE;
+        return $this;
     }
 
     /**
@@ -911,12 +918,12 @@ class FormBuilder
      * The form is rendered for reading only when this set to TRUE
      *
      * @param bool $read_only
-     * @return bool
+     * @return FormBuilder
      */
     public function setReadOnly($read_only = TRUE)
     {
         $this->read_only = $read_only;
-        return TRUE;
+        return $this;
     }
 
     /**
@@ -933,12 +940,12 @@ class FormBuilder
      * Sets form renderer
      *
      * @param FormRenderableInterface $renderer
-     * @return bool
+     * @return FormBuilder
      */
     public function setRenderer(FormRenderableInterface $renderer)
     {
         $this->renderer = $renderer;
-        return TRUE;
+        return $this;
     }
 
     /**
@@ -959,6 +966,7 @@ class FormBuilder
      * Sets link that is used with the back button
      *
      * @param string $back_link
+     * @return FormBuilder
      */
     public function setBackLink($back_link)
     {
@@ -966,6 +974,8 @@ class FormBuilder
         if (!preg_match('#^https?://#i', $this->back_link)) {
             $this->back_link = base_url() . $this->back_link;
         }
+
+        return $this;
     }
 
     /**
@@ -1012,10 +1022,12 @@ class FormBuilder
      * Sets the object caring the DB data
      *
      * @param object $object
+     * @return FormBuilder
      */
     public function setObject($object)
     {
         $this->object = $object;
+        return $this;
     }
 
     /**
@@ -1024,6 +1036,7 @@ class FormBuilder
      * @param callable $callback
      * @param int $type
      * @param bool $check_callable
+     * @return FormBuilder
      */
     public function setCallback($callback, $type, $check_callable = TRUE)
     {
@@ -1031,16 +1044,20 @@ class FormBuilder
             trigger_error('FormBuilder specified callback is not callable', E_USER_WARNING);
         }
         $this->callbacks[$type] = $callback;
+
+        return $this;
     }
 
     /**
      * Sets the validation error message
      *
      * @param string $message
+     * @return FormBuilder
      */
     public function setValidationErrorMessage($message)
     {
         $this->validation_error_message = $message;
+        return $this;
     }
 
     /**
@@ -1051,6 +1068,28 @@ class FormBuilder
     public function getValidationErrorMessage()
     {
         return $this->validation_error_message;
+    }
+
+    /**
+     * Tells whether the user will be redirected to back url on successful save
+     *
+     * @return bool
+     */
+    public function isRedirectOnSaveSuccess()
+    {
+        return $this->redirect_on_save_success;
+    }
+
+    /**
+     * Enables disables redirect to back url on successful save
+     *
+     * @param bool $redirect_on_save_success
+     * @return FormBuilder
+     */
+    public function setRedirectOnSaveSuccess($redirect_on_save_success)
+    {
+        $this->redirect_on_save_success = $redirect_on_save_success;
+        return $this;
     }
 
     /**
@@ -1685,25 +1724,5 @@ class FormBuilder
             // Prevent from overwriting if the user simply does not wish to delete file
             unset($save_array[$upload_field_name]);
         }
-    }
-
-    /**
-     * Tells whether the user will be redirected to back url on successful save
-     *
-     * @return bool
-     */
-    public function isRedirectOnSaveSuccess()
-    {
-        return $this->redirect_on_save_success;
-    }
-
-    /**
-     * Enables disables redirect to back url on successful save
-     *
-     * @param bool $redirect_on_save_success
-     */
-    public function setRedirectOnSaveSuccess($redirect_on_save_success)
-    {
-        $this->redirect_on_save_success = $redirect_on_save_success;
     }
 }
