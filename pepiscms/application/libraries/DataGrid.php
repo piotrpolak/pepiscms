@@ -19,7 +19,6 @@
  */
 class DataGrid
 {
-
     /**
      * Basic search filter
      */
@@ -233,30 +232,36 @@ class DataGrid
      * Sets whether the filters should be rendered AFTER the grid
      *
      * @param bool $is_filters_shown_before
+     * @return DataGrid
      */
     public function setFiltersShownBeforeGrid($is_filters_shown_before = TRUE)
     {
         $this->is_filters_shown_before = $is_filters_shown_before;
+        return $this;
     }
 
     /**
      * Sets whether the filters should be rendered BEFORE the grid
      *
      * @param bool $is_filters_shown_after
+     * @return DataGrid
      */
     public function setFiltersShownAfterGrid($is_filters_shown_after = TRUE)
     {
         $this->is_filters_shown_after = $is_filters_shown_after;
+        return $this;
     }
 
     /**
      * Sets whether the grid can be ordered by a column value
      *
      * @param bool $is_orderable
+     * @return DataGrid
      */
     public function setOrderable($is_orderable)
     {
         $this->is_orderable = $is_orderable;
+        return $this;
     }
 
     /**
@@ -273,10 +278,12 @@ class DataGrid
      * Shows or hides table head
      *
      * @param bool $is_table_head_visible
+     * @return DataGrid
      */
     public function setTableHeadVisible($is_table_head_visible = TRUE)
     {
         $this->is_table_head_visible = $is_table_head_visible;
+        return $this;
     }
 
     /**
@@ -293,10 +300,12 @@ class DataGrid
      * Sets the table title
      *
      * @param string $title
+     * @return DataGrid
      */
     public function setTitle($title)
     {
         $this->title = $title;
+        return $this;
     }
 
     /**
@@ -313,10 +322,12 @@ class DataGrid
      * Sets the base url (url to which all the parameters are assigned), no trailing slash
      *
      * @param string $base_url no trailing slash
+     * @return DataGrid
      */
     public function setBaseUrl($base_url)
     {
         $this->base_url = $base_url;
+        return $this;
     }
 
     /**
@@ -334,10 +345,12 @@ class DataGrid
      *
      * @param string $order_by
      * @param string $order
+     * @return DataGrid
      */
     public function setDefaultOrder($order_by, $order = 'ASC')
     {
         $this->default_order = array('order_by' => $order_by, 'order' => strtoupper($order));
+        return $this;
     }
 
     /**
@@ -371,10 +384,12 @@ class DataGrid
      *
      * @param int $items_per_page
      *
+     * @return DataGrid
      */
     public function setItemsPerPage($items_per_page)
     {
         $this->items_per_page = $items_per_page;
+        return $this;
     }
 
     /**
@@ -384,7 +399,7 @@ class DataGrid
      * @param bool $field
      * @param bool $grid_formating_callback
      * @param bool $grid_css_class
-     * @return bool
+     * @return DataGrid
      */
     public function addColumn($label, $field = FALSE, $grid_formating_callback = FALSE, $grid_css_class = FALSE)
     {
@@ -496,7 +511,7 @@ class DataGrid
      *
      * @param array $column
      * @param bool $key
-     * @return bool
+     * @return DataGrid
      */
     public function addColumnByDefinition($column, $key = FALSE)
     {
@@ -552,14 +567,14 @@ class DataGrid
             $this->definition[] = $defaults;
         }
 
-        return TRUE;
+        return $this;
     }
 
     /**
      * Sets columns by definition, this is the recommended way to configure DataGrid
      *
      * @param array $columns
-     * @return bool
+     * @return DataGrid
      */
     public function setDefinition($columns)
     {
@@ -574,7 +589,7 @@ class DataGrid
             $this->addColumnByDefinition($column, $key);
         }
 
-        return TRUE;
+        return $this;
     }
 
     /**
@@ -595,6 +610,7 @@ class DataGrid
      * @param int $filter_type
      * @param bool $filter_values
      * @param bool $filter_condition
+     * @return DataGrid
      */
     public function addFilter($label, $field = FALSE, $filter_type = self::FILTER_BASIC, $filter_values = FALSE, $filter_condition = FALSE)
     {
@@ -621,22 +637,26 @@ class DataGrid
         }
 
         $this->filter_definitions[$defaults['field'] . '_' . $defaults['filter_condition']] = $defaults;
+
+        return $this;
     }
 
     /**
      * Removes filter array
      *
+     * @return DataGrid
      */
     public function removeFilters()
     {
         $this->filter_definitions = array();
+        return $this;
     }
 
     /**
      * Removes filter by field name
      *
      * @param string $field_name
-     *
+     * @return DataGrid
      */
     public function removeFilterByFieldName($field_name)
     {
@@ -645,6 +665,7 @@ class DataGrid
                 unset($filter);
             }
         }
+        return $this;
     }
 
     /**
@@ -661,10 +682,12 @@ class DataGrid
      * Sets filters' definition
      *
      * @param array $filters_definition
+     * @return DataGrid
      */
     public function setFilterDefinition($filters_definition)
     {
         $this->filter_definitions = $filters_definition;
+        return $this;
     }
 
     /**
@@ -673,6 +696,7 @@ class DataGrid
      * @param string $field
      * @param string $filter_value
      * @param string $filter_condition
+     * @return DataGrid
      */
     public function applyFilter($field, $filter_value, $filter_condition = DataGrid::FILTER_CONDITION_EQUAL)
     {
@@ -692,6 +716,7 @@ class DataGrid
 
         $this->filter_definitions[$defaults['field'] . '_' . $defaults['filter_condition']] = $defaults;
         $this->manually_applied_filters[$defaults['field'] . '_' . $defaults['filter_condition']] = $filter_value;
+        return $this;
     }
 
     /**
@@ -700,7 +725,7 @@ class DataGrid
      * @param string $field
      * @param string $filter_value
      * @param string $filter_condition
-     * @return $this
+     * @return DataGrid
      */
     public function setFilterValue($field, $filter_value, $filter_condition = 'eq')
     {
@@ -712,7 +737,7 @@ class DataGrid
      * Sets the object from which the feed will be extracted, the feed must be of type DataFeedableInterface
      *
      * @param AdvancedDataFeedableInterface $feed_object
-     * @return $this
+     * @return DataGrid
      */
     public function setFeedObject(AdvancedDataFeedableInterface $feed_object)
     {
@@ -737,6 +762,7 @@ class DataGrid
      * @param string $title
      * @param bool|array $where_conditions
      * @param bool $id_field
+     * @return DataGrid
      */
     public function setTable($title, $where_conditions = FALSE, $id_field = FALSE)
     {
@@ -752,6 +778,7 @@ class DataGrid
         }
 
         $this->setFeedObject($feed_object);
+        return $this;
     }
 
     /**
@@ -1285,6 +1312,93 @@ class DataGrid
     }
 
     /**
+     * Sets table row css style formatting callback
+     * The callback function takes the line object and must return string class
+     *
+     * @param callable|false $callback
+     * @return bool
+     */
+    public function setRowCssClassFormattingFunction($callback)
+    {
+        if (is_callable($callback) || $callback === FALSE) {
+            $this->row_css_class_formatting_callback = $callback;
+            return $this;
+        }
+        return $this;
+    }
+
+    /**
+     * Returns table row css style formatting callback
+     *
+     * @return callable|bool
+     */
+    public function getRowCssClassFormattingFunction()
+    {
+        return $this->row_css_class_formatting_callback;
+    }
+
+    /**
+     * Returns the list of manually applied filters
+     *
+     * @param bool|string $key
+     * @return array
+     */
+    public function getManuallyAppliedFilters($key = FALSE)
+    {
+        if (!$key) {
+            return $this->manually_applied_filters;
+        } else {
+            return $this->manually_applied_filters[$key];
+        }
+    }
+
+    /**
+     * @param bool|string $key
+     * @return array
+     * @deprecated as PepisCMS 1.0.0
+     */
+    public function getManualyAppliedFilters($key = FALSE)
+    {
+        return $this->getManuallyAppliedFilters($key);
+    }
+
+    /**
+     * @param callable|false $callback
+     * @return bool
+     * @deprecated as PepisCMS 1.0.0
+     */
+    public function setRowCssClassFormatingFunction($callback)
+    {
+        trigger_error('DataGrid.setRowCssClassFormatingFunction() is deprecated and scheduled for deletion. Please use DataGrid.setRowCssClassFormattingFunction()', E_USER_DEPRECATED);
+        return $this->setRowCssClassFormattingFunction($callback);
+    }
+
+    /**
+     * @return callable|bool
+     * @deprecated as PepisCMS 1.0.0
+     */
+    public function getRowCssClassFormatingFunction()
+    {
+        return getRowCssClassFormatingFunction();
+    }
+
+    /**
+     * Returns possible field names
+     *
+     * @param bool|string $key
+     * @return array
+     * @deprecated as PepisCMS 1.0.0
+     */
+    public function getFieldNames($key = FALSE)
+    {
+        if (!$key) {
+            return $this->field_names;
+        } else {
+            return $this->field_names[$key];
+        }
+    }
+
+    /**
      * Generates link for given parameters
      *
      * @param $base_url
@@ -1319,92 +1433,5 @@ class DataGrid
         }
 
         return $url;
-    }
-
-    /**
-     * Sets table row css style formatting callback
-     * The callback function takes the line object and must return string class
-     *
-     * @param callable|false $callback
-     * @return bool
-     */
-    public function setRowCssClassFormattingFunction($callback)
-    {
-        if (is_callable($callback) || $callback === FALSE) {
-            $this->row_css_class_formatting_callback = $callback;
-            return TRUE;
-        }
-        return FALSE;
-    }
-
-
-    /**
-     * @param callable|false $callback
-     * @return bool
-     * @deprecated as PepisCMS 1.0.0
-     */
-    public function setRowCssClassFormatingFunction($callback)
-    {
-        return $this->setRowCssClassFormattingFunction($callback);
-    }
-
-    /**
-     * Returns table row css style formatting callback
-     *
-     * @return callable|bool
-     */
-    public function getRowCssClassFormattingFunction()
-    {
-        return $this->row_css_class_formatting_callback;
-    }
-
-    /**
-     * @return callable|bool
-     * @deprecated as PepisCMS 1.0.0
-     */
-    public function getRowCssClassFormatingFunction()
-    {
-        return getRowCssClassFormatingFunction();
-    }
-
-    /**
-     * Returns possible field names
-     *
-     * @param bool|string $key
-     * @return array
-     * @deprecated as PepisCMS 1.0.0
-     */
-    public function getFieldNames($key = FALSE)
-    {
-        if (!$key) {
-            return $this->field_names;
-        } else {
-            return $this->field_names[$key];
-        }
-    }
-
-    /**
-     * Returns the list of manually applied filters
-     *
-     * @param bool|string $key
-     * @return array
-     */
-    public function getManuallyAppliedFilters($key = FALSE)
-    {
-        if (!$key) {
-            return $this->manually_applied_filters;
-        } else {
-            return $this->manually_applied_filters[$key];
-        }
-    }
-
-    /**
-     * @param bool|string $key
-     * @return array
-     * @deprecated as PepisCMS 1.0.0
-     */
-    public function getManualyAppliedFilters($key = FALSE)
-    {
-        return $this->getManuallyAppliedFilters($key);
     }
 }

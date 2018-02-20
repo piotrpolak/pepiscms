@@ -3,7 +3,6 @@
 A library that along with GenericDataFeedable_model builds advanced database mapping. Implements pagination, sort,
 filters (search). You can register callbacks to form cell contents.
 
-
 Features of DataGrid:
 
 * Generate database HTML views with minimum effort using grid definition
@@ -46,6 +45,44 @@ same time.
 | FILTER_CONDITION_LESS_OR_EQUAL     | selects everything that is less or equal to searched query field <= input_value– tip: applies also to DATE      |
 | FILTER_CONDITION_LIKE              | selects everything that contains searched query field LIKE %input_value% - default for text search              |
 
+
+## Usage
+
+Complete
+
+```php
+$this->load->library('DataGrid');
+echo $this->datagrid->setFiltersShownBeforeGrid(TRUE)
+    ->setFiltersShownAfterGrid(TRUE)
+    ->setOrderable(TRUE)
+    ->setTableHeadVisible(TRUE)
+    ->setTitle("My Table")
+    ->setBaseUrl(admin_url() . 'somepage/edit') // All links will be generated with respect to this base URL
+    ->setDefaultOrder('id', 'asc')
+    ->setItemsPerPage(300)
+    ->setDefinition($definition) 
+    ->addFilter('Since', 'published_since_datetime', DataGrid::FILTER_DATE, FALSE, DataGrid::FILTER_CONDITION_LESS_OR_EQUAL)
+    ->addFilter('To', 'published_since_datetime', DataGrid::FILTER_DATE, FALSE, DataGrid::FILTER_CONDITION_GREATER_OR_EQUAL)
+    ->setRowCssClassFormattingFunction(function ($line) {
+        if ($line->is_active == 1) {
+            return DataGrid::ROW_COLOR_GREEN;
+        } else {
+            return DataGrid::ROW_COLOR_RED;
+        }
+    })
+    ->setFeedObject($this->MyFavourite_model)
+    ->generate();
+```
+
+Minimalistic, with implicite values
+
+```php
+$this->load->library('DataGrid');
+echo $this->datagrid->setBaseUrl(admin_url() . 'somepage/edit') // All links will be generated with respect to this base URL
+    ->setDefinition($definition)
+    ->setTable('items') // Will automatically instantiate Generic_model for 'items' table
+    ->generate();
+```
 
 ## DataGrid cell value formatting callbacks
 
