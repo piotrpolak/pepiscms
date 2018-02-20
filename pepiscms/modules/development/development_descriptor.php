@@ -59,7 +59,7 @@ class DevelopmentDescriptor extends ModuleDescriptor
             array(
                 'controller' => $this->module_name,
                 'method' => 'module_make',
-                'label' => get_instance()->lang->line($this->module_name . '_modules_make_a_new_module'),
+                'label' => get_instance()->lang->line($this->module_name . '_make_a_new_module'),
                 'description' => '',
                 'icon_url' => module_resources_url($this->module_name) . 'module_make_16.png',
             ),

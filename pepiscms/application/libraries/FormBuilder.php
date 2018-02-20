@@ -1539,12 +1539,13 @@ class FormBuilder
             // For non-apply save, redirect to the back link
             if ($this->back_link && $this->redirect_on_save_success) {
                 redirect($this->back_link);
+                return;
             }
 
-        } else {
-            // END Prevent from redirecting on apply
-            CI_Controller::get_instance()->output->set_header('X-XSS-Protection: 0');
         }
+
+        // END Prevent from redirecting on apply
+        CI_Controller::get_instance()->output->set_header('X-XSS-Protection: 0');
     }
 
     /**
@@ -1684,5 +1685,25 @@ class FormBuilder
             // Prevent from overwriting if the user simply does not wish to delete file
             unset($save_array[$upload_field_name]);
         }
+    }
+
+    /**
+     * Tells whether the user will be redirected to back url on successful save
+     *
+     * @return bool
+     */
+    public function isRedirectOnSaveSuccess()
+    {
+        return $this->redirect_on_save_success;
+    }
+
+    /**
+     * Enables disables redirect to back url on successful save
+     *
+     * @param bool $redirect_on_save_success
+     */
+    public function setRedirectOnSaveSuccess($redirect_on_save_success)
+    {
+        $this->redirect_on_save_success = $redirect_on_save_success;
     }
 }
