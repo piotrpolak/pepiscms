@@ -67,7 +67,7 @@ class About extends AdminController
                 'label' => $this->lang->line('global_download_user_manual'),
                 'url' => $user_manual_path,
                 'target' => '_blank',
-                'icon' => 'pepiscms/theme/img/about/manual_32.png',
+                'icon_url' => 'pepiscms/theme/img/about/manual_32.png',
             );
         }
 
@@ -75,13 +75,13 @@ class About extends AdminController
             'label' => $this->lang->line('global_reload_privileges'),
             'controller' => 'login',
             'method' => 'refresh_session',
-            'icon' => 'pepiscms/theme/img/utilities/flush_privileges_32.png',
+            'icon_url' => 'pepiscms/theme/img/utilities/flush_privileges_32.png',
         );
         $dashboard_elements[] = array(
             'label' => $this->lang->line('global_logout'),
             'controller' => 'logout',
             'method' => '',
-            'icon' => 'pepiscms/theme/img/about/logout_32.png',
+            'icon_url' => 'pepiscms/theme/img/about/logout_32.png',
         );
 
         // Actions grouping
@@ -110,19 +110,19 @@ class About extends AdminController
             $failed_configuration_tests = $this->Siteconfig_model->makeConfigurationTestsAngGetFailedTests();
         }
 
-        $this->assign('failed_configuration_tests', $failed_configuration_tests);
-        $this->assign('dashboard_elements_grouped', $dashboard_elements_grouped);
-        $this->assign('user_manual_path', $user_manual_path);
-        $this->display();
+        $this->assign('failed_configuration_tests', $failed_configuration_tests)
+            ->assign('dashboard_elements_grouped', $dashboard_elements_grouped)
+            ->assign('user_manual_path', $user_manual_path)
+            ->display();
     }
 
     public function configuration_tests()
     {
-        $this->assign('adminmenu', '');
         $this->load->model('Siteconfig_model');
-        $this->assign('failed_configuration_tests', $this->Siteconfig_model->makeConfigurationTestsAngGetFailedTests());
-        $this->assign('title', $this->lang->line('utilities_label_configuration_tests'));
-        $this->display();
+        $this->assign('adminmenu', '')
+            ->assign('failed_configuration_tests', $this->Siteconfig_model->makeConfigurationTestsAngGetFailedTests())
+            ->assign('title', $this->lang->line('utilities_label_configuration_tests'))
+            ->display();
     }
 
     public function theme()
@@ -235,8 +235,8 @@ class About extends AdminController
                 ),
             )
         );
-        $this->assign('formbuilder', $this->formbuilder->generate());
-        $this->display();
+        $this->assign('formbuilder', $this->formbuilder->generate())
+            ->display();
     }
 
     public function theme_404()

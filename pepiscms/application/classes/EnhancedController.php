@@ -91,10 +91,12 @@ abstract class EnhancedController extends CI_Controller
      *
      * @param string $attributeName
      * @param mixed $attributeValue
+     * @return EnhancedController
      */
     public function assign($attributeName, $attributeValue)
     {
         $this->response_attributes[$attributeName] = $attributeValue;
+        return $this;
     }
 
     /**

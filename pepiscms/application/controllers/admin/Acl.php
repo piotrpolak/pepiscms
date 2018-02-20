@@ -63,9 +63,6 @@ class Acl extends AdminController
         $section = $this->input->getParam('section');
         $is_editable = ($section != 'system' && !$this->Module_model->isCoreModule($section)) || !PEPISCMS_PRODUCTION_RELEASE;
 
-        $this->assign('section', $section);
-        $this->assign('is_editable', $is_editable);
-
 
         if ($section == 'system') {
             $entities = $this->securitypolicy->getSystemAvailableEntities();
@@ -137,19 +134,22 @@ class Acl extends AdminController
 
         $entities = array_filter($entities);
         $entities = array_unique($entities);
-        $this->assign('entities', $entities);
-        $this->assign('security_policy', $security_policy);
-        $this->assign('controllers', $controllers);
 
-        $this->assign('title', sprintf($this->lang->line('act_security_policy_for'), $section));
-        $this->display();
+
+        $this->assign('section', $section)
+            ->assign('is_editable', $is_editable)
+            ->assign('entities', $entities)
+            ->assign('security_policy', $security_policy)
+            ->assign('controllers', $controllers)
+            ->assign('title', sprintf($this->lang->line('act_security_policy_for'), $section))
+            ->display();
     }
 
     public function checkrights()
     {
         $this->load->library('SecurityPolicy');
-        $this->assign('controllers', $this->securitypolicy->describeSystemControllers());
-        $this->assign('title', $this->lang->line('acl_label_security_policy_check_own_rights'));
-        $this->display();
+        $this->assign('controllers', $this->securitypolicy->describeSystemControllers())
+            ->assign('title', $this->lang->line('acl_label_security_policy_check_own_rights'))
+            ->display();
     }
 }

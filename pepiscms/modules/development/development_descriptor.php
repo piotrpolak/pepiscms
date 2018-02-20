@@ -61,6 +61,22 @@ class DevelopmentDescriptor extends ModuleDescriptor
     /**
      * {@inheritdoc}
      */
+    public function getAdminDashboardElements($language)
+    {
+        return array(
+            array(
+                'controller' => $this->module_name,
+                'method' => 'module_make',
+                'label' => get_instance()->lang->line($this->module_name . '_make_a_new_module'),
+                'description' => '',
+                'icon_url' => module_resources_url($this->module_name) . 'module_make_32.png',
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getAdminSubmenuElements($language)
     {
         return array(
