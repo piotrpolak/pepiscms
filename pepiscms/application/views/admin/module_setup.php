@@ -22,7 +22,6 @@ $actions[] = array(
                     <td><img src="<?= module_icon_url($module) ?>" alt="icon" title="<?= $this->Module_model->getModuleDescription($module, $this->lang->getCurrentLanguage()) ?>"> <b title="<?= $this->Module_model->getModuleDescription($module, $this->lang->getCurrentLanguage()) ?>"><?= $this->Module_model->getModuleLabel($module, $this->lang->getCurrentLanguage()) ?></b></td>
                     <td class="link"><a href="<?= admin_url() ?>module/do_setup/module-<?= $module ?>/install-1/view-<?=$view?>" title="<?= $lang->line('modules_install') ?>"><img src="pepiscms/theme/img/module/install_16.png" alt="icon"></a></td>
                 </tr>
-
             <?php endforeach; ?>
         </table>
     </div>

@@ -23,17 +23,11 @@ class Module extends AdminController
         $this->load->model('Module_model');
         $this->load->library('SimpleSessionMessage');
         $this->load->library('FormBuilder');
+        $this->load->library('ConfigBuilder');
+        $this->load->library('ModuleRunner');
+        $this->load->library('Cachedobjectmanager');
+        $this->load->library('User_agent');;
         $this->assign('title', $this->lang->line('label_installed_modules'));
-    }
-
-    private function _get_view()
-    {
-        $view = 'menu';
-        if (in_array($this->input->getParam('view'), array('menu', 'utilities'))) {
-            $view = $this->input->getParam('view');
-        }
-
-        return $view;
     }
 
     /** Callback * */
@@ -56,10 +50,13 @@ class Module extends AdminController
         $this->assign('view', $view);
 
         if ($view == 'utilities') {
-            $this->assign('installed_modules_in_utilities', $this->Module_model->getInstalledModulesDisplayedInUtilities());
+            $this->assign('installed_modules_in_utilities',
+                $this->Module_model->getInstalledModulesDisplayedInUtilities());
         } else {
-            $this->assign('installed_modules_with_no_parent', $this->Module_model->getInstalledModulesHavingNoParent());
-            $this->assign('installed_modules_with_parrent_grouped_by_parent', $this->Module_model->getInstalledModulesDisplayedInMenuHavingParentGroupedByParent());
+            $this->assign('installed_modules_with_no_parent',
+                $this->Module_model->getInstalledModulesHavingNoParent())
+                ->assign('installed_modules_with_parrent_grouped_by_parent',
+                    $this->Module_model->getInstalledModulesDisplayedInMenuHavingParentGroupedByParent());
         }
 
         $this->display();
@@ -74,21 +71,16 @@ class Module extends AdminController
 
         $constraint_field = 'is_displayed_in_' . $view;
 
-        $this->Generic_model->move($module, $direction, $this->config->item('database_table_modules'), $constraint_field, 'item_order_' . $view, 'name');
+        $this->Generic_model->move($module, $direction, $this->config->item('database_table_modules'),
+            $constraint_field, 'item_order_' . $view, 'name');
 
-        $this->auth->refreshSession();
-        $this->load->library('Cachedobjectmanager');
-        $this->cachedobjectmanager->cleanup();
-        $this->db->cache_delete_all();
-        ModuleRunner::flushCache();
+        $this->removeAllCache();
 
         if ($this->input->getParam('json') == 1) {
             die('{ "status": "1", "message" : "OK" }'); // TODO Serialize
         }
 
-
         // Smart redirect
-        $this->load->library('User_agent');
         if ($this->agent->referrer()) {
             redirect($this->agent->referrer());
         } else {
@@ -99,11 +91,6 @@ class Module extends AdminController
     public function setup()
     {
         $view = $this->_get_view();
-        $this->assign('view', $view);
-        $this->assign('title', $this->lang->line('label_module_setup'));
-
-        $this->load->model('Module_model');
-        $this->load->library('ModuleRunner');
 
         $notinstalled_modules = array();
         $modules = ModuleRunner::getAvailableModules();
@@ -117,16 +104,15 @@ class Module extends AdminController
             $notinstalled_modules[] = $module;
         }
 
-        $this->assign('modules', $notinstalled_modules);
-
-        $this->display();
+        $this->assign('view', $view)
+            ->assign('title', $this->lang->line('label_module_setup'))
+            ->assign('modules', $notinstalled_modules)
+            ->display();
     }
 
     public function do_setup()
     {
         $view = $this->_get_view();
-        $this->assign('view', $view);
-        $this->assign('title', $this->lang->line('label_module_setup'));
 
         $module = $this->input->getParam('module');
         $is_install = $this->input->getParam('install');
@@ -135,11 +121,10 @@ class Module extends AdminController
             show_404();
         }
 
-        $this->load->library('FormBuilder');
         if ($is_install) {
-            $this->formbuilder->setBackLink(admin_url() . 'module/setup/view-' . $view);
+            $back_url = admin_url() . 'module/setup/view-' . $view;
         } else {
-            $this->formbuilder->setBackLink(admin_url() . 'module/index/view-' . $view);
+            $back_url = admin_url() . 'module/index/view-' . $view;
         }
 
         $modules_with_no_parent = array();
@@ -155,49 +140,99 @@ class Module extends AdminController
         $is_displayed_in_menu = FALSE;
         $is_displayed_in_utilities = FALSE;
         $moduleDescriptor = $this->Module_model->getModuleDescriptor($module);
-        if($moduleDescriptor) {
+        if ($moduleDescriptor) {
             $is_displayed_in_menu = $moduleDescriptor->isDisplayedInMenu();
             $is_displayed_in_utilities = $moduleDescriptor->isDisplayedInUtilities();
         }
 
-        $this->formbuilder->setId($module);
-        $this->formbuilder->setTitle($this->lang->line('label_module_setup'));
-        $this->formbuilder->setCallback(array($this, '_fb_callback_setup_on_save'), FormBuilder::CALLBACK_ON_SAVE);
-        $this->formbuilder->setCallback(array($this, '_fb_callback_setup_on_read'), FormBuilder::CALLBACK_ON_READ);
-        $this->formbuilder->setDefinition(
-            array(
-                'module' => array(
-                    'label' => $this->lang->line('label_module'),
-                    'validation_rules' => 'required',
-                    'input_is_editable' => FALSE,
-                ),
-                'is_displayed_in_menu' => array(
-                    'input_type' => FormBuilder::CHECKBOX,
-                    'validation_rules' => '',
-                    'label' => $this->lang->line('label_display_in_main_menu'),
-                    'input_default_value' => $is_displayed_in_menu,
-                ),
-                'parent_module_id' => array(
-                    'input_type' => FormBuilder::SELECTBOX,
-                    'validation_rules' => '',
-                    'input_is_editable' => TRUE,
-                    'values' => $modules_with_no_parent,
-                    'foreign_key_accept_null' => TRUE,
-                    'label' => $this->lang->line('label_module_parent_module_id'),
-                ),
-                'is_displayed_in_utilities' => array(
-                    'input_type' => FormBuilder::CHECKBOX,
-                    'validation_rules' => '',
-                    'label' => $this->lang->line('label_display_in_utilities'),
-                    'input_default_value' => $is_displayed_in_utilities,
-                ),
-            )
+        $definition = array(
+            'module' => array(
+                'label' => $this->lang->line('label_module'),
+                'validation_rules' => 'required',
+                'input_is_editable' => FALSE,
+            ),
+            'is_displayed_in_menu' => array(
+                'input_type' => FormBuilder::CHECKBOX,
+                'validation_rules' => '',
+                'label' => $this->lang->line('label_display_in_main_menu'),
+                'input_default_value' => $is_displayed_in_menu,
+            ),
+            'parent_module_id' => array(
+                'input_type' => FormBuilder::SELECTBOX,
+                'validation_rules' => '',
+                'input_is_editable' => TRUE,
+                'values' => $modules_with_no_parent,
+                'foreign_key_accept_null' => TRUE,
+                'label' => $this->lang->line('label_module_parent_module_id'),
+            ),
+            'is_displayed_in_utilities' => array(
+                'input_type' => FormBuilder::CHECKBOX,
+                'validation_rules' => '',
+                'label' => $this->lang->line('label_display_in_utilities'),
+                'input_default_value' => $is_displayed_in_utilities,
+            ),
         );
-        $this->assign('module_label', $this->Module_model->getModuleLabel($module, $this->lang->getCurrentLanguage()));
-        $this->assign('module', $module);
 
-        $this->assign('form', $this->formbuilder->generate());
-        $this->display();
+        $config_definition = $this->Module_model->getModuleConfigVariables($module);
+
+        if ($config_definition) {
+            foreach ($config_definition as $key => $config) {
+                $config['input_group'] = 'Additional configuration variables';
+                $key = 'config_' . $key;
+                $definition[$key] = $config;
+            }
+        }
+
+        $this->formbuilder->setId($module)
+            ->setBackLink($back_url)
+            ->setTitle($this->lang->line('label_module_setup'))
+            ->setCallback(array($this, '_fb_callback_setup_on_save'), FormBuilder::CALLBACK_ON_SAVE)
+            ->setCallback(array($this, '_fb_callback_setup_on_read'), FormBuilder::CALLBACK_ON_READ)
+            ->setDefinition($definition);
+
+        $this->assign('view', $view)
+            ->assign('title', $this->lang->line('label_module_setup'))->assign('module_label', $this->Module_model->getModuleLabel($module,
+                $this->lang->getCurrentLanguage()))
+            ->assign('module', $module)
+            ->assign('form', $this->formbuilder->generate())
+            ->display();
+    }
+
+    public function uninstall()
+    {
+        $view = $this->_get_view();
+        $this->assign('view', $view);
+
+        $module = $this->uri->segment(4);
+
+        Logger::info('Uninstalling module ' . $module, 'MODULE');
+
+        $this->Module_model->uninstall($module);
+        $this->removeAllCache();
+
+        $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS);
+        $this->simplesessionmessage->setMessage('global_header_success');
+
+        // Smart redirect
+        if ($this->agent->referrer()) {
+            redirect($this->agent->referrer());
+        } else {
+            redirect(admin_url() . 'module/index/view-' . $view);
+        }
+    }
+
+    public function run()
+    {
+        $module_name = $this->uri->segment(4);
+        $method = $this->uri->segment(5);
+
+        if (!$method) {
+            $method = 'index';
+        }
+
+        if (!$this->modulerunner->runAdminModule($this, $module_name, $method)) {
+            show_404();
+        }
     }
 
     /**
@@ -214,7 +249,13 @@ class Module extends AdminController
         if (!isset($object->label) || !$object->label) {
             $object->label = str_replace('_', ' ', ucfirst($this->formbuilder->getId()));
         }
-        // TODO Get descriptor
+        $config_variables = $this->configbuilder->readConfig($this->getConfigPath($this->formbuilder->getId()));
+        if ($config_variables) {
+            foreach ($config_variables as $key => $value) {
+                $key = 'config_' . $key;
+                $object->{$key} = $value;
+            }
+        }
     }
 
     /**
@@ -225,149 +266,93 @@ class Module extends AdminController
      */
     public function _fb_callback_setup_on_save(&$data)
     {
-        $is_install = ($this->input->getParam('install') == 1);
-        $module = $this->formbuilder->getId();
+        $is_install = $this->input->getParam('install') == 1;
+        $module_name = $this->formbuilder->getId();
 
         if (!$data['is_displayed_in_menu']) {
             $data['parent_module_id'] = NULL;
         }
 
         if ($is_install) {
-            $success = $this->Module_model->install($module, $data['is_displayed_in_menu'], $data['is_displayed_in_utilities'], $data['parent_module_id']);
+            $success = $this->Module_model->install($module_name, $data['is_displayed_in_menu'],
+                $data['is_displayed_in_utilities'], $data['parent_module_id']);
         } else {
-            $success = $this->Module_model->update($module, $data['is_displayed_in_menu'], $data['is_displayed_in_utilities'], $data['parent_module_id']);
+            $success = $this->Module_model->update($module_name, $data['is_displayed_in_menu'],
+                $data['is_displayed_in_utilities'], $data['parent_module_id']);
         }
 
-        $this->auth->refreshSession();
-        $this->load->library('Cachedobjectmanager');
-        $this->cachedobjectmanager->cleanup();
-        $this->db->cache_delete_all();
-        ModuleRunner::flushCache();
+        $config_variables = $this->filterConfigData($data);
+
+        if (count($config_variables) > 0) {
+            $this->saveModuleConfig($this->filterConfigData($data), $module_name);
+        }
+        $this->removeAllCache();
 
         return $success;
     }
 
-    public function uninstall()
+    /**
+     * @param $module_name
+     * @return string
+     */
+    private function getConfigPath($module_name)
     {
-        $view = $this->_get_view();
-        $this->assign('view', $view);
-
-        $module = $this->uri->segment(4);
-
-        Logger::info('Uninstalling module ' . $module, 'MODULE');
-
-        $this->load->library('ModuleRunner');
-        $this->load->model('Module_model');
-        $this->Module_model->uninstall($module);
-        $this->auth->refreshSession();
-        $this->load->library('Cachedobjectmanager');
-        $this->cachedobjectmanager->cleanup();
-        $this->db->cache_delete_all();
-        ModuleRunner::flushCache();
-
-        $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS);
-        $this->simplesessionmessage->setMessage('global_header_success');
-
-        // Smart redirect
-        $this->load->library('User_agent');
-        if ($this->agent->referrer()) {
-            redirect($this->agent->referrer());
-        } else {
-            redirect(admin_url() . 'module/index/view-' . $view);
-        }
-    }
-
-    public function configure()
-    {
-        $view = $this->_get_view();
-        $this->assign('view', $view);
-
-        $module_name = $this->uri->segment(4);
-        $back_to_module = $this->input->getParam('back_to_module');
-
         $config_path = INSTALLATIONPATH . 'application/config/modules/';
         if (!file_exists($config_path)) {
             mkdir($config_path);
         }
         $config_path .= $module_name . '.php';
-
-        $this->load->library('ConfigBuilder');
-
-        $definition = $this->Module_model->getModuleConfigVariables($module_name);
-        $values = $this->configbuilder->readConfig($config_path);
-
-        if (!is_array($definition) || !count($definition)) {
-            $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_WARNING);
-            $this->simplesessionmessage->setMessage('module_not_configurable');
-
-            // Smart redirect
-            $this->load->library('User_agent');
-            if ($this->agent->referrer()) {
-                redirect($this->agent->referrer());
-            } else {
-                redirect(admin_url() . 'module');
-            }
-        }
-
-        foreach ($definition as $field_name => &$field_definition) {
-            if (!isset($values[$field_name])) {
-                continue;
-            }
-            $field_definition['input_default_value'] = $values[$field_name];
-        }
-
-        if ($back_to_module) {
-            $this->formbuilder->setBackLink(module_url($module_name));
-        } else {
-            $this->formbuilder->setBackLink(admin_url() . 'module/index/view-' . $view);
-        }
-
-        $this->formbuilder->setApplyButtonEnabled();
-        $this->formbuilder->setSubmitButtonEnabled(FALSE);
-        $this->formbuilder->setId('NULL');
-        $this->formbuilder->setTitle($this->lang->line('label_module_setup'));
-        $this->formbuilder->setDefinition($definition);
-        $this->formbuilder->setCallback(array($this, '_fb_callback_on_save'), FormBuilder::CALLBACK_ON_SAVE);
-
-        $this->assign('form', $this->formbuilder->generate());
-        $this->assign('module', $module_name);
-        $this->display();
+        return $config_path;
     }
 
     /**
-     * Must overwrite the save procedure and return true or false
+     * Returns view type
      *
-     * @param object $array
-     * @return boolean
+     * @return string
      */
-    public function _fb_callback_on_save(&$array)
+    private function _get_view()
     {
-        $module_name = $this->uri->segment(4);
-        $config_path = INSTALLATIONPATH . 'application/config/modules/';
-        if (!file_exists($config_path)) {
-            mkdir($config_path);
+        if (in_array($this->input->getParam('view'), array('menu', 'utilities'))) {
+            return $this->input->getParam('view');
         }
-        $config_path .= $module_name . '.php';
+
+        return 'menu';
+    }
+
+    /**
+     * @param $array
+     * @param $module_name
+     * @return mixed
+     */
+    private function saveModuleConfig(&$array, $module_name)
+    {
+        $config_path = $this->getConfigPath($module_name);
 
         Logger::info('Configuring module ' . $module_name, 'MODULE');
         return $this->configbuilder->writeConfig($config_path, $array);
     }
 
-    public function run()
+    private function removeAllCache()
     {
-        $module_name = $this->uri->segment(4);
-        $method = $this->uri->segment(5);
-
-        if (!$method) {
-            $method = 'index';
-        }
-
-        $this->load->model('Module_model');
-        $this->load->library('ModuleRunner');
-
-        if (!$this->modulerunner->runAdminModule($this, $module_name, $method)) {
-            show_404();
-        }
+        $this->auth->refreshSession();
+        $this->cachedobjectmanager->cleanup();
+        $this->db->cache_delete_all();
+        ModuleRunner::flushCache();
     }
 
+    /**
+     * @param $data
+     * @return array
+     */
+    private function filterConfigData(&$data)
+    {
+        $config_data = array();
+        foreach ($data as $key => $value) {
+            if (strpos($key, 'config_') !== 0) {
+                continue;
+            }
+            $config_data[substr($key, 7)] = $value;
+        }
+        return $config_data;
+    }
 }

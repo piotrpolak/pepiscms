@@ -55,14 +55,6 @@
                             <td class="narrow"><a href="<?= admin_url() ?>module/do_setup/module-<?= $module->name ?>/view-<?=$view?>" title="<?= $lang->line('label_setup_module') ?>"><img src="pepiscms/theme/img/module/module_setup_16.png" alt="icon"></a></td>
                         <?php endif; ?>
 
-                        <?php if (SecurityManager::hasAccess('module', 'configure')): ?>
-                            <td class="narrow">
-                                <?php if ($this->Module_model->isModuleConfigurable($module->name)): ?>
-                                    <a href="<?= admin_url() ?>module/configure/<?= $module->name ?>/view-<?=$view?>" title="<?= $lang->line('label_configure_module') ?>"><img src="pepiscms/theme/img/module/parameters_16.png" alt="icon"></a>
-                                <?php endif; ?>
-                            </td>
-                        <?php endif; ?>
-
                         <?php if (SecurityManager::hasAccess('module', 'uninstall')): ?>
                             <td class="narrow"><a href="<?= admin_url() ?>module/uninstall/<?= $module->name ?>/view-<?=$view?>" class="ask_for_confirmation" title="<?= $lang->line('label_uninstall_module') ?>"><img src="pepiscms/theme/img/module/uninstall_16.png" alt="icon"></a></td>
                         <?php endif; ?>
@@ -100,14 +92,6 @@
                             <td class="narrow"><a href="<?= admin_url() ?>module/do_setup/module-<?= $module->name ?>/view-<?=$view?>" title="<?= $lang->line('label_setup_module') ?>"><img src="pepiscms/theme/img/module/module_setup_16.png" alt="icon"></a></td>
                         <?php endif; ?>
 
-                        <?php if (SecurityManager::hasAccess('module', 'configure')): ?>
-                            <td class="narrow">
-                                <?php if ($this->Module_model->isModuleConfigurable($module->name)): ?>
-                                    <a href="<?= admin_url() ?>module/configure/<?= $module->name ?>/view-<?=$view?>" title="<?= $lang->line('label_configure_module') ?>"><img src="pepiscms/theme/img/module/parameters_16.png" alt="icon"></a>
-                                <?php endif; ?>
-                            </td>
-                        <?php endif; ?>
-
                         <?php if (SecurityManager::hasAccess('module', 'uninstall')): ?>
                             <td class="narrow"><a href="<?= admin_url() ?>module/uninstall/<?= $module->name ?>/view-<?=$view?>" class="ask_for_confirmation" title="<?= $lang->line('label_uninstall_module') ?>"><img src="pepiscms/theme/img/module/uninstall_16.png" alt="icon"></a></td>
                         <?php endif; ?>
@@ -135,14 +119,6 @@
                             <?php if (SecurityManager::hasAccess('module', 'do_setup')): ?>
                                 <td class="narrow">
                                     <a href="<?= admin_url() ?>module/do_setup/module-<?= $sub_module->name ?>/view-<?=$view?>" title="<?= $lang->line('label_setup_module') ?>"><img src="pepiscms/theme/img/module/module_setup_16.png" alt="icon"></a>
-                                </td>
-                            <?php endif; ?>
-
-                            <?php if (SecurityManager::hasAccess('module', 'configure')): ?>
-                                <td class="narrow">
-                                    <?php if ($this->Module_model->isModuleConfigurable($sub_module->name)): ?>
-                                        <a href="<?= admin_url() ?>module/configure/<?= $sub_module->name ?>/view-<?=$view?>" title="<?= $lang->line('label_configure_module') ?>"><img src="pepiscms/theme/img/module/parameters_16.png" alt="icon"></a>
-                                    <?php endif; ?>
                                 </td>
                             <?php endif; ?>
 

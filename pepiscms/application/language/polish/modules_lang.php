@@ -1,7 +1,6 @@
 <?php if(!defined('BASEPATH')) exit('No direct script access allowed');
 
 
-$lang['label_configure_module']                            = 'Konfiguruj ustawienia modułu';
 $lang['label_display_in_main_menu']                        = 'Wyświetlane w menu głównym';
 $lang['label_display_in_utilities']                        = 'Wyświetlane w narzędziach';
 $lang['label_installed_modules']                           = 'Zainstalowane moduły';

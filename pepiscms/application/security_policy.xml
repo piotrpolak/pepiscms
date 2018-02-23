@@ -87,11 +87,6 @@
       </method>
     </controller>
     <controller name="module">
-      <method name="configure">
-        <entity name="configuration" access="WRITE"/>
-      </method>
-    </controller>
-    <controller name="module">
       <method name="run">
         <entity name="module" access="READ"/>
       </method>
