@@ -103,6 +103,9 @@ function getFileIcon(ext) {
     if (extensions[ext]) {
         return extensions[ext];
     }
+    if (extensions[ext.substring(0, 3)]) {
+        return extensions[ext.substring(0, 3)];
+    }
     return 'file_extension_dat.png';
 }
 

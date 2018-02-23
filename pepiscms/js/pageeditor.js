@@ -3,7 +3,6 @@
  */
 function PageEditorUI(translation_map) {
 
-    var slide_duration = 300;
     var label_unsaved_changes = "All unsaved changes will be lost. Proceed?";
 
     this.init = function () {
