@@ -111,14 +111,6 @@ class Setup extends AdminController
             'input_group' => 'setup_input_group_features',
             'input_type' => FormBuilder::CHECKBOX,
         );
-        $definition['is_cross_domain_auth_enabled'] = array(
-            'label' => $this->lang->line('setup_is_cross_domain_auth_enabled'),
-            'description' => $this->lang->line('setup_is_cross_domain_auth_enabled_desc'),
-            'validation_rules' => '',
-            'values' => $this->Siteconfig_model->getAvailableThemes(),
-            'input_group' => 'setup_input_group_compatibility',
-            'input_type' => FormBuilder::CHECKBOX,
-        );
 
         $definition['cache_expires'] = array(
             'label' => $this->lang->line('setup_cache_expires'),

@@ -127,7 +127,6 @@ class Installer_helper
             'TEMPLATE_DB_USERNAME' => $data['username'],
             'TEMPLATE_DB_PASSWORD' => $data['password'],
             'TEMPLATE_DB_DATABASE' => $data['database'],
-            'TEMPLATE_IS_CROSS_DOMAIN_AUTH_ENABLED' => 'FALSE',
             'TEMPLATE_DB_PORT' => ($port ? $port : 'FALSE'),
             'TEMPLATE_TIMEZONE' => date_default_timezone_get(),
             'TEMPLATE_CMS_INTRANET' => 'FALSE',

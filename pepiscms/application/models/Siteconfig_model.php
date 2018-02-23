@@ -34,7 +34,6 @@ class Siteconfig_model extends CI_Model implements EntitableInterface
 
         $config_files = array('_pepiscms.php', 'debug.php', 'email.php');
         $booleans = array(
-            'is_cross_domain_auth_enabled',
             'cms_enable_frontend',
             'cms_intranet',
             'cms_enable_pages',
