@@ -13,11 +13,11 @@ CKEDITOR.editorConfig = function (config) {
         ];
     config.toolbarCanCollapse = true;
 
-    config.entities_latin                   = false;
-    config.pasteFromWordRemoveFontStyles    = true;
-    config.pasteFromWordRemoveStyles        = true;
-    config.resize_minWidth                  = '100%';
-    config.resize_maxWidth                  = '100%';
-    config.startupFocus                     = false; // Causes some problems under firefox
-    config.allowedContent                   = true; // Prevent the iframes from being stripped
+    config.entities_latin = false;
+    config.pasteFromWordRemoveFontStyles = true;
+    config.pasteFromWordRemoveStyles = true;
+    config.resize_minWidth = '100%';
+    config.resize_maxWidth = '100%';
+    config.startupFocus = false; // Causes some problems under firefox
+    config.allowedContent = true; // Prevent the iframes from being stripped
 };

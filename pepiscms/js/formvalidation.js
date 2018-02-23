@@ -1,18 +1,15 @@
-function validation_makeLabelRequired(field, is_required)
-{
-    if (is_required)
-    {
+function validation_makeLabelRequired(field, is_required) {
+    if (is_required) {
         $(field).addClass('required red');
         $(field).append('<em>*</em>');
     }
-    else
-    {
+    else {
         $(field).removeClass('required red');
         $('em', field).remove();
     }
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
 
     // Helper
     validation_makeLabelRequired('form.validable:not(.readonly) label.required', true);
@@ -21,16 +18,15 @@ $(document).ready(function() {
     $('form.validable').validationEngine('attach', {
         promptPosition: "topLeft"
     });
-    $('form.validable').bind('submit', function() {
+    $('form.validable').bind('submit', function () {
 
-        if (!$(this).validationEngine('validate'))
-        {
+        if (!$(this).validationEngine('validate')) {
             return false;
         }
 
     });
 
-    $('textarea[maxlength]').keyup(function() {
+    $('textarea[maxlength]').keyup(function () {
         //get the limit from maxlength attribute  
         var limit = parseInt($(this).attr('maxlength'));
         //get the current text inside the textarea  

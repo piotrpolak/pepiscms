@@ -105,6 +105,7 @@ var ppLib = {
                 }
 
             }
+
             copyElementEvents($button, $newButton);
 
             if ($button.is('a')) {
@@ -192,7 +193,7 @@ var ppLib = {
                         $('table tr:odd').removeClass('odd even').addClass('odd');
                         $(that).parent().parent().removeClass('odd even');
                         $(that).parent().parent().addClass('flash');
-                        setTimeout(function(){
+                        setTimeout(function () {
                             $(that).parent().parent().removeClass('flash');
                             $('table tr:even').removeClass('odd even').addClass('even');
                             $('table tr:odd').removeClass('odd even').addClass('odd');
@@ -504,8 +505,7 @@ var ppLib = {
         // declarations
         var hintColorClass;
 
-        if( !bubbleContentSrc )
-        {
+        if (!bubbleContentSrc) {
             bubbleContentSrc = 'title';
         }
 
@@ -624,6 +624,7 @@ function createCookie(name, value, expDate) {
         expires = "";
     document.cookie = name + "=" + value + expires + "; path=/";
 }
+
 function readCookie(name) {
     var nameEQ = name + "=";
     var ca = document.cookie.split(';');
@@ -638,6 +639,7 @@ function readCookie(name) {
     }
     return null;
 }
+
 function eraseCookie(name) {
     createCookie(name, "", -1);
 }

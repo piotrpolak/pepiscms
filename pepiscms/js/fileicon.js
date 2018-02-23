@@ -98,19 +98,17 @@ var extensions = {
     'xpi': 'file_extension_xpi.png',
     'zip': 'file_extension_zip.png'
 };
-function getFileIcon(ext)
-{
-    if (extensions[ext])
-    {
+
+function getFileIcon(ext) {
+    if (extensions[ext]) {
         return extensions[ext];
     }
     return 'file_extension_dat.png';
 }
-function getFileExtension(path)
-{
+
+function getFileExtension(path) {
     var last_index = path.lastIndexOf('.');
-    if (path.length == -1)
-    {
+    if (path.length == -1) {
         return "";
     }
     path = path.substr(last_index + 1).toLowerCase();

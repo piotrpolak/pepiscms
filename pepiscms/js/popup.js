@@ -1,6 +1,6 @@
-$(document).ready(function() {
+$(document).ready(function () {
     ppLib_2.toggleOverlay('.overlay_window', 'body.plain a.popup');
-    $('body.direct .cancel').click(function(e) {
+    $('body.direct .cancel').click(function (e) {
         e.preventDefault();
         parent.$('.close_overlay').trigger('click');
     });
@@ -11,8 +11,7 @@ $(document).ready(function() {
         // TODO Check HASH
         var p_location = parent.location;
         var i = parent.location.toString().indexOf('#');
-        if (i > 0)
-        {
+        if (i > 0) {
             p_location = parent.location.toString().substr(0, i)
         }
 
@@ -21,25 +20,23 @@ $(document).ready(function() {
     }
 
 
-    if (window.location.hash.length > 1)
-    {
+    if (window.location.hash.length > 1) {
         offset = window.location.hash.substr(1);
-        if (offset > 0)
-        {
-            $(document).scrollTop(offset, function() {
+        if (offset > 0) {
+            $(document).scrollTop(offset, function () {
                 window.location.hash = '';
             });
         }
     }
 });
 
-$('body.plain').ready(function() {
+$('body.plain').ready(function () {
     autoresize();
 });
-$(window).resize(function() {
+$(window).resize(function () {
     autoresize();
 });
-$('.overlay_window iframe').ready(function() {
+$('.overlay_window iframe').ready(function () {
     autoresize();
 });
 
@@ -47,7 +44,7 @@ $('.overlay_window iframe').ready(function() {
 /* functions */
 var ppLib_2 = {
     /* controls overlay_window */
-    toggleOverlay: function(el, trigger) {
+    toggleOverlay: function (el, trigger) {
         var html = '<div class="overlay_mask" style="display: none;"></div><div class="overlay_window">';
         html += '<div class="box_content">';
         html += '<h4>';
@@ -67,7 +64,7 @@ var ppLib_2 = {
 
         $('.overlay_mask').css('opacity', 0.8);
         $('.overlay_mask').hide();
-        $(trigger).click(function(e) {
+        $(trigger).click(function (e) {
             e.preventDefault();
 
             var url = $(this).attr('href');
@@ -78,28 +75,28 @@ var ppLib_2 = {
             var title = $(this).attr('title') ? $(this).attr('title') : '&nbsp;';
             $('.popup_title').html(title);
 
-            $(el).each(function() {
+            $(el).each(function () {
                 if (!$(this).is(':visible')) {
                     $('.white_mask').show();
                     $(this).show();
                     $('.overlay_mask').show();
                     $('iframe', this).attr('src', url);
-                    $('iframe').load(function() {
+                    $('iframe').load(function () {
                         $('.white_mask').hide();
                     });
                 } else {
                     $('.white_mask').show();
                     $('iframe', this).attr('src', url);
-                    $('iframe').load(function() {
+                    $('iframe').load(function () {
                         $('.white_mask').hide();
                     });
                 }
             });
 
         });
-        $('.trigger.close_overlay').click(function(e) {
+        $('.trigger.close_overlay').click(function (e) {
             e.preventDefault();
-            $(el).each(function() {
+            $(el).each(function () {
                 if ($(this).is(':visible')) {
                     $('.overlay_mask').hide();
                     $(this).hide();
@@ -110,8 +107,8 @@ var ppLib_2 = {
         });
     },
     /* sets title and icon for overlay */
-    applyOvTitle: function(el, ovTitle, ovIconUrl) {
-        $(document).ready(function() {
+    applyOvTitle: function (el, ovTitle, ovIconUrl) {
+        $(document).ready(function () {
             $('h4 span', el).text(ovTitle);
             var ovIcon = document.createElement('img');
             ovIcon.setAttribute('src', ovIconUrl);
