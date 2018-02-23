@@ -14,6 +14,8 @@
 
 /**
  * ACL controller
+ *
+ * @property SecurityPolicy $securitypolicy
  */
 class Acl extends AdminController
 {
@@ -24,6 +26,11 @@ class Acl extends AdminController
             show_error($this->lang->line('global_feature_not_enabled'));
         }
         $this->load->language('acl');
+        $this->load->library('ModuleRunner');
+        $this->load->library('SimpleSessionMessage');
+        $this->load->library('SecurityPolicy');
+        $this->load->library('SecurityPolicyBuilder');
+
         $this->assign('use_extended_utilities_view', true);
         $this->assign('title', $this->lang->line('acl_label_security_policy'));
     }
@@ -37,9 +44,11 @@ class Acl extends AdminController
 
     public function index()
     {
-        $this->load->library('ModuleRunner');
+        $installed_modules = array(
+            'core_modules' => array(),
+            'userspace_modules' => array()
+        );
 
-        $installed_modules = array('core_modules' => array(), 'userspace_modules' => array());
         $modules = $this->Module_model->getInstalledModules();
         foreach ($modules as $module) {
             if ($this->Module_model->isCoreModule($module->name)) {
@@ -57,19 +66,14 @@ class Acl extends AdminController
 
     public function edit()
     {
-        $this->load->library('SimpleSessionMessage');
-        $this->load->library('SecurityPolicy');
-
         $section = $this->input->getParam('section');
         $is_editable = ($section != 'system' && !$this->Module_model->isCoreModule($section)) || !PEPISCMS_PRODUCTION_RELEASE;
-
 
         if ($section == 'system') {
             $entities = $this->securitypolicy->getSystemAvailableEntities();
             $controllers = $this->securitypolicy->describeSystemControllers();
             $security_policy = $this->securitypolicy->getSystemSecurityPolicy();
             $policy_save_path = SecurityPolicy::getSystemPolicyPath();
-            $section = FALSE;
         } else {
             $entities = $this->securitypolicy->getModuleAvailableEntities($section);
             $controllers = $this->securitypolicy->describeModuleControllers($section);
@@ -78,20 +82,17 @@ class Acl extends AdminController
         }
 
         if (isset($_POST) && count($_POST)) {
-            $this->load->library('SecurityPolicy');
-
-            $section = $this->input->getParam('section');
-
-            $this->load->library('SecurityPolicyBuilder');
-
-
             $policy_entries = array();
             if (isset($_POST['entity'])) {
                 foreach ($_POST['entity'] as $controller => $method_to_entity) {
                     foreach ($method_to_entity as $method => $entity) {
                         $access = isset($_POST['access'][$controller][$method]) ? $_POST['access'][$controller][$method] : 'NONE';
 
-                        $policy_entries[] = array('controller' => $controller, 'method' => $method, 'entity' => $entity, 'access' => $access);
+                        $policy_entries[] = array(
+                            'controller' => $controller,
+                            'method' => $method,
+                            'entity' => $entity,
+                            'access' => $access);
                     }
                 }
             }
@@ -134,7 +135,6 @@ class Acl extends AdminController
 
         $entities = array_filter($entities);
         $entities = array_unique($entities);
-
 
         $this->assign('section', $section)
             ->assign('is_editable', $is_editable)

@@ -7,6 +7,15 @@
  * @date {date}
  * @see AdminCRUDController for the list of the methods you can use in your constructor
  * @classTemplateVersion 20180206
+ *
+ * @property FormBuilder $formbuilder
+ * @property DataGrid $datagrid
+ * @property PEPISCMS_Loader $load
+ * @property PEPISCMS_Config $config
+ * @property PEPISCMS_Lang $lang
+ * @property PEPISCMS_Input $input
+ *
+ * @property {model_class_name} ${model_class_name}
  */
 class {module_class_name}Admin extends AdminCRUDController
 {
@@ -29,18 +38,13 @@ class {module_class_name}Admin extends AdminCRUDController
 
         // Getting module and model name from class name
         $module_name = $this->getModuleName();
-        $model_name = $this->getModelName();
 
-        // Loading module language
         $this->load->moduleLanguage($module_name, $module_name);
+        $this->load->moduleModel($module_name, '{model_class_name}');
 
-        // Loading module main model
-        $this->load->moduleModel($module_name, $model_name);
-        $this->setFeedObject($this->$model_name);
-
-        // Setting usefull labels, please note the convention
-        $this->setPageTitle($this->lang->line($module_name . '_module_name'));
-        $this->setAddNewItemLabel($this->lang->line($module_name . '_add'));
+        $this->setFeedObject($this->{model_class_name})
+            ->setPageTitle($this->lang->line($module_name . '_module_name'))
+            ->setAddNewItemLabel($this->lang->line($module_name . '_add'));
 //        $this->addActionForIndex(array('link' => module_url() . 'export', 'name' => $this->lang->line($module_name . '_export'), 'icon' => 'pepiscms/theme/img/dialog/actions/action_16.png'));
 //        if ($this->input->getParam('id')) {
 //            $this->addActionForEdit(array('link' => module_url('attachments') . 'index/layout-popup/forced_filters-' . DataGrid::encodeFiltersString(array('entry_id' => $this->input->getParam('id'))), 'name' => $this->lang->line($module_name . '_manage_attachments'), 'icon' => 'pepiscms/theme/img/dialog/actions/action_16.png', 'class' => 'popup'));
@@ -50,12 +54,12 @@ class {module_class_name}Admin extends AdminCRUDController
 //        $this->setTooltipTextForEdit($this->lang->line($module_name.'_edit_tip'));
 
         // Setting crud properties, these are optional. Default TRUE all
-        $this->setDeletable(TRUE);
-        $this->setAddable(TRUE);
-        $this->setEditable(TRUE);
-        $this->setPreviewable(FALSE);
-        $this->setPopupEnabled(FALSE);
-        $this->setOrderable(FALSE);
+    $this->setDeletable(TRUE)
+        ->setAddable(TRUE)
+        ->setEditable(TRUE)
+        ->setPreviewable(FALSE)
+        ->setPopupEnabled(FALSE)
+        ->setOrderable(FALSE);
 
 //        $this->setExportable(TRUE, function ($resulting_line) {
 //            // The callback is optional, it is used to filter individual rows before inserting them
@@ -108,17 +112,18 @@ class {module_class_name}Admin extends AdminCRUDController
 //        });
 
 
-//        $this->datagrid->setItemsPerPage(300);
-//        $this->datagrid->setDefaultOrder('id', 'DESC');
-//        $this->datagrid->addFilter($this->lang->line($module_name.'_date_from'), 'date', DataGrid::FILTER_DATE, FALSE, DataGrid::FILTER_CONDITION_GREATER_OR_EQUAL); // Can also be an associative array
+//        $this->datagrid->setItemsPerPage(300)
+//            ->datagrid->setDefaultOrder('id', 'DESC')
+//            ->datagrid->addFilter($this->lang->line($module_name.'_date_from'), 'date', DataGrid::FILTER_DATE, FALSE,
+//                DataGrid::FILTER_CONDITION_GREATER_OR_EQUAL); // Can also be an associative array
         {filters_element}
 
 
 
         // If not set, then DefaultFormRenderer is used
         // You can even use your own form templates, see views/templates
-        $this->formbuilder->setRenderer(new FloatingFormRenderer());
-        $this->formbuilder->setApplyButtonEnabled(TRUE);
+        $this->formbuilder->setRenderer(new FloatingFormRenderer())
+            ->setApplyButtonEnabled(TRUE);
 
 
         // Formbuilder callbacks
@@ -266,7 +271,8 @@ class {module_class_name}Admin extends AdminCRUDController
     public function _fb_callback_after_save(&$data_array)
     {
         $title = $this->getCompiledTitle('', (object)$data_array);
-        Logger::info('Editing element id:' . $this->formbuilder->getId() . ' (' . $title . ')', strtoupper(str_replace('Admin', '', __CLASS__)), $this->formbuilder->getId());
+        Logger::info('Editing element id:' . $this->formbuilder->getId() . ' (' . $title . ')',
+            strtoupper(str_replace('Admin', '', __CLASS__)), $this->formbuilder->getId());
     }
 
     /**
@@ -402,7 +408,8 @@ class {module_class_name}Admin extends AdminCRUDController
 
         // Logging action
         $title = $this->getCompiledTitle('', $item);
-        Logger::info('Deleting element id:' . $id . ' (' . $title . ') ' . implode(' ', $log_msgs), strtoupper(str_replace('Admin', '', __CLASS__)), $id);
+        Logger::info('Deleting element id:' . $id . ' (' . $title . ') ' . implode(' ', $log_msgs),
+            strtoupper(str_replace('Admin', '', __CLASS__)), $id);
     }
 
 
@@ -463,7 +470,8 @@ class {module_class_name}Admin extends AdminCRUDController
 //     */
 //    public function _crud_action_images($content, $line)
 //    {
-//        return module_url('images') . 'index' . ($this->input->getParam('layout') ? '/layout-' . $this->input->getParam('layout') : '') . '/forced_filters-' . DataGrid::encodeFiltersString(array('gallery_id' => $line->id));
+//        return module_url('images') . 'index' . ($this->input->getParam('layout') ? '/layout-' .
+//              $this->input->getParam('layout') : '') . '/forced_filters-' . DataGrid::encodeFiltersString(array('gallery_id' => $line->id));
 //    }
 //
 //    /**

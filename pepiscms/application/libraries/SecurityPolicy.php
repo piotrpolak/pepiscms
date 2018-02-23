@@ -51,7 +51,7 @@ class SecurityPolicy
      */
     public static function getSystemPolicyPath()
     {
-        return APPPATH . '/security_policy.xml';
+        return APPPATH . 'security_policy.xml';
     }
 
 
@@ -170,19 +170,19 @@ class SecurityPolicy
     /**
      * Returns security policy for the given module
      *
-     * @param string $module
+     * @param string $module_name
      * @return array
      */
-    public function getModuleSecurityPolicy($module)
+    public function getModuleSecurityPolicy($module_name)
     {
-        $this->CI->benchmark->mark('reading_module_security_policy_' . $module . '_start');
-        $policy_file = $this->CI->load->resolveModuleDirectory($module) . '/security_policy.xml';
+        $this->CI->benchmark->mark('reading_module_security_policy_' . $module_name . '_start');
+        $policy_file = $this->CI->load->resolveModuleDirectory($module_name) . '/security_policy.xml';
         if (file_exists($policy_file)) {
             $policy = $this->parsePolicy($policy_file);
-            $this->CI->benchmark->mark('reading_module_security_policy_' . $module . '_end');
+            $this->CI->benchmark->mark('reading_module_security_policy_' . $module_name . '_end');
             return $policy;
         }
-        $this->CI->benchmark->mark('reading_module_security_policy_' . $module . '_end');
+        $this->CI->benchmark->mark('reading_module_security_policy_' . $module_name . '_end');
         return array();
     }
 
