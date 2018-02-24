@@ -17,7 +17,7 @@
  *
  * @since 0.2.0
  */
-abstract class ModuleDescriptor implements ModuleDescriptableInterface
+abstract class ModuleDescriptor extends ContainerAware implements ModuleDescriptableInterface
 {
     public function __construct()
     {
