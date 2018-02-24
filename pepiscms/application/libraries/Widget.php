@@ -18,8 +18,11 @@
  * Allows better encapsulation of component logic. Widgets can be reused among different projects.
  *
  * @since 0.1.4.13
+ *
+ * @property PEPISCMS_Loader $load
+ * @property ModuleRunner $modulerunner
  */
-class Widget
+class Widget extends ContainerAware
 {
     /**
      * Widget constructor.
@@ -36,19 +39,6 @@ class Widget
      * @var array
      */
     protected $response_attributes = array();
-
-    /**
-     * This is magic
-     *
-     * @param string $var
-     * @return mixed
-     */
-    function __get($var)
-    {
-        static $ci;
-        isset($ci) OR $ci = get_instance();
-        return $ci->$var;
-    }
 
     /**
      * Assigns a value to a variable
@@ -128,11 +118,14 @@ class Widget
  * Widget container
  *
  * @since 0.1.4.13
+ *
+ * @property PEPISCMS_Loader $load
+ * @property ModuleRunner $modulerunner
  */
-class WidgetRenderer
+class WidgetRenderer extends ContainerAware
 {
-
-    protected $module_name, $method;
+    protected $module_name;
+    protected $method;
 
     /**
      * Default constructor
@@ -144,6 +137,9 @@ class WidgetRenderer
     {
         $this->module_name = $module_name;
         $this->method = $method;
+
+        $this->load->library('Logger');
+        $this->load->library('ModuleRunner');
     }
 
     /**
@@ -155,12 +151,8 @@ class WidgetRenderer
     {
         $file_suffix = '_widget';
         $class_suffix = 'Widget';
-        $CI = get_instance();
-        $CI->load->library('Logger');
-        $CI->load->library('ModuleRunner');
 
-
-        $module_directory = $CI->load->resolveModuleDirectory($this->module_name);
+        $module_directory = $this->load->resolveModuleDirectory($this->module_name);
         $controller_file = $this->module_name . $file_suffix . '.php';
 
         if (file_exists($module_directory . '/' . $controller_file)) {
@@ -175,11 +167,11 @@ class WidgetRenderer
                     show_error($error_msg);
                 }
 
-                // You need this kind of "recurency" in cases when you run a module from inside another module
-                $previously_running_module = $CI->modulerunner->getRunningModuleName();
-                $CI->modulerunner->setRunningModuleName($this->module_name);
+                // You need this kind of "recurrence" in cases when you run a module from inside another module
+                $previously_running_module = $this->modulerunner->getRunningModuleName();
+                $this->modulerunner->setRunningModuleName($this->module_name);
 
-                $CI->load->moduleConfig($this->module_name);
+                $this->load->moduleConfig($this->module_name);
 
                 // Running now!
                 $obj = new $class();
@@ -192,7 +184,7 @@ class WidgetRenderer
                 $args = func_get_args();
                 $contents = call_user_func_array(array($obj, $this->method), $args);
 
-                $CI->modulerunner->setRunningModuleName($previously_running_module);
+                $this->modulerunner->setRunningModuleName($previously_running_module);
                 return $contents;
             } else {
                 $error_msg = 'Unable to run widget ' . $this->module_name . '. Class ' . $class . ' not found.';

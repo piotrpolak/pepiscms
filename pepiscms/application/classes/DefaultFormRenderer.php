@@ -18,8 +18,11 @@
  * Default renderer is often extended by custom renderers
  *
  * @since 0.1.5
+ *
+ * @property PEPISCMS_Loader $load
+ * @property Database $db
  */
-class DefaultFormRenderer implements FormRenderableInterface
+class DefaultFormRenderer extends ContainerAware implements FormRenderableInterface
 {
     protected $is_js_included = FALSE;
     protected $validation_message_prefix = FALSE;
@@ -261,14 +264,14 @@ class DefaultFormRenderer implements FormRenderableInterface
     {
         $output = '';
         if (isset($this->success) && !$this->success && !$this->formbuilder->getValidationErrorMessage()) {
-            $error = CI_Controller::get_instance()->db->error();
+            $error = $this->db->error();
 
-            $message = CI_Controller::get_instance()->lang->line('formbuilder_label_unable_to_save') .
+            $message = $this->lang->line('formbuilder_label_unable_to_save') .
                 ($error['message'] ? ' (SQL: ' . $error['code'] . ': ' . $error['message'] . ')' : ' (Method saveById returned FALSE)');
 
             if (count($this->formbuilder->getUploadWarnings())) {
                 $message = $message . '<br><br><b>' .
-                    CI_Controller::get_instance()->lang->line('formbuilder_upload_warnings') . ':</b><br>' .
+                    $this->lang->line('formbuilder_upload_warnings') . ':</b><br>' .
                     implode('<br>', $this->formbuilder->getUploadWarnings());
             }
 
@@ -331,7 +334,8 @@ class DefaultFormRenderer implements FormRenderableInterface
      * @param $component
      * @return string
      */
-    private function renderInput($field, $value, &$object, $component, $readOnly)
+    private function renderInput($field, $value, &$object,
+                                 \Piotrpolak\Pepiscms\Formbuilder\Component\ComponentInterface $component, $readOnly)
     {
         $extra_css_classes = $this->computeExtraCssClasses($field);
 
@@ -442,7 +446,8 @@ class DefaultFormRenderer implements FormRenderableInterface
      * @param $formatting_function_for_uneditable
      * @return array
      */
-    private function computeReadOnlyComponentHtml($field, $valueEscaped, $object, \Piotrpolak\Pepiscms\Formbuilder\Component\ComponentInterface $component, $formatting_function_for_uneditable)
+    private function computeReadOnlyComponentHtml($field, $valueEscaped, $object,
+          \Piotrpolak\Pepiscms\Formbuilder\Component\ComponentInterface $component, $formatting_function_for_uneditable)
     {
         if (is_callable($formatting_function_for_uneditable)) {
             return call_user_func_array($formatting_function_for_uneditable, array($valueEscaped));
@@ -450,7 +455,8 @@ class DefaultFormRenderer implements FormRenderableInterface
             $output = $this->renderInput($field, $valueEscaped, $object, $component, TRUE);
 
             if ($component->shouldRenderHiddenForReadOnly()) {
-                $output .= $this->renderInput($field, $valueEscaped, $object, new \Piotrpolak\Pepiscms\Formbuilder\Component\Hidden(), FALSE);
+                $output .= $this->renderInput($field, $valueEscaped, $object,
+                    new \Piotrpolak\Pepiscms\Formbuilder\Component\Hidden(), FALSE);
             }
 
             return $output;
@@ -483,8 +489,8 @@ class DefaultFormRenderer implements FormRenderableInterface
      */
     private function computeExtraCssClasses($field)
     {
-        $validationRulesTranslator = new Piotrpolak\Pepiscms\Formbuilder\Component\ValidationRulesTranslator();
-        $extra_css_classes = $validationRulesTranslator->translateCIValidationRulesToJSValidationEngineRules($field['validation_rules']);
+        $translator = new Piotrpolak\Pepiscms\Formbuilder\Component\ValidationRulesTranslator();
+        $extra_css_classes = $translator->translateCIValidationRulesToJSValidationEngineRules($field['validation_rules']);
 
         if ($field['input_css_class']) {
             $extra_css_classes .= ' ' . $field['input_css_class'];
