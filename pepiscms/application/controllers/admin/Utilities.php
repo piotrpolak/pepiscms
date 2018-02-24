@@ -26,8 +26,11 @@ class Utilities extends AdminController
         $this->load->language('acl');
         $this->load->language('setup');
 
-        $this->load->model('Module_model'); // Avoiging conflicts
+        $this->load->model('Module_model');
+        $this->load->model('Page_model');
         $this->load->library('SimpleSessionMessage');
+        $this->load->helper('number');
+        $this->load->library('Cachedobjectmanager');
 
         $this->assign('title', $this->lang->line('label_utilities_and_settings'));
     }
@@ -41,19 +44,16 @@ class Utilities extends AdminController
     {
         $this->auth->refreshSession();
         try {
-            $this->load->model('Page_model');
             $stats = $this->Page_model->clean_pages_cache();
 
-            $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS);
-            $this->load->helper('number');
-            $this->simplesessionmessage->setMessage('utilities_cache_successfully_cleaned', $stats['count'], byte_format($stats['size']));
-
-            redirect(admin_url() . 'utilities');
+            $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS)
+                ->setMessage('utilities_cache_successfully_cleaned', $stats['count'], byte_format($stats['size']));
         } catch (Exception $e) {
-            $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_ERROR);
-            $this->simplesessionmessage->setMessage('utilities_label_cache_unable_to_open_directory_might_be_empty');
-            redirect(admin_url() . 'utilities');
+            $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_ERROR)
+                ->setMessage('utilities_label_cache_unable_to_open_directory_might_be_empty');
         }
+
+        redirect(admin_url() . 'utilities');
     }
 
     public function flush_security_policy_cache()
@@ -61,9 +61,8 @@ class Utilities extends AdminController
         $this->auth->refreshSession();
         $stats = SecurityManager::flushCache();
 
-        $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS);
-        $this->load->helper('number');
-        $this->simplesessionmessage->setMessage('utilities_cache_successfully_cleaned', $stats['count'], byte_format($stats['size']));
+        $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS)
+            ->setMessage('utilities_cache_successfully_cleaned', $stats['count'], byte_format($stats['size']));
 
         redirect(admin_url() . 'utilities');
     }
@@ -71,14 +70,13 @@ class Utilities extends AdminController
     public function flush_system_cache()
     {
         $this->auth->refreshSession();
-        $this->load->library('Cachedobjectmanager');
-
         $stats = $this->cachedobjectmanager->cleanup();
         $this->db->cache_delete_all();
 
-        $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS);
-        $this->load->helper('number');
-        $this->simplesessionmessage->setMessage('utilities_cache_successfully_cleaned', $stats['count'], byte_format($stats['size']));
+        $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS)
+            ->simplesessionmessage->setMessage('utilities_cache_successfully_cleaned', $stats['count'],
+                byte_format($stats['size']));
+
         redirect(admin_url() . 'utilities');
     }
 }
