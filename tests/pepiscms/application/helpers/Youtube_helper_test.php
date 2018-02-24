@@ -12,9 +12,12 @@
  * @link                http://www.polak.ro/
  */
 
-class Youtube_helper_test extends PHPUnit_Framework_TestCase
+class Youtube_helper_test extends PepisCMS_TestCase
 {
-    public function setUp()
+    /**
+     * @inheritdoc
+     */
+    public static function setUpBeforeClass()
     {
         require_once(PROJECT_BASE . 'pepiscms/application/helpers/youtube_helper.php');
     }

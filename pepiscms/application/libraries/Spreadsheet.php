@@ -16,14 +16,12 @@
  * Spreadsheet class for generating and parsing both
  * Excel and CVS files
  *
- * @since               0.2.0
+ * @since 0.2.0
  */
-class Spreadsheet
+class Spreadsheet extends ContainerAware
 {
     const EXCEL_XLS = 'xls';
     const EXCEL_XLSX = 'xlsx';
-
-    private $CI = NULL;
 
     /**
      * Default constructor
@@ -43,26 +41,13 @@ class Spreadsheet
      */
     public function normalizeKey($key)
     {
-        // Initialize CI for the first time
-        if ($this->CI === NULL) {
-            $this->CI = FALSE; // For unit tests
-
-            if (is_callable('get_instance')) // For default calls
-            {
-                $this->CI = get_instance();
-            }
-        }
-
-        // Only use CI helpers when in CI environment
-        if ($this->CI) {
-            $this->CI->load->helper('text');
-            $key = convert_accented_characters($key);
-        }
+        $this->load->helper('text');
+        $key = convert_accented_characters($key);
 
         $key = str_replace(' ', '_', trim(strtolower($key)));
 
         // Only use CI helpers when in CI environment
-        if ($this->CI) {
+        if ($this) {
             $key = remove_invisible_characters($key);
         }
 

@@ -17,7 +17,7 @@
  *
  * @since 0.1.2
  */
-class SimpleSessionMessage
+class SimpleSessionMessage extends ContainerAware
 {
     const FUNCTION_SUCCESS = 'display_success';
     const FUNCTION_TIP = 'display_tip';
@@ -25,7 +25,6 @@ class SimpleSessionMessage
     const FUNCTION_WARNING = 'display_warning';
     const FUNCTION_ERROR = 'display_error';
 
-    protected $CI;
     protected $session_var_name = 'simple_session_message';
 
     /**
@@ -35,7 +34,6 @@ class SimpleSessionMessage
      */
     public function __construct($params = FALSE)
     {
-        $this->CI = &get_instance();
         if (!isset($_SESSION[$this->session_var_name . '_formatting_function'])) {
             $_SESSION[$this->session_var_name . '_formatting_function'] = self::FUNCTION_SUCCESS;
         }
@@ -53,9 +51,9 @@ class SimpleSessionMessage
     public function setMessage($label_name, $param1 = null, $param2 = null, $param3 = null, $param4 = null)
     {
         if ($param1 === null) {
-            $_SESSION[$this->session_var_name] = $this->CI->lang->line($label_name);
+            $_SESSION[$this->session_var_name] = $this->lang->line($label_name);
         } else {
-            $_SESSION[$this->session_var_name] = sprintf($this->CI->lang->line($label_name), $param1, $param2, $param3, $param4);
+            $_SESSION[$this->session_var_name] = sprintf($this->lang->line($label_name), $param1, $param2, $param3, $param4);
         }
     }
 

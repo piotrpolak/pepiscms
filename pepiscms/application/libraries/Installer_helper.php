@@ -15,7 +15,7 @@
 /**
  * Class Installer_helper
  */
-class Installer_helper
+class Installer_helper extends ContainerAware
 {
     const DEFAULT_INTRANET_APPLICATION_NO_FRONTEND = 0;
     const INTRANET_APPLICATION_WITH_FRONTEND_SUPPORT = 1;
@@ -217,12 +217,12 @@ class Installer_helper
      */
     public function writeDatabase($data)
     {
-        $db = get_instance()->load->database($this->getDefaultDatabaseConfig($data), TRUE);
+        $db = $this->load->database($this->getDefaultDatabaseConfig($data), TRUE);
 
         $error = false;
 
         if (!$db) {
-            $error = sprintf(get_instance()->line('installer_unable_to_establish_connection_to_database'), 'wrong configuration');
+            $error = sprintf($this->line('installer_unable_to_establish_connection_to_database'), 'wrong configuration');
         } else {
             $db->trans_begin();
             $scripts = array('core.sql', 'pages.sql');
@@ -268,9 +268,9 @@ class Installer_helper
     public function registerAdmin($email, $password)
     {
         $email = strtolower($email);
-        get_instance()->load->database();
-        if (!get_instance()->User_model->emailExists($email)) {
-            return get_instance()->User_model->register($email, $email, FALSE, $password, array(), TRUE, FALSE);
+        $this->load->database();
+        if (!$this->User_model->emailExists($email)) {
+            return $this->User_model->register($email, $email, FALSE, $password, array(), TRUE, FALSE);
         }
         return FALSE;
     }

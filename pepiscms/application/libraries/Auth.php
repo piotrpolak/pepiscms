@@ -17,7 +17,7 @@
  *
  * @since 0.1.0
  */
-class Auth
+class Auth extends ContainerAware
 {
     /**
      * Auth update timeout in seconds
@@ -69,13 +69,14 @@ class Auth
     {
         @session_start();
 
-        CI_Controller::get_instance()->load->model('User_model');
-        CI_Controller::get_instance()->load->library('Logger'); // To prevent fatal errors
-        $this->session_must_match_ip = CI_Controller::get_instance()->config->item('security_session_must_match_ip');
+        $this->load->model('User_model');
+        $this->load->library('Logger'); // To prevent fatal errors
+        $this->load->config('auth');
 
-        CI_Controller::get_instance()->load->config('auth');
 
-        $driver_type = CI_Controller::get_instance()->config->item('auth_driver');
+        $this->session_must_match_ip = $this->config->item('security_session_must_match_ip');
+
+        $driver_type = $this->config->item('auth_driver');
 
         $driver_class_name = ucfirst($driver_type) . 'AuthDriver';
 
@@ -106,20 +107,19 @@ class Auth
      */
     public function authorize($user_email_or_login, $password)
     {
-        $CI = CI_Controller::get_instance();
-        $CI->load->model('User_model');
+        $this->load->model('User_model');
 
         $row = $this->driver->authorize($user_email_or_login, $password);
 
         if ($row) {
             $time = time();
-            $this->setSessionVariable('user_access', $CI->User_model->getUserAccess($row->user_id));
+            $this->setSessionVariable('user_access', $this->User_model->getUserAccess($row->user_id));
             $this->setSessionVariable('user_id', $row->user_id);
             $this->setSessionVariable('is_root', $row->is_root);
             $this->setSessionVariable('user_email', $row->user_email);
             $this->setSessionVariable('auth_last_update', $time);
             $this->setSessionVariable('auth_last_activity', $time);
-            $this->setSessionVariable('auth_ip', $CI->input->ip_address());
+            $this->setSessionVariable('auth_ip', $this->input->ip_address());
             $this->setSessionVariable('auth_instance_key', md5(INSTALLATIONPATH));
             $this->setSessionVariable('is_user_password_expired', NULL);
             $this->setSessionVariable('user_data', $row);
@@ -147,19 +147,18 @@ class Auth
         }
 
         $user_id = $this->getUserId();
-        $CI = &get_instance();
 
         if ($user_id && $this->getSessionVariable('auth_instance_key') == md5(INSTALLATIONPATH)) {
             // Force renew session and cache to prevent cache format mismatch
             // Added in PepisCMS 0.2.4
             if ($this->getSessionVariable('pepiscms_version') !== PEPISCMS_VERSION) {
                 $this->unsetSession();
-                $CI->load->library('Cachedobjectmanager');
-                $CI->cachedobjectmanager->cleanup();
-                $CI->db->cache_delete_all();
+                $this->load->library('Cachedobjectmanager');
+                $this->cachedobjectmanager->cleanup();
+                $this->db->cache_delete_all();
             }
 
-            if (!$this->session_must_match_ip || $this->getSessionVariable('auth_ip') == $CI->input->ip_address()) {
+            if (!$this->session_must_match_ip || $this->getSessionVariable('auth_ip') == $this->input->ip_address()) {
                 $time = time();
 
                 if ($this->getSessionVariable('auth_last_activity') + self::auth_max_idle_time >= $time) {
@@ -280,8 +279,7 @@ class Auth
             return $this->getSessionVariable('is_user_password_expired');
         }
 
-        $CI = &get_instance();
-        $maximum_password_age_in_seconds = $CI->config->item('security_maximum_password_age_in_seconds');
+        $maximum_password_age_in_seconds = $this->config->item('security_maximum_password_age_in_seconds');
         if (!($maximum_password_age_in_seconds > 0)) {
             $this->setSessionVariable('is_user_password_expired', FALSE); // Disabled
             return $this->getSessionVariable('is_user_password_expired');
@@ -365,17 +363,17 @@ class Auth
      */
     private function renewUserData($user_id)
     {
-        $row = get_instance()->User_model->getActiveById($user_id);
+        $row = $this->User_model->getActiveById($user_id);
 
         if ($row) {
             $time = time();
-            $this->setSessionVariable('user_access', get_instance()->User_model->getUserAccess($row->user_id));
+            $this->setSessionVariable('user_access', $this->User_model->getUserAccess($row->user_id));
             $this->setSessionVariable('user_id', $row->user_id);
             $this->setSessionVariable('is_root', $row->is_root);
             $this->setSessionVariable('user_email', $row->user_email);
             $this->setSessionVariable('auth_last_update', $time);
             $this->setSessionVariable('auth_last_activity', $time);
-            $this->setSessionVariable('auth_ip', get_instance()->input->ip_address());
+            $this->setSessionVariable('auth_ip', $this->input->ip_address());
             $this->setSessionVariable('auth_instance_key', md5(INSTALLATIONPATH));
             $this->setSessionVariable('user_data', $row);
             $this->setSessionVariable('pepiscms_version', PEPISCMS_VERSION);

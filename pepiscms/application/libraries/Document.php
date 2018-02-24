@@ -18,7 +18,7 @@
  *
  * @since 0.2.0
  */
-class Document
+class Document extends ContainerAware
 {
 
     /** @var int */
@@ -37,8 +37,6 @@ class Document
     private $canonical_url = NULL;
     /** @var bool */
     private $is_default = FALSE;
-    /** @var object */
-    private $CI;
     /** @var string */
     private $page_style;
     /** @var array */
@@ -56,8 +54,7 @@ class Document
      */
     public function __construct($params = NULL)
     {
-        $this->CI = &get_instance();
-        $this->CI->load->model('Menu_model');
+        $this->load->model('Menu_model');
     }
 
     /**
@@ -88,7 +85,7 @@ class Document
     public function getMenuItemId()
     {
         if ($this->menu_item_id == null) {
-            $this->menu_item_id = $this->CI->Menu_model->getItemIdByPageId($this->getId());
+            $this->menu_item_id = $this->Menu_model->getItemIdByPageId($this->getId());
         }
 
         return $this->menu_item_id;

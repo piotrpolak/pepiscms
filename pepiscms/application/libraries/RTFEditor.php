@@ -17,7 +17,7 @@
  *
  * @since 0.1
  */
-class RTFEditor
+class RTFEditor extends ContainerAware
 {
     private $type;
     private $driver;
@@ -103,20 +103,18 @@ class RTFEditor
      */
     public function setupDefaultConfig()
     {
-        $CI = &get_instance();
+        $this->load->config('editor');
+        $descriptor['editor_css_file'] = $this->config->item('editor_css_file');
+        $descriptor['editor_css_body_id'] = $this->config->item('editor_css_body_id');
+        $descriptor['editor_css_body_class'] = $this->config->item('editor_css_body_class');
+        $descriptor['editor_styles_set_file'] = $this->config->item('editor_styles_set_file');
 
-        $CI->load->config('editor');
-        $descriptor['editor_css_file'] = $CI->config->item('editor_css_file');
-        $descriptor['editor_css_body_id'] = $CI->config->item('editor_css_body_id');
-        $descriptor['editor_css_body_class'] = $CI->config->item('editor_css_body_class');
-        $descriptor['editor_styles_set_file'] = $CI->config->item('editor_styles_set_file');
-
-        $theme_descriptor_path = './theme/' . $CI->config->item('current_theme') . '/descriptor.php';
+        $theme_descriptor_path = './theme/' . $this->config->item('current_theme') . '/descriptor.php';
         if (file_exists($theme_descriptor_path)) {
             require($theme_descriptor_path);
         }
 
-        $css_file = base_url() . 'theme/' . $CI->config->item('current_theme') . '/' . $descriptor['editor_css_file'];
+        $css_file = base_url() . 'theme/' . $this->config->item('current_theme') . '/' . $descriptor['editor_css_file'];
         if (strpos($descriptor['editor_css_file'], 'http://') !== FALSE || strpos($descriptor['editor_css_file'], 'https://') !== FALSE) {
             $css_file = $descriptor['editor_css_file'];
         } elseif ($descriptor['editor_css_file'][0] == '/') {
@@ -126,7 +124,7 @@ class RTFEditor
         $descriptor['editor_css_file'] = $css_file;
 
         if ($descriptor['editor_styles_set_file']) {
-            $styles_set_file = base_url() . 'theme/' . $CI->config->item('current_theme') . '/' . $descriptor['editor_styles_set_file'];
+            $styles_set_file = base_url() . 'theme/' . $this->config->item('current_theme') . '/' . $descriptor['editor_styles_set_file'];
             if (strpos($descriptor['editor_styles_set_file'], 'http://') !== FALSE || strpos($descriptor['editor_styles_set_file'], 'https://') !== FALSE) {
                 $styles_set_file = $descriptor['editor_styles_set_file'];
             } elseif ($descriptor['editor_styles_set_file'][0] == '/') {

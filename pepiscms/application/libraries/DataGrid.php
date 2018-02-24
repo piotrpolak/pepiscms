@@ -17,7 +17,7 @@
  *
  * @version 1.2.1
  */
-class DataGrid
+class DataGrid extends ContainerAware
 {
     /**
      * Basic search filter
@@ -133,12 +133,6 @@ class DataGrid
     private $default_order;
 
     /**
-     * CodeIgniter instance
-     * @var object
-     */
-    private $CI = FALSE;
-
-    /**
      * Is grid orderable?
      * @var bool
      */
@@ -184,8 +178,7 @@ class DataGrid
     public function __construct($params = array())
     {
         $this->clear();
-
-        $this->CI = &get_instance();
+        
 
         // The following code should be re-enabled when datafeed interface becomes compatible with multiple filters
         if (isset($_POST['reload_datagrid'])) {
@@ -193,13 +186,14 @@ class DataGrid
                 $_POST['filters'] = '';
             }
 
-            @$url = self::generateLink($this->CI->input->post('base_url'), 1, $this->CI->input->post('order_by'), $this->CI->input->post('order'), $this->CI->input->post('filters'));
+            @$url = self::generateLink($this->input->post('base_url'), 1, $this->input->post('order_by'),
+                $this->input->post('order'), $this->input->post('filters'));
             redirect($url);
         }
 
 
-        $this->CI->load->language('datagrid');
-        $this->CI->load->helper('text');
+        $this->load->language('datagrid');
+        $this->load->helper('text');
     }
 
     /**
@@ -370,8 +364,8 @@ class DataGrid
      */
     public function getOrder()
     {
-        $order_by = str_replace('-', '.', $this->CI->input->getParam('order_by'));
-        $order = $this->CI->input->getParam('order');
+        $order_by = str_replace('-', '.', $this->input->getParam('order_by'));
+        $order = $this->input->getParam('order');
         if (!$order_by && $this->default_order['order_by']) {
             return $this->getDefaultOrder();
         }
@@ -766,7 +760,7 @@ class DataGrid
      */
     public function setTable($title, $where_conditions = FALSE, $id_field = FALSE)
     {
-        $feed_object = clone $this->CI->Generic_model;
+        $feed_object = clone $this->Generic_model;
         $feed_object->setTable($title);
 
         if (is_array($where_conditions)) {
@@ -788,7 +782,7 @@ class DataGrid
      */
     public function getFilterPairs()
     {
-        $pairs = self::decodeFiltersString($this->CI->input->getParam('filters'));
+        $pairs = self::decodeFiltersString($this->input->getParam('filters'));
 
         // Overwriting only if does not exists
         foreach ($this->manually_applied_filters as $filter_key => $filter_value) {
@@ -836,7 +830,7 @@ class DataGrid
             }
 
             if (isset($this->filter_definitions[$filter_key]['foreign_key_relationship_type']) && $this->filter_definitions[$filter_key]['foreign_key_relationship_type'] == FormBuilder::FOREIGN_KEY_MANY_TO_MANY) {
-                $filter_values = get_instance()->Generic_model->getDistinctAssoc($this->filter_definitions[$filter_key]['foreign_key_junction_id_field_left'], $this->filter_definitions[$filter_key]['foreign_key_junction_table'], FALSE, array($this->filter_definitions[$filter_key]['foreign_key_junction_id_field_right'] => $filter_values[0])); // TODO MANY TO MANY will not work
+                $filter_values = $this->Generic_model->getDistinctAssoc($this->filter_definitions[$filter_key]['foreign_key_junction_id_field_left'], $this->filter_definitions[$filter_key]['foreign_key_junction_table'], FALSE, array($this->filter_definitions[$filter_key]['foreign_key_junction_id_field_right'] => $filter_values[0])); // TODO MANY TO MANY will not work
                 $filters_for_data_feed[$filter_key] = array('column' => 'id', 'values' => $filter_values, 'type' => $this->filter_definitions[$filter_key]['filter_type'], 'condition' => 'in');
             } else {
                 $filters_for_data_feed[$filter_key] = array('column' => $this->filter_definitions[$filter_key]['field'], 'values' => $filter_values, 'type' => $this->filter_definitions[$filter_key]['filter_type'], 'condition' => trim($this->filter_definitions[$filter_key]['filter_condition']));
@@ -875,7 +869,7 @@ class DataGrid
                 if (($filter_definition['filter_type'] == DataGrid::FILTER_SELECT || $filter_definition['filter_type'] == DataGrid::FILTER_MULTIPLE_SELECT || $filter_definition['filter_type'] == DataGrid::FILTER_MULTIPLE_CHECKBOX)) {
                     // If there is a relationship
                     if ($filter_definition['foreign_key_table']) {
-                        $filter_definition['filter_values'] = $this->CI->Generic_model->getAssocPairs($filter_definition['foreign_key_field'], $filter_definition['foreign_key_label_field'], $filter_definition['foreign_key_table'], FALSE, FALSE, $filter_definition['foreign_key_where_conditions']);
+                        $filter_definition['filter_values'] = $this->Generic_model->getAssocPairs($filter_definition['foreign_key_field'], $filter_definition['foreign_key_label_field'], $filter_definition['foreign_key_table'], FALSE, FALSE, $filter_definition['foreign_key_where_conditions']);
                     } // In case there is no foreign key relationship and vales is not empty
                     elseif (isset($filter_definition['values']) && count($filter_definition['values']) > 0) {
                         $filter_definition['filter_values'] = $filter_definition['values'];
@@ -890,7 +884,7 @@ class DataGrid
             if ($filter_definition['filter_type'] == DataGrid::FILTER_SELECT) {
                 //$filters_output .= '<!-- '.$current_filter_values[0].' -->' . "\n";
                 $filters_output .= '<select name="filters[' . $filter_key . ']" id="filters[' . $filter_key . ']" class="text" >' . "\n";
-                $filters_output .= "\t" . '<option value="">' . $this->CI->lang->line('datagrid_any') . '</option>' . "\n";
+                $filters_output .= "\t" . '<option value="">' . $this->lang->line('datagrid_any') . '</option>' . "\n";
 
                 if ($filter_definition['filter_values']) // This could be moved to another place
                 {
@@ -907,7 +901,7 @@ class DataGrid
                 $filters_output .= '</select>' . "\n";
             } elseif ($filter_definition['filter_type'] == DataGrid::FILTER_MULTIPLE_SELECT) {
                 $filters_output .= '<select multiple="multiple" size="5" name="filters[' . $filter_key . '][]" id="filters[' . $filter_key . '][]" class="text">' . "\n";
-                $filters_output .= "\t" . '<option value="">' . $this->CI->lang->line('datagrid_any') . '</option>' . "\n";
+                $filters_output .= "\t" . '<option value="">' . $this->lang->line('datagrid_any') . '</option>' . "\n";
 
                 foreach ($filter_definition['filter_values'] as $id => $val) {
                     if (!$val && $id) {
@@ -935,7 +929,7 @@ class DataGrid
                     $filters_output .= '<script type="text/javascript" src="pepiscms/3rdparty/jquery-ui/jquery-ui.custom.min.js?v=' . PEPISCMS_VERSION . '"></script>' . "\n";
                 }
 
-                $filters_output .= '<div class="date_selector"><input type="text" name="filters[' . $filter_key . ']" id="filter_' . $filter_key . '" value="' . $current_filter_values[0] . '" class="text date" maxlength="8" size="8"><a href="#" id="filter_clear_' . $filter_key . '" title="' . get_instance()->lang->line('datagrid_clear_date_filter') . '"><img src="pepiscms/theme/img/dialog/actions/delete_16.png" alt="remove"></a></div>' . "\n";
+                $filters_output .= '<div class="date_selector"><input type="text" name="filters[' . $filter_key . ']" id="filter_' . $filter_key . '" value="' . $current_filter_values[0] . '" class="text date" maxlength="8" size="8"><a href="#" id="filter_clear_' . $filter_key . '" title="' . $this->lang->line('datagrid_clear_date_filter') . '"><img src="pepiscms/theme/img/dialog/actions/delete_16.png" alt="remove"></a></div>' . "\n";
                 $filters_output .= '<script type="text/javascript">$("#filter_' . $filter_key . '").datepicker({dateFormat: "yy-mm-dd" });' . "\n";
 
                 // The following line might cause some errors when using multiple forms on a single page
@@ -956,7 +950,7 @@ class DataGrid
             $output .= '<input type="hidden" name="order_by" value="' . $order_by . '">' . "\n";
             $output .= '<input type="hidden" name="order" value="' . $order . '">' . "\n";
             $output .= $filters_output;
-            $output .= '<div class="datagrid_filter_apply"><input type="submit" name="apply" value="' . $this->CI->lang->line('datagrid_apply_filters') . '" class="button filter_apply"> <input type="submit" name="filters_clear" value="' . $this->CI->lang->line('datagrid_clear_all_filters') . '" class="button filter_clear"></div>' . "\n";
+            $output .= '<div class="datagrid_filter_apply"><input type="submit" name="apply" value="' . $this->lang->line('datagrid_apply_filters') . '" class="button filter_apply"> <input type="submit" name="filters_clear" value="' . $this->lang->line('datagrid_clear_all_filters') . '" class="button filter_clear"></div>' . "\n";
             $output .= '</form>' . "\n\n";
         }
 
@@ -998,7 +992,7 @@ class DataGrid
     {
         $output = '';
 
-        $page = $this->CI->input->getParam('page');
+        $page = $this->input->getParam('page');
         if (!is_numeric($page) || $page < 1) {
             $page = 1;
         }
@@ -1027,7 +1021,7 @@ class DataGrid
 
         $pagination = '';
         if ($no_of_pages > 0) {
-            $pagination .= '<div class="datagrid_pagination">' . $this->CI->lang->line('datagrid_page') . '' . "\n";
+            $pagination .= '<div class="datagrid_pagination">' . $this->lang->line('datagrid_page') . '' . "\n";
             ++$no_of_pages;
             if ($no_of_pages < 50) {
                 for ($i = 1; $i <= $no_of_pages; $i++) {
@@ -1107,7 +1101,7 @@ class DataGrid
                         }
                     }
 
-                    $output .= '<a href="' . self::generateLink($this->base_url, $page, $column['field'], $column_order, $this->CI->input->getParam('filters')) . '">'; //$filters
+                    $output .= '<a href="' . self::generateLink($this->base_url, $page, $column['field'], $column_order, $this->input->getParam('filters')) . '">'; //$filters
                     $output .= word_limiter($column['label'], 5);
                     $output .= '</a>';
                 } else {
@@ -1132,7 +1126,7 @@ class DataGrid
 
         if (count($feed) == 0 || !$is_feed_an_array) {
             $output .= "\t\t" . '<tr>' . "\n";
-            $output .= "\t\t\t" . '<td colspan="' . count($this->definition) . '" class="no_items_to_display">' . $this->CI->lang->line('datagrid_no_items_to_display') . '</td>';
+            $output .= "\t\t\t" . '<td colspan="' . count($this->definition) . '" class="no_items_to_display">' . $this->lang->line('datagrid_no_items_to_display') . '</td>';
             $output .= "\t\t" . '</tr>' . "\n";
         } else {
             // Solving foreign keys
@@ -1154,9 +1148,9 @@ class DataGrid
                             $column['values'][] = $line->$column['field'];
                         }
                         $column['values'] = array_unique($column['values']);
-                        $column['values'] = $this->CI->Generic_model->getAssocPairs($column['foreign_key_field'], $column['foreign_key_label_field'], $column['foreign_key_table'], FALSE, $column['values'], $column['foreign_key_where_conditions']);
+                        $column['values'] = $this->Generic_model->getAssocPairs($column['foreign_key_field'], $column['foreign_key_label_field'], $column['foreign_key_table'], FALSE, $column['values'], $column['foreign_key_where_conditions']);
                     } else {
-                        $column['values'] = $this->CI->Generic_model->getAssocPairs($column['foreign_key_field'], $column['foreign_key_label_field'], $column['foreign_key_table'], FALSE, FALSE, $column['foreign_key_where_conditions']);
+                        $column['values'] = $this->Generic_model->getAssocPairs($column['foreign_key_field'], $column['foreign_key_label_field'], $column['foreign_key_table'], FALSE, FALSE, $column['foreign_key_where_conditions']);
                     }
                 }
             }
@@ -1213,7 +1207,7 @@ class DataGrid
 
 
                                 $d_values = array();
-                                $d_ids = $this->CI->Generic_model->getDistinctAssoc($column['foreign_key_junction_id_field_right'], $column['foreign_key_junction_table'], FALSE, ($where_conditions + array($column['foreign_key_junction_id_field_left'] => $line->id)));
+                                $d_ids = $this->Generic_model->getDistinctAssoc($column['foreign_key_junction_id_field_right'], $column['foreign_key_junction_table'], FALSE, ($where_conditions + array($column['foreign_key_junction_id_field_left'] => $line->id)));
                                 foreach ($d_ids as $d_id) {
                                     $d_values[] = $column['values'][$d_id];
                                 }

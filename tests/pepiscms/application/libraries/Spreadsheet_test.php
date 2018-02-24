@@ -12,7 +12,25 @@
  * @link                http://www.polak.ro/
  */
 
-class Spreadsheet_test extends PHPUnit_Framework_TestCase
+class FakeLoader
+{
+    public function helper($name)
+    {
+
+    }
+}
+
+function convert_accented_characters($input)
+{
+    return $input;
+}
+
+function remove_invisible_characters($input)
+{
+    return $input;
+}
+
+class Spreadsheet_test extends PepisCMS_TestCase
 {
     /**
      * @var Spreadsheet
@@ -21,11 +39,23 @@ class Spreadsheet_test extends PHPUnit_Framework_TestCase
     private $data;
     private $workingDirectory = '/var/tmp/pepiscmstest/'; // To be overwritten
 
-    public function setUp()
+    /**
+     * @inheritdoc
+     */
+    public static function setUpBeforeClass()
     {
         require_once(PROJECT_BASE . 'pepiscms/application/libraries/Spreadsheet.php');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function setUp()
+    {
         $this->spreadsheet = new Spreadsheet();
         $this->workingDirectory = '/var/tmp/pepiscmstest-' . rand(1000, 99999) . '-' . time() . '/';
+
+        CI_Controller::registerTestService('load', new FakeLoader());
 
         mkdir($this->workingDirectory);
 

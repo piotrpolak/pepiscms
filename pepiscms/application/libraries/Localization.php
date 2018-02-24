@@ -18,7 +18,7 @@
  *
  * @since 0.1.5
  */
-class Localization
+class Localization extends ContainerAware
 {
 
     /**
@@ -107,8 +107,8 @@ class Localization
      */
     public function localizeDefinition(&$definition, TranslateableInterface $object)
     {
-        get_instance()->load->model('Site_language_model');
-        $languages = get_instance()->Site_language_model->getLanguages();
+        $this->load->model('Site_language_model');
+        $languages = $this->Site_language_model->getLanguages();
         if (count($languages) == 1)
             return;
 

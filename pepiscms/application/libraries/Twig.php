@@ -20,15 +20,14 @@
  * @see http://llanalewis.blogspot.com/2013/08/adding-template-engine-twig-on.html
  * @see https://github.com/bmatschullat/Twig-Codeigniter/blob/master/application/libraries/Twig.php
  */
-class Twig
+class Twig extends ContainerAware
 {
-    private static $twig = NULL;
+    private static $twig_instance = NULL;
 
     /**
      * @var string|null
      */
     private $site_theme_basepath = NULL;
-    private $CI = NULL;
 
     /**
      * Default constructor
@@ -37,7 +36,6 @@ class Twig
      */
     public function __construct($params = array())
     {
-        $this->CI = &get_instance();
     }
 
     /**
@@ -67,12 +65,12 @@ class Twig
      */
     private function getTwig()
     {
-        if (!self::$twig) {
-            $this->CI->benchmark->mark('twig_initialization_start');
-            $this->CI->load->config('Twig');
+        if (!self::$twig_instance) {
+            $this->benchmark->mark('twig_initialization_start');
+            $this->load->config('Twig');
 
             // Testing paths and including Twig autoloader
-            $twig_autoloader_path = $this->CI->config->item('twig_loader_basepath') . 'Autoloader.php';
+            $twig_autoloader_path = $this->config->item('twig_loader_basepath') . 'Autoloader.php';
             if (!file_exists($twig_autoloader_path)) {
                 show_error('Twig autoloader could not be found. Path: ' . $twig_autoloader_path);
             }
@@ -83,7 +81,7 @@ class Twig
             $loader = new Twig_Loader_Filesystem();
 
             // Setting auto reload and debug modes based on current environment
-            self::$twig = new Twig_Environment($loader, array(
+            self::$twig_instance = new Twig_Environment($loader, array(
                 'cache' => INSTALLATIONPATH . '/application/cache/twig/',
                 'debug' => (ENVIRONMENT == 'development'),
                 'auto_reload' => (ENVIRONMENT == 'development'),
@@ -92,14 +90,14 @@ class Twig
             // This might be heavy
             foreach (get_defined_functions() as $functions) {
                 foreach ($functions as $function) {
-                    self::$twig->addFunction($function, new Twig_Function_Function($function));
+                    self::$twig_instance->addFunction($function, new Twig_Function_Function($function));
                 }
             }
 
-            $this->CI->benchmark->mark('twig_initialization_end');
+            $this->benchmark->mark('twig_initialization_end');
         }
 
-        return self::$twig;
+        return self::$twig_instance;
     }
 
     /**
@@ -111,7 +109,7 @@ class Twig
      */
     public function render($path, &$variables)
     {
-        $this->CI->benchmark->mark('twig_render_start');
+        $this->benchmark->mark('twig_render_start');
 
         $dirname = realpath(dirname($path));
         $basename = basename($path);
@@ -120,7 +118,7 @@ class Twig
 
         $rendered_html = self::getTwig()->render($basename, $variables);
 
-        $this->CI->benchmark->mark('twig_render_end');
+        $this->benchmark->mark('twig_render_end');
 
         return $rendered_html;
     }

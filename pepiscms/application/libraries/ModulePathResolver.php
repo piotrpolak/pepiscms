@@ -14,8 +14,10 @@
 
 /**
  * Resolves module absolute paths.
+ *
+ * @since 1.0.0
  */
-class ModulePathResolver implements \Piotrpolak\Pepiscms\Modulerunner\ModuleLocatorInterface
+class ModulePathResolver extends ContainerAware implements \Piotrpolak\Pepiscms\Modulerunner\ModuleLocatorInterface
 {
     /**
      * @var \Piotrpolak\Pepiscms\Modulerunner\ModuleLocatorInterface[]
@@ -37,7 +39,7 @@ class ModulePathResolver implements \Piotrpolak\Pepiscms\Modulerunner\ModuleLoca
      */
     public function getPublicControllerPath($module_name)
     {
-        $module_directory = CI_Controller::get_instance()->load->resolveModuleDirectory($module_name);
+        $module_directory = $this->load->resolveModuleDirectory($module_name);
 
         $path = FALSE;
         foreach ($this->moduleLocators as $moduleLocator) {
@@ -58,7 +60,7 @@ class ModulePathResolver implements \Piotrpolak\Pepiscms\Modulerunner\ModuleLoca
      */
     public function getAdminControllerPath($module_name)
     {
-        $module_directory = CI_Controller::get_instance()->load->resolveModuleDirectory($module_name);
+        $module_directory = $this->load->resolveModuleDirectory($module_name);
 
         $path = FALSE;
         foreach ($this->moduleLocators as $moduleLocator) {
@@ -78,7 +80,7 @@ class ModulePathResolver implements \Piotrpolak\Pepiscms\Modulerunner\ModuleLoca
      */
     public function getDescriptorPath($module_name)
     {
-        $module_directory = CI_Controller::get_instance()->load->resolveModuleDirectory($module_name);
+        $module_directory = $this->load->resolveModuleDirectory($module_name);
 
         $path = FALSE;
         foreach ($this->moduleLocators as $moduleLocator) {
@@ -98,7 +100,7 @@ class ModulePathResolver implements \Piotrpolak\Pepiscms\Modulerunner\ModuleLoca
      */
     public function getModelPath($module_name, $model_name)
     {
-        $module_directory = CI_Controller::get_instance()->load->resolveModuleDirectory($module_name);
+        $module_directory = $this->load->resolveModuleDirectory($module_name);
         return $this->getModelPathUsingBaseDir($module_name, $model_name, $module_directory);
     }
 

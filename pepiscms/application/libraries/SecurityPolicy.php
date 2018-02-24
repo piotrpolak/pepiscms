@@ -17,7 +17,7 @@
  *
  * @since 0.1.4
  */
-class SecurityPolicy
+class SecurityPolicy extends ContainerAware
 {
     /**
      * Do not mess with the following values
@@ -30,8 +30,6 @@ class SecurityPolicy
     const READ_WRITE = 3;
     const FULL_CONTROL = 4;
 
-    private $CI;
-
 
     /**
      * Default constructor
@@ -40,7 +38,6 @@ class SecurityPolicy
      */
     public function __construct($variables = array())
     {
-        $this->CI = get_instance();
     }
 
 
@@ -160,9 +157,9 @@ class SecurityPolicy
      */
     public function getSystemSecurityPolicy()
     {
-        $this->CI->benchmark->mark('reading_system_security_policy_start');
+        $this->benchmark->mark('reading_system_security_policy_start');
         $policy = $this->parsePolicy(self::getSystemPolicyPath());
-        $this->CI->benchmark->mark('reading_system_security_policy_end');
+        $this->benchmark->mark('reading_system_security_policy_end');
         return $policy;
     }
 
@@ -175,14 +172,14 @@ class SecurityPolicy
      */
     public function getModuleSecurityPolicy($module_name)
     {
-        $this->CI->benchmark->mark('reading_module_security_policy_' . $module_name . '_start');
-        $policy_file = $this->CI->load->resolveModuleDirectory($module_name) . '/security_policy.xml';
+        $this->benchmark->mark('reading_module_security_policy_' . $module_name . '_start');
+        $policy_file = $this->load->resolveModuleDirectory($module_name) . '/security_policy.xml';
         if (file_exists($policy_file)) {
             $policy = $this->parsePolicy($policy_file);
-            $this->CI->benchmark->mark('reading_module_security_policy_' . $module_name . '_end');
+            $this->benchmark->mark('reading_module_security_policy_' . $module_name . '_end');
             return $policy;
         }
-        $this->CI->benchmark->mark('reading_module_security_policy_' . $module_name . '_end');
+        $this->benchmark->mark('reading_module_security_policy_' . $module_name . '_end');
         return array();
     }
 
@@ -211,7 +208,7 @@ class SecurityPolicy
         $entities = array();
         $entities['system'] = $this->getSystemAvailableEntities();
 
-        $this->CI->load->library('ModuleRunner');
+        $this->load->library('ModuleRunner');
 
         $modules = ModuleRunner::getAvailableModules();
 
@@ -242,7 +239,7 @@ class SecurityPolicy
      */
     public function getModuleAvailableEntities($module_name)
     {
-        $policy_file = $this->CI->load->resolveModuleDirectory($module_name) . '/security_policy.xml';
+        $policy_file = $this->load->resolveModuleDirectory($module_name) . '/security_policy.xml';
         if (file_exists($policy_file)) {
             $policy = $this->parsePolicy($policy_file);
             return $this->getAvailableEntities($policy);
@@ -261,7 +258,7 @@ class SecurityPolicy
      */
     public function describeModuleControllers($module_name)
     {
-        $module_file = $this->CI->modulepathresolver->getAdminControllerPath($module_name);
+        $module_file = $this->modulepathresolver->getAdminControllerPath($module_name);
         if (!$module_file) {
             return array();
         }

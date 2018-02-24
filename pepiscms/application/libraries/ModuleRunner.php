@@ -17,7 +17,7 @@
  *
  * @since 0.1.3
  */
-class ModuleRunner
+class ModuleRunner extends ContainerAware
 {
     /**
      * Name of the currently running module. When module action is finished, the value becomes FALSE
@@ -38,9 +38,8 @@ class ModuleRunner
      */
     public function __construct($params = array())
     {
-        $CI = get_instance();
-        $CI->load->library('Logger');
-        $CI->load->library('ModulePathResolver');
+        $this->load->library('Logger');
+        $this->load->library('ModulePathResolver');
     }
 
     /**
@@ -75,19 +74,18 @@ class ModuleRunner
     /**
      * Runs admin panel of the specified module. The module must be installed
      *
-     * @param CI_Controller $CI
      * @param string $module_name
      * @param string $method
      * @return bool
      */
-    public function runAdminModule(&$CI, $module_name, $method)
+    public function runAdminModule($module_name, $method)
     {
-        $CI->load->model('Module_model');
+        $this->load->model('Module_model');
         if (!$module_name || !self::isModuleInstalled($module_name)) {
             return FALSE;
         }
 
-        $module_directory = $CI->load->resolveModuleDirectory($module_name);
+        $module_directory = $this->load->resolveModuleDirectory($module_name);
 
         if (!$module_directory) {
             $error_msg = 'Unable to run module ' . $module_name . '. Module directory ' . $module_directory . ' not found.';
@@ -95,17 +93,17 @@ class ModuleRunner
             show_error($error_msg);
         }
 
-        if (!$CI->securitymanager->hasAccess($module_name, $method, $module_name)) {
+        if (!$this->securitymanager->hasAccess($module_name, $method, $module_name)) {
             Logger::warning('Security policy violation for module ' . $module_name . '/' . $method, 'SECURITY');
             ob_start();
-            $CI->display('admin/no_sufficient_priviliges', TRUE, FALSE);
+            $this->display('admin/no_sufficient_priviliges', TRUE, FALSE);
             $out = ob_get_contents();
             ob_end_clean();
             die($out);
         }
 
 
-        $controller_path = CI_Controller::get_instance()->modulepathresolver->getAdminControllerPath($module_name);
+        $controller_path = $this->modulepathresolver->getAdminControllerPath($module_name);
         if ($controller_path !== FALSE) {
             include_once($controller_path);
 
@@ -158,14 +156,12 @@ class ModuleRunner
      */
     public function runModule($module_name, $method, $site_language, $uri = FALSE)
     {
-        $CI = get_instance();
-
-        $CI->load->model('Module_model');
+        $this->load->model('Module_model');
         if (!$module_name || !self::isModuleInstalled($module_name)) {
             return FALSE;
         }
 
-        $module_directory = $CI->load->resolveModuleDirectory($module_name);
+        $module_directory = $this->load->resolveModuleDirectory($module_name);
 
         if (!$module_directory) {
             $error_msg = 'Unable to run module ' . $module_name . '. Module directory ' . $module_directory . ' not found.';
@@ -173,7 +169,7 @@ class ModuleRunner
             show_error($error_msg);
         }
 
-        $controller_path = CI_Controller::get_instance()->modulepathresolver->getPublicControllerPath($module_name);
+        $controller_path = $this->modulepathresolver->getPublicControllerPath($module_name);
         if ($controller_path !== FALSE) {
             include_once($controller_path);
 
@@ -189,10 +185,10 @@ class ModuleRunner
                 $previously_running_module_instance = self::$module_instance;
                 $this->setRunningModuleName($module_name);
 
-                $CI->load->library('Document');
-                $CI->pluginpage = $CI->document; // TODO Remove in future versions, just an alias
+                $this->load->library('Document');
+                $this->pluginpage = $this->document; // TODO Remove in future versions, just an alias
 
-                $CI->load->moduleConfig($module_name);
+                $this->load->moduleConfig($module_name);
 
                 // Running now!
                 self::$module_instance = new $class();

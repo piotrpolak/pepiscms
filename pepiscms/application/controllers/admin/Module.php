@@ -230,7 +230,7 @@ class Module extends AdminController
             $method = 'index';
         }
 
-        if (!$this->modulerunner->runAdminModule($this, $module_name, $method)) {
+        if (!$this->modulerunner->runAdminModule($module_name, $method)) {
             show_404();
         }
     }

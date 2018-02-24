@@ -17,7 +17,7 @@ function log_message($m)
 
 }
 
-class Array_model_test extends PHPUnit_Framework_TestCase
+class Array_model_test extends PepisCMS_TestCase
 {
     private static $tester;
 

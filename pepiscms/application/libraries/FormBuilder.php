@@ -21,7 +21,7 @@
  * @since 0.1.4
  *
  */
-class FormBuilder
+class FormBuilder extends ContainerAware
 {
 
     /**
@@ -345,6 +345,10 @@ class FormBuilder
      */
     public function __construct($params = array())
     {
+        $this->load->language('formbuilder');
+        $this->load->library('form_validation');
+        $this->load->library('SimpleSessionMessage');
+        $this->load->library('upload');
         $this->clear();
     }
 
@@ -375,7 +379,7 @@ class FormBuilder
         $this->renderer = NULL;
         $this->feed_object = FALSE;
         $this->title = FALSE;
-        $this->default_uploads_path = $this->default_upload_display_path = CI_Controller::get_instance()->config->item('uploads_path');
+        $this->default_uploads_path = $this->default_upload_display_path = $this->config->item('uploads_path');
         $this->upload_warnings = array();
 
         return $this;
@@ -486,7 +490,7 @@ class FormBuilder
     public function getSubmitLabel()
     {
         if (!$this->form_submit_label) {
-            $this->form_submit_label = CI_Controller::get_instance()->lang->line('global_button_save_and_close');
+            $this->form_submit_label = $this->lang->line('global_button_save_and_close');
         }
 
         return $this->form_submit_label;
@@ -543,8 +547,8 @@ class FormBuilder
      */
     public function isApplyEventFired()
     {
-        return (CI_Controller::get_instance()->input->get('apply', NULL) !== NULL
-            && CI_Controller::get_instance()->input->get('apply') == '');
+        return ($this->input->get('apply', NULL) !== NULL
+            && $this->input->get('apply') == '');
     }
 
     /**
@@ -843,7 +847,7 @@ class FormBuilder
     public function setTable($tableName, $acceptedPostFields = array(), $idFieldName = FALSE)
     {
         // Initializes a cloned Generic Model with a specified table
-        $feed_object = clone CI_Controller::get_instance()->Generic_model;
+        $feed_object = clone $this->Generic_model;
         $feed_object->setTable($tableName);
 
         // Specify id field name, otherwise use the default value from Generic Model
@@ -1099,10 +1103,6 @@ class FormBuilder
      */
     public function generate()
     {
-        // Loading all the necessary libraries and language
-        CI_Controller::get_instance()->load->language('formbuilder');
-        CI_Controller::get_instance()->load->library('form_validation');
-
         $this->generateSetNoCacheHeaders();
 
         // Default value
@@ -1146,7 +1146,7 @@ class FormBuilder
                 }
 
                 if ($save_success) {
-                    $is_apply = CI_Controller::get_instance()->input->post('apply') !== NULL;
+                    $is_apply = $this->input->post('apply') !== NULL;
 
                     if (!$this->getId()) { // There were no ID, try to determine it after the form is saved
                         $this->generateRefreshId($save_success);
@@ -1214,8 +1214,8 @@ class FormBuilder
 
         // Checking foreign keys for null values
         foreach ($this->fields as &$field) {
-            $save_array[$field['field']] = CI_Controller::get_instance()->input->post($field['field']) !== NULL ?
-                CI_Controller::get_instance()->input->post($field['field']) : '';
+            $save_array[$field['field']] = $this->input->post($field['field']) !== NULL ?
+                $this->input->post($field['field']) : '';
 
             if (!$save_array[$field['field']] && $field['foreign_key_accept_null']) {
                 $save_array[$field['field']] = NULL;
@@ -1243,14 +1243,12 @@ class FormBuilder
 
     private function generateSetSuccessMessage()
     {
-        CI_Controller::get_instance()->load->library('SimpleSessionMessage');
-
         if (count($this->getUploadWarnings())) {
-            CI_Controller::get_instance()->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_NOTIFICATION);
-            CI_Controller::get_instance()->simplesessionmessage->setRawMessage(CI_Controller::get_instance()->lang->line('formbuilder_form_successfully_saved') . '<br><br><b>' . CI_Controller::get_instance()->lang->line('formbuilder_upload_warnings') . ':</b><br>' . implode('<br>', $this->getUploadWarnings()));
+            $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_NOTIFICATION);
+            $this->simplesessionmessage->setRawMessage($this->lang->line('formbuilder_form_successfully_saved') . '<br><br><b>' . $this->lang->line('formbuilder_upload_warnings') . ':</b><br>' . implode('<br>', $this->getUploadWarnings()));
         } else {
-            CI_Controller::get_instance()->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS);
-            CI_Controller::get_instance()->simplesessionmessage->setMessage('formbuilder_form_successfully_saved');
+            $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS);
+            $this->simplesessionmessage->setMessage('formbuilder_form_successfully_saved');
         }
     }
 
@@ -1344,12 +1342,12 @@ class FormBuilder
             // TODO Consider situation then there is a non-db model
 
             // Saving new entry
-            CI_Controller::get_instance()->db->set($field['foreign_key_junction_id_field_left'], $this->getId());
+            $this->db->set($field['foreign_key_junction_id_field_left'], $this->getId());
             // The following if allows to have multiple form fields having relations with the same foreign_key_junction_table
             if (count($where_conditions) > 0) {
-                CI_Controller::get_instance()->db->set($where_conditions);
+                $this->db->set($where_conditions);
             }
-            CI_Controller::get_instance()->db->set($field['foreign_key_junction_id_field_right'], $right_id)
+            $this->db->set($field['foreign_key_junction_id_field_right'], $right_id)
                 ->insert($field['foreign_key_junction_table']);
         }
     }
@@ -1360,12 +1358,12 @@ class FormBuilder
      */
     private function generateForeignKeyManyToManyDoDelete($field, $where_conditions)
     {
-        CI_Controller::get_instance()->db->where($field['foreign_key_junction_id_field_left'], $this->getId());
+        $this->db->where($field['foreign_key_junction_id_field_left'], $this->getId());
         // The following if allows to have multiple form fields having relations with the same foreign_key_junction_table
         if (count($where_conditions) > 0) {
-            CI_Controller::get_instance()->db->where($where_conditions);
+            $this->db->where($where_conditions);
         }
-        CI_Controller::get_instance()->db->delete($field['foreign_key_junction_table']);
+        $this->db->delete($field['foreign_key_junction_table']);
     }
 
     /**
@@ -1427,10 +1425,10 @@ class FormBuilder
 
     private function generateSetNoCacheHeaders()
     {
-        CI_Controller::get_instance()->output->set_header('Last-Modified: ' . gmdate('D, d M Y H:i:s', time()) . ' GMT');
-        CI_Controller::get_instance()->output->set_header('Cache-Control: no-store, no-cache, must-revalidate');
-        CI_Controller::get_instance()->output->set_header('Cache-Control: post-check=0, pre-check=0');
-        CI_Controller::get_instance()->output->set_header('Pragma: no-cache');
+        $this->output->set_header('Last-Modified: ' . gmdate('D, d M Y H:i:s', time()) . ' GMT')
+            ->set_header('Cache-Control: no-store, no-cache, must-revalidate')
+            ->set_header('Cache-Control: post-check=0, pre-check=0')
+            ->set_header('Pragma: no-cache');
     }
 
     /**
@@ -1443,20 +1441,19 @@ class FormBuilder
             return;
         }
 
-        CI_Controller::get_instance()->load->library('upload');
         foreach ($this->file_upload_fields as $upload_field_name) {
             if (!$this->generateEnsureUploadDirectoryExits($this->fields[$upload_field_name])) {
                 continue;
             }
 
             // Reinitializing upload - necessary for consequent file uploads
-            CI_Controller::get_instance()->upload->initialize($this->generateGetUploadConfig($upload_field_name));
+            $this->upload->initialize($this->generateGetUploadConfig($upload_field_name));
 
-            $upload = CI_Controller::get_instance()->upload->do_upload($upload_field_name);
+            $upload = $this->upload->do_upload($upload_field_name);
 
             if (!$upload) {
                 if ($this->hasSignificantUploadError()) {
-                    $this->upload_warnings += CI_Controller::get_instance()->upload->error_msg;
+                    $this->upload_warnings += $this->upload->error_msg;
                     // Do not overwrite database value in case of error
                     unset($save_array[$upload_field_name]);
                 } else {
@@ -1468,7 +1465,7 @@ class FormBuilder
 
                 // Calling a callback function after file upload
                 // The callback function must take 3 parameters, $filename, $basepath and $data containing form data
-                $data = CI_Controller::get_instance()->upload->data();
+                $data = $this->upload->data();
                 $filename = $data['file_name'];
                 if ($this->fields[$upload_field_name]['upload_complete_callback']) {
                     call_user_func_array($this->fields[$upload_field_name]['upload_complete_callback'],
@@ -1515,8 +1512,8 @@ class FormBuilder
     private function generateConvertComasIntoDotsForNumericTypes($field)
     {
         if (strpos($field['validation_rules'], 'numeric') !== FALSE
-            && CI_Controller::get_instance()->input->post($field['field']) !== NULL) {
-            $replaced = str_replace(',', '.', CI_Controller::get_instance()->input->post($field['field']));
+            && $this->input->post($field['field']) !== NULL) {
+            $replaced = str_replace(',', '.', $this->input->post($field['field']));
             $_POST[$field['field']] = $replaced;
         }
     }
@@ -1584,7 +1581,7 @@ class FormBuilder
         }
 
         // END Prevent from redirecting on apply
-        CI_Controller::get_instance()->output->set_header('X-XSS-Protection: 0');
+        $this->output->set_header('X-XSS-Protection: 0');
     }
 
     /**
@@ -1614,7 +1611,7 @@ class FormBuilder
                     $where_conditions += array($field['foreign_key_junction_id_field_left'] => $this->getId());
                 }
 
-                $this->object->$field['field'] = CI_Controller::get_instance()
+                $this->object->$field['field'] = $this
                     ->Generic_model->getAssocPairs($field['foreign_key_junction_id_field_right'],
                         $field['foreign_key_junction_id_field_right'], $field['foreign_key_junction_table'],
                         FALSE,
@@ -1633,8 +1630,8 @@ class FormBuilder
         $isValid = TRUE;
         // Setting validation rules if any of them exist
         if (count($validation_rules) > 0) {
-            CI_Controller::get_instance()->form_validation->set_rules($validation_rules);
-            $isValid = CI_Controller::get_instance()->form_validation->run() === TRUE;
+            $this->form_validation->set_rules($validation_rules);
+            $isValid = $this->form_validation->run() === TRUE;
         }
         return $isValid;
     }
@@ -1663,7 +1660,7 @@ class FormBuilder
 
 
         if ($should_fetch) {
-            $field['values'] = CI_Controller::get_instance()->Generic_model->getAssocPairs($field['foreign_key_field'],
+            $field['values'] = $this->Generic_model->getAssocPairs($field['foreign_key_field'],
                 $field['foreign_key_label_field'],
                 $field['foreign_key_table'],
                 FALSE,
@@ -1684,7 +1681,7 @@ class FormBuilder
     private function generateRefreshId($save_success)
     {
         // Default ID comes from the database class
-        $this->id = CI_Controller::get_instance()->db->insert_id();
+        $this->id = $this->db->insert_id();
 
         // Assigning ID when the success is a valid numeric value only
         if (is_numeric($save_success)) {
@@ -1697,8 +1694,7 @@ class FormBuilder
      */
     private function hasSignificantUploadError()
     {
-        $CI = CI_Controller::get_instance();
-        return isset($CI->upload->error_msg[0]) && $CI->upload->error_msg[0] != $CI->lang->line('upload_no_file_selected');
+        return isset($this->upload->error_msg[0]) && $this->upload->error_msg[0] != $this->lang->line('upload_no_file_selected');
     }
 
     /**

@@ -17,7 +17,7 @@
  *
  * @since 0.1.4
  */
-class EmailSender
+class EmailSender extends ContainerAware
 {
 
     /**
@@ -28,7 +28,7 @@ class EmailSender
     private $charset = 'UTF-8';
     private $new_line = "\r\n";
     private $is_failsafe_enabled = FALSE;
-    private $config = FALSE;
+    private $conf = FALSE;
 
     /**
      * Sets new line delimiter
@@ -109,7 +109,7 @@ class EmailSender
      */
     public function setConfig($config)
     {
-        $this->config = $config;
+        $this->conf = $config;
     }
 
     /**
@@ -119,17 +119,16 @@ class EmailSender
      */
     public function getConfig()
     {
-        if (!$this->config) {
-            $CI = &get_instance();
-            $CI->load->config('email');
+        if (!$this->conf) {
+            $this->load->config('email');
 
-            $this->config = array();
-            $this->config['smtp_host'] = $CI->config->item('email_smtp_host');
-            $this->config['smtp_user'] = $CI->config->item('email_smtp_user');
-            $this->config['smtp_pass'] = $CI->config->item('email_smtp_pass');
-            $this->config['smtp_port'] = $CI->config->item('email_smtp_port');
+            $this->conf = array();
+            $this->conf['smtp_host'] = $this->config->item('email_smtp_host');
+            $this->conf['smtp_user'] = $this->config->item('email_smtp_user');
+            $this->conf['smtp_pass'] = $this->config->item('email_smtp_pass');
+            $this->conf['smtp_port'] = $this->config->item('email_smtp_port');
         }
-        return $this->config;
+        return $this->conf;
     }
 
     /**
@@ -146,7 +145,8 @@ class EmailSender
      * @param bool $reply_to_name
      * @return bool
      */
-    public function send($to, $from, $from_name, $subject, $message, $html = FALSE, $attachments = array(), $reply_to = FALSE, $reply_to_name = FALSE)
+    public function send($to, $from, $from_name, $subject, $message,
+                         $html = FALSE, $attachments = array(), $reply_to = FALSE, $reply_to_name = FALSE)
     {
         if (!$html) {
             $message = str_replace("\r\n", "\n", $message);
@@ -157,13 +157,12 @@ class EmailSender
             die($message);
         }
 
-        $CI = &get_instance();
-        $CI->load->library('email');
-        $CI->load->config('email');
+        $this->load->library('email');
+        $this->load->config('email');
 
         $config = array();
         $config['protocol'] = 'mail';
-        if ($CI->config->item('email_use_smtp')) {
+        if ($this->config->item('email_use_smtp')) {
             $config = $this->getConfig();
             $config['protocol'] = 'smtp';
         }
@@ -180,60 +179,63 @@ class EmailSender
             $config['wordwrap'] = TRUE;
         }
 
-        $CI->email->initialize($config);
-        $CI->email->from($from, $from_name);
+        $this->email->initialize($config);
+        $this->email->from($from, $from_name);
         if (!$reply_to && !$reply_to_name) {
-            $CI->email->reply_to($from, $from_name);
+            $this->email->reply_to($from, $from_name);
         } else {
-            $CI->email->reply_to($reply_to, $reply_to_name);
+            $this->email->reply_to($reply_to, $reply_to_name);
         }
-        //$CI->email->_set_header( 'Return-Path', $from_name . ' <' . $from . '>' );
-        $CI->email->to($to);
-        $CI->email->set_newline($this->getNewLine());
-        $CI->email->subject($subject);
-        $CI->email->message($message);
-        //$CI->email->set_alt_message()
+        //$this->email->_set_header( 'Return-Path', $from_name . ' <' . $from . '>' );
+        $this->email->to($to);
+        $this->email->set_newline($this->getNewLine());
+        $this->email->subject($subject);
+        $this->email->message($message);
+        //$this->email->set_alt_message()
 
         foreach ($attachments as $attachment) {
-            $CI->email->attach($attachment);
+            $this->email->attach($attachment);
         }
 
-        if (!$CI->email->send()) {
-            //die( $CI->email->print_debugger() );
+        if (!$this->email->send()) {
+            //die( $this->email->print_debugger() );
             // We tried to send an email using smtp and something did not work
             if ($config['protocol'] == 'smtp' && $this->isFailsafeEnabled()) {
-                LOGGER::error('Unable to send email using SMTP, trying failsafe MAIL: ' . strip_tags($CI->email->print_debugger()), 'EMAIL');
+                LOGGER::error('Unable to send email using SMTP, trying failsafe MAIL: ' .
+                    strip_tags($this->email->print_debugger()), 'EMAIL');
 
                 // This only happens when SMTP fails
                 $config['protocol'] = 'mail';
-                $CI->email->clear();
+                $this->email->clear();
 
-                $CI->email->initialize($config);
-                $CI->email->from($from, $from_name);
+                $this->email->initialize($config);
+                $this->email->from($from, $from_name);
                 if (!$reply_to && !$reply_to_name) {
-                    $CI->email->reply_to($from, $from_name);
+                    $this->email->reply_to($from, $from_name);
                 } else {
-                    $CI->email->reply_to($reply_to, $reply_to_name);
+                    $this->email->reply_to($reply_to, $reply_to_name);
                 }
-                //$CI->email->_set_header( 'Return-Path', $from_name . ' <' . $from . '>' );
-                $CI->email->to($to);
-                $CI->email->subject($subject);
-                $CI->email->message($message);
-                //$CI->email->set_alt_message()
+                //$this->email->_set_header( 'Return-Path', $from_name . ' <' . $from . '>' );
+                $this->email->to($to);
+                $this->email->subject($subject);
+                $this->email->message($message);
+                //$this->email->set_alt_message()
 
                 foreach ($attachments as $attachment) {
-                    $CI->email->attach($attachment);
+                    $this->email->attach($attachment);
                 }
 
-                if (!$CI->email->send()) {
-                    LOGGER::error('Unable to send email using MAIL (SMTP failsafe): ' . strip_tags($CI->email->print_debugger()), 'EMAIL');
+                if (!$this->email->send()) {
+                    LOGGER::error('Unable to send email using MAIL (SMTP failsafe): ' .
+                        strip_tags($this->email->print_debugger()), 'EMAIL');
                     return FALSE;
                 }
 
                 return TRUE;
             }
 
-            LOGGER::error('Unable to send email using SMTP protocol: ' . strip_tags($CI->email->print_debugger()), 'EMAIL', FALSE, FALSE);
+            LOGGER::error('Unable to send email using SMTP protocol: ' .
+                strip_tags($this->email->print_debugger()), 'EMAIL', FALSE, FALSE);
             return FALSE;
         }
 
@@ -254,12 +256,11 @@ class EmailSender
      * @param array $attachments
      * @return bool
      */
-    public function sendTemplate($to, $from, $from_name, $subject, $email_template_path, $data = array(), $html = FALSE, $attachments = array())
+    public function sendTemplate($to, $from, $from_name, $subject, $email_template_path,
+                                 $data = array(), $html = FALSE, $attachments = array())
     {
-        $CI = &get_instance();
-
         ob_start();
-        $CI->load->theme($email_template_path, $data);
+        $this->load->theme($email_template_path, $data);
         $message = ob_get_contents();
         @ob_end_clean();
 
@@ -280,7 +281,8 @@ class EmailSender
      * @param array $attachments
      * @return bool
      */
-    public function sendSystemTemplate($to, $from, $from_name, $subject, $email_template_name, $data = array(), $html = FALSE, $language = FALSE, $attachments = array())
+    public function sendSystemTemplate($to, $from, $from_name, $subject, $email_template_name,
+                                       $data = array(), $html = FALSE, $language = FALSE, $attachments = array())
     {
         if (!$language) {
             $language = 'english';
@@ -290,7 +292,7 @@ class EmailSender
             $language = 'english';
         }
 
-        get_instance()->load->helper('email_html');
+        $this->load->helper('email_html');
 
         $email_template_path = APPPATH . 'emails/' . $language . '/' . $email_template_name . '.php';
         return $this->sendTemplate($to, $from, $from_name, $subject, $email_template_path, $data, $html, $attachments);

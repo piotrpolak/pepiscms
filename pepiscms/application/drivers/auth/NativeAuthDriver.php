@@ -17,7 +17,7 @@
  *
  * @since 0.2.2
  */
-class NativeAuthDriver implements AuthDriverableInterface
+class NativeAuthDriver extends ContainerAware implements AuthDriverableInterface
 {
     /**
      * Constructs auth driver
@@ -26,7 +26,7 @@ class NativeAuthDriver implements AuthDriverableInterface
      */
     public function __construct(Auth $auth)
     {
-        // Do nothing ;)
+        $this->load->model('User_model');
     }
 
     /**
@@ -38,13 +38,10 @@ class NativeAuthDriver implements AuthDriverableInterface
      */
     public function authorize($user_email_or_login, $password)
     {
-        $CI = &get_instance();
-        $CI->load->model('User_model');
-
         if (strpos($user_email_or_login, '@') !== FALSE) {
-            $row = $CI->User_model->validateByEmail($user_email_or_login, $password);
+            $row = $this->User_model->validateByEmail($user_email_or_login, $password);
         } else {
-            $row = $CI->User_model->validateByLogin($user_email_or_login, $password);
+            $row = $this->User_model->validateByLogin($user_email_or_login, $password);
         }
 
         if (!$row) {

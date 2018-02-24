@@ -17,9 +17,8 @@
  *
  * @since 0.1.0
  */
-class MenuRendor
+class MenuRendor extends ContainerAware
 {
-    private $CI;
     private $use_cache = TRUE;
 
     /**
@@ -28,10 +27,9 @@ class MenuRendor
      */
     public function __construct($params = null)
     {
-        $this->CI = &get_instance();
-        $this->CI->load->config('menu');
-        $this->CI->load->model('Module_model');
-        $this->CI->load->library('ModuleRunner');
+        $this->load->config('menu');
+        $this->load->model('Module_model');
+        $this->load->library('ModuleRunner');
     }
 
     /**
@@ -65,19 +63,19 @@ class MenuRendor
      */
     public function render($controller, $method, $language_code = '', $pull_submenu_from_controller = FALSE)
     {
-        $menu = $this->CI->config->item('menu');
+        $menu = $this->config->item('menu');
 
         if (!$pull_submenu_from_controller) {
             $pull_submenu_from_controller = $controller;
         }
 
         // Get currently running module
-        $current_module = isset($this->CI->modulerunner) ? $this->CI->modulerunner->getRunningModuleName() : FALSE;
+        $current_module = isset($this->modulerunner) ? $this->modulerunner->getRunningModuleName() : FALSE;
 
-        $cache_var_name = 'menu_c:' . $controller . '_m:' . $method . '_lc:' . $language_code . '_psfc:' . $pull_submenu_from_controller . '_cm:' . $current_module . '_lng:' . $this->CI->lang->getCurrentLanguage();
+        $cache_var_name = 'menu_c:' . $controller . '_m:' . $method . '_lc:' . $language_code . '_psfc:' . $pull_submenu_from_controller . '_cm:' . $current_module . '_lng:' . $this->lang->getCurrentLanguage();
 
-        if ($this->use_cache && $this->CI->auth->getSessionVariable($cache_var_name)) {
-            return $this->CI->auth->getSessionVariable($cache_var_name);
+        if ($this->use_cache && $this->auth->getSessionVariable($cache_var_name)) {
+            return $this->auth->getSessionVariable($cache_var_name);
         }
 
         $menu_map = array();
@@ -98,11 +96,11 @@ class MenuRendor
             if (!SecurityManager::hasAccess($item['controller'], isset($item['method']) ? $item['method'] : 'index')) {
                 continue;
             }
-            if ($item['controller'] == 'pages' && !$this->CI->config->item('cms_enable_pages')) {
+            if ($item['controller'] == 'pages' && !$this->config->item('cms_enable_pages')) {
                 continue;
-            } elseif ($item['controller'] == 'utilities' && !$this->CI->config->item('cms_enable_utilities')) {
+            } elseif ($item['controller'] == 'utilities' && !$this->config->item('cms_enable_utilities')) {
                 continue;
-            } elseif ($item['controller'] == 'ajaxfilemanager' && (!$this->CI->config->item('cms_enable_filemanager') || !$this->CI->config->item('feature_is_enabled_filemanager'))) {
+            } elseif ($item['controller'] == 'ajaxfilemanager' && (!$this->config->item('cms_enable_filemanager') || !$this->config->item('feature_is_enabled_filemanager'))) {
                 continue;
             }
 
@@ -136,7 +134,7 @@ class MenuRendor
             }
 
             if (isset($item['label']) && $item['label']) {
-                $menu_map_item['label'] = $this->CI->lang->line($item['label']);
+                $menu_map_item['label'] = $this->lang->line($item['label']);
             }
 
             $menu_map[] = $menu_map_item;
@@ -147,9 +145,9 @@ class MenuRendor
         // Checking if one can run modules
         if (SecurityManager::hasAccess('module', 'run')) {
             // Building array of modules to which the user has granted access
-            $modules = $this->CI->auth->getSessionVariable('access_modules');
+            $modules = $this->auth->getSessionVariable('access_modules');
             if (!$modules) {
-                get_instance()->load->library('ModuleRunner');
+                $this->load->library('ModuleRunner');
                 $all_modules = ModuleRunner::getInstalledModulesDisplayedInMenuCached();
                 $modules = array(); // Resetting type
 
@@ -164,7 +162,7 @@ class MenuRendor
                 unset($all_modules);
 
                 // Persisting variable
-                $this->CI->auth->setSessionVariable('access_modules', $modules);
+                $this->auth->setSessionVariable('access_modules', $modules);
             }
 
             // Building main menu and submenu modules arrays
@@ -187,13 +185,13 @@ class MenuRendor
                 $menu_map_item = $menu_map_item_template; // RESET
 
                 // Reading module label
-                $module_label = $this->CI->Module_model->getModuleLabel($module->name, $this->CI->lang->getCurrentLanguage());
+                $module_label = $this->Module_model->getModuleLabel($module->name, $this->lang->getCurrentLanguage());
                 if (!$module_label) {
                     $module_label = $module->label;
                 }
 
                 // Reading module description
-                $module_description = $this->CI->Module_model->getModuleDescription($module->name, $this->CI->lang->getCurrentLanguage());
+                $module_description = $this->Module_model->getModuleDescription($module->name, $this->lang->getCurrentLanguage());
                 if ($module_description) {
                     $menu_map_item['title'] = $module_description;
                 }
@@ -207,7 +205,7 @@ class MenuRendor
                 if (!$module->name) {
                     $items = &$menu[$pull_submenu_from_controller];
                 } else {
-                    $items = $this->CI->Module_model->getModuleAdminSubmenuElements($module->name, $this->CI->lang->getCurrentLanguage());
+                    $items = $this->Module_model->getModuleAdminSubmenuElements($module->name, $this->lang->getCurrentLanguage());
                 }
 
                 // For modules that are under the current modules if case
@@ -217,7 +215,7 @@ class MenuRendor
                             'module' => $element->name,
                             'controller' => $element->name,
                             'method' => 'index',
-                            'label' => $this->CI->Module_model->getModuleLabel($element->name, $this->CI->lang->getCurrentLanguage()),
+                            'label' => $this->Module_model->getModuleLabel($element->name, $this->lang->getCurrentLanguage()),
                             'icon_url' => module_icon_small_url($element->name),
                         );
                     }
@@ -269,7 +267,7 @@ class MenuRendor
                         }
 
                         if (isset($item['description'])) {
-                            $menu_map_item_submenu['title'] = $this->CI->lang->line($item['description']);
+                            $menu_map_item_submenu['title'] = $this->lang->line($item['description']);
                         }
 
                         $menu_map_item_submenu['icon_url'] = $menu_map_item['icon_url'];
@@ -278,7 +276,7 @@ class MenuRendor
                         }
                         /* END Setting URL */
 
-                        $menu_map_item_submenu['label'] = $this->CI->lang->line($item['label']);
+                        $menu_map_item_submenu['label'] = $this->lang->line($item['label']);
 
                         $menu_map_item['submenu'][] = $menu_map_item_submenu;
                     }
@@ -291,7 +289,7 @@ class MenuRendor
         $output = '<nav id="primary_navigation">' . $this->renderSubmenu($menu_map) . '</nav>';
 
         // Set cache
-        $this->CI->auth->setSessionVariable($cache_var_name, $output);
+        $this->auth->setSessionVariable($cache_var_name, $output);
         return $output;
     }
 
