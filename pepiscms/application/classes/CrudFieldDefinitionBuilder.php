@@ -55,7 +55,7 @@ class CrudFieldDefinitionBuilder
      * @param $fieldName string
      * @param $crudDefinitionBuilder CrudDefinitionBuilder
      */
-    public function __construct($fieldName, $crudDefinitionBuilder)
+    public function __construct($fieldName, CrudDefinitionBuilder $crudDefinitionBuilder)
     {
         $this->fieldName = $fieldName;
         $this->crudDefinitionBuilder = $crudDefinitionBuilder;
