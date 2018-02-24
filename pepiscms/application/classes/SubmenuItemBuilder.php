@@ -23,13 +23,17 @@ class SubmenuItemBuilder
      * @var SubmenuBuilder
      */
     private $submenuItemsBuilder;
-    
+
     private $data = array(
         'controller' => FALSE,
         'method' => '',
         'description' => '',
         'label' => FALSE,
         'item_url' => FALSE,
+        'url' => FALSE,
+        'target' => FALSE,
+        'group' => FALSE,
+        'is_popup' => FALSE,
     );
 
     /**
@@ -39,6 +43,36 @@ class SubmenuItemBuilder
     public function __construct(SubmenuBuilder $submenuItemsBuilder)
     {
         $this->submenuItemsBuilder = $submenuItemsBuilder;
+    }
+
+    /**
+     * @param $url
+     * @return $this
+     */
+    public function withUrl($url)
+    {
+        $this->data['url'] = $url;
+        return $this;
+    }
+
+    /**
+     * @param $target
+     * @return $this
+     */
+    public function withTarget($target)
+    {
+        $this->data['target'] = $target;
+        return $this;
+    }
+
+    /**
+     * @param $group
+     * @return $this
+     */
+    public function withGroup($group)
+    {
+        $this->data['group'] = $group;
+        return $this;
     }
 
     /**
@@ -88,6 +122,16 @@ class SubmenuItemBuilder
     public function withIconUrl($icon_url)
     {
         $this->data['icon_url'] = $icon_url;
+        return $this;
+    }
+
+    /**
+     * @param $is_popup
+     * @return $this
+     */
+    public function withPopup($is_popup)
+    {
+        $this->data['is_popup'] = $is_popup;
         return $this;
     }
 

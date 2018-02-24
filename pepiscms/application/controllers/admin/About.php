@@ -22,6 +22,7 @@ class About extends AdminController
         parent::__construct();
         $this->load->library('SimpleSessionMessage');
         $this->load->language('utilities');
+        $this->load->model('Siteconfig_model');
     }
 
     public function index()
@@ -60,29 +61,29 @@ class About extends AdminController
             }
         }
 
-        // CMS builtin actions
+        $dashboard_elements_builder = SubmenuBuilder::create();
         if ($user_manual_path) {
-
-            $dashboard_elements[] = array(
-                'label' => $this->lang->line('global_download_user_manual'),
-                'url' => $user_manual_path,
-                'target' => '_blank',
-                'icon_url' => 'pepiscms/theme/img/about/manual_32.png',
-            );
+            $dashboard_elements_builder->addItem()
+                ->withLabel($this->lang->line('global_download_user_manual'))
+                ->withUrl($user_manual_path)
+                ->withTarget('_blank')
+                ->withIconUrl('pepiscms/theme/img/about/manual_32.png');
         }
 
-        $dashboard_elements[] = array(
-            'label' => $this->lang->line('global_reload_privileges'),
-            'controller' => 'login',
-            'method' => 'refresh_session',
-            'icon_url' => 'pepiscms/theme/img/utilities/flush_privileges_32.png',
-        );
-        $dashboard_elements[] = array(
-            'label' => $this->lang->line('global_logout'),
-            'controller' => 'logout',
-            'method' => '',
-            'icon_url' => 'pepiscms/theme/img/about/logout_32.png',
-        );
+        $dashboard_elements_builder->addItem()
+                ->withLabel($this->lang->line('global_reload_privileges'))
+                ->withController('login')
+                ->withMethod('refresh_session')
+                ->withIconUrl('pepiscms/theme/img/utilities/flush_privileges_32.png')
+            ->end()
+                ->addItem()
+                ->withLabel($this->lang->line('global_logout'))
+                ->withController('logout')
+                ->withMethod('')
+                ->withIconUrl('pepiscms/theme/img/about/logout_32.png')
+            ->end();
+
+        $dashboard_elements = array_merge($dashboard_elements, $dashboard_elements_builder->build());
 
         // Actions grouping
         $dashboard_elements_grouped = array();
@@ -106,7 +107,6 @@ class About extends AdminController
         // Doing system tests
         $failed_configuration_tests = array();
         if ($this->auth->isUserRoot()) {
-            $this->load->model('Siteconfig_model');
             $failed_configuration_tests = $this->Siteconfig_model->makeConfigurationTestsAngGetFailedTests();
         }
 
