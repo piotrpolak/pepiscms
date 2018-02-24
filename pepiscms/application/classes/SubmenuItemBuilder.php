@@ -23,6 +23,7 @@ class SubmenuItemBuilder
      * @var SubmenuBuilder
      */
     private $submenuItemsBuilder;
+    
     private $data = array(
         'controller' => FALSE,
         'method' => '',
