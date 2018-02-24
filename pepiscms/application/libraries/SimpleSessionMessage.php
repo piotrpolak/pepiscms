@@ -47,6 +47,7 @@ class SimpleSessionMessage extends ContainerAware
      * @param mixed $param2
      * @param mixed $param3
      * @param mixed $param4
+     * @return SimpleSessionMessage
      */
     public function setMessage($label_name, $param1 = null, $param2 = null, $param3 = null, $param4 = null)
     {
@@ -55,26 +56,34 @@ class SimpleSessionMessage extends ContainerAware
         } else {
             $_SESSION[$this->session_var_name] = sprintf($this->lang->line($label_name), $param1, $param2, $param3, $param4);
         }
+
+        return $this;
     }
 
     /**
      * Sets RAW message (not localized)
      *
      * @param string $message
+     * @return SimpleSessionMessage
      */
     public function setRawMessage($message)
     {
         $_SESSION[$this->session_var_name] = $message;
+
+        return $this;
     }
 
     /**
      * Sets message formatting function
      *
      * @param string $function_name
+     * @return SimpleSessionMessage
      */
     public function setFormattingFunction($function_name = '')
     {
         $_SESSION[$this->session_var_name . '_formatting_function'] = $function_name;
+
+        return $this;
     }
 
     /**
