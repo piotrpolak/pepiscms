@@ -17,7 +17,7 @@
  *
  * @since 1.0.0
  */
-class ModuleGenerator
+class ModuleGenerator extends ContainerAware
 {
     /**
      * @var \Piotrpolak\Pepiscms\Modulerunner\ModuleLocatorInterface
@@ -279,18 +279,6 @@ class ModuleGenerator
             $method = 'with' . ucfirst(camelize($key));
         }
         return '->' . $method . '(' . $value . ')';
-    }
-
-    /**
-     * Makes it CI context aware.
-     *
-     * @param $var
-     * @return mixed
-     */
-    public function __get($var)
-    {
-        $ci = CI_Controller::get_instance();
-        return $ci->$var;
     }
 
     /**

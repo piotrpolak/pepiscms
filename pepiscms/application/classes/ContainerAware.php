@@ -98,8 +98,40 @@ class ContainerAware
      */
     public function __get($var)
     {
+        return self::__doGet($var);
+    }
+
+    /**
+     * Reusable get implementation with model autoload.
+     *
+     * @param $var
+     * @return mixed
+     */
+    public static function __doGet($var)
+    {
         static $CI;
         isset($CI) OR $CI = CI_Controller::get_instance();
+
+        static $AVAILABLE_MODULES;
+        isset($AVAILABLE_MODULES) OR $AVAILABLE_MODULES = NULL;
+
+        // Automatic loading of module models
+        if (!isset($CI->$var) && strpos($var, '_model') !== FALSE) {
+            $CI->load->model($var);
+            if (!isset($CI->$var)) {
+                if ($AVAILABLE_MODULES === NULL) {
+                    $AVAILABLE_MODULES = ModuleRunner::getAvailableModules();
+                }
+
+                foreach ($AVAILABLE_MODULES as $module) {
+                    $CI->load->moduleModel($module, $var);
+                    if (isset($CI->$var)) {
+                        log_message('debug', 'Successfully loaded module model ' . $module . ':' . $var);
+                        break;
+                    }
+                }
+            }
+        }
         return $CI->$var;
     }
 }

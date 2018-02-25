@@ -33,7 +33,6 @@ class LogsAdmin extends ModuleAdminController
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('Log_model');
         $this->load->language('logs');
         //$this->Log_model->removeFrameworkLogs();
         $this->Log_model->importFrameworkLogs();
@@ -47,7 +46,6 @@ class LogsAdmin extends ModuleAdminController
 
     public function index()
     {
-        $this->load->model('User_model');
         $this->load->library('DataGrid');
         $this->load->library('SimpleSessionMessage');
         $this->load->helper('text');

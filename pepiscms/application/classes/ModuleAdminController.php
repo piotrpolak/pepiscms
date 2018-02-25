@@ -18,13 +18,6 @@
 abstract class ModuleAdminController extends AdminController
 {
     /**
-     * Array of available modules.
-     *
-     * @var null|array
-     */
-    private $available_modules = NULL;
-
-    /**
      * ModuleAdminController constructor.
      */
     public function __construct()
@@ -84,34 +77,11 @@ abstract class ModuleAdminController extends AdminController
     }
 
     /**
-     * Attempts to load module model.
-     *
-     * @param $var
-     * @return mixed
-     * @since 1.0.0
+     * @inheritdoc
      */
     public function __get($var)
     {
-        $ci = CI_Controller::get_instance();
-
-        // Automatic loading of module models
-        if (!isset($ci->$var) && strpos($var, '_model') !== FALSE) {
-            $ci->load->model($var);
-            if (!isset($ci->$var)) {
-                if ($this->available_modules === NULL) {
-                    $this->available_modules = ModuleRunner::getAvailableModules();
-                }
-
-                foreach ($this->available_modules as $module) {
-                    $ci->load->moduleModel($module, $var);
-                    if (isset($ci->$var)) {
-                        log_message('debug', 'Successfully loaded module model ' . $module . ':' . $var);
-                        break;
-                    }
-                }
-            }
-        }
-        return $ci->$var;
+        return ContainerAware::__doGet($var);
     }
 
     /**

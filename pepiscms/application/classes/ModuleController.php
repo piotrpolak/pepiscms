@@ -41,10 +41,12 @@ abstract class ModuleController extends EnhancedController
         $this->setMethodName($method);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function __get($var)
     {
-        $ci = CI_Controller::get_instance();
-        return $ci->$var;
+        return ContainerAware::__doGet($var);
     }
 
     /**
