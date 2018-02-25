@@ -95,98 +95,17 @@ class DevelopmentAdmin extends ModuleAdminController
 
     public function generate_header_file()
     {
-        $core_libraries_paths = '{' . BASEPATH . 'libraries/*.php,' . BASEPATH . 'core/*.php}'; // Files that should be prefixed with CI_
-        $library_paths = '{' . APPPATH . 'libraries/*.php,modules/*/libraries/*.php,application/libraries/*.php}';
-        $model_paths = '{' . APPPATH . 'models/*.php,modules/*/models/*.php,application/models/*.php}';
+        $this->load->library('HeadersGenerator');
 
-//		$core_libraries_paths	= '{}'; // Files that should be prefixed with CI_
-//		$library_paths			= '{modules/*/libraries/*.php}';
-//		$model_paths			= '{modules/*/models/*.php}';
-
-        $core_library_files = glob($core_libraries_paths, GLOB_BRACE);
-        $library_files = glob($library_paths, GLOB_BRACE);
-        $model_files = glob($model_paths, GLOB_BRACE);
-
-
-        $model_names = $library_names = $core_library_names = array();
-        foreach ($model_files as $path) {
-            $name = pathinfo($path);
-            $model_names[] = ucfirst($name['filename']);
-        }
-        foreach ($library_files as $path) {
-            $name = pathinfo($path);
-            $library_names[] = $name['filename'];
-        }
-        foreach ($core_library_files as $path) {
-            $name = pathinfo($path);
-            $core_library_names[] = $name['filename'];
-        }
-
-        //var_dump( $model_names );
-        //die();
-
-        $output = "<?php die('This is automatically generated file and should not be runned nor included');\n/**\n";
-        $output .= " * @property CI_DB_active_record \$db\n";
-        $output .= " * @property CI_Loader \$load\n";
-        foreach ($model_names as $name) {
-            if (!$name) {
-                continue;
-            }
-            $output .= " * @property " . ucfirst($name) . ' $' . $name . "\n";
-        }
-
-        $output .= " *\n";
-
-        foreach ($core_library_names as $name) {
-            if (!$name) {
-                continue;
-            }
-
-            $first_three = substr($name, 0, 3);
-            if ($first_three == 'CI_' || $first_three == 'MY_') // CI 2.0
-            {
-                $instance_name = strtolower(substr($name, 3));
-                $class_name = ucfirst($name);
-            } else {
-                $instance_name = strtolower($name);
-                $class_name = 'CI_' . ucfirst($name);
-            }
-
-            $output .= " * @property " . ($class_name) . ' $' . ($instance_name) . "\n";
-        }
-
-        $output .= " *\n";
-
-        foreach ($library_names as $name) {
-            $first_three = substr($name, 0, 3);
-            if ($first_three == 'MY_') // CI 1.7
-            {
-                $instance_name = strtolower(substr($name, 3));
-                $class_name = ucfirst($name);
-            } else {
-                $instance_name = strtolower($name);
-            }
-            $class_name = ucfirst($name);
-
-            $output .= " * @property " . ($class_name) . ' $' . ($instance_name) . "\n";
-        }
-        $output .= " */\n";
-
-        $output .= "class CI_Controller {}\n";
-        $output .= "class CI_Model extends CI_Controller {}\n";
-
-        $output .= "/**\n";
-        $output .= "* @return CI_Controller\n";
-        $output .= "*/\n";
-        $output .= "function get_instance() {}\n";
+        $output = $this->headersgenerator->generate();
 
         if (!file_exists(INSTALLATIONPATH . 'application/dev/')) {
             mkdir(INSTALLATIONPATH . 'application/dev/');
         }
         file_put_contents(INSTALLATIONPATH . 'application/dev/_project_headers.php', $output);
 
-        $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS);
-        $this->simplesessionmessage->setRawMessage('Headers successfully regenerated! ' . count($library_names) . ' libraries, ' . count($core_library_names) . ' core libraries, ' . count($model_names) . ' models');
+        $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS)
+            ->setRawMessage('Headers successfully regenerated!');
         redirect(module_url());
     }
 
@@ -210,8 +129,8 @@ class DevelopmentAdmin extends ModuleAdminController
             }
         }
 
-        $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS);
-        $this->simplesessionmessage->setMessage('Regenerated ' . $i . ' translations!');
+        $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS)
+            ->setMessage('Regenerated ' . $i . ' translations!');
         redirect(module_url());
     }
 
@@ -300,41 +219,41 @@ class DevelopmentAdmin extends ModuleAdminController
             ->withField('database_table_name')
             ->end()
             ->withField('module_database_name')
-                ->withNoValidationRules()
+            ->withNoValidationRules()
             ->end()
-                ->withField('parse_database_schema')
-                ->withInputType(FormBuilder::CHECKBOX)
-                ->withInputDefaultValue(1)
-                ->withNoValidationRules()
+            ->withField('parse_database_schema')
+            ->withInputType(FormBuilder::CHECKBOX)
+            ->withInputDefaultValue(1)
+            ->withNoValidationRules()
             ->end()
-                ->withField('generate_security_policy')
-                ->withInputType(FormBuilder::CHECKBOX)
-                ->withNoValidationRules()
+            ->withField('generate_security_policy')
+            ->withInputType(FormBuilder::CHECKBOX)
+            ->withNoValidationRules()
             ->end()
             ->withField('module_type')
-                ->withInputType(FormBuilder::SELECTBOX)
-                ->withInputDefaultValue('crud')
-                ->withValues(array(
-                        'crud' => $this->lang->line('development_module_type_crud'),
-                        'default' => $this->lang->line('development_module_type_basic')
-                    )
+            ->withInputType(FormBuilder::SELECTBOX)
+            ->withInputDefaultValue('crud')
+            ->withValues(array(
+                    'crud' => $this->lang->line('development_module_type_crud'),
+                    'default' => $this->lang->line('development_module_type_basic')
                 )
-                ->withNoValidationRules()
+            )
+            ->withNoValidationRules()
             ->end()
             ->withField('database_group')
-                ->withInputType(FormBuilder::SELECTBOX)
-                ->withValues($database_groups)
-                ->withNoValidationRules()
+            ->withInputType(FormBuilder::SELECTBOX)
+            ->withValues($database_groups)
+            ->withNoValidationRules()
             ->end()
-                ->withField( 'translations')
-                ->withInputType(FormBuilder::MULTIPLECHECKBOX)
-                ->withValues($languages)
-                ->withInputDefaultValue(array_keys($languages))
-                ->withNoValidationRules()
+            ->withField('translations')
+            ->withInputType(FormBuilder::MULTIPLECHECKBOX)
+            ->withValues($languages)
+            ->withInputDefaultValue(array_keys($languages))
+            ->withNoValidationRules()
             ->end()
-                ->withField('generate_public_controller')
-                ->withInputType(FormBuilder::CHECKBOX)
-                ->withNoValidationRules()
+            ->withField('generate_public_controller')
+            ->withInputType(FormBuilder::CHECKBOX)
+            ->withNoValidationRules()
             ->end()
             ->withImplicitTranslations('development', $this->lang)
             ->build();
