@@ -5,7 +5,7 @@
  * 
  * @author {author}
  * @date {date}
- * @classTemplateVersion 20150401
+ * @classTemplateVersion 20180225
  */
 class {module_class_name}Descriptor extends ModuleDescriptor {
 
@@ -23,7 +23,7 @@ class {module_class_name}Descriptor extends ModuleDescriptor {
     {
         parent::__construct();
         $this->module_name = strtolower(str_replace('Descriptor', '', __CLASS__));
-        get_instance()->load->moduleLanguage( $this->module_name);
+        $this->load->moduleLanguage( $this->module_name);
     }
 
     /**
@@ -31,8 +31,8 @@ class {module_class_name}Descriptor extends ModuleDescriptor {
      */
     public function getName($language)
     {
-        get_instance()->load->moduleLanguage($this->module_name);
-        return get_instance()->lang->line($this->module_name . '_module_name');
+        $this->load->moduleLanguage($this->module_name);
+        return $this->lang->line($this->module_name . '_module_name');
     }
 
     /**
@@ -40,9 +40,9 @@ class {module_class_name}Descriptor extends ModuleDescriptor {
      */
     public function getDescription($language)
     {
-        get_instance()->load->moduleLanguage($this->module_name);
+        $this->load->moduleLanguage($this->module_name);
         $description_label = $this->module_name . '_module_description';
-        $description = get_instance()->lang->line($this->module_name . '_module_description');
+        $description = $this->lang->line($this->module_name . '_module_description');
         if( $description == $description_label )
         {
             return '';
@@ -64,12 +64,12 @@ class {module_class_name}Descriptor extends ModuleDescriptor {
      */
     public function onInstall()
     {
-        $path = get_instance()->load->resolveModuleDirectory($this->module_name, FALSE) . '/resources/install.sql';
+        $path = $this->load->resolveModuleDirectory($this->module_name, FALSE) . '/resources/install.sql';
         if (!file_exists($path))
         {
             return FALSE;
         }
-        get_instance()->db->query(file_get_contents($path));
+        $this->db->query(file_get_contents($path));
         return TRUE;
     }
 
@@ -78,12 +78,12 @@ class {module_class_name}Descriptor extends ModuleDescriptor {
      */
     public function onUninstall()
     {
-        $path = get_instance()->load->resolveModuleDirectory($this->module_name, FALSE) . '/resources/uninstall.sql';
+        $path = $this->load->resolveModuleDirectory($this->module_name, FALSE) . '/resources/uninstall.sql';
         if (!file_exists($path))
         {
             return FALSE;
         }
-        get_instance()->db->query(file_get_contents($path));
+        $this->db->query(file_get_contents($path));
         return TRUE;
     }
 
@@ -98,7 +98,7 @@ class {module_class_name}Descriptor extends ModuleDescriptor {
 //			array(
 //				'controller' => $this->module_name,
 //				'method' => 'edit',
-//				'label' => get_instance()->lang->line($this->module_name.'_add'),
+//				'label' => $this->lang->line($this->module_name.'_add'),
 //				'description' => ''
 //			),
 //		);
@@ -115,7 +115,7 @@ class {module_class_name}Descriptor extends ModuleDescriptor {
 //            array(
 //                'controller' => $this->module_name,
 //                'method' => 'edit',
-//                'label' => get_instance()->lang->line($this->module_name . '_add'),
+//                'label' => $this->lang->line($this->module_name . '_add'),
 //                'description' => '',
 //                //'icon' => module_resources_url($this->module_name).'cache_32.png', //module_icon_url($this->module_name),
 //                //'url' => 'http://www.disneyland.pl/', // URL can be used instead of controller and method
