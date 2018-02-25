@@ -15,9 +15,9 @@
 /**
  * Table utility
  */
-class TableUtility
+class TableUtility extends ContainerAware
 {
-    private $db;
+    private $db_instance;
     private $foreign_keys_cache = null;
     private $raw_table_description_cache = null;
 
@@ -34,13 +34,13 @@ class TableUtility
                 return FALSE;
             }
             /** @noinspection PhpUndefinedVariableInspection */
-            $this->db = get_instance()->load->database($db[$params['database_group']], TRUE);
+            $this->db_instance = $this->load->database($db[$params['database_group']], TRUE);
         } else {
-            $this->db = get_instance()->db;
+            $this->db_instance = $this->db;
         }
 
-        CI_Controller::get_instance()->load->library('DataGrid');
-        CI_Controller::get_instance()->load->library('FormBuilder');
+        $this->load->library('DataGrid');
+        $this->load->library('FormBuilder');
 
         $this->raw_table_description_cache = array();
     }
@@ -52,7 +52,7 @@ class TableUtility
      */
     function getTablesDefinition()
     {
-        $query = $this->db->query('SHOW TABLES');
+        $query = $this->db_instance->query('SHOW TABLES');
         $tables_a = $query->result_array();
         $tables = array();
 
@@ -72,7 +72,7 @@ class TableUtility
     public function getForeignKeys()
     {
         if ($this->foreign_keys_cache === NULL) {
-            $query = $this->db->query('SELECT table_name, column_name, referenced_table_name, referenced_column_name from information_schema.key_column_usage where referenced_table_name is not null');
+            $query = $this->db_instance->query('SELECT table_name, column_name, referenced_table_name, referenced_column_name from information_schema.key_column_usage where referenced_table_name is not null');
             $foreign_keys_a = $query->result_array();
             $this->foreign_keys_cache = array();
 
@@ -92,7 +92,7 @@ class TableUtility
      */
     public function tableExists($table)
     {
-        return $this->db->table_exists($table);
+        return $this->db_instance->table_exists($table);
     }
 
     /**
@@ -179,7 +179,7 @@ class TableUtility
         if (isset($this->raw_table_description_cache[$table])) {
             return $this->raw_table_description_cache[$table];
         }
-        $query = $this->db->query('DESCRIBE ' . $table);
+        $query = $this->db_instance->query('DESCRIBE ' . $table);
         if (!$query) {
             return FALSE;
         }

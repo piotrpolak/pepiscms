@@ -31,7 +31,7 @@ class LogsDescriptor extends ModuleDescriptor
     {
         parent::__construct();
         $this->module_name = strtolower(str_replace('Descriptor', '', __CLASS__));
-        get_instance()->load->moduleLanguage($this->module_name);
+        $this->load->moduleLanguage($this->module_name);
     }
 
     /**
@@ -39,8 +39,8 @@ class LogsDescriptor extends ModuleDescriptor
      */
     public function getName($language)
     {
-        get_instance()->load->moduleLanguage($this->module_name);
-        return get_instance()->lang->line($this->module_name . '_module_name');
+        $this->load->moduleLanguage($this->module_name);
+        return $this->lang->line($this->module_name . '_module_name');
     }
 
     /**
@@ -48,9 +48,9 @@ class LogsDescriptor extends ModuleDescriptor
      */
     public function getDescription($language)
     {
-        get_instance()->load->moduleLanguage($this->module_name);
+        $this->load->moduleLanguage($this->module_name);
         $description_label = $this->module_name . '_module_description';
-        $description = get_instance()->lang->line($this->module_name . '_module_description');
+        $description = $this->lang->line($this->module_name . '_module_description');
         if ($description == $description_label) {
             return '';
         }
@@ -63,11 +63,11 @@ class LogsDescriptor extends ModuleDescriptor
      */
     public function onInstall()
     {
-        $path = get_instance()->load->resolveModuleDirectory($this->module_name, FALSE) . '/resources/install.sql';
+        $path = $this->load->resolveModuleDirectory($this->module_name, FALSE) . '/resources/install.sql';
         if (!file_exists($path)) {
             return FALSE;
         }
-        get_instance()->db->query(file_get_contents($path));
+        $this->db->query(file_get_contents($path));
         return TRUE;
     }
 
@@ -76,11 +76,11 @@ class LogsDescriptor extends ModuleDescriptor
      */
     public function onUninstall()
     {
-        $path = get_instance()->load->resolveModuleDirectory($this->module_name, FALSE) . '/resources/uninstall.sql';
+        $path = $this->load->resolveModuleDirectory($this->module_name, FALSE) . '/resources/uninstall.sql';
         if (!file_exists($path)) {
             return FALSE;
         }
-        get_instance()->db->query(file_get_contents($path));
+        $this->db->query(file_get_contents($path));
         return TRUE;
     }
 

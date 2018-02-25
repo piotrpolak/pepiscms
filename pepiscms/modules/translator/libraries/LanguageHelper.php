@@ -15,7 +15,7 @@
 /**
  * @version 1.3
  */
-class LanguageHelper
+class LanguageHelper extends ContainerAware
 {
     /**
      * Returns lang associative array
@@ -59,8 +59,7 @@ class LanguageHelper
                 $path = APPPATH . '../../codeigniter/language/';
             }
         } else {
-            $CI = get_instance();
-            $path = $CI->load->resolveModuleDirectory($module) . 'language/';
+            $path = $this->load->resolveModuleDirectory($module) . 'language/';
         }
 
 
@@ -93,8 +92,7 @@ class LanguageHelper
                 $path = APPPATH . '../../codeigniter/language/';
             }
         } else {
-            $CI = get_instance();
-            $path = $CI->load->resolveModuleDirectory($module) . 'language/';
+            $path = $this->load->resolveModuleDirectory($module) . 'language/';
         }
 
 
@@ -168,8 +166,7 @@ class LanguageHelper
                 $path = APPPATH . '../../codeigniter/language/';
             }
         } else {
-            $CI = get_instance();
-            $path = $CI->load->resolveModuleDirectory($module) . 'language/';
+            $path = $this->load->resolveModuleDirectory($module) . 'language/';
         }
 
         $lang = $this->getLanguageByModuleName($module, $lang_name, $language_file);
@@ -247,7 +244,7 @@ class LanguageHelper
      * @param int $length
      * @return string
      */
-    static function ensureStringLength($value, $length = 20)
+    private static function ensureStringLength($value, $length = 20)
     {
         $strlen = strlen($value);
 
@@ -294,8 +291,7 @@ class LanguageHelper
         }
 
         if ($module != 'system') {
-            $CI = get_instance();
-            $path = $CI->load->resolveModuleDirectory($module) . 'language/';
+            $path = $this->load->resolveModuleDirectory($module) . 'language/';
         }
 
         $keys = array();
@@ -328,8 +324,7 @@ class LanguageHelper
         if ($module == 'system') {
             $path = APPPATH . 'language/';
         } else {
-            $CI = get_instance();
-            $path = $CI->load->resolveModuleDirectory($module) . 'language/';
+            $path = $this->load->resolveModuleDirectory($module) . 'language/';
         }
 
         $language_dirs = glob($path . '*', GLOB_ONLYDIR);
@@ -358,8 +353,7 @@ class LanguageHelper
         if ($module == 'system') {
             $path = APPPATH . 'language/';
         } else {
-            $CI = get_instance();
-            $path = $CI->load->resolveModuleDirectory($module) . 'language/';
+            $path = $this->load->resolveModuleDirectory($module) . 'language/';
         }
 
         $language_dirs = glob($path . '*/*_lang.php');

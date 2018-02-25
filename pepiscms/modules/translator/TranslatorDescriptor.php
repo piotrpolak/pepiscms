@@ -23,7 +23,7 @@ class TranslatorDescriptor extends ModuleDescriptor
     public function __construct()
     {
         $module_name = strtolower(str_replace('Descriptor', '', __CLASS__));
-        get_instance()->load->moduleLanguage($module_name);
+        $this->load->moduleLanguage($module_name);
     }
 
     /**
@@ -31,7 +31,7 @@ class TranslatorDescriptor extends ModuleDescriptor
      */
     public function getName($language)
     {
-        return get_instance()->lang->line('translator_module_name');
+        return $this->lang->line('translator_module_name');
     }
 
     /**
@@ -39,7 +39,7 @@ class TranslatorDescriptor extends ModuleDescriptor
      */
     public function getDescription($language)
     {
-        return get_instance()->lang->line('translator_module_description');
+        return $this->lang->line('translator_module_description');
     }
 
     /**

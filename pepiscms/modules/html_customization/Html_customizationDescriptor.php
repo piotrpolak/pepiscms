@@ -31,7 +31,7 @@ class Html_customizationDescriptor extends ModuleDescriptor
     {
         parent::__construct();
         $this->module_name = strtolower(str_replace('Descriptor', '', __CLASS__));
-        get_instance()->load->moduleLanguage($this->module_name);
+        $this->load->moduleLanguage($this->module_name);
     }
 
     /**
@@ -39,8 +39,8 @@ class Html_customizationDescriptor extends ModuleDescriptor
      */
     public function getName($language)
     {
-        get_instance()->load->moduleLanguage($this->module_name);
-        return get_instance()->lang->line($this->module_name . '_module_name');
+        $this->load->moduleLanguage($this->module_name);
+        return $this->lang->line($this->module_name . '_module_name');
     }
 
     /**
@@ -48,9 +48,9 @@ class Html_customizationDescriptor extends ModuleDescriptor
      */
     public function getDescription($language)
     {
-        get_instance()->load->moduleLanguage($this->module_name);
+        $this->load->moduleLanguage($this->module_name);
         $description_label = $this->module_name . '_module_description';
-        $description = get_instance()->lang->line($this->module_name . '_module_description');
+        $description = $this->lang->line($this->module_name . '_module_description');
         if ($description == $description_label) {
             return '';
         }

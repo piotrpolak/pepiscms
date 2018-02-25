@@ -31,7 +31,7 @@ class Symfony2_bridgeDescriptor extends ModuleDescriptor
     {
         parent::__construct();
         $this->module_name = strtolower(str_replace('Descriptor', '', __CLASS__));
-        get_instance()->load->moduleLanguage($this->module_name);
+        $this->load->moduleLanguage($this->module_name);
     }
 
     /**
@@ -39,7 +39,7 @@ class Symfony2_bridgeDescriptor extends ModuleDescriptor
      */
     public function getName($language)
     {
-        return get_instance()->lang->line($this->module_name . '_module_name');
+        return $this->lang->line($this->module_name . '_module_name');
     }
 
     /**
@@ -47,7 +47,7 @@ class Symfony2_bridgeDescriptor extends ModuleDescriptor
      */
     public function getDescription($language)
     {
-        return get_instance()->lang->line($this->module_name . '_module_description');
+        return $this->lang->line($this->module_name . '_module_description');
     }
 
     /**
