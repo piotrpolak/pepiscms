@@ -58,7 +58,15 @@ class {module_class_name}Descriptor extends ModuleDescriptor {
      */
     public function isDisplayedInMenu()
     {
-        return true;
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isDisplayedInUtilities()
+    {
+        return false;
     }
 
     /**
@@ -95,15 +103,16 @@ class {module_class_name}Descriptor extends ModuleDescriptor {
     public function getAdminSubmenuElements($language)
     {
         return false;
-        
-//        return array(
-//			array(
-//				'controller' => $this->module_name,
-//				'method' => 'edit',
-//				'label' => $this->lang->line($this->module_name.'_add'),
-//				'description' => ''
-//			),
-//		);
+
+//        return SubmenuBuilder::create()
+//            ->addItem()
+//                ->withController($this->module_name)
+//                ->withMethod('edit')
+//                ->withLabel($this->lang->line($this->module_name . '_add'))
+//                ->withDescription($this->lang->line($this->module_name . '_add_description'))
+//                ->withIconUrl(module_resources_url($this->module_name) . 'icon_16.png')
+//            ->end()
+//            ->build();
     }
 
     /**
@@ -113,18 +122,15 @@ class {module_class_name}Descriptor extends ModuleDescriptor {
     {
         return false;
 
-//        return array(
-//            array(
-//                'controller' => $this->module_name,
-//                'method' => 'edit',
-//                'label' => $this->lang->line($this->module_name . '_add'),
-//                'description' => '',
-//                //'icon' => module_resources_url($this->module_name).'cache_32.png', //module_icon_url($this->module_name),
-//                //'url' => 'http://www.disneyland.pl/', // URL can be used instead of controller and method
-//                //'target' => '_blank',
-//                //'group' => 'dashboard_group_default',
-//            ),
-//        );
+//        return SubmenuBuilder::create()
+//            ->addItem()
+//                ->withController($this->module_name)
+//                ->withMethod('edit')
+//                ->withLabel($this->lang->line($this->module_name . '_add'))
+//                ->withDescription($this->lang->line($this->module_name . '_add_description'))
+//                ->withIconUrl(module_resources_url($this->module_name) . 'icon_16.png')
+//            ->end()
+//            ->build();
     }
 
 }
