@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -12,6 +12,8 @@
  * @link                http://www.polak.ro/
  */
 
+defined('BASEPATH') or exit('No direct script access allowed');
+
 if (!function_exists('admin_url')) {
 
     /**
@@ -20,7 +22,7 @@ if (!function_exists('admin_url')) {
      * @param bool $is_absolute
      * @return string
      */
-    function admin_url($is_absolute = TRUE)
+    function admin_url($is_absolute = true)
     {
         if ($is_absolute) {
             return base_url() . 'admin/';
@@ -28,7 +30,6 @@ if (!function_exists('admin_url')) {
             return 'admin/';
         }
     }
-
 }
 
 if (!function_exists('module_url')) {
@@ -39,7 +40,7 @@ if (!function_exists('module_url')) {
      * @param string|bool $module_name if set to false, the current module is read and used
      * @return string
      */
-    function module_url($module_name = FALSE)
+    function module_url($module_name = false)
     {
         if (!$module_name) {
             $CI = get_instance();
@@ -49,7 +50,6 @@ if (!function_exists('module_url')) {
         }
         return admin_url() . 'module/run/' . $module_name . '/';
     }
-
 }
 
 if (!function_exists('module_resources_url')) {
@@ -60,7 +60,7 @@ if (!function_exists('module_resources_url')) {
      * @param string|bool $module_name if set to false, the current module is read and used
      * @return string
      */
-    function module_resources_url($module_name = FALSE)
+    function module_resources_url($module_name = false)
     {
         $CI = get_instance();
         if (!$module_name) {
@@ -69,16 +69,15 @@ if (!function_exists('module_resources_url')) {
             }
         }
 
-        $resouces_path = $CI->load->resolveModuleDirectory($module_name, FALSE) . '/resources/';
+        $resouces_path = $CI->load->resolveModuleDirectory($module_name, false) . '/resources/';
 
-        $path = FALSE;
+        $path = false;
         if (file_exists($resouces_path)) {
-            $path = $CI->load->resolveModuleDirectory($module_name, TRUE) . 'resources/';
+            $path = $CI->load->resolveModuleDirectory($module_name, true) . 'resources/';
         }
 
         return $path;
     }
-
 }
 
 if (!function_exists('site_theme_url')) {
@@ -89,14 +88,13 @@ if (!function_exists('site_theme_url')) {
      * @param string|bool $theme_name if set to false, the current theme is read and used
      * @return string
      */
-    function site_theme_url($theme_name = FALSE)
+    function site_theme_url($theme_name = false)
     {
         if (!$theme_name) {
             $theme_name = get_instance()->config->item('current_theme');
         }
         return get_instance()->config->item('theme_path') . $theme_name . '/';
     }
-
 }
 
 if (!function_exists('module_icon_url')) {
@@ -107,7 +105,7 @@ if (!function_exists('module_icon_url')) {
      * @param string|bool $module_name if set to false, the current module is read and used
      * @return string
      */
-    function module_icon_url($module_name = FALSE)
+    function module_icon_url($module_name = false)
     {
         $CI = get_instance();
         if (!$module_name) {
@@ -116,7 +114,7 @@ if (!function_exists('module_icon_url')) {
             }
         }
 
-        if (file_exists($CI->load->resolveModuleDirectory($module_name, FALSE) . 'resources/icon_32.png')) {
+        if (file_exists($CI->load->resolveModuleDirectory($module_name, false) . 'resources/icon_32.png')) {
             $icon_path = module_resources_url($module_name) . 'icon_32.png';
         } else {
             $icon_path = 'pepiscms/theme/img/module/module_32.png';
@@ -124,7 +122,6 @@ if (!function_exists('module_icon_url')) {
 
         return $icon_path;
     }
-
 }
 
 if (!function_exists('module_icon_small_url')) {
@@ -135,7 +132,7 @@ if (!function_exists('module_icon_small_url')) {
      * @param string|bool $module_name if set to false, the current module is read and used
      * @return string
      */
-    function module_icon_small_url($module_name = FALSE)
+    function module_icon_small_url($module_name = false)
     {
         $CI = get_instance();
         if (!$module_name) {
@@ -144,7 +141,7 @@ if (!function_exists('module_icon_small_url')) {
             }
         }
 
-        if (file_exists($CI->load->resolveModuleDirectory($module_name, FALSE) . '/resources/icon_16.png')) {
+        if (file_exists($CI->load->resolveModuleDirectory($module_name, false) . '/resources/icon_16.png')) {
             $icon_path = module_resources_url($module_name) . 'icon_16.png';
         } else {
             $icon_path = 'pepiscms/theme/module_16.png';
@@ -152,7 +149,6 @@ if (!function_exists('module_icon_small_url')) {
 
         return $icon_path;
     }
-
 }
 
 if (!function_exists('current_url')) {
@@ -179,5 +175,4 @@ if (!function_exists('current_url')) {
         }
         return $pageURL;
     }
-
 }

@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 if (!function_exists('niceuri')) {
 
@@ -87,7 +89,6 @@ if (!function_exists('niceuri')) {
 
         return $name;
     }
-
 }
 
 if (!function_exists('shortname')) {
@@ -109,7 +110,6 @@ if (!function_exists('shortname')) {
         }
         return $name;
     }
-
 }
 
 if (!function_exists('remove_separators')) {
@@ -124,5 +124,4 @@ if (!function_exists('remove_separators')) {
     {
         return str_replace(array(' ', '-', '+', '_'), '', $str);
     }
-
 }

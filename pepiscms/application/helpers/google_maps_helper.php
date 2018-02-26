@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 if (!function_exists('google_maps_locate')) {
 
@@ -43,7 +45,7 @@ if (!function_exists('google_maps_locate')) {
 
             return $data;
         } elseif ($contents_json->status == 'ZERO_RESULTS') {
-            return FALSE;
+            return false;
         } else {
             throw new Exception('Unable to find location. Google Maps Status: ' . $contents_json->status);
         }

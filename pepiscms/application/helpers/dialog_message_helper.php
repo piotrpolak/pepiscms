@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 if (!function_exists('display_error')) {
 
@@ -29,7 +31,6 @@ if (!function_exists('display_error')) {
 
         return $o;
     }
-
 }
 
 if (!function_exists('display_warning')) {
@@ -49,7 +50,6 @@ if (!function_exists('display_warning')) {
 
         return $o;
     }
-
 }
 
 if (!function_exists('display_notification')) {
@@ -69,7 +69,6 @@ if (!function_exists('display_notification')) {
 
         return $o;
     }
-
 }
 
 if (!function_exists('get_warning_begin')) {
@@ -83,7 +82,6 @@ if (!function_exists('get_warning_begin')) {
     {
         return '<div class="dialog_box warning"><img src="pepiscms/theme/img/dialog/messages/warning_32.png" alt="" />' . "\n" . '<p>';
     }
-
 }
 
 if (!function_exists('get_warning_end')) {
@@ -97,7 +95,6 @@ if (!function_exists('get_warning_end')) {
     {
         return '</p>' . "\n" . '</div>' . "\n" . '<div style="clear: both"></div>';
     }
-
 }
 
 if (!function_exists('display_success')) {
@@ -117,7 +114,6 @@ if (!function_exists('display_success')) {
 
         return $o;
     }
-
 }
 
 if (!function_exists('display_tip')) {
@@ -137,7 +133,6 @@ if (!function_exists('display_tip')) {
 
         return $o;
     }
-
 }
 
 if (!function_exists('display_breadcrumb')) {
@@ -149,7 +144,7 @@ if (!function_exists('display_breadcrumb')) {
      * @param bool $icon
      * @return string
      */
-    function display_breadcrumb($breadcrumb_array, $icon = FALSE)
+    function display_breadcrumb($breadcrumb_array, $icon = false)
     {
         $count = count($breadcrumb_array);
 
@@ -182,7 +177,6 @@ if (!function_exists('display_breadcrumb')) {
 
         return $html;
     }
-
 }
 
 if (!function_exists('display_session_message')) {
@@ -204,7 +198,6 @@ if (!function_exists('display_session_message')) {
 
         return '';
     }
-
 }
 
 if (!function_exists('display_steps')) {
@@ -234,7 +227,7 @@ if (!function_exists('display_steps')) {
             }
 
             if (isset($step['active']) && $step['active']) {
-                $was_active = TRUE;
+                $was_active = true;
                 $css_class .= ' active';
             }
 
@@ -257,7 +250,6 @@ if (!function_exists('display_steps')) {
 
         return $html;
     }
-
 }
 
 if (!function_exists('display_steps_circle')) {
@@ -272,7 +264,6 @@ if (!function_exists('display_steps_circle')) {
     {
         return display_steps($steps, 'circle_steps');
     }
-
 }
 
 if (!function_exists('display_steps_dot')) {
@@ -287,7 +278,6 @@ if (!function_exists('display_steps_dot')) {
     {
         return display_steps($steps, 'dot_steps');
     }
-
 }
 
 if (!function_exists('display_action_bar')) {
@@ -300,9 +290,8 @@ if (!function_exists('display_action_bar')) {
      */
     function display_action_bar($actions)
     {
-
         if (count($actions) == 0) {
-            return FALSE;
+            return false;
         }
 
         $html = '<div class="action_bar">' . "\n";
@@ -318,7 +307,6 @@ if (!function_exists('display_action_bar')) {
 
         return $html;
     }
-
 }
 
 if (!function_exists('button_generic')) {
@@ -333,11 +321,10 @@ if (!function_exists('button_generic')) {
      * @param string|bool $id
      * @return string
      */
-    function button_generic($label, $url, $icon_path, $extra_classes = '', $id = FALSE)
+    function button_generic($label, $url, $icon_path, $extra_classes = '', $id = false)
     {
         return '<a href="' . $url . '" class="button ' . $extra_classes . '"' . ($id ? ' id="' . $id . '"' : '') . '><img src="' . $icon_path . '" alt="">' . $label . '</a>';
     }
-
 }
 
 if (!function_exists('button_cancel')) {
@@ -351,12 +338,11 @@ if (!function_exists('button_cancel')) {
      * @param string|bool $label
      * @return string
      */
-    function button_cancel($url = '#', $extra_classes = '', $id = FALSE, $label = FALSE)
+    function button_cancel($url = '#', $extra_classes = '', $id = false, $label = false)
     {
         $label = $label ? $label : CI_Controller::get_instance()->lang->line('global_button_cancel');
         return '<a href="' . $url . '" class="button cancel ' . $extra_classes . '"' . ($id ? ' id="' . $id . '"' : '') . '><img src="pepiscms/theme/img/dialog/buttons/cancel_16.png" alt="">' . $label . '</a>';
     }
-
 }
 
 if (!function_exists('button_back')) {
@@ -370,12 +356,11 @@ if (!function_exists('button_back')) {
      * @param string|bool $label
      * @return string
      */
-    function button_back($url = '#', $extra_classes = '', $id = FALSE, $label = FALSE)
+    function button_back($url = '#', $extra_classes = '', $id = false, $label = false)
     {
         $label = $label ? $label : CI_Controller::get_instance()->lang->line('global_button_back');
         return '<a href="' . $url . '" class="button back ' . $extra_classes . '"' . ($id ? ' id="' . $id . '"' : '') . '><img src="pepiscms/theme/img/dialog/buttons/back_16.png" alt="">' . $label . '</a>';
     }
-
 }
 
 if (!function_exists('button_next')) {
@@ -389,12 +374,11 @@ if (!function_exists('button_next')) {
      * @param string|bool $label
      * @return string
      */
-    function button_next($url = '#', $extra_classes = '', $id = FALSE, $label = FALSE)
+    function button_next($url = '#', $extra_classes = '', $id = false, $label = false)
     {
         $label = $label ? $label : CI_Controller::get_instance()->lang->line('global_button_next');
         return '<a href="' . $url . '" class="button next ' . $extra_classes . '"' . ($id ? ' id="' . $id . '"' : '') . '><img src="pepiscms/theme/img/dialog/buttons/next_16.png" alt="">' . $label . '</a>';
     }
-
 }
 
 if (!function_exists('button_previous')) {
@@ -408,12 +392,11 @@ if (!function_exists('button_previous')) {
      * @param string|bool $label
      * @return string
      */
-    function button_previous($url = '#', $extra_classes = '', $id = FALSE, $label = FALSE)
+    function button_previous($url = '#', $extra_classes = '', $id = false, $label = false)
     {
         $label = $label ? $label : CI_Controller::get_instance()->lang->line('global_button_previous');
         return '<a href="' . $url . '" class="button previous ' . $extra_classes . '"' . ($id ? ' id="' . $id . '"' : '') . '><img src="pepiscms/theme/img/dialog/buttons/previous_16.png" alt="">' . $label . '</a>';
     }
-
 }
 
 if (!function_exists('button_apply')) {
@@ -426,12 +409,11 @@ if (!function_exists('button_apply')) {
      * @param string|bool $label
      * @return string
      */
-    function button_apply($extra_classes = '', $id = FALSE, $label = FALSE)
+    function button_apply($extra_classes = '', $id = false, $label = false)
     {
         $label = $label ? $label : CI_Controller::get_instance()->lang->line('global_button_apply');
         return '<input type="submit" name="apply" value="' . $label . '" class="apply button ' . $extra_classes . '"' . ($id ? ' id="' . $id . '"' : '') . '>';
     }
-
 }
 
 if (!function_exists('button_save')) {
@@ -444,12 +426,11 @@ if (!function_exists('button_save')) {
      * @param string|bool $label
      * @return string
      */
-    function button_save($extra_classes = '', $id = FALSE, $label = FALSE)
+    function button_save($extra_classes = '', $id = false, $label = false)
     {
         $label = $label ? $label : CI_Controller::get_instance()->lang->line('global_button_save');
         return '<input type="submit" name="save" value="' . $label . '" class="save button ' . $extra_classes . '"' . ($id ? ' id="' . $id . '"' : '') . '>';
     }
-
 }
 
 if (!function_exists('button_print')) {
@@ -463,9 +444,8 @@ if (!function_exists('button_print')) {
      * @param string|bool $css_class
      * @return string
      */
-    function button_print($printUrl, $label = FALSE, $labelDownload = FALSE, $css_class = FALSE)
+    function button_print($printUrl, $label = false, $labelDownload = false, $css_class = false)
     {
-
         if (!$label) {
             $label = CI_Controller::get_instance()->lang->line('global_button_print');
         }
@@ -478,7 +458,6 @@ if (!function_exists('button_print')) {
 
         return '<a class="button popup noappend" href="' . $printUrl . '/print-1" title="' . $label . '"><img src="pepiscms/theme/img/dialog/buttons/print_16.png" alt="">' . $label . '</a> <a class="button" href="' . $printUrl . '" title="' . $labelDownload . '" target="_blank"><img src="pepiscms/theme/img/dialog/buttons/print_pdf_16.png" alt="">' . $labelDownload . '</a>';
     }
-
 }
 
 if (!function_exists('dashboard_box')) {
@@ -494,7 +473,7 @@ if (!function_exists('dashboard_box')) {
      * @param bool $target
      * @return string
      */
-    function dashboard_box($name, $url, $icon_path = FALSE, $description = FALSE, $is_popup = FALSE, $target = FALSE)
+    function dashboard_box($name, $url, $icon_path = false, $description = false, $is_popup = false, $target = false)
     {
         if (!$icon_path) {
             $icon_path = 'pepiscms/theme/module_32.png';
@@ -509,7 +488,6 @@ if (!function_exists('dashboard_box')) {
 
         return $html;
     }
-
 }
 
 if (!function_exists('display_confirmation_box')) {
@@ -526,7 +504,6 @@ if (!function_exists('display_confirmation_box')) {
         $template_absolute_path = APPPATH . 'views/templates/dialog_confirmation_box.php';
         return get_instance()->load->theme($template_absolute_path, array('message' => $message, 'explanation' => $explanation));
     }
-
 }
 
 if (!function_exists('display_error_box')) {
@@ -543,5 +520,4 @@ if (!function_exists('display_error_box')) {
         $template_absolute_path = APPPATH . 'views/templates/dialog_error_box.php';
         return get_instance()->load->theme($template_absolute_path, array('message' => $message, 'explanation' => $explanation));
     }
-
 }

@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -12,6 +12,8 @@
  * @link                http://www.polak.ro/
  */
 
+defined('BASEPATH') or exit('No direct script access allowed');
+
 if (!function_exists('html_to_pdf')) {
 
     /**
@@ -22,7 +24,7 @@ if (!function_exists('html_to_pdf')) {
      * @param string|boolean $base_url_for_relative_urls
      * @return mixed
      */
-    function html_to_pdf($html, $save_path = FALSE, $base_url_for_relative_urls = FALSE)
+    function html_to_pdf($html, $save_path = false, $base_url_for_relative_urls = false)
     {
         if ($base_url_for_relative_urls) {
             $html = preg_replace("#(<\s*(a|img|style|script)\s+[^>]*(href|src)\s*=\s*[\"'])(?!http)([^\"'>]+)([\"'>]+)#", '$1' . $base_url_for_relative_urls . '$4$5', $html);
@@ -40,5 +42,4 @@ if (!function_exists('html_to_pdf')) {
 
         return $CI->pdfgenerator->display();
     }
-
 }

@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 if (!function_exists('mysqldump')) {
 
@@ -26,10 +28,10 @@ if (!function_exists('mysqldump')) {
      * @param bool $dump_structure
      * @return boolean
      */
-    function mysqldump($db_host, $database, $db_user, $db_password, $tables = FALSE, $dump_to_filename = FALSE, $dump_structure = TRUE)
+    function mysqldump($db_host, $database, $db_user, $db_password, $tables = false, $dump_to_filename = false, $dump_structure = true)
     {
         if ($dump_to_filename && file_exists($dump_to_filename)) {
-            return FALSE;
+            return false;
         }
 
         $tables_sql = '';
@@ -46,7 +48,7 @@ if (!function_exists('mysqldump')) {
             if (class_exists('Logger')) {
                 Logger::warning('mysqldump command not found', 'BACKUP');
             }
-            return FALSE;
+            return false;
         }
 
 
@@ -73,7 +75,7 @@ if (!function_exists('mysqldump')) {
         $success = ($return_var == 0);
         if ($success) {
             if ($dump_to_filename) {
-                return TRUE;
+                return true;
             } else {
                 return $dump;
             }
@@ -82,7 +84,6 @@ if (!function_exists('mysqldump')) {
         if (class_exists('Logger')) {
             Logger::warning('Unable to create MySQL dump, return code ' . $return_var, 'BACKUP');
         }
-        return FALSE;
+        return false;
     }
-
 }

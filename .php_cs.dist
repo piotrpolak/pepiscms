@@ -3,7 +3,6 @@
 $finder = PhpCsFixer\Finder::create()
     ->exclude('views')
     ->exclude('emails')
-    ->exclude('helpers')
     ->exclude('language')
     ->exclude('modules')
     ->exclude('resources')

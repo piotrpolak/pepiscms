@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 if (!function_exists('ip_info')) {
 
@@ -42,15 +44,14 @@ if (!function_exists('ip_info')) {
 
         foreach ($patterns as $key => $pattern) {
             //store the result in array
-            $ipInfo[$key] = preg_match($pattern, $response, $value) && !empty($value[1]) ? $value[1] : FALSE;
+            $ipInfo[$key] = preg_match($pattern, $response, $value) && !empty($value[1]) ? $value[1] : false;
             $ipInfo[$key] = trim($ipInfo[$key]);
         }
 
         if ($ipInfo['country'] == '-') {
-            $ipInfo['country'] = FALSE;
+            $ipInfo['country'] = false;
         }
 
         return $ipInfo;
     }
-
 }

@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -12,6 +12,8 @@
  * @link                http://www.polak.ro/
  */
 
+defined('BASEPATH') or exit('No direct script access allowed');
+
 if (!function_exists('module_path')) {
 
     /**
@@ -20,7 +22,7 @@ if (!function_exists('module_path')) {
      * @param bool|string $module_name if set to false, the current module is read and used
      * @return string
      */
-    function module_path($module_name = FALSE)
+    function module_path($module_name = false)
     {
         $CI = get_instance();
         if (!$module_name) {
@@ -30,5 +32,4 @@ if (!function_exists('module_path')) {
         }
         return $CI->load->resolveModuleDirectory($module_name);
     }
-
 }

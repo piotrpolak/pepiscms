@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -12,6 +12,8 @@
  * @link                http://www.polak.ro/
  */
 
+defined('BASEPATH') or exit('No direct script access allowed');
+
 if (!function_exists('utc_timestamp')) {
 
     /**
@@ -23,5 +25,4 @@ if (!function_exists('utc_timestamp')) {
     {
         return gmdate('Y-m-d H:i:s');
     }
-
 }

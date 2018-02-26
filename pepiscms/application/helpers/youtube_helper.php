@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 if (!function_exists('youtube_get_id_by_url')) {
 
@@ -45,7 +47,6 @@ if (!function_exists('youtube_get_id_by_url')) {
             }
         }
 
-        return FALSE;
+        return false;
     }
-
 }
