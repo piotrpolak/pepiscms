@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * {module_name} admin controller
@@ -53,21 +55,21 @@ class {module_class_name}Admin extends AdminCRUDController
 //        $this->setTooltipTextForIndex($this->lang->line($module_name . '_index_tip'));
 //        $this->setTooltipTextForEdit($this->lang->line($module_name.'_edit_tip'));
 
-        // Setting crud properties, these are optional. Default TRUE all
-    $this->setDeletable(TRUE)
-        ->setAddable(TRUE)
-        ->setEditable(TRUE)
-        ->setPreviewable(FALSE)
-        ->setPopupEnabled(FALSE)
-        ->setOrderable(FALSE);
+        // Setting crud properties, these are optional. Default true all
+        $this->setDeletable(true)
+            ->setAddable(true)
+            ->setEditable(true)
+            ->setPreviewable(false)
+            ->setPopupEnabled(false)
+            ->setOrderable(false);
 
-//        $this->setExportable(TRUE, function ($resulting_line) {
+//        $this->setExportable(true, function ($resulting_line) {
 //            // The callback is optional, it is used to filter individual rows before inserting them
 //            unset($resulting_line['afield_you_want_to_ignore']);
 //            return $resulting_line;
 //        });
 
-//        $this->setImportable(TRUE, array('name', 'street'), function ($resulting_line, $original_line) {
+//        $this->setImportable(true, array('name', 'street'), function ($resulting_line, $original_line) {
 //            // The callback is optional, it is used to filter individual rows before inserting them
 //            // You can change existing values, add or unset fields
 //            $resulting_line['name'] = ucfirst($resulting_line['name']);
@@ -87,9 +89,9 @@ class {module_class_name}Admin extends AdminCRUDController
 //        $this->setMetaDescriptionPattern(array($this, '_fb_format_meta_description')); // Can use a callback as well
 //        $this->setMetaDescriptionPattern('{description}', array($this, '_fb_format_meta_description')); // Can use a pattern + callback as well
         {order_meta_code_element}
-//        $this->setOrderable(TRUE, 'item_order');
-//        $this->setOrderable(TRUE, 'item_order', 'optional_constraint_field_name'); // optional_constraint_field_name is usually the foreign key field
-//        $this->setStarable(TRUE, 'is_starable', $this->lang->line($module_name . '_is_starable')); // Basic toggle button accessible from grid
+//        $this->setOrderable(true, 'item_order');
+//        $this->setOrderable(true, 'item_order', 'optional_constraint_field_name'); // optional_constraint_field_name is usually the foreign key field
+//        $this->setStarable(true, 'is_starable', $this->lang->line($module_name . '_is_starable')); // Basic toggle button accessible from grid
 //        $this->addMetaAction(array($this, '_crud_action_images'), $this->lang->line($module_name . '_images')); // Action link displayed in grid cell
 //        $this->addMetaAction(array($this, '_crud_action_images'), $this->lang->line($module_name . '_images'), 'heavy_operation'); // Action link displayed in grid cell that triggers heavy operation overlayer
 //        $this->addActionForIndex(array('title' => $this->lang->line($module_name.'_manage_banners'), 'name' => $this->lang->line($module_name.'_manage_banners'), 'icon' => 'pepiscms/theme/img/dialog/actions/action_16.png', 'link' => module_url().'manage_banners'));
@@ -114,7 +116,7 @@ class {module_class_name}Admin extends AdminCRUDController
 
 //        $this->datagrid->setItemsPerPage(300)
 //            ->datagrid->setDefaultOrder('id', 'DESC')
-//            ->datagrid->addFilter($this->lang->line($module_name.'_date_from'), 'date', DataGrid::FILTER_DATE, FALSE,
+//            ->datagrid->addFilter($this->lang->line($module_name.'_date_from'), 'date', DataGrid::FILTER_DATE, false,
 //                DataGrid::FILTER_CONDITION_GREATER_OR_EQUAL); // Can also be an associative array
         {filters_element}
 
@@ -123,7 +125,7 @@ class {module_class_name}Admin extends AdminCRUDController
         // If not set, then DefaultFormRenderer is used
         // You can even use your own form templates, see views/templates
         $this->formbuilder->setRenderer(new FloatingFormRenderer())
-            ->setApplyButtonEnabled(TRUE);
+            ->setApplyButtonEnabled(true);
 
 
         // Formbuilder callbacks
@@ -223,7 +225,7 @@ class {module_class_name}Admin extends AdminCRUDController
 
         // Getting form field names
         $field_names = $this->formbuilder->getFieldNames();
-        $slug_field = FALSE;
+        $slug_field = false;
         foreach ($field_names as $field_name) {
             if (in_array($field_name, $sluggable_field_names)) {
                 $slug_field = $field_name;
@@ -343,7 +345,7 @@ class {module_class_name}Admin extends AdminCRUDController
 
         // No need to change filename? Then we are fine
         if ($filename == $new_name) {
-            return TRUE;
+            return true;
         }
 
         // Finally here we go!
@@ -351,9 +353,9 @@ class {module_class_name}Admin extends AdminCRUDController
             $data[$current_image_field_name] = $new_base_path . $new_name;
             $filename = $new_base_path . $new_name;
 
-            return TRUE;
+            return true;
         }
-        return FALSE;
+        return false;
     }
 
     /**
@@ -550,7 +552,7 @@ class {module_class_name}Admin extends AdminCRUDController
 //
 //        // Skip the rest when it failed to save
 //        if (!$success) {
-//            return FALSE;
+//            return false;
 //        }
 //
 //        // Get last entry id
