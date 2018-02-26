@@ -1,8 +1,10 @@
-# CrudDefinitionBuilder library
+# CrudDefinitionBuilder
 
-CrudDefinitionBuilder makes it easier and safer (typesafe) to generate DataGrid and FormBuilder definitions.
+[CrudDefinitionBuilder](../../../tree/master/pepiscms/application/classes/CrudDefinitionBuilder.php) makes it easier and
+safer (typesafe) to generate DataGrid and [FormBuilder](LIBRARY_FORMBUILDER.md) definitions.
 
-Below some sample code:
+Below some sample code (see [CrudDefinitionBuilder code](../../../tree/master/pepiscms/application/classes/CrudDefinitionBuilder.php)
+for complete reference):
 
 ```php
 $definition = CrudDefinitionBuilder::create()

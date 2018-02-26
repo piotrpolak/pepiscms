@@ -11,3 +11,4 @@
 | Extended URI              | Added possibility to shift URI components                                                                                                                                                                   |
 | Extended Upload           | Added possibility to accept any file type by setting accepted_file_types to "*" Skipped image size check                                                                                                    |
 | Extended Validation       | Added custom validation methods.                                                                                                                                                                            |
+| ContainerAware            | Makes it possible to write any library just like if you were writing controller code.                                                                                                                       |

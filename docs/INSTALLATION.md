@@ -1,12 +1,16 @@
 # Installation
 
-There are two ways of installing PepisCMS: attended (user) and unattended (manual).
+PepisCMS is installed as a composer dependency and then instantiated in the user directory.
 
-Before to proceed to any of the installation pocedures you must first configure composer.json dependencies
+Once composer dependency has been configured downloaded (see below) there are two ways of bootstrapping PepisCMS instance:
+* [attended](#attended-(user)-installation) (user) and
+* [unattended](#unattended-installation) (manual).
+
+## Configuring composer
                                                                       
 ```json
 {
-    "name": "piotrpolak/sample",
+    "name": "yourvendorname/yourprojectname",
     "minimum-stability": "dev",
     "repositories": [
         {
@@ -36,7 +40,7 @@ Before to proceed to any of the installation pocedures you must first configure 
 2. Copy `install.php` file to root directory
 
      ```bash
-        cp ./vendor/piotrpolak/pepiscms/install.php ./
+     cp ./vendor/piotrpolak/pepiscms/install.php ./
      ```
      
 3. Open `install.php` in your browser [http://localhost/install.php](http://localhost/install.php)
@@ -44,31 +48,45 @@ Before to proceed to any of the installation pocedures you must first configure 
     This will create basic framework structure. Please follow the installation guide.
 
     * Directory view
-    ![Directory view](screens/INSTALLATION_1.png)
+        ![Directory view](screens/INSTALLATION_1.png)
    
     * Copy files and create framework structure
-    ![Copy files](screens/INSTALLATION_2.png)
+        ![Copy files](screens/INSTALLATION_2.png)
    
     * Database connection setup
-    ![Database connection](screens/INSTALLATION_3.png)
+        
+        There are two options: **native** and **Symfony import**.
+         
+        When selecting **native** you will be asked for database host, name, user and password.
+        
+        If selecting **Symfony import** then PepisCMS tries to automatically parses Symfony `parameters.yml` configuration.
+    
+        ![Database connection](screens/INSTALLATION_3.png)
    
-    * Selecting authorization driver. You can choose from *native* (users are managed locally) or *CAS*
-    ![Authorization driver](screens/INSTALLATION_4.png)
+    * Selecting authorization driver. You can choose from **native** (users are managed locally) or **CAS**
+    
+        When selecting **CAS** then user passwords will not be managed by PepisCMS. The local users having minimal 
+        access rights will be created upon the first authentication (use of the system).
+        
+        ![Authorization driver](screens/INSTALLATION_4.png)
    
     * Configuring administrator account
-    ![Administrator account](screens/INSTALLATION_5.png)
+        ![Administrator account](screens/INSTALLATION_5.png)
    
     * Configuring site options
-    ![Site confguration](screens/INSTALLATION_6.png)
+        ![Site confguration](screens/INSTALLATION_6.png)
    
     * Configuring installed modules
-    ![Installed modules](screens/INSTALLATION_7.png)
+    
+        You can choose which modules to be installed and add specified modules to menu and/or utilities.
+        
+        ![Installed modules](screens/INSTALLATION_7.png)
    
     * Success message
-    ![Success](screens/INSTALLATION_8.png)
+        ![Success](screens/INSTALLATION_8.png)
    
     * Dashboard
-    ![Dashboard](screens/INSTALLATION_9.png)
+        ![Dashboard](screens/INSTALLATION_9.png)
     
 ## Unattended installation
 

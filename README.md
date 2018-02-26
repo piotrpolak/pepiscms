@@ -6,7 +6,7 @@
 PepisCMS is a content management system. Its main feature is the [CRUD module generator](docs/GENERATING_A_CRUD_MODULE.md)
 which makes it easy to set up an entire administration panel based on the database schema definition within minutes.
 The generated administration panel consists of [modules](docs/MODULES.md) that can be customized (or just left as they
-are if you don't care about details).
+are if you don't care about presentation details).
 
 * [Features](docs/FEATURES.md)
 * [Installation](docs/INSTALLATION.md)
@@ -17,11 +17,11 @@ are if you don't care about details).
 * [Simplified domain model](docs/SIMPLIFIED_DOMAIN_MODEL.md)
 * [Architecture overview](docs/ARCHITECTURE_OVERVIEW.md)
 * Core libraries:
-    * [ContainerAware](docs/CONTAINER_AWARE.md)
     * [Generic model](docs/GENERIC_MODEL.md)
     * [FormBuilder](docs/LIBRARY_FORMBUILDER.md)
     * [DataGrid](docs/LIBRARY_DATAGRID.md)
     * [CrudDefinitionBuilder](docs/LIBRARY_CRUD_DEFINITION_BUILDER.md)
+    * [ContainerAware](docs/LIBRARY_CONTAINER_AWARE.md)
 * [Breaking API changes and upgrade instructions](CHANGES.md)
 * [Benchmarking](docs/BENCHMARKING.md)
 * [Naming convention inconsistency](docs/NAMING_CONVENTION_INCONSISTENCY.md)
@@ -32,21 +32,22 @@ are if you don't care about details).
 ## Some history
 
 PepisCMS was started in 2007 as an experimental academic project.
-It is written on top of the [CodeIgniter framework](https://codeigniter.com/) and during its lifetime it has been
-fluently ported from CodeIgniter version 1.5.4 to 3.0 (and counting).
+The system is written on top of the [CodeIgniter framework](https://codeigniter.com/) and during its lifespan
+it has been fluently ported from CodeIgniter version 1.5.4 to 3.0 (and counting).
 
 As 2018, the project is **fully functional** (and really fast) but you should be aware that its source code is quite far
-away from php latest architectural styles and by some it might be considered a **legacy** (and that would not be offensive,
-see its [maintainability score](https://codeclimate.com/github/piotrpolak/pepiscms) at Code Climate).
+away from php latest architectural styles and by some it might be considered a **legacy** (and that would not be
+offensive, see its [maintainability score](https://codeclimate.com/github/piotrpolak/pepiscms) at Code Climate).
 
 ## Development philosophy
 
 During all those years the project has been developed using a very conservative approach and manually tested on multiple
-deployments prior to releasing a stable version. This made it possible to keep regression to minimum.
+deployments prior to releasing a stable version. This made it possible to keep regression to minimum but in time of
+TDD and automatic builds this approach is obsolete. 
 
 ### Becoming open source
 
-On its "10th birthday" the project was released as open source under the [MIT license](LICENSE.txt).
+On the "10th birthday" the project was released as open source under the [MIT license](LICENSE.txt).
 
 Prior to pushing the project to github its code has been slightly refactored, cleaned up from any proprietary code,
 described by some tests and released as a composer dependency.
