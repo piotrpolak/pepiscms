@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See LICENSE.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Class TranslatorDescriptor
@@ -55,6 +57,6 @@ class TranslatorDescriptor extends ModuleDescriptor
      */
     public function isDisplayedInUtilities()
     {
-        return TRUE;
+        return true;
     }
 }

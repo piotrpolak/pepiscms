@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See LICENSE.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Symfony2 utilities
@@ -46,7 +48,7 @@ class Symfony2_bridgeAdmin extends ModuleAdminController
         try {
             $this->assign('kernel', $this->symfony2_bridge->getKernel());
         } catch (Exception $e) {
-            $this->assign('kernel', FALSE);
+            $this->assign('kernel', false);
         }
 
         $this->display();

@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -12,6 +12,8 @@
  * @link                http://www.polak.ro/
  */
 
+defined('BASEPATH') or exit('No direct script access allowed');
+
 /**
  * Example usage <?=$this->widget->create('logs', 'logs')->render( 'COLECTIONNAME', $this->formbuilder->getId(), 'Modifications' );
  */
@@ -19,7 +21,7 @@ class LogsWidget extends Widget
 {
     //private $levels = array(Logger::MESSAGE_LEVEL_INFO => 'INFO', Logger::MESSAGE_LEVEL_NOTICE => 'NOTICE', Logger::MESSAGE_LEVEL_WARNING => 'WARNING', Logger::MESSAGE_LEVEL_ERROR => 'ERROR');
 
-    public function logs($collection, $resource_id = NULL, $title = FALSE)
+    public function logs($collection, $resource_id = null, $title = false)
     {
         $where_conditions = array('collection' => $collection);
 
@@ -40,7 +42,7 @@ class LogsWidget extends Widget
         $this->datagrid->setTable($this->Log_model->getTable(), $where_conditions);
         $this->datagrid->setItemsPerPage(400);
         $this->datagrid->setDefaultOrder('timestamp', 'desc');
-        $this->datagrid->setOrderable(FALSE);
+        $this->datagrid->setOrderable(false);
         $this->datagrid->setBaseUrl(admin_url() . 'logs/mylogin');
         $this->datagrid->setRowCssClassFormattingFunction(array($this, '_datagrid_row_callback'));
 
@@ -50,7 +52,7 @@ class LogsWidget extends Widget
             'timestamp' => array(),
             'message' => array(),
             'user_id' => array(
-                'grid_formating_callback' => (SecurityManager::hasAccess('cms_users', 'edit', 'cms_users') ? array($this, '_datagrid_format_user_column') : FALSE),
+                'grid_formating_callback' => (SecurityManager::hasAccess('cms_users', 'edit', 'cms_users') ? array($this, '_datagrid_format_user_column') : false),
                 'values' => $this->Generic_model->setTable($this->config->item('database_table_logs'))->getAssocPairs('user_id', 'user_email', $this->User_model->getTable()),
             ),
             'ip' => array()
@@ -97,5 +99,4 @@ class LogsWidget extends Widget
 
         return '';
     }
-
 }

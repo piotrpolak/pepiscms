@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -12,12 +12,13 @@
  * @link                http://www.polak.ro/
  */
 
+defined('BASEPATH') or exit('No direct script access allowed');
+
 /**
  * Class System_infoAdmin
  */
 class System_infoAdmin extends ModuleAdminController
 {
-
     public function __construct()
     {
         parent::__construct();
@@ -53,5 +54,4 @@ class System_infoAdmin extends ModuleAdminController
 
         $this->display();
     }
-
 }

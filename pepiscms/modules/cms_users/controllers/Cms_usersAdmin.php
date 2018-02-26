@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See LICENSE.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * See AdminCRUDController for the list of the methods you can use in your constructor
@@ -31,7 +33,7 @@ class Cms_usersAdmin extends AdminCRUDController
         $this->setPageTitle($this->lang->line($lang_field_prefix . 'module_name'));
         $this->setAddNewItemLabel($this->lang->line($lang_field_prefix . 'add'));
 
-        $this->setPopupEnabled(FALSE);
+        $this->setPopupEnabled(false);
 
         $this->load->helper('string');
         $this->load->model('Group_model');
@@ -39,53 +41,53 @@ class Cms_usersAdmin extends AdminCRUDController
         $this->setFeedObject($this->User_model);
         $this->datagrid->setDefaultOrder('display_name', 'ASC');
 
-        $this->setDeletable(FALSE);
-        $this->setAddable(TRUE);
-        $this->setEditable(TRUE);
-        $this->setPreviewable(FALSE);
+        $this->setDeletable(false);
+        $this->setAddable(true);
+        $this->setEditable(true);
+        $this->setPreviewable(false);
 
         if (!$this->auth->getDriver()->isPasswordChangeSupported()) {
-            $this->setAddable(FALSE);
+            $this->setAddable(false);
             $driver_name = strtoupper(str_replace('_Auth_Driver', '', get_class($this->auth->getDriver())));
             $this->setTooltipTextForIndex(sprintf($this->lang->line($lang_field_prefix . 'index_tip_password_change_not_supported'), $driver_name, $driver_name));
         }
 
         $this->formbuilder->setCallback(array($this, '_fb_callback_on_save'), FormBuilder::CALLBACK_ON_SAVE);
         $this->formbuilder->setCallback(array($this, '_fb_callback_before_render'), FormBuilder::CALLBACK_BEFORE_RENDER);
-        $this->formbuilder->setApplyButtonEnabled(TRUE);
+        $this->formbuilder->setApplyButtonEnabled(true);
 
         $this->load->helper('string');
         $definition = array(
             'display_name' => array(
                 'filter_type' => DataGrid::FILTER_BASIC,
                 'validation_rules' => 'required',
-                'show_in_grid' => FALSE,
+                'show_in_grid' => false,
                 'input_group' => 'cms_users_input_group_main',
             ),
             'user_email' => array(
                 'description' => $this->lang->line('cms_users_user_email_description'),
                 'filter_type' => DataGrid::FILTER_BASIC,
-                'show_in_grid' => FALSE,
+                'show_in_grid' => false,
                 'validation_rules' => 'strtolower|trim|required|valid_email',
                 'input_group' => 'cms_users_input_group_main',
             ),
             'password' => array(
-                'show_in_grid' => FALSE,
+                'show_in_grid' => false,
                 'validation_rules' => 'trim|min_length[4]',
                 'input_type' => FormBuilder::PASSWORD,
                 'input_group' => 'cms_users_input_group_main',
             ),
             'groups_label' => array(
                 'label' => $this->lang->line('cms_users_groups'),
-                'show_in_form' => FALSE,
-                'grid_is_orderable' => FALSE,
+                'show_in_form' => false,
+                'grid_is_orderable' => false,
                 'grid_formating_callback' => array($this, '_datagrid_format_groups_label_column'),
                 'input_group' => 'cms_users_input_group_main',
             ),
             'is_root' => array(
                 'description' => $this->lang->line('cms_users_is_root_description'),
                 'input_type' => FormBuilder::CHECKBOX,
-                'show_in_grid' => FALSE,
+                'show_in_grid' => false,
                 'validation_rules' => '',
                 'input_default_value' => 1,
                 'values' => array(0 => $this->lang->line('global_dialog_no'), 1 => $this->lang->line('global_dialog_yes')),
@@ -93,7 +95,7 @@ class Cms_usersAdmin extends AdminCRUDController
             ),
             'groups' => array(
                 'input_type' => FormBuilder::MULTIPLECHECKBOX,
-                'show_in_grid' => FALSE,
+                'show_in_grid' => false,
                 'validation_rules' => '',
                 'foreign_key_relationship_type' => FormBuilder::FOREIGN_KEY_MANY_TO_MANY,
                 'foreign_key_table' => $this->config->item('database_table_groups'),
@@ -114,7 +116,7 @@ class Cms_usersAdmin extends AdminCRUDController
             'is_locked' => array(
                 'description' => $this->lang->line('cms_users_is_locked_description'),
                 'input_type' => FormBuilder::CHECKBOX,
-                'input_is_editable' => FALSE,
+                'input_is_editable' => false,
                 'input_default_value' => 0,
                 'validation_rules' => '',
                 'values' => array(0 => $this->lang->line('cms_users_status_is_locked_no'), 1 => $this->lang->line('cms_users_status_is_locked_yes')),
@@ -123,23 +125,23 @@ class Cms_usersAdmin extends AdminCRUDController
             'send_email_notification' => array(
                 'description' => $this->lang->line('cms_users_send_email_notification_description'),
                 'input_type' => FormBuilder::CHECKBOX,
-                'show_in_grid' => FALSE,
+                'show_in_grid' => false,
                 'validation_rules' => '',
                 'input_group' => 'cms_users_input_group_main',
             ),
             'user_login' => array(
                 'description' => $this->lang->line('cms_users_user_login_description'),
                 'filter_type' => DataGrid::FILTER_BASIC,
-                'show_in_grid' => TRUE,
+                'show_in_grid' => true,
                 'validation_rules' => 'strtolower|trim|min_length[4]|alpha_numeric|max_length[128]',
                 'input_group' => 'cms_users_input_group_secondary',
             ),
             'title' => array(
-                'validation_rules' => FALSE,
+                'validation_rules' => false,
                 'input_group' => 'cms_users_input_group_secondary',
             ),
             'image_path' => array(
-                'show_in_grid' => FALSE,
+                'show_in_grid' => false,
                 'input_type' => FormBuilder::IMAGE,
                 'upload_path' => INSTALLATIONPATH . 'application/users/',
                 'upload_display_path' => 'application/users/',
@@ -155,23 +157,23 @@ class Cms_usersAdmin extends AdminCRUDController
             'birth_date' => array(
                 'input_type' => FormBuilder::DATE,
                 'label' => $this->lang->line('cms_users_birth_date'),
-                'show_in_grid' => FALSE,
+                'show_in_grid' => false,
                 'validation_rules' => '',
                 'input_group' => 'cms_users_input_group_secondary',
             ),
             'password_last_changed_timestamp' => array(
-                'show_in_form' => FALSE,
+                'show_in_form' => false,
                 'input_group' => 'cms_users_input_group_main',
             ),
             'alternative_email' => array(
                 'input_type' => FormBuilder::DATE,
-                'show_in_grid' => FALSE,
+                'show_in_grid' => false,
                 'validation_rules' => 'strtolower|trim|valid_email',
                 'input_group' => 'cms_users_input_group_secondary',
             ),
             'note' => array(
                 'validation_rules' => '',
-                'show_in_grid' => FALSE,
+                'show_in_grid' => false,
                 'input_type' => FormBuilder::TEXTAREA,
                 'input_group' => 'cms_users_input_group_secondary',
             ),
@@ -197,8 +199,8 @@ class Cms_usersAdmin extends AdminCRUDController
 
             // Getting description
             if (!isset($def['description'])) {
-                $description = $this->lang->line($module_name . '_' . $key . '_description', FALSE);
-                if ($description !== FALSE) {
+                $description = $this->lang->line($module_name . '_' . $key . '_description', false);
+                if ($description !== false) {
                     $def['description'] = $description;
                 }
             }
@@ -220,25 +222,25 @@ class Cms_usersAdmin extends AdminCRUDController
     {
         $this->removeMetaActions();
         if ($line->status == 0) {
-            $this->setEditable(FALSE);
+            $this->setEditable(false);
             if (SecurityManager::hasAccess('users', 'activate', 'users')) {
-                $this->addMetaAction(module_url() . 'activate/id-{user_id}', $this->lang->line($this->module_name . '_activate'), '', FALSE);
+                $this->addMetaAction(module_url() . 'activate/id-{user_id}', $this->lang->line($this->module_name . '_activate'), '', false);
             }
         } else {
-            $this->setEditable(TRUE);
+            $this->setEditable(true);
 
             if (SecurityManager::hasAccess('users', 'reset_password', 'users') && $this->auth->getDriver()->isPasswordChangeSupported()) {
-                $this->addMetaAction(module_url() . 'reset_password/id-{user_id}', $this->lang->line($this->module_name . '_reset_password'), 'ask_to_confirm', FALSE);
+                $this->addMetaAction(module_url() . 'reset_password/id-{user_id}', $this->lang->line($this->module_name . '_reset_password'), 'ask_to_confirm', false);
             }
 
 
             if (SecurityManager::hasAccess('users', 'inactivate', 'users')) {
-                $this->addMetaAction(module_url() . 'inactivate/id-{user_id}', $this->lang->line($this->module_name . '_inactivate'), 'delete ask_to_confirm', FALSE);
+                $this->addMetaAction(module_url() . 'inactivate/id-{user_id}', $this->lang->line($this->module_name . '_inactivate'), 'delete ask_to_confirm', false);
             }
 
             if ($line->is_locked) {
                 if (SecurityManager::hasAccess('users', 'unlock', 'users')) {
-                    $this->addMetaAction(module_url() . 'unlock/id-{user_id}', $this->lang->line($this->module_name . '_unlock'), 'ask_to_confirm', FALSE);
+                    $this->addMetaAction(module_url() . 'unlock/id-{user_id}', $this->lang->line($this->module_name . '_unlock'), 'ask_to_confirm', false);
                 }
             }
         }
@@ -268,7 +270,7 @@ class Cms_usersAdmin extends AdminCRUDController
             return DataGrid::ROW_COLOR_ORANGE;
         }
 
-        return FALSE;
+        return false;
     }
 
     /**
@@ -293,7 +295,7 @@ class Cms_usersAdmin extends AdminCRUDController
         $user_id = $this->formbuilder->getId();
 
         if (!$data['birth_date'] || $data['birth_date'] = '0000-00-00') {
-            $data['birth_date'] = NULL;
+            $data['birth_date'] = null;
         }
 
         // Validating user login
@@ -305,12 +307,12 @@ class Cms_usersAdmin extends AdminCRUDController
                     if ($user_id != $user_id_by_login) {
                         // Login already taken
                         $this->formbuilder->setValidationErrormessage(sprintf($this->lang->line('cms_users_dialog_login_already_in_database'), $this->input->post('user_login')));
-                        return FALSE;
+                        return false;
                     }
                 } else {
                     // Login already taken
                     $this->formbuilder->setValidationErrormessage(sprintf($this->lang->line('cms_users_dialog_login_already_in_database'), $this->input->post('user_login')));
-                    return FALSE;
+                    return false;
                 }
             }
         }
@@ -318,18 +320,18 @@ class Cms_usersAdmin extends AdminCRUDController
         $groups = $this->Generic_model->getAssocPairs('group_id', 'group_name', $this->config->item('database_table_groups'));
 
         // Only root can make another user a root
-        $is_root = NULL;
+        $is_root = null;
         if (isset($data['is_root']) && $this->auth->isUserRoot()) {
             $is_root = $data['is_root'] == 1;
         }
 
         // Filtering users
-        $groups_ids = NULL;
+        $groups_ids = null;
         if (isset($data['groups'])) {
             $groups_ids = is_array($data['groups']) ? $data['groups'] : array();
         }
 
-        $password = (isset($data['password']) && trim($data['password']) ? trim($data['password']) : FALSE);
+        $password = (isset($data['password']) && trim($data['password']) ? trim($data['password']) : false);
 
         if ($user_id) {
             if ($password) {
@@ -346,7 +348,7 @@ class Cms_usersAdmin extends AdminCRUDController
             if (!$this->User_model->emailExists($data['user_email'])) {
                 // For systems that have no groups and all the users are roots
                 if (count($groups) == 0 && $this->auth->isUserRoot()) {
-                    $is_root = TRUE;
+                    $is_root = true;
                 }
 
                 $user_id = $this->User_model->register($data['display_name'], strtolower($data['user_email']), strtolower($data['user_login']), $password, $groups_ids, $is_root, $data['send_email_notification'], $data);
@@ -356,7 +358,7 @@ class Cms_usersAdmin extends AdminCRUDController
             } else {
                 // Error, email exists
                 $this->formbuilder->setValidationErrormessage(sprintf($this->lang->line('cms_users_dialog_email_already_in_database'), $this->input->post('user_email')));
-                return FALSE;
+                return false;
             }
         }
     }
@@ -383,16 +385,16 @@ class Cms_usersAdmin extends AdminCRUDController
             $this->formbuilder->setReadOnly();
         }
 
-        $this->assign('non_standard_account', FALSE);
+        $this->assign('non_standard_account', false);
         // For existing users
         if ($id) {
             unset($definition['send_email_notification']);
-            $definition['user_email']['input_is_editable'] = FALSE;
+            $definition['user_email']['input_is_editable'] = false;
 
 
             $user = $this->getFeedObject()->getById($id, 'account_type');
             if ($user->account_type != 0) {
-                $this->assign('non_standard_account', TRUE);
+                $this->assign('non_standard_account', true);
                 $this->formbuilder->setReadOnly();
             }
         }
@@ -498,7 +500,7 @@ class Cms_usersAdmin extends AdminCRUDController
      * @param string $current_image_field_name
      * @return bool
      */
-    function _fb_callback_make_filename_seo_friendly(&$filename, $base_path, &$data, $current_image_field_name)
+    public function _fb_callback_make_filename_seo_friendly(&$filename, $base_path, &$data, $current_image_field_name)
     {
         // List of the fields to be used, if no value is present for a given key
         // then the key will be ignored. By default all values of the keys
@@ -543,8 +545,7 @@ class Cms_usersAdmin extends AdminCRUDController
         $i = 2;
         while (file_exists($base_path . $new_base_path . $new_name)) {
             $new_name = $new_base_filename . '-' . $i . '.' . $extension;
-            if ($i++ > 50 || strlen($i) > 2) // strlen is a protection against the infinity loop for md5 checksums
-            {
+            if ($i++ > 50 || strlen($i) > 2) { // strlen is a protection against the infinity loop for md5 checksums
                 // This is ridiculous but who knowss
                 $i = md5(time() + rand(1000 - 9999));
             }
@@ -552,7 +553,7 @@ class Cms_usersAdmin extends AdminCRUDController
 
         // No need to change filename? Then we are fine
         if ($filename == $new_name) {
-            return TRUE;
+            return true;
         }
 
         // Finally here we go!
@@ -560,8 +561,8 @@ class Cms_usersAdmin extends AdminCRUDController
             $data[$current_image_field_name] = $new_base_path . $new_name;
             $filename = $new_base_path . $new_name;
 
-            return TRUE;
+            return true;
         }
-        return FALSE;
+        return false;
     }
 }

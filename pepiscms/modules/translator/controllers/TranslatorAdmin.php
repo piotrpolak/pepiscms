@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See LICENSE.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Class TranslatorAdmin
@@ -119,11 +121,11 @@ class TranslatorAdmin extends ModuleAdminController
         $lang = $this->languagehelper->getLanguageByModuleName($module, $language, $file_name);
         $value = isset($lang[$key]) ? $lang[$key] : '';
 
-        $en_value = FALSE;
+        $en_value = false;
 
         if ($language != 'english') {
             $en_lang = $this->languagehelper->getLanguageByModuleName($module, 'english', $file_name);
-            $en_value = isset($en_lang[$key]) ? $en_lang[$key] : FALSE;
+            $en_value = isset($en_lang[$key]) ? $en_lang[$key] : false;
         }
 
         $languages = $this->languagehelper->getModuleLanguages($module);
@@ -171,7 +173,7 @@ class TranslatorAdmin extends ModuleAdminController
         $this->languagehelper->setModuleLanguageField($module, $language, $key, $data['value'], $file_name);
         $this->load->library('Auth');
         $this->auth->refreshSession();
-        return TRUE;
+        return true;
     }
 
     public function delete()
@@ -187,5 +189,4 @@ class TranslatorAdmin extends ModuleAdminController
         $this->simplesessionmessage->setMessage('global_header_success');
         redirect(module_url() . 'show/module-' . $module . '/file_name-' . $file_name);
     }
-
 }

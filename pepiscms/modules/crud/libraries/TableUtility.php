@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See LICENSE.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Table utility
@@ -31,10 +33,10 @@ class TableUtility extends ContainerAware
         if (isset($params['database_group']) && $params['database_group']) {
             require INSTALLATIONPATH . 'application/config/database.php';
             if (!isset($db[$params['database_group']])) {
-                return FALSE;
+                return false;
             }
             /** @noinspection PhpUndefinedVariableInspection */
-            $this->db_instance = $this->load->database($db[$params['database_group']], TRUE);
+            $this->db_instance = $this->load->database($db[$params['database_group']], true);
         } else {
             $this->db_instance = $this->db;
         }
@@ -50,7 +52,7 @@ class TableUtility extends ContainerAware
      *
      * @return array
      */
-    function getTablesDefinition()
+    public function getTablesDefinition()
     {
         $query = $this->db_instance->query('SHOW TABLES');
         $tables_a = $query->result_array();
@@ -71,7 +73,7 @@ class TableUtility extends ContainerAware
      */
     public function getForeignKeys()
     {
-        if ($this->foreign_keys_cache === NULL) {
+        if ($this->foreign_keys_cache === null) {
             $query = $this->db_instance->query('SELECT table_name, column_name, referenced_table_name, referenced_column_name from information_schema.key_column_usage where referenced_table_name is not null');
             $foreign_keys_a = $query->result_array();
             $this->foreign_keys_cache = array();
@@ -145,7 +147,7 @@ class TableUtility extends ContainerAware
 
         foreach ($related_foreign_keys as $_table => $column_fk) {
             foreach ($column_fk as $_column => $fk) {
-                $my_gfk_column = FALSE;
+                $my_gfk_column = false;
                 foreach ($foreign_keys[$_table] as $gfk_column => $fk) {
                     if ($gfk_column != $_column) {
                         $my_gfk_column = $gfk_column;
@@ -181,7 +183,7 @@ class TableUtility extends ContainerAware
         }
         $query = $this->db_instance->query('DESCRIBE ' . $table);
         if (!$query) {
-            return FALSE;
+            return false;
         }
         $this->raw_table_description_cache[$table] = $query->result_array();
 
@@ -201,7 +203,7 @@ class TableUtility extends ContainerAware
 
         // Try from set of possible labels
         $allowed_labels = array('name', 'label', 'username', 'login', 'fitst_name', 'last_name', 'code', 'id');
-        $fk_table_definition = $this->getDefinitionFromTable($table, FALSE);
+        $fk_table_definition = $this->getDefinitionFromTable($table, false);
 
 
         foreach ($allowed_labels as $allowed_label) {
@@ -219,9 +221,9 @@ class TableUtility extends ContainerAware
             }
 
             // Must contain name OR not numeric and required
-            if (strpos($key, 'name') !== FALSE
-                || (strpos($value['validation_rules'], 'required') !== FALSE
-                    && strpos($value['validation_rules'], 'numeric') === FALSE
+            if (strpos($key, 'name') !== false
+                || (strpos($value['validation_rules'], 'required') !== false
+                    && strpos($value['validation_rules'], 'numeric') === false
                     && $value['input_type'] == FormBuilder::TEXTFIELD)) {
                 return $key;
             }
@@ -239,7 +241,7 @@ class TableUtility extends ContainerAware
     {
         $collumns_a = $this->getTableRawDescription($table);
         if (!$collumns_a) {
-            return FALSE;
+            return false;
         }
 
         // Reading all foreign keys
@@ -256,7 +258,7 @@ class TableUtility extends ContainerAware
 
         // Taking raw collums and transforming them into definition
         foreach ($collumns_a as $collumn) {
-            $show_in_grid = $show_in_form = TRUE;
+            $show_in_grid = $show_in_form = true;
             $field_name = $collumn['Field'];
             $is_null = strtolower($collumn['Null']) == 'yes';
             $validation_rules = array();
@@ -265,8 +267,8 @@ class TableUtility extends ContainerAware
             $input_type = self::getInputType(self::resolveDBType($collumn['Type']), $field_name);
             $is_numeric = self::isDbTypeNumeric($db_type);
             $is_boolean = $is_numeric && ($db_type == 'smallint' || $db_type == 'tinyint');
-            $is_unique = strpos(strtoupper($collumn['Key']), 'UNI') !== FALSE;
-            $is_primary_key = strpos(strtoupper($collumn['Key']), 'PRI') !== FALSE;
+            $is_unique = strpos(strtoupper($collumn['Key']), 'UNI') !== false;
+            $is_primary_key = strpos(strtoupper($collumn['Key']), 'PRI') !== false;
 
             $definition[$field_name] = array();
             if ($collumn['Default']) {
@@ -282,7 +284,7 @@ class TableUtility extends ContainerAware
                 $validation_rules[] = 'required';
             }
 
-            if (strpos(strtolower($field_name), 'email') !== FALSE) {
+            if (strpos(strtolower($field_name), 'email') !== false) {
                 $validation_rules[] = 'valid_email';
             }
 
@@ -299,14 +301,14 @@ class TableUtility extends ContainerAware
                     $validation_rules[] = 'max_length[' . $max_input_length . ']';
                 }
 
-                if (strpos($field_name, 'color') !== FALSE || strpos($field_name, 'colour') !== FALSE) {
+                if (strpos($field_name, 'color') !== false || strpos($field_name, 'colour') !== false) {
                     $input_type = FormBuilder::COLORPICKER;
-                } elseif (strpos($field_name, 'path') !== FALSE || strpos($field_name, 'image') !== FALSE || strpos($field_name, 'file') !== FALSE || strpos($field_name, 'icon') !== FALSE || strpos($field_name, 'logo') !== FALSE || strpos($field_name, 'baner') !== FALSE || strpos($field_name, 'thumb') !== FALSE || strpos($field_name, 'img') !== FALSE) {
+                } elseif (strpos($field_name, 'path') !== false || strpos($field_name, 'image') !== false || strpos($field_name, 'file') !== false || strpos($field_name, 'icon') !== false || strpos($field_name, 'logo') !== false || strpos($field_name, 'baner') !== false || strpos($field_name, 'thumb') !== false || strpos($field_name, 'img') !== false) {
                     $input_type = FormBuilder::FILE;
                     $definition[$field_name]['upload_path'] = 'uploads/';
                     $definition[$field_name]['upload_display_path'] = 'uploads/';
 
-                    if (strpos($field_name, 'image') !== FALSE || strpos($field_name, 'icon') !== FALSE || strpos($field_name, 'logo') !== FALSE || strpos($field_name, 'baner') !== FALSE || strpos($field_name, 'thumb') !== FALSE) {
+                    if (strpos($field_name, 'image') !== false || strpos($field_name, 'icon') !== false || strpos($field_name, 'logo') !== false || strpos($field_name, 'baner') !== false || strpos($field_name, 'thumb') !== false) {
                         $input_type = FormBuilder::IMAGE;
                     } else {
                         $definition[$field_name]['upload_allowed_types'] = '*';
@@ -325,7 +327,7 @@ class TableUtility extends ContainerAware
 
             // Prevent loops
             if ($resolve_fk) {
-                $foreign_key = (isset($foreign_keys[$table][$collumn['Field']]) ? $foreign_keys[$table][$collumn['Field']] : FALSE);
+                $foreign_key = (isset($foreign_keys[$table][$collumn['Field']]) ? $foreign_keys[$table][$collumn['Field']] : false);
                 if ($foreign_key) {
                     $foreign_key_label_field = $this->getTableLabelFieldName($foreign_key[0], array($foreign_key[1]));
 
@@ -340,7 +342,7 @@ class TableUtility extends ContainerAware
                     $definition[$field_name]['foreign_key_field'] = $foreign_key[1];
                     $definition[$field_name]['foreign_key_label_field'] = $foreign_key_label_field;
                     $definition[$field_name]['filter_type'] = DataGrid::FILTER_SELECT;
-                    $definition[$field_name]['foreign_key_accept_null'] = TRUE;
+                    $definition[$field_name]['foreign_key_accept_null'] = true;
                 }
             }
 
@@ -353,7 +355,7 @@ class TableUtility extends ContainerAware
 
             // We dont want to display longer fields and paths in grid view
             if ($input_type == FormBuilder::RTF || $input_type == FormBuilder::FILE || $input_type == FormBuilder::IMAGE) {
-                $show_in_grid = FALSE;
+                $show_in_grid = false;
             }
 
 
@@ -367,8 +369,8 @@ class TableUtility extends ContainerAware
             $field_name = $many_to_many_fk['foreign_key_junction_table'];
             $definition[$field_name] = $many_to_many_fk;
             $definition[$field_name]['foreign_key_relationship_type'] = FormBuilder::FOREIGN_KEY_MANY_TO_MANY;
-            $definition[$field_name]['show_in_grid'] = TRUE;
-            $definition[$field_name]['show_in_form'] = TRUE;
+            $definition[$field_name]['show_in_grid'] = true;
+            $definition[$field_name]['show_in_form'] = true;
             $definition[$field_name]['input_type'] = FormBuilder::MULTIPLECHECKBOX;
             $definition[$field_name]['validation_rules'] = '';
             $definition[$field_name]['filter_type'] = DataGrid::FILTER_SELECT;
@@ -386,10 +388,10 @@ class TableUtility extends ContainerAware
     public static function isDbTypeNumeric($db_type)
     {
         if ($db_type == 'int' || $db_type == 'double' || $db_type == 'smallint' || $db_type == 'tinyint') {
-            return TRUE;
+            return true;
         }
 
-        return FALSE;
+        return false;
     }
 
     /**
@@ -413,7 +415,7 @@ class TableUtility extends ContainerAware
             return FormBuilder::TIMESTAMP;
         }
 
-        if (strpos($field_name, 'passw') !== FALSE) {
+        if (strpos($field_name, 'passw') !== false) {
             return FormBuilder::PASSWORD;
         }
 
@@ -429,11 +431,11 @@ class TableUtility extends ContainerAware
     public static function resolveLengthFronDBType($type)
     {
         $pos = strpos($type, '(');
-        if ($pos !== FALSE) {
+        if ($pos !== false) {
             return substr($type, $pos + 1, (strpos($type, ')') - $pos) - 1);
         }
 
-        return FALSE;
+        return false;
     }
 
     /**
@@ -445,11 +447,11 @@ class TableUtility extends ContainerAware
     public static function resolveDBType($type)
     {
         $pos = strpos($type, '(');
-        if ($pos !== FALSE) {
+        if ($pos !== false) {
             return substr($type, 0, $pos);
         } else {
             $pos = strpos($type, ' ');
-            if ($pos !== FALSE) {
+            if ($pos !== false) {
                 return substr($type, 0, $pos);
             } else {
                 return $type;
@@ -487,11 +489,11 @@ class TableUtility extends ContainerAware
             $posA = array_search($a['input_type'], $order);
             $posB = array_search($b['input_type'], $order);
 
-            if ($posA === FALSE) {
+            if ($posA === false) {
                 return 1;
             }
 
-            if ($posB === FALSE) {
+            if ($posB === false) {
                 return -1;
             }
 
@@ -500,5 +502,4 @@ class TableUtility extends ContainerAware
 
         return $def_ref;
     }
-
 }

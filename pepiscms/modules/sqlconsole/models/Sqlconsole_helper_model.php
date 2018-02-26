@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See LICENSE.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Sqlconsole_helper_model
@@ -28,9 +30,9 @@ class Sqlconsole_helper_model extends CI_Model
      */
     public function runMultipleSqlQueries($sql, $query_separator = ';')
     {
-        $rs = FALSE;
+        $rs = false;
 
-        if (strpos($sql, $query_separator) !== FALSE) {
+        if (strpos($sql, $query_separator) !== false) {
             $queries = explode($query_separator, $sql);
             foreach ($queries as $query) {
                 $query = trim($query);
@@ -38,12 +40,12 @@ class Sqlconsole_helper_model extends CI_Model
                     continue;
                 }
 
-                $return_object = $this->db->is_write_type($query) ? NULL : TRUE;
-                $rs = $this->db->query($query, FALSE, $return_object);
+                $return_object = $this->db->is_write_type($query) ? null : true;
+                $rs = $this->db->query($query, false, $return_object);
             }
         } else {
-            $return_object = $this->db->is_write_type($sql) ? NULL : TRUE;
-            $rs = $this->db->query($sql, FALSE, $return_object);
+            $return_object = $this->db->is_write_type($sql) ? null : true;
+            $rs = $this->db->query($sql, false, $return_object);
         }
 
         return $rs;

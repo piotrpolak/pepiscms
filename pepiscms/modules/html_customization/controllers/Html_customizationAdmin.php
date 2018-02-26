@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See LICENSE.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Class Html_customizationAdmin
@@ -57,8 +59,8 @@ class Html_customizationAdmin extends ModuleAdminController
 
             // Getting description
             if (!isset($def['description'])) {
-                $description = $this->lang->line($module_name . '_' . $key . '_description', FALSE);
-                if ($description !== FALSE) {
+                $description = $this->lang->line($module_name . '_' . $key . '_description', false);
+                if ($description !== false) {
                     $def['description'] = $description;
                 }
             }

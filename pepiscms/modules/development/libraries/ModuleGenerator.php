@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * An utility for generating CRUD modules.
@@ -28,7 +30,7 @@ class ModuleGenerator extends ContainerAware
      * Module_generator constructor.
      * @param null $params
      */
-    public function __construct($params = NULL)
+    public function __construct($params = null)
     {
         $this->moduleLocator = new \Piotrpolak\Pepiscms\Modulerunner\ModuleLocator();
     }
@@ -50,13 +52,13 @@ class ModuleGenerator extends ContainerAware
      */
     public function makeUserSpaceModule($module_database_table_name,
                                         $module_name,
-                                        $auto_install = TRUE,
-                                        $parse_database_schema = TRUE,
-                                        $database_group = FALSE,
-                                        $translations = FALSE,
-                                        $generate_public_controller = TRUE,
-                                        $is_crud = TRUE,
-                                        $generate_security_policy = FALSE)
+                                        $auto_install = true,
+                                        $parse_database_schema = true,
+                                        $database_group = false,
+                                        $translations = false,
+                                        $generate_public_controller = true,
+                                        $is_crud = true,
+                                        $generate_security_policy = false)
     {
         $this->load->library('SecurityPolicy');
         $this->load->library('SecurityPolicyBuilder');
@@ -64,18 +66,18 @@ class ModuleGenerator extends ContainerAware
         $this->load->helper('inflector');
         $this->load->library('Cachedobjectmanager');
 
-        $definition = FALSE;
+        $definition = false;
 
         if ($parse_database_schema) {
             $this->load->moduleLibrary('crud', 'TableUtility', array('database_group' => $database_group));
 
             if (!$this->tableutility->tableExists($module_database_table_name)) {
-                return FALSE;
+                return false;
             }
 
             $definition = $this->tableutility->getDefinitionFromTable($module_database_table_name);
             if (!$definition) {
-                return FALSE;
+                return false;
             }
 
             $definition = $this->tableutility->orderFieldsByImportance($definition);
@@ -87,11 +89,11 @@ class ModuleGenerator extends ContainerAware
         $module_name_lower_case = strtolower($module_name);
 
         $label_field_name = 'id';
-        $image_field_name = FALSE;
-        $description_field_name = FALSE;
-        $order_field_name = FALSE;
-        $created_at_field_name = FALSE;
-        $updated_at_field_name = FALSE;
+        $image_field_name = false;
+        $description_field_name = false;
+        $order_field_name = false;
+        $created_at_field_name = false;
+        $updated_at_field_name = false;
         $filters_element = '';
 
         // Setting default translations when no translations are selected
@@ -133,7 +135,7 @@ class ModuleGenerator extends ContainerAware
                 $created_at_field_name = $this->getCreatedAtFieldName($available_field_names, $definition);
                 $updated_at_field_name = $this->getUpdatedAtFieldName($available_field_names, $definition);
 
-                $was_last_field_of_upload_type = FALSE;
+                $was_last_field_of_upload_type = false;
 
                 $tabs = "            ";
                 foreach ($definition as $key => $value) {
@@ -229,7 +231,6 @@ class ModuleGenerator extends ContainerAware
             file_put_contents($file_model_path, PatternCompiler::compile(file_get_contents($template_base_path . '_model.php'), $data));
         } else {
             $this->generateModuleModel($file_model_path, $data);
-
         }
 
         $this->generateModuleDescriptor($directory, $module_name_lower_case, $template_base_path, $data);
@@ -255,11 +256,11 @@ class ModuleGenerator extends ContainerAware
         $this->copyIcons($directory, $template_base_path);
 
         if ($auto_install) {
-            $this->Module_model->install($module_name, TRUE, FALSE);
+            $this->Module_model->install($module_name, true, false);
             $this->cleanupCache();
         }
 
-        return TRUE;
+        return true;
     }
 
     /**
@@ -288,7 +289,7 @@ class ModuleGenerator extends ContainerAware
      */
     private function getImageFieldNameExact($possible_image_field_names, $available_field_names)
     {
-        $image_field_name = FALSE;
+        $image_field_name = false;
         foreach ($possible_image_field_names as $possible_image_field_name) {
             if (in_array($possible_image_field_name, $available_field_names)) {
                 $image_field_name = $possible_image_field_name;
@@ -307,12 +308,12 @@ class ModuleGenerator extends ContainerAware
     {
         foreach ($available_field_names as $available_field_name) {
             foreach ($possible_image_field_names as $possible_image_field_name) {
-                if (strpos($available_field_name, $possible_image_field_name) !== FALSE) {
+                if (strpos($available_field_name, $possible_image_field_name) !== false) {
                     return $available_field_name;
                 }
             }
         }
-        return FALSE;
+        return false;
     }
 
     /**
@@ -328,7 +329,7 @@ class ModuleGenerator extends ContainerAware
                 return $possible_label_field_name;
             }
         }
-        return FALSE;
+        return false;
     }
 
     /**
@@ -347,7 +348,7 @@ class ModuleGenerator extends ContainerAware
                 return $possible_description_field_name;
             }
         }
-        return FALSE;
+        return false;
     }
 
     /**
@@ -367,7 +368,7 @@ class ModuleGenerator extends ContainerAware
                 }
             }
         }
-        return FALSE;
+        return false;
     }
 
     /**
@@ -378,7 +379,7 @@ class ModuleGenerator extends ContainerAware
     private function getCreatedAtFieldName($available_field_names, $definition)
     {
         foreach ($available_field_names as $available_field_name) {
-            if (strpos($available_field_name, 'create') !== FALSE) {
+            if (strpos($available_field_name, 'create') !== false) {
                 // Input type check
                 if ($definition[$available_field_name]['input_type'] == FormBuilder::TIMESTAMP) {
                     return $available_field_name;
@@ -386,7 +387,7 @@ class ModuleGenerator extends ContainerAware
             }
         }
 
-        return FALSE;
+        return false;
     }
 
     /**
@@ -397,7 +398,7 @@ class ModuleGenerator extends ContainerAware
     private function getUpdatedAtFieldName($available_field_names, $definition)
     {
         foreach ($available_field_names as $available_field_name) {
-            if (strpos($available_field_name, 'update') !== FALSE) {
+            if (strpos($available_field_name, 'update') !== false) {
                 // Input type check
                 if ($definition[$available_field_name]['input_type'] == FormBuilder::TIMESTAMP) {
                     return $available_field_name;
@@ -405,7 +406,7 @@ class ModuleGenerator extends ContainerAware
             }
         }
 
-        return FALSE;
+        return false;
     }
 
     /**
@@ -581,8 +582,8 @@ class ModuleGenerator extends ContainerAware
         $model_file_contents_exploded = file($file_model_path, FILE_IGNORE_NEW_LINES);
         if (count($model_file_contents_exploded) > 0) {
             foreach ($model_file_contents_exploded as &$model_file_contents_exploded_item) {
-                if (strpos($model_file_contents_exploded_item, 'setAcceptedPostFields') !== FALSE
-                    && strpos($model_file_contents_exploded_item, ';') !== FALSE) {
+                if (strpos($model_file_contents_exploded_item, 'setAcceptedPostFields') !== false
+                    && strpos($model_file_contents_exploded_item, ';') !== false) {
                     $model_file_contents_exploded_item = '        $this->setAcceptedPostFields(array(' . $data['coma_separated_list_of_fields'] . ')); /* line generated at ' . date('Y-m-d H:i:s') . ' */';
                 }
             }
@@ -787,12 +788,12 @@ class ModuleGenerator extends ContainerAware
     {
         // Do not show label field
         if ($key == $label_field_name) {
-            $value['show_in_grid'] = FALSE;
+            $value['show_in_grid'] = false;
         }
 
         // Do not show description field
         if ($key == $description_field_name) {
-            $value['show_in_grid'] = FALSE;
+            $value['show_in_grid'] = false;
         }
         return $value;
     }
@@ -805,7 +806,7 @@ class ModuleGenerator extends ContainerAware
     {
         // Do not show password fields
         if ($value['input_type'] == FormBuilder::PASSWORD) {
-            $value['show_in_grid'] = FALSE;
+            $value['show_in_grid'] = false;
         }
         return $value;
     }
@@ -820,7 +821,7 @@ class ModuleGenerator extends ContainerAware
     {
         // Order field - hide and set default value
         if ($key == $order_field_name) {
-            $value['show_in_grid'] = FALSE;
+            $value['show_in_grid'] = false;
             $value['input_type'] = FormBuilder::HIDDEN;
         }
         return $value;
@@ -837,7 +838,7 @@ class ModuleGenerator extends ContainerAware
     {
         // Make the time marking fields non editable on purpose
         if ($key == $updated_at_field_name || $key == $created_at_field_name) {
-            $value['input_is_editable'] = FALSE;
+            $value['input_is_editable'] = false;
         }
         return $value;
     }

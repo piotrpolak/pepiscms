@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See LICENSE.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Symfony2_log_model
@@ -71,21 +73,24 @@ class Symfony2_log_model extends Array_model
 
         $lines = array();
         foreach ($environments as $environment) {
-
             $log_file = $this->log_base_path . $environment . '.log';
             if (!file_exists($log_file)) {
                 continue;
             }
 
             $lines = $this->tailAFile($log_file, 500);
-            if (!$lines) continue;
+            if (!$lines) {
+                continue;
+            }
 
             while ($line = array_shift($lines)) {
                 $array = false;
                 preg_match($pattern, $line, $array);
 
                 // Protection against empty values
-                if (!$array) continue;
+                if (!$array) {
+                    continue;
+                }
 
                 $obj = new stdClass();
                 $obj->datetime = $array['datetime'];
@@ -113,12 +118,12 @@ class Symfony2_log_model extends Array_model
     protected function tailAFile($path, $count = 10)
     {
         if (!file_exists($path)) {
-            return FALSE;
+            return false;
         }
 
         $handle = fopen($path, "r");
         if (!$handle) {
-            return FALSE;
+            return false;
         }
 
         $filesize = filesize($path);

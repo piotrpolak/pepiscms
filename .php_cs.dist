@@ -7,7 +7,12 @@ $finder = PhpCsFixer\Finder::create()
     ->exclude('language')
     ->exclude('modules')
     ->exclude('resources')
-    ->in(__DIR__.'/pepiscms');
+    ->in(__DIR__.'/pepiscms')
+    ->in(__DIR__.'/pepiscms/modules/*/controllers')
+    ->in(__DIR__.'/pepiscms/modules/*/libraries')
+    ->in(__DIR__.'/pepiscms/modules/*/models')
+    ->name('*Descriptor.php')
+    ->in(__DIR__.'/pepiscms/modules/*/');
 
 return PhpCsFixer\Config::create()
     ->setRules(array(

@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See LICENSE.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Utilities for development
@@ -118,8 +120,9 @@ class DevelopmentAdmin extends ModuleAdminController
         foreach ($modules as $module_name) {
             $lang_pase_path = $this->load->resolveModuleDirectory($module_name) . 'language/';
             foreach ($languages as $language) {
-                if ($language == 'english' || !file_exists($lang_pase_path . 'english/' . $module_name . '_lang.php'))
+                if ($language == 'english' || !file_exists($lang_pase_path . 'english/' . $module_name . '_lang.php')) {
                     continue;
+                }
 
                 if (!file_exists($lang_pase_path . $language)) {
                     mkdir($lang_pase_path . $language);
@@ -197,7 +200,7 @@ class DevelopmentAdmin extends ModuleAdminController
     public function module_make()
     {
         $this->assign('title', $this->lang->line('development_make_a_new_module'));
-        $this->assign('success', FALSE);
+        $this->assign('success', false);
 
         $database_groups = array('0' => $this->lang->line('development_database_group_implicit'));
         require INSTALLATIONPATH . 'application/config/database.php';
@@ -261,7 +264,7 @@ class DevelopmentAdmin extends ModuleAdminController
         $this->formbuilder->setTitle($this->lang->line('development_make_a_new_module'));
         $this->formbuilder->setBackLink(module_url());
         $this->formbuilder->setCallback(array($this, '_fb_callback_on_make_save'), FormBuilder::CALLBACK_ON_SAVE);
-        $this->formbuilder->setRedirectOnSaveSuccess(FALSE);
+        $this->formbuilder->setRedirectOnSaveSuccess(false);
         $this->formbuilder->setDefinition($definition);
 
         $this->assign('form', $this->formbuilder->generate());
@@ -284,10 +287,10 @@ class DevelopmentAdmin extends ModuleAdminController
         }
 
         if ($module_databse_table_name) {
-            $database_group = ($save_array['database_group'] ? $save_array['database_group'] : FALSE);
+            $database_group = ($save_array['database_group'] ? $save_array['database_group'] : false);
 
             $this->load->library('ModuleGenerator');
-            $success = $this->modulegenerator->makeUserSpaceModule($module_databse_table_name, $module_database_name, TRUE,
+            $success = $this->modulegenerator->makeUserSpaceModule($module_databse_table_name, $module_database_name, true,
                 ($save_array['parse_database_schema'] == 1), $database_group, array_keys($save_array['translations']),
                 ($save_array['generate_public_controller'] == 1), ($save_array['module_type'] == 'crud'),
                 $save_array['generate_security_policy']);
@@ -295,17 +298,16 @@ class DevelopmentAdmin extends ModuleAdminController
             if (!$success) {
                 $this->formbuilder->setValidationErrorMessage(
                     sprintf($this->lang->line('development_unable_to_generate_module_for_table'), $module_databse_table_name));
-                return FALSE;
+                return false;
             }
 
             $this->assign('adminmenu', $this->renderMenu());
-            $this->assign('success', TRUE);
+            $this->assign('success', true);
             $this->assign('module_database_name', $module_database_name);
         } else {
-            return FALSE;
+            return false;
         }
 
-        return TRUE;
+        return true;
     }
-
 }

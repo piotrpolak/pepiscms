@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See LICENSE.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * User groups management Controller
@@ -76,7 +78,7 @@ class Cms_groupsAdmin extends ModuleAdminController
         $this->assign('add_new', $add_new);
 
         if ($add_new) {
-            $_POST['initial_group_name'] = FALSE;
+            $_POST['initial_group_name'] = false;
         }
 
         $this->load->library('form_validation');
@@ -160,9 +162,9 @@ class Cms_groupsAdmin extends ModuleAdminController
     {
         if ($_POST['initial_group_name'] != $str && $this->Group_model->isGroupNameTaken($str)) {
             $this->form_validation->set_message('_display_name_check', $this->lang->line($this->module_name . '_dialog_group_already_exists'));
-            return FALSE;
+            return false;
         }
-        return TRUE;
+        return true;
     }
 
     public function delete()

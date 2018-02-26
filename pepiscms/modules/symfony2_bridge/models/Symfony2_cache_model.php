@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See LICENSE.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Symfony2_cache_model
@@ -35,20 +37,18 @@ class Symfony2_cache_model extends CI_Model
     {
         $allowed_env = array('prod', 'dev');
         if (!in_array($env, $allowed_env)) {
-            return FALSE;
+            return false;
         }
 
         $cache_dir = $this->symfony2_bridge->getKernel()->getCacheDir();
         $base_name = basename($cache_dir);
-        if (!in_array($base_name, $allowed_env)) // Security
-        {
-            return FALSE;
+        if (!in_array($base_name, $allowed_env)) { // Security
+            return false;
         }
 
         $dir_name = dirname($cache_dir);
-        if (!$dir_name || $dir_name == '/' || $dir_name == '.') // Security
-        {
-            return FALSE;
+        if (!$dir_name || $dir_name == '/' || $dir_name == '.') { // Security
+            return false;
         }
 
         return $dir_name . '/' . $env . '/';
@@ -64,15 +64,15 @@ class Symfony2_cache_model extends CI_Model
     {
         $cache_dir = $this->getCacheDir($env);
         if (!$cache_dir) {
-            return FALSE;
+            return false;
         }
 
         if (file_exists($cache_dir) && is_dir($cache_dir)) {
             $cmd = 'rm -rf ' . escapeshellarg($cache_dir);
             system($cmd);
-            return TRUE;
+            return true;
         }
 
-        return FALSE;
+        return false;
     }
 }

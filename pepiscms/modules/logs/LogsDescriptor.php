@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See LICENSE.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Class LogsDescriptor
@@ -63,12 +65,12 @@ class LogsDescriptor extends ModuleDescriptor
      */
     public function onInstall()
     {
-        $path = $this->load->resolveModuleDirectory($this->module_name, FALSE) . '/resources/install.sql';
+        $path = $this->load->resolveModuleDirectory($this->module_name, false) . '/resources/install.sql';
         if (!file_exists($path)) {
-            return FALSE;
+            return false;
         }
         $this->db->query(file_get_contents($path));
-        return TRUE;
+        return true;
     }
 
     /**
@@ -76,12 +78,12 @@ class LogsDescriptor extends ModuleDescriptor
      */
     public function onUninstall()
     {
-        $path = $this->load->resolveModuleDirectory($this->module_name, FALSE) . '/resources/uninstall.sql';
+        $path = $this->load->resolveModuleDirectory($this->module_name, false) . '/resources/uninstall.sql';
         if (!file_exists($path)) {
-            return FALSE;
+            return false;
         }
         $this->db->query(file_get_contents($path));
-        return TRUE;
+        return true;
     }
 
     /**
@@ -89,7 +91,7 @@ class LogsDescriptor extends ModuleDescriptor
      */
     public function getAdminSubmenuElements($language)
     {
-        return FALSE;
+        return false;
     }
 
     /**
@@ -97,7 +99,7 @@ class LogsDescriptor extends ModuleDescriptor
      */
     public function getAdminDashboardElements($language)
     {
-        return FALSE;
+        return false;
     }
 
     /**
@@ -105,6 +107,6 @@ class LogsDescriptor extends ModuleDescriptor
      */
     public function isDisplayedInUtilities()
     {
-        return TRUE;
+        return true;
     }
 }

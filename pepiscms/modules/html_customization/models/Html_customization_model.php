@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -12,6 +12,8 @@
  * @link                http://www.polak.ro/
  */
 
+defined('BASEPATH') or exit('No direct script access allowed');
+
 /**
  * Class Html_customization_model
  */
@@ -22,7 +24,7 @@ class Html_customization_model extends CI_Model implements EntitableInterface
      */
     public function saveById($id, $data)
     {
-        array_merge($data, (array)$this->getById(FALSE));
+        array_merge($data, (array)$this->getById(false));
         $config_path = INSTALLATIONPATH . 'application/config/_html_customization.php';
 
         $this->load->library('ConfigBuilder');
@@ -43,6 +45,6 @@ class Html_customization_model extends CI_Model implements EntitableInterface
      */
     public function deleteById($id)
     {
-        return TRUE;
+        return true;
     }
 }

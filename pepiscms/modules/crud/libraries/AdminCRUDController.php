@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See LICENSE.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Controller class for building admin CRUD Controllers with no effort
@@ -34,14 +36,14 @@ abstract class AdminCRUDController extends ModuleAdminController
      *
      * @var bool|array
      */
-    private $where = FALSE;
+    private $where = false;
 
     /**
      * CRUD definition used for FormBuilder and DataGrid
      *
      * @var bool|array
      */
-    private $definition = FALSE;
+    private $definition = false;
 
     /**
      * CRUD template files path
@@ -70,7 +72,7 @@ abstract class AdminCRUDController extends ModuleAdminController
      *
      * @var bool|string
      */
-    private $item_order_constraint_column = FALSE;
+    private $item_order_constraint_column = false;
 
     /**
      * Name of the column used for stating
@@ -84,21 +86,21 @@ abstract class AdminCRUDController extends ModuleAdminController
      *
      * @var bool|string
      */
-    private $is_stared_label = FALSE;
+    private $is_stared_label = false;
 
     /**
      * Variable indicating whether the CRUD is orderable
      *
      * @var bool
      */
-    private $is_orderable = FALSE;
+    private $is_orderable = false;
 
     /**
      * Variable indicating whether the CRUD is starable
      *
      * @var bool
      */
-    private $is_starable = FALSE;
+    private $is_starable = false;
 
 
     /**
@@ -106,61 +108,61 @@ abstract class AdminCRUDController extends ModuleAdminController
      *
      * @var bool
      */
-    private $is_addable = TRUE;
+    private $is_addable = true;
 
     /**
      * Variable indicating whether the CRUD is editable
      *
      * @var bool
      */
-    private $is_editable = TRUE;
+    private $is_editable = true;
 
     /**
      * Variable indicating whether the CRUD is deletable
      *
      * @var bool
      */
-    private $is_deletable = TRUE;
+    private $is_deletable = true;
 
     /**
      * Variable indicating whether the CRUD is previewable
      *
      * @var bool
      */
-    private $is_previewable = TRUE;
+    private $is_previewable = true;
 
     /**
      * Variable indicating whether the CRUD is importable
      *
      * @var bool
      */
-    private $is_importable = FALSE;
+    private $is_importable = false;
 
     /**
      * Array containing list of fields that must be specified for the the entry to be imported
      *
      * @var bool|array
      */
-    private $is_importable_must_have_fields = FALSE;
+    private $is_importable_must_have_fields = false;
 
     /**
      * Data filtering callback
      *
      * @var bool|callback
      */
-    private $is_importable_data_formatting_callback = FALSE;
+    private $is_importable_data_formatting_callback = false;
 
     /**
      * Variable indicating whether the CRUD data is exportable
      *
      * @var bool
      */
-    private $is_exportable = FALSE;
+    private $is_exportable = false;
 
     /**
      * @var bool
      */
-    private $is_exportable_data_formatting_callback = FALSE;
+    private $is_exportable_data_formatting_callback = false;
 
 
     /**
@@ -168,76 +170,76 @@ abstract class AdminCRUDController extends ModuleAdminController
      *
      * @var bool
      */
-    private $is_edit_action_displayed_in_grid = TRUE;
+    private $is_edit_action_displayed_in_grid = true;
 
     /**
      * Feed object used by both DataGrid and FormBuilder
      *
      * @var bool|Generic_model
      */
-    private $feed_object = FALSE;
+    private $feed_object = false;
 
     /**
      * Whether the popup action is enabled
      *
      * @var bool
      */
-    private $is_popup_enabled = TRUE;
+    private $is_popup_enabled = true;
 
     /**
      * Image field name
      *
      * @var bool|string
      */
-    private $meta_image_field = FALSE;
+    private $meta_image_field = false;
 
     /**
      * Base URL for displaying meta images
      * @var bool|string
      */
-    private $meta_image_base_url = FALSE;
+    private $meta_image_base_url = false;
 
     /**
      * Pattern used by meta title
      *
      * @var bool|string
      */
-    private $meta_title_pattern = FALSE;
+    private $meta_title_pattern = false;
 
     /**
      * Some kind of cache
      *
      * @var bool|array
      */
-    private $meta_title_pattern_keys = FALSE;
+    private $meta_title_pattern_keys = false;
 
     /**
      * Pattern used by meta description
      *
      * @var bool|string
      */
-    private $meta_description_pattern = FALSE;
+    private $meta_description_pattern = false;
 
     /**
      * Callback used by meta description
      *
      * @var bool|callback
      */
-    private $meta_description_pattern_callback = FALSE;
+    private $meta_description_pattern_callback = false;
 
     /**
      * Some kind of cache
      *
      * @var bool|array
      */
-    private $meta_description_pattern_keys = FALSE;
+    private $meta_description_pattern_keys = false;
 
     /**
      * Label displayed in meta order column
      *
      * @var bool|string
      */
-    private $meta_order_field_label = FALSE;
+    private $meta_order_field_label = false;
 
     /**
      * Meta order field
@@ -258,14 +260,14 @@ abstract class AdminCRUDController extends ModuleAdminController
      *
      * @var bool|string
      */
-    private $add_new_item_label = FALSE;
+    private $add_new_item_label = false;
 
     /**
      * Variable used for overwriting back to items label
      *
      * @var bool|string
      */
-    private $back_to_items_label = FALSE;
+    private $back_to_items_label = false;
 
     /**
      * DataGrid meta actions
@@ -278,21 +280,21 @@ abstract class AdminCRUDController extends ModuleAdminController
      * Parameter that is passed to DataGrid generate method
      * @var bool|mixed
      */
-    private $datagrid_generate_parameter = FALSE;
+    private $datagrid_generate_parameter = false;
 
     /**
      * Tooltip text for index, false if hidden
      *
      * @var bool|string
      */
-    private $tooltip_text_for_index = FALSE;
+    private $tooltip_text_for_index = false;
 
     /**
      * Tooltip text for edit, false if hidden
      *
      * @var bool|string
      */
-    private $tooltip_text_for_edit = FALSE;
+    private $tooltip_text_for_edit = false;
 
     /**
      * Array containing the list of actions to be rendered on index page
@@ -313,7 +315,7 @@ abstract class AdminCRUDController extends ModuleAdminController
      *
      * @var bool|string
      */
-    private $back_action_for_index = FALSE;
+    private $back_action_for_index = false;
 
     /**
      * HTML Meta title
@@ -327,31 +329,31 @@ abstract class AdminCRUDController extends ModuleAdminController
      *
      * @var bool|array
      */
-    private $_forced_filters = FALSE;
+    private $_forced_filters = false;
 
     /**
      * URL used as a back link on edit pages
      *
      * @var bool|string
      */
-    private $back_link_for_edit = FALSE;
+    private $back_link_for_edit = false;
 
     /**
      * Base module URL for index
      *
      * @var bool|string
      */
-    private $base_module_url = FALSE;
+    private $base_module_url = false;
 
     /**
      * @deprecated as PepisCMS 0.2.4.1
      */
-    private $related_module_name = FALSE;
+    private $related_module_name = false;
 
     /**
      * @deprecated as PepisCMS 0.2.4.1
      */
-    private $related_module_filter_name = FALSE;
+    private $related_module_filter_name = false;
 
 
     /**
@@ -567,7 +569,7 @@ abstract class AdminCRUDController extends ModuleAdminController
     protected function removeFilterByFieldName($field)
     {
         if (isset($this->definition[$field]['filter_type'])) {
-            $this->definition[$field]['filter_type'] = FALSE;
+            $this->definition[$field]['filter_type'] = false;
         }
         return $this;
     }
@@ -602,13 +604,13 @@ abstract class AdminCRUDController extends ModuleAdminController
      * @param bool|string $item_order_constraint_column
      * @return $this
      */
-    protected function setOrderable($is_orderable = TRUE, $item_order_column = FALSE, $item_order_constraint_column = FALSE)
+    protected function setOrderable($is_orderable = true, $item_order_column = false, $item_order_constraint_column = false)
     {
-        if ($item_order_column !== FALSE) {
+        if ($item_order_column !== false) {
             $this->item_order_column = $item_order_column;
         }
 
-        if ($item_order_constraint_column !== FALSE) {
+        if ($item_order_constraint_column !== false) {
             $this->item_order_constraint_column = $item_order_constraint_column;
         }
 
@@ -617,7 +619,7 @@ abstract class AdminCRUDController extends ModuleAdminController
         if ($this->is_orderable) {
             $this->datagrid->setDefaultOrder($this->item_order_column);
         } else {
-            $this->datagrid->setDefaultOrder(FALSE);
+            $this->datagrid->setDefaultOrder(false);
         }
 
         return $this;
@@ -631,9 +633,9 @@ abstract class AdminCRUDController extends ModuleAdminController
      * @param bool|string $is_stared_label
      * @return $this
      */
-    protected function setStarable($is_starable = TRUE, $is_stared_column = FALSE, $is_stared_label = FALSE)
+    protected function setStarable($is_starable = true, $is_stared_column = false, $is_stared_label = false)
     {
-        if ($is_stared_column !== FALSE) {
+        if ($is_stared_column !== false) {
             $this->is_stared_column = $is_stared_column;
         }
 
@@ -661,7 +663,7 @@ abstract class AdminCRUDController extends ModuleAdminController
      * @param bool $data_formatting_callback
      * @return $this
      */
-    protected function setImportable($is_importable = TRUE, $must_have_fields = FALSE, $data_formatting_callback = FALSE)
+    protected function setImportable($is_importable = true, $must_have_fields = false, $data_formatting_callback = false)
     {
         $this->is_importable = $is_importable;
         $this->is_importable_must_have_fields = $must_have_fields;
@@ -687,7 +689,7 @@ abstract class AdminCRUDController extends ModuleAdminController
      * @param bool $data_formatting_callback
      * @return $this
      */
-    protected function setExportable($is_exportable = TRUE, $data_formatting_callback = FALSE)
+    protected function setExportable($is_exportable = true, $data_formatting_callback = false)
     {
         $this->is_exportable = $is_exportable;
         $this->is_exportable_data_formatting_callback = $data_formatting_callback;
@@ -720,7 +722,7 @@ abstract class AdminCRUDController extends ModuleAdminController
      * @param boolean $is_editable
      * @return AdminCRUDController
      */
-    protected function setEditable($is_editable = TRUE)
+    protected function setEditable($is_editable = true)
     {
         $this->is_editable = $is_editable;
         return $this;
@@ -742,7 +744,7 @@ abstract class AdminCRUDController extends ModuleAdminController
      * @param boolean $is_edit_action_displayed_in_grid
      * @return AdminCRUDController
      */
-    protected function setEditActionDisplayedInGrid($is_edit_action_displayed_in_grid = TRUE)
+    protected function setEditActionDisplayedInGrid($is_edit_action_displayed_in_grid = true)
     {
         $this->is_edit_action_displayed_in_grid = $is_edit_action_displayed_in_grid;
         return $this;
@@ -764,7 +766,7 @@ abstract class AdminCRUDController extends ModuleAdminController
      * @param boolean $is_addable
      * @return AdminCRUDController
      */
-    protected function setAddable($is_addable = TRUE)
+    protected function setAddable($is_addable = true)
     {
         $this->is_addable = $is_addable;
         return $this;
@@ -786,7 +788,7 @@ abstract class AdminCRUDController extends ModuleAdminController
      * @param boolean $is_deletable
      * @return AdminCRUDController
      */
-    protected function setDeletable($is_deletable = TRUE)
+    protected function setDeletable($is_deletable = true)
     {
         $this->is_deletable = $is_deletable;
         return $this;
@@ -808,7 +810,7 @@ abstract class AdminCRUDController extends ModuleAdminController
      * @param boolean $is_previewable
      * @return AdminCRUDController
      */
-    protected function setPreviewable($is_previewable = TRUE)
+    protected function setPreviewable($is_previewable = true)
     {
         $this->is_previewable = $is_previewable;
         return $this;
@@ -830,7 +832,7 @@ abstract class AdminCRUDController extends ModuleAdminController
      * @param boolean $parameter
      * @return AdminCRUDController
      */
-    protected function setDataGridGenerateParameter($parameter = FALSE)
+    protected function setDataGridGenerateParameter($parameter = false)
     {
         $this->datagrid_generate_parameter = $parameter;
         return $this;
@@ -842,7 +844,7 @@ abstract class AdminCRUDController extends ModuleAdminController
      * @param boolean $is_popup_enabled
      * @return AdminCRUDController
      */
-    protected function setPopupEnabled($is_popup_enabled = TRUE)
+    protected function setPopupEnabled($is_popup_enabled = true)
     {
         $this->is_popup_enabled = $is_popup_enabled;
         return $this;
@@ -897,7 +899,7 @@ abstract class AdminCRUDController extends ModuleAdminController
     protected function setTable($table)
     {
         $this->table = $table;
-        $this->feed_object = FALSE;
+        $this->feed_object = false;
         return $this;
     }
 
@@ -950,8 +952,8 @@ abstract class AdminCRUDController extends ModuleAdminController
     protected function setFeedObject($feed_object)
     {
         $this->feed_object = $feed_object;
-        $this->table = FALSE;
-        $this->id_field_name = FALSE;
+        $this->table = false;
+        $this->id_field_name = false;
         return $this;
     }
 
@@ -1072,7 +1074,7 @@ abstract class AdminCRUDController extends ModuleAdminController
      * @param bool $meta_order_field_label
      * @return $this
      */
-    protected function setMetaOrderField($meta_order_field, $meta_order_field_label = FALSE)
+    protected function setMetaOrderField($meta_order_field, $meta_order_field_label = false)
     {
         $this->meta_order_field = $meta_order_field;
         $this->meta_order_field_label = $meta_order_field_label;
@@ -1147,7 +1149,7 @@ abstract class AdminCRUDController extends ModuleAdminController
      * @param Callback $description_pattern_callback
      * @return AdminCRUDController
      */
-    protected function setMetaDescriptionPattern($description_pattern, $description_pattern_callback = NULL)
+    protected function setMetaDescriptionPattern($description_pattern, $description_pattern_callback = null)
     {
         if (!is_callable($description_pattern)) {
             $matches = array();
@@ -1159,7 +1161,6 @@ abstract class AdminCRUDController extends ModuleAdminController
             }
 
             $this->meta_description_pattern = $description_pattern;
-
         } else {
             // $description_pattern callable
             $this->setMetaDescriptionPatternCallback($description_pattern);
@@ -1213,7 +1214,7 @@ abstract class AdminCRUDController extends ModuleAdminController
      * @param bool $target
      * @return $this
      */
-    protected function addMetaAction($link_pattern, $label_pattern, $css_class = FALSE, $is_popup = NULL, $target = FALSE)
+    protected function addMetaAction($link_pattern, $label_pattern, $css_class = false, $is_popup = null, $target = false)
     {
         if (!is_callable($link_pattern)) {
             preg_match_all('/{([a-z_0-9]+)}/', $link_pattern, $matches_link);
@@ -1223,7 +1224,7 @@ abstract class AdminCRUDController extends ModuleAdminController
         preg_match_all('/{([a-z_0-9]+)}/', $label_pattern, $matches_label);
 
 
-        if ($is_popup === NULL) {
+        if ($is_popup === null) {
             $is_popup = $this->isPopupEnabled();
         }
 
@@ -1285,7 +1286,7 @@ abstract class AdminCRUDController extends ModuleAdminController
      * @deprecated as PepisCMS 0.2.4
      * @return AdminCRUDController
      */
-    function setRelatedModule($related_module_name, $related_module_filter_name)
+    public function setRelatedModule($related_module_name, $related_module_filter_name)
     {
         trigger_error('AdminCRUDController::setRelatedModule() is deprecated.', E_USER_DEPRECATED);
         $this->related_module_name = $related_module_name;
@@ -1352,7 +1353,7 @@ abstract class AdminCRUDController extends ModuleAdminController
         $id_field_name = &$this->id_field_name;
         $out = '<div class="nowrap">';
         if ($this->meta_image_field) {
-            $is_real_image = FALSE;
+            $is_real_image = false;
 
             $image_field_name = $this->meta_image_field;
 
@@ -1363,19 +1364,19 @@ abstract class AdminCRUDController extends ModuleAdminController
                     $image_extension = end($image_extension);
                     $image_extension = strtolower($image_extension);
                 } else {
-                    $image_extension = FALSE;
+                    $image_extension = false;
                 }
 
                 $image_path = 'pepiscms/theme/img/ajaxfilemanager/broken_image_50.png';
 
-                $is_real_image = FALSE;
+                $is_real_image = false;
                 if (in_array($image_extension, array('jpg', 'jpeg', 'png', 'bmp', 'tiff'))) {
-                    $is_real_image = TRUE;
+                    $is_real_image = true;
                 }
 
                 if ($is_real_image) {
                     $image_path = 'admin/ajaxfilemanager/absolutethumb/50/' . $this->meta_image_base_url . $line->$image_field_name;
-                } else if (file_exists(APPPATH . '/../theme/file_extensions/file_extension_' . $image_extension . '.png')) {
+                } elseif (file_exists(APPPATH . '/../theme/file_extensions/file_extension_' . $image_extension . '.png')) {
                     $image_path = 'pepiscms/theme/file_extensions/file_extension_' . $image_extension . '.png';
                 }
 
@@ -1432,8 +1433,9 @@ abstract class AdminCRUDController extends ModuleAdminController
 
             if (is_callable($action['link_pattern'])) {
                 $link = call_user_func_array($action['link_pattern'], array($content, $line));
-                if (!$link)
+                if (!$link) {
                     continue;
+                }
             } else {
                 $link = PatternCompiler::compile($action['link_pattern'], $line, $action['link_pattern_keys']);
             }
@@ -1531,7 +1533,7 @@ abstract class AdminCRUDController extends ModuleAdminController
     {
         // TODO implement Interface
         if (!method_exists($this->getModel(), 'getJournalingIsEnabled')) {
-            return FALSE;
+            return false;
         }
 
         return $this->getModel()->getJournalingIsEnabled() && $this->getModel()->getJournalingTable();
@@ -1541,7 +1543,7 @@ abstract class AdminCRUDController extends ModuleAdminController
      * Crud READ action
      * @param bool $display_view
      */
-    public function index($display_view = TRUE)
+    public function index($display_view = true)
     {
         $running_module = $this->getAttribute('running_module');
         $definition = $this->getDefinition();
@@ -1569,7 +1571,7 @@ abstract class AdminCRUDController extends ModuleAdminController
         // Adding arrows move up and down links for an orderable CRUD
         if ($this->isOrderable() && SecurityManager::hasAccess($running_module, 'move', $running_module)) {
             // Reading the label from datagrid definition
-            $item_order_column_label = FALSE;
+            $item_order_column_label = false;
             if (isset($definition[$this->item_order_column]['label'])) {
                 $item_order_column_label = $definition[$this->item_order_column]['label'];
             }
@@ -1638,7 +1640,7 @@ abstract class AdminCRUDController extends ModuleAdminController
             if (isset($field_definition['foreign_key_relationship_type']) && $field_definition['foreign_key_relationship_type'] == FormBuilder::FOREIGN_KEY_MANY_TO_MANY) {
                 // If there was no grid_is_orderable value already set
                 if (!isset($field_definition['grid_is_orderable'])) {
-                    $field_definition['grid_is_orderable'] = FALSE;
+                    $field_definition['grid_is_orderable'] = false;
                 }
             }
         }
@@ -1744,10 +1746,10 @@ abstract class AdminCRUDController extends ModuleAdminController
         }
 
         // Detecting whether the file is identical
-        $is_identical = TRUE;
+        $is_identical = true;
         foreach ($revision as $key => $value) {
             if ($revision_current->$key != $revision->$key) {
-                $is_identical = FALSE;
+                $is_identical = false;
                 break;
             }
         }
@@ -1801,7 +1803,7 @@ abstract class AdminCRUDController extends ModuleAdminController
      * CRUD create/update action
      * @param bool $display_view
      */
-    public function edit($display_view = TRUE)
+    public function edit($display_view = true)
     {
         $id = $this->input->getParam('id');
 
@@ -1824,7 +1826,7 @@ abstract class AdminCRUDController extends ModuleAdminController
         }
 
         //$this->formbuilder->setReadOnly( FALSE );
-        $this->_edit(FALSE, $display_view);
+        $this->_edit(false, $display_view);
     }
 
     /**
@@ -1832,7 +1834,7 @@ abstract class AdminCRUDController extends ModuleAdminController
      * @param bool $is_preview
      * @param bool $display_view
      */
-    protected function _edit($is_preview = FALSE, $display_view = TRUE)
+    protected function _edit($is_preview = false, $display_view = true)
     {
         $forced_filters = $this->getForcedFilters();
         $definition = $this->getDefinition();
@@ -1844,9 +1846,9 @@ abstract class AdminCRUDController extends ModuleAdminController
                 continue;
             }
             //unset($definition[$field_name]);
-            $definition[$field_name]['input_is_editable'] = FALSE;
+            $definition[$field_name]['input_is_editable'] = false;
             $definition[$field_name]['input_default_value'] = $value;
-            $definition[$field_name]['filter_type'] = FALSE;
+            $definition[$field_name]['filter_type'] = false;
         }
 
         $this->formbuilder->setId($id);
@@ -1918,7 +1920,7 @@ abstract class AdminCRUDController extends ModuleAdminController
         $this->load->library('Spreadsheet');
 
         // getting data
-        $result = $this->getModel()->getAdvancedFeed('*', 0, 999999, $this->getModel()->getIdFieldName(), 'ASC', array(), FALSE);
+        $result = $this->getModel()->getAdvancedFeed('*', 0, 999999, $this->getModel()->getIdFieldName(), 'ASC', array(), false);
         $result = $result[0];
 
         // caching variable, we dont want is_callable to be executed for every row
@@ -1944,11 +1946,11 @@ abstract class AdminCRUDController extends ModuleAdminController
         $file_name = ($this->getModel()->getTable() ? $this->getModel()->getTable() : $this->getModuleName()) . '-' . date('Y-m-d-h-i-s');
 
         if ($format == 'csv') {
-            $this->spreadsheet->generateCSV($export_result, FALSE, $file_name . '.csv');
+            $this->spreadsheet->generateCSV($export_result, false, $file_name . '.csv');
         } elseif ($format == 'xls') {
-            $this->spreadsheet->generateExcel($export_result, FALSE, $file_name . '.xls', TRUE, TRUE, Spreadsheet::EXCEL_XLS);
+            $this->spreadsheet->generateExcel($export_result, false, $file_name . '.xls', true, true, Spreadsheet::EXCEL_XLS);
         } elseif ($format == 'xlsx') {
-            $this->spreadsheet->generateExcel($export_result, FALSE, $file_name . '.xlsx', TRUE, TRUE, Spreadsheet::EXCEL_XLSX);
+            $this->spreadsheet->generateExcel($export_result, false, $file_name . '.xlsx', true, true, Spreadsheet::EXCEL_XLSX);
         }
     }
 
@@ -1977,8 +1979,8 @@ abstract class AdminCRUDController extends ModuleAdminController
         $this->formbuilder->setDefinition(array(
             'file_to_import' => array(
                 'upload_path' => $cache_path,
-                'show_in_grid' => FALSE,
-                'show_in_form' => TRUE,
+                'show_in_grid' => false,
+                'show_in_form' => true,
                 'input_type' => FormBuilder::FILE,
                 'upload_allowed_types' => 'xls|xlsx|csv',
                 'validation_rules' => '',
@@ -2009,7 +2011,7 @@ abstract class AdminCRUDController extends ModuleAdminController
      * CRUD read
      * @param bool $display_view
      */
-    public function preview($display_view = TRUE)
+    public function preview($display_view = true)
     {
         if (!$this->isPreviewable()) {
             show_404();
@@ -2017,7 +2019,7 @@ abstract class AdminCRUDController extends ModuleAdminController
 
         $this->formbuilder->setTitle($this->lang->line('crud_label_preview'));
         $this->formbuilder->setReadOnly();
-        $this->_edit(TRUE, $display_view);
+        $this->_edit(true, $display_view);
     }
 
     /**
@@ -2147,7 +2149,7 @@ abstract class AdminCRUDController extends ModuleAdminController
         // checking if there was a file submited
         if (!isset($data_array['file_to_import']) || !$data_array['file_to_import']) {
             $this->formbuilder->setValidationErrorMessage($this->lang->line('crud_no_file_uploaded_or_wrong_filetype'));
-            return FALSE;
+            return false;
         }
 
         // building file path
@@ -2165,7 +2167,7 @@ abstract class AdminCRUDController extends ModuleAdminController
         // just in case
         if (!file_exists($file)) {
             $this->formbuilder->setValidationErrorMessage($this->lang->line('crud_imported_file_does_not_exist'));
-            return FALSE;
+            return false;
         }
 
         // parsing file based on file extension
@@ -2183,7 +2185,7 @@ abstract class AdminCRUDController extends ModuleAdminController
         // empty file, show warning
         if (!count($result)) {
             $this->formbuilder->setValidationErrorMessage(sprintf($this->lang->line('crud_import_empty_spreadsheet'), $ext));
-            return FALSE;
+            return false;
         }
 
         // initializing empty arrays
@@ -2218,10 +2220,10 @@ abstract class AdminCRUDController extends ModuleAdminController
 
             // filtering input, there are some fields that must be set, we do not care about the rest
             if ($this->is_importable_must_have_fields && is_array($this->is_importable_must_have_fields)) {
-                $continue = FALSE;
+                $continue = false;
                 foreach ($this->is_importable_must_have_fields as $must_have_field) {
                     if (!isset($data[$must_have_field]) || !strlen($data[$must_have_field])) {
-                        $continue = TRUE;
+                        $continue = true;
                         break;
                     }
                 }
@@ -2246,7 +2248,7 @@ abstract class AdminCRUDController extends ModuleAdminController
             } else {
                 foreach ($accepted_fields as $field_name) {
                     if (!isset($data[$field_name])) {
-                        $data[$field_name] = NULL;
+                        $data[$field_name] = null;
                     }
                 }
                 $insert_data[] = $data;
@@ -2272,16 +2274,16 @@ abstract class AdminCRUDController extends ModuleAdminController
 
         if (($count_insert + $count_update) == 0) {
             $this->formbuilder->setValidationErrorMessage($this->lang->line('crud_import_nonempry_spreadsheet_but_nothing_to_update'));
-            return FALSE;
+            return false;
         }
 
         if ($affected_rows == 0) {
             $this->formbuilder->setValidationErrorMessage(sprintf($this->lang->line('crud_import_no_rows_affected'), $count_insert, $count_update));
-            return FALSE;
+            return false;
         }
 
         // great
-        return TRUE;
+        return true;
     }
 
     /**
@@ -2313,7 +2315,7 @@ abstract class AdminCRUDController extends ModuleAdminController
      * @param bool $return
      * @return string
      */
-    protected function _closePopup($return = FALSE)
+    protected function _closePopup($return = false)
     {
         $out = ob_get_contents();
         if ($out) {

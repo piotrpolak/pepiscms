@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See LICENSE.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Class Backup_model
@@ -26,5 +28,4 @@ class Backup_model extends Generic_model
         // Required by saveById method
         $this->setAcceptedPostFields(array());
     }
-
 }

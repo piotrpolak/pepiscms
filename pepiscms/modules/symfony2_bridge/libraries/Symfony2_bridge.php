@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Symfony2 bridge
@@ -29,7 +31,8 @@ $container = $this->symfony2_bridge->getContainer(); // Initializes Symfony2 PSR
 $imageHelper]= new \Pepis\UtilitiesBundle\Utilities\ImageHelper();
 
  */
-class Symfony2_bridge {
+class Symfony2_bridge
+{
 
     // FIXME Download with composer
 
@@ -38,14 +41,14 @@ class Symfony2_bridge {
      *
      * @var AppKernel|null
      */
-    private $kernel = NULL;
+    private $kernel = null;
 
     /**
      * Symfony2 root dir where the config, logs, cache dir is stored
      *
      * @var String|null
      */
-    private $symfony2_root_dir = NULL;
+    private $symfony2_root_dir = null;
 
     /**
      * Allowed params: root_dir
@@ -55,8 +58,7 @@ class Symfony2_bridge {
     public function __construct($params=array())
     {
         $this->symfony2_root_dir = INSTALLATIONPATH.'../../app/';
-        if( isset($params['root_dir']) )
-        {
+        if (isset($params['root_dir'])) {
             $this->symfony2_root_dir = $params['root_dir'];
         }
     }
@@ -71,11 +73,9 @@ class Symfony2_bridge {
     public function getKernel()
     {
         // The kernel should be initialized just once
-        if ($this->kernel === NULL)
-        {
+        if ($this->kernel === null) {
             // Checking whether bootstrap file exists
-            if( !file_exists($this->symfony2_root_dir . 'bootstrap.php.cache') )
-            {
+            if (!file_exists($this->symfony2_root_dir . 'bootstrap.php.cache')) {
                 throw new Exception('Unable to import application kernel. File bootstrap.php.cache does not exist.');
             }
 
@@ -83,8 +83,7 @@ class Symfony2_bridge {
             $loader = require_once $this->symfony2_root_dir . 'bootstrap.php.cache';
 
             // Checking whether the kernel file exists
-            if( !file_exists($this->symfony2_root_dir . 'AppKernel.php') )
-            {
+            if (!file_exists($this->symfony2_root_dir . 'AppKernel.php')) {
                 throw new Exception('Unable to import application kernel. File AppKernel.php does not exist.');
             }
 
@@ -121,8 +120,7 @@ class Symfony2_bridge {
     public function __destruct()
     {
         // Shutting down kernel upon destruction if the kernel was initialised
-        if ($this->kernel !== NULL)
-        {
+        if ($this->kernel !== null) {
             $this->kernel->shutdown();
         }
     }

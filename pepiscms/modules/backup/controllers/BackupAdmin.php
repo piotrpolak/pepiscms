@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See LICENSE.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Class BackupAdmin
@@ -91,7 +93,7 @@ class BackupAdmin extends ModuleAdminController
             show_error($this->lang->line('backup_dump_works_only_with_mysql'));
         }
 
-        $dump = mysqldump($db[$active_group]['hostname'], $db[$active_group]['database'], $db[$active_group]['username'], $db[$active_group]['password'], array($this->config->item('database_table_groups'), $this->config->item('database_table_group_to_entity')), FALSE, FALSE);
+        $dump = mysqldump($db[$active_group]['hostname'], $db[$active_group]['database'], $db[$active_group]['username'], $db[$active_group]['password'], array($this->config->item('database_table_groups'), $this->config->item('database_table_group_to_entity')), false, false);
         if ($dump) {
             Logger::info('Doing partial database dump', 'BACKUP');
             $file_name = niceuri('groups-' . $this->config->item('site_name')) . '-' . date('Y-m-d_H-i-s') . '.sql';
@@ -147,8 +149,8 @@ class BackupAdmin extends ModuleAdminController
         $this->formbuilder->setDefinition(array(
             'file_to_import' => array(
                 'upload_path' => $cache_path,
-                'show_in_grid' => FALSE,
-                'show_in_form' => TRUE,
+                'show_in_grid' => false,
+                'show_in_form' => true,
                 'input_type' => FormBuilder::FILE,
                 'upload_allowed_types' => 'xml',
                 'validation_rules' => '',
@@ -186,7 +188,7 @@ class BackupAdmin extends ModuleAdminController
         // checking if there was a file submited
         if (!isset($data_array['file_to_import']) || !$data_array['file_to_import']) {
             $this->formbuilder->setValidationErrorMessage($this->lang->line('backup_xml_restore_not_a_valid_xml_document'));
-            return FALSE;
+            return false;
         }
 
         $file = $cache_path . $data_array['file_to_import'];
@@ -194,7 +196,7 @@ class BackupAdmin extends ModuleAdminController
         // just in case
         if (!file_exists($file)) {
             $this->formbuilder->setValidationErrorMessage($this->lang->line('crud_imported_file_does_not_exist'));
-            return FALSE;
+            return false;
         }
 
         // First do the backup of the current contents
@@ -214,10 +216,10 @@ class BackupAdmin extends ModuleAdminController
 
                 // Removing file after restoring
                 unlink($file);
-                return TRUE;
+                return true;
             } else {
                 $this->formbuilder->setValidationErrorMessage($this->lang->line('backup_xml_restore_unable_to_restore'));
-                return FALSE;
+                return false;
             }
         } catch (Exception $exception) {
 
@@ -227,7 +229,7 @@ class BackupAdmin extends ModuleAdminController
             } else {
                 $this->formbuilder->setValidationErrorMessage($this->lang->line('backup_xml_restore_not_a_valid_xml_document'));
             }
-            return FALSE;
+            return false;
         }
     }
 }

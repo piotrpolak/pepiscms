@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -12,6 +12,7 @@
  * @link                http://www.polak.ro/
  */
 
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Class SqlconsoleAdmin
@@ -29,8 +30,8 @@ class SqlconsoleAdmin extends ModuleAdminController
         $this->load->helper('text');
 
         $this->assign('result', array());
-        $this->assign('query_error', FALSE);
-        $this->assign('query_success', FALSE);
+        $this->assign('query_error', false);
+        $this->assign('query_success', false);
 
         $this->assign('title', $this->lang->line('sqlconsole_module_name') . ' v' . $this->Module_model->getModuleDescriptor($this->modulerunner->getRunningModuleName())->getVersion());
         $this->assign('database_name', $this->_get_database_name());
@@ -52,9 +53,8 @@ class SqlconsoleAdmin extends ModuleAdminController
         }
 
         if (strlen($sql_input) > 0) {
-
             if (!$this->_is_query_dangerous($sql_input)) {
-                $this->db->db_debug = FALSE;
+                $this->db->db_debug = false;
 
                 $this->load->moduleModel('sqlconsole', 'Sqlconsole_helper_model');
                 $rs = $this->Sqlconsole_helper_model->runMultipleSqlQueries($sql_input, $query_separator);
@@ -75,7 +75,7 @@ class SqlconsoleAdmin extends ModuleAdminController
                     if (is_object($rs)) {
                         $this->assign('result', $rs->result_object());
                     } else {
-                        $this->assign('query_success', TRUE);
+                        $this->assign('query_success', true);
                     }
                 }
             } else {
@@ -83,7 +83,7 @@ class SqlconsoleAdmin extends ModuleAdminController
             }
 
             if ($this->_is_query_refreshing($sql_input)) {
-                $this->auth->setSessionVariable('sqlconsole_tables', NULL);
+                $this->auth->setSessionVariable('sqlconsole_tables', null);
             }
         }
 
@@ -119,7 +119,7 @@ class SqlconsoleAdmin extends ModuleAdminController
         $sql = str_replace(array("\n", "\n"), ' ', $sql);
         $sql = strtolower(preg_replace('/\s+/', ' ', $sql));
 
-        if (strpos($sql, 'drop table') !== FALSE || strpos($sql, 'alter table') !== FALSE || strpos($sql, 'rename table') !== FALSE || $sql == 'refresh') {
+        if (strpos($sql, 'drop table') !== false || strpos($sql, 'alter table') !== false || strpos($sql, 'rename table') !== false || $sql == 'refresh') {
             return true;
         }
 
@@ -131,7 +131,7 @@ class SqlconsoleAdmin extends ModuleAdminController
         $sql = str_replace(array("\n", "\n"), ' ', $sql);
         $sql = strtolower(preg_replace('/\s+/', ' ', $sql));
 
-        if (strpos($sql, 'drop database') !== FALSE) {
+        if (strpos($sql, 'drop database') !== false) {
             return true;
         }
 
@@ -144,5 +144,4 @@ class SqlconsoleAdmin extends ModuleAdminController
         $database_config = $db[$active_group];
         return $database_config['database'];
     }
-
 }

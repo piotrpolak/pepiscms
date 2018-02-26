@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See LICENSE.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * @version 1.3
@@ -44,7 +46,7 @@ class LanguageHelper extends ContainerAware
      * @param bool $language_file
      * @return bool
      */
-    public function isLangFileWritableByModule($module, $lang_name, $language_file = FALSE)
+    public function isLangFileWritableByModule($module, $lang_name, $language_file = false)
     {
         if (!$language_file) {
             $language_file = $module . '_lang.php';
@@ -64,7 +66,9 @@ class LanguageHelper extends ContainerAware
 
 
         $path = $path . $lang_name . '/' . $language_file;
-        if (!file_exists($path)) return TRUE;
+        if (!file_exists($path)) {
+            return true;
+        }
 
         return is_really_writable($path);
     }
@@ -77,7 +81,7 @@ class LanguageHelper extends ContainerAware
      * @param bool|string $language_file
      * @return array
      */
-    public function getLanguageByModuleName($module, $lang_name, $language_file = FALSE)
+    public function getLanguageByModuleName($module, $lang_name, $language_file = false)
     {
         if (!$language_file) {
             $language_file = $module . '_lang.php';
@@ -129,7 +133,7 @@ class LanguageHelper extends ContainerAware
      */
     public function deleteField($module, $key, $language_file)
     {
-        $dirs = $this->getModuleLanguages($module, TRUE);
+        $dirs = $this->getModuleLanguages($module, true);
         foreach ($dirs as $dir) {
             $path = $dir . '/' . $language_file;
             if (!file_exists($path)) {
@@ -139,7 +143,7 @@ class LanguageHelper extends ContainerAware
             $this->removeKeyByPath($key, $path);
         }
 
-        return TRUE;
+        return true;
     }
 
     /**
@@ -152,7 +156,7 @@ class LanguageHelper extends ContainerAware
      * @param string|bool $language_file
      * @return bool
      */
-    public function setModuleLanguageField($module, $lang_name, $key, $value, $language_file = FALSE)
+    public function setModuleLanguageField($module, $lang_name, $key, $value, $language_file = false)
     {
         if (!$language_file) {
             $language_file = $module . '_lang.php';
@@ -250,7 +254,7 @@ class LanguageHelper extends ContainerAware
 
         if ($strlen > $length) {
             $value = $value;
-            //$value = substr( $value, 0, $length );
+        //$value = substr( $value, 0, $length );
         } else {
             $diff = $length - $strlen;
 
@@ -280,7 +284,7 @@ class LanguageHelper extends ContainerAware
      * @param bool|string $language_file
      * @return array
      */
-    public function getModuleTranslationKeys($module, $languages = FALSE, $language_file = FALSE)
+    public function getModuleTranslationKeys($module, $languages = false, $language_file = false)
     {
         if (!$language_file) {
             $language_file = $module . '_lang.php';
@@ -319,7 +323,7 @@ class LanguageHelper extends ContainerAware
      * @param bool $return_dirs
      * @return array
      */
-    public function getModuleLanguages($module, $return_dirs = FALSE)
+    public function getModuleLanguages($module, $return_dirs = false)
     {
         if ($module == 'system') {
             $path = APPPATH . 'language/';
@@ -348,7 +352,7 @@ class LanguageHelper extends ContainerAware
      * @param bool $return_dirs
      * @return array
      */
-    public function getModuleLanguageFiles($module, $return_dirs = FALSE)
+    public function getModuleLanguageFiles($module, $return_dirs = false)
     {
         if ($module == 'system') {
             $path = APPPATH . 'language/';
@@ -368,5 +372,4 @@ class LanguageHelper extends ContainerAware
 
         return array_unique($languages);
     }
-
 }
