@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.pocd lak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Enhanced controller providing some extra features
@@ -106,8 +108,7 @@ abstract class EnhancedController extends CI_Controller
      */
     public function __construct()
     {
-        if (!get_instance()) // Very important for modules!!
-        {
+        if (!get_instance()) { // Very important for modules!!
             parent::__construct();
         }
         $this->output->enable_profiler($this->config->item('enable_profiler'));
@@ -177,7 +178,7 @@ abstract class EnhancedController extends CI_Controller
     public function getAttribute($attributeName)
     {
         if (!isset($this->response_attributes[$attributeName])) {
-            return NULL;
+            return null;
         }
         return $this->response_attributes[$attributeName];
     }
@@ -212,8 +213,9 @@ abstract class EnhancedController extends CI_Controller
      */
     public function display($view = false, $display_header = true, $display_footer = true)
     {
-        if ($this->already_displayed)
-            return FALSE;
+        if ($this->already_displayed) {
+            return false;
+        }
 
         if (!$view) {
             $view = $this->uri->segment(1) . '/' . $this->uri->segment(2) .
@@ -226,6 +228,6 @@ abstract class EnhancedController extends CI_Controller
         $this->response_attributes = array();
         $this->already_displayed = true;
 
-        return TRUE;
+        return true;
     }
 }

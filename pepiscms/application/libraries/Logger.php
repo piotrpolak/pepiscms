@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Utility class for logging user actions.
@@ -53,7 +55,7 @@ class Logger
      * @param bool|int $timestamp
      * @return bool
      */
-    public static function log($message, $level = self::MESSAGE_LEVEL_INFO, $collection = 'SYSTEM', $resource_id = FALSE, $user_id = FALSE, $timestamp = FALSE)
+    public static function log($message, $level = self::MESSAGE_LEVEL_INFO, $collection = 'SYSTEM', $resource_id = false, $user_id = false, $timestamp = false)
     {
         $CI = &get_instance();
         $CI->load->helper('date');
@@ -96,7 +98,7 @@ class Logger
      * @param string|bool $resource_id
      * @return bool
      */
-    public static function info($message, $collection = 'SYSTEM', $resource_id = FALSE)
+    public static function info($message, $collection = 'SYSTEM', $resource_id = false)
     {
         return self::log($message, self::MESSAGE_LEVEL_INFO, $collection, $resource_id);
     }
@@ -109,7 +111,7 @@ class Logger
      * @param string|bool $resource_id
      * @return bool
      */
-    public static function notice($message, $collection = 'SYSTEM', $resource_id = FALSE)
+    public static function notice($message, $collection = 'SYSTEM', $resource_id = false)
     {
         return self::log($message, self::MESSAGE_LEVEL_NOTICE, $collection, $resource_id);
     }
@@ -122,7 +124,7 @@ class Logger
      * @param string|bool $resource_id
      * @return bool
      */
-    public static function warning($message, $collection = 'SYSTEM', $resource_id = FALSE)
+    public static function warning($message, $collection = 'SYSTEM', $resource_id = false)
     {
         return self::log($message, self::MESSAGE_LEVEL_WARNING, $collection, $resource_id);
     }
@@ -138,13 +140,14 @@ class Logger
      * @param bool $notify
      * @return bool
      */
-    public static function error($message, $collection = 'SYSTEM', $resource_id = FALSE, $notify = TRUE)
+    public static function error($message, $collection = 'SYSTEM', $resource_id = false, $notify = true)
     {
         if ($notify && self::$config->item('debug_maintainer_email_address')) {
             $hash = md5($message . '' . $collection);
             $path = INSTALLATIONPATH . 'application/cache/errors/';
-            if (!file_exists($path))
+            if (!file_exists($path)) {
                 mkdir($path);
+            }
 
             $path .= $hash . '.lock';
             if (!file_exists($path)) {
@@ -178,7 +181,7 @@ class Logger
                 );
 
                 //$CI->emailsender->debug();
-                if ($CI->emailsender->sendSystemTemplate($to_email, $from_email, $from_name, $subject, 'error_report', $edata, FALSE, 'english')) {
+                if ($CI->emailsender->sendSystemTemplate($to_email, $from_email, $from_name, $subject, 'error_report', $edata, false, 'english')) {
                     $message .= '; error report sent by email';
                 } else {
                     $message .= '; unable to send report by email';
@@ -198,7 +201,7 @@ class Logger
      * @param string|bool $resource_id
      * @return bool
      */
-    public static function debug($message, $collection = 'SYSTEM', $resource_id = FALSE)
+    public static function debug($message, $collection = 'SYSTEM', $resource_id = false)
     {
         return self::log($message, self::MESSAGE_LEVEL_DEBUG, $collection, $resource_id);
     }
@@ -214,7 +217,7 @@ class Logger
         if (file_exists($path)) {
             return unlink($path);
         }
-        return FALSE;
+        return false;
     }
 
     /**
@@ -249,7 +252,7 @@ class Logger
         /* Don't execute PHP internal error handler */
         #return true;
 
-        return FALSE;
+        return false;
     }
 
     // -------------------------------------------------------------------------
@@ -292,5 +295,4 @@ class Logger
 
         return array($file, $line);
     }
-
 }

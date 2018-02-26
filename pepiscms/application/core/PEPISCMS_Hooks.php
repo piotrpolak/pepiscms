@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Enhanced hooks class supporting instance defined hooks.
@@ -34,9 +36,9 @@ class PEPISCMS_Hooks extends CI_Hooks
                 ? $data[0]->{$data[1]}()
                 : $data();
 
-            return TRUE;
+            return true;
         } elseif (!is_array($data)) {
-            return FALSE;
+            return false;
         }
 
         // -----------------------------------
@@ -45,8 +47,8 @@ class PEPISCMS_Hooks extends CI_Hooks
 
         // If the script being called happens to have the same
         // hook call within it a loop can happen
-        if ($this->_in_progress === TRUE) {
-            return FALSE;
+        if ($this->_in_progress === true) {
+            return false;
         }
 
         // -----------------------------------
@@ -54,7 +56,7 @@ class PEPISCMS_Hooks extends CI_Hooks
         // -----------------------------------
 
         if (!isset($data['filepath'], $data['filename'])) {
-            return FALSE;
+            return false;
         }
 
         // PepisCMS customization start
@@ -63,37 +65,37 @@ class PEPISCMS_Hooks extends CI_Hooks
         if (!file_exists($filepath)) {
             $filepath = APPPATH . $data['filepath'] . '/' . $data['filename'];
             if (!file_exists($filepath)) {
-                return FALSE;
+                return false;
             }
         }
         // PepisCMS customization end
 
         // Determine and class and/or function names
-        $class = empty($data['class']) ? FALSE : $data['class'];
-        $function = empty($data['function']) ? FALSE : $data['function'];
+        $class = empty($data['class']) ? false : $data['class'];
+        $function = empty($data['function']) ? false : $data['function'];
         $params = isset($data['params']) ? $data['params'] : '';
 
         if (empty($function)) {
-            return FALSE;
+            return false;
         }
 
         // Set the _in_progress flag
-        $this->_in_progress = TRUE;
+        $this->_in_progress = true;
 
         // Call the requested class and/or function
-        if ($class !== FALSE) {
+        if ($class !== false) {
             // The object is stored?
             if (isset($this->_objects[$class])) {
                 if (method_exists($this->_objects[$class], $function)) {
                     $this->_objects[$class]->$function($params);
                 } else {
-                    return $this->_in_progress = FALSE;
+                    return $this->_in_progress = false;
                 }
             } else {
-                class_exists($class, FALSE) OR require_once($filepath);
+                class_exists($class, false) or require_once($filepath);
 
-                if (!class_exists($class, FALSE) OR !method_exists($class, $function)) {
-                    return $this->_in_progress = FALSE;
+                if (!class_exists($class, false) or !method_exists($class, $function)) {
+                    return $this->_in_progress = false;
                 }
 
                 // Store the object and execute the method
@@ -101,16 +103,16 @@ class PEPISCMS_Hooks extends CI_Hooks
                 $this->_objects[$class]->$function($params);
             }
         } else {
-            function_exists($function) OR require_once($filepath);
+            function_exists($function) or require_once($filepath);
 
             if (!function_exists($function)) {
-                return $this->_in_progress = FALSE;
+                return $this->_in_progress = false;
             }
 
             $function($params);
         }
 
-        $this->_in_progress = FALSE;
-        return TRUE;
+        $this->_in_progress = false;
+        return true;
     }
 }

@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * User login controller
@@ -31,7 +33,7 @@ class Login extends EnhancedController
             $this->auth->onAuthRequest();
         }
 
-        if ($this->auth->isAuthorized(TRUE)) {
+        if ($this->auth->isAuthorized(true)) {
             $this->_do_post_login_redirect_if_case();
 
             $this->load->library('SecurityManager');
@@ -65,10 +67,10 @@ class Login extends EnhancedController
         $this->assign('current_language', $language);
         $this->assign('application_languages', $this->lang->getEnabledAdminLanguages());
         $this->assign('site_name', $this->config->item('site_name'));
-        $this->assign('popup_layout', FALSE);
+        $this->assign('popup_layout', false);
 
-        $this->assign('auth_error', FALSE);
-        $this->assign('account_is_locked', FALSE);
+        $this->assign('auth_error', false);
+        $this->assign('account_is_locked', false);
     }
 
     private function _do_post_login_redirect_if_case()
@@ -84,7 +86,7 @@ class Login extends EnhancedController
             }
         }
 
-        return FALSE;
+        return false;
     }
 
     public function refresh_session()
@@ -93,8 +95,9 @@ class Login extends EnhancedController
         $this->auth->refreshSession();
 
         $language = $this->lang->getCurrentLanguage();
-        if (!$language)
+        if (!$language) {
             $language = $this->config->item('language');
+        }
 
         $this->lang->load('global', $language);
         $this->load->library('SimpleSessionMessage');
@@ -129,7 +132,7 @@ class Login extends EnhancedController
         $this->_oninit();
         $this->load->library('Logger');
 
-        $account_is_locked = $auth_error = $prevent_from_logging_in = FALSE;
+        $account_is_locked = $auth_error = $prevent_from_logging_in = false;
 
         // Preventing error display
         if (!(count($_POST) > 0)) {
@@ -146,11 +149,11 @@ class Login extends EnhancedController
                     $number_of_consecutive_ua = $this->User_model->getNumberOfConsecutiveUnsuccessfullAuthorizationsByUserId($user_id);
 
                     if ($number_of_consecutive_ua > $number_of_consecutive_ua_max) {
-                        $account_is_locked = TRUE;
+                        $account_is_locked = true;
                     } elseif ($number_of_consecutive_ua == $number_of_consecutive_ua_max) {
                         echo 1;
-                        $account_is_locked = TRUE;
-                        $prevent_from_logging_in = TRUE; // This is used only in the moment when the account is being locked
+                        $account_is_locked = true;
+                        $prevent_from_logging_in = true; // This is used only in the moment when the account is being locked
                         // Locking the account just once
                         $this->User_model->lockById($user_id);
                         // Need to be the basic method to be able to detect user ID
@@ -176,13 +179,13 @@ class Login extends EnhancedController
                     } else {
                         // Need to be the basic method to be able to detect user ID
                         Logger::log('Unable to login ' . $user_email, Logger::MESSAGE_LEVEL_WARNING, 'LOGIN', $user_id, $user_id);
-                        $auth_error = TRUE;
+                        $auth_error = true;
                     }
                 }
             } else {
                 // Need to be the basic method to be able to detect user ID
                 Logger::log('Unable to login ' . $user_email, Logger::MESSAGE_LEVEL_WARNING, 'LOGIN', $user_id, $user_id);
-                $auth_error = TRUE;
+                $auth_error = true;
             }
         }
 
@@ -210,5 +213,4 @@ class Login extends EnhancedController
 
         echo json_encode($success);
     }
-
 }

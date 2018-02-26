@@ -14,7 +14,7 @@
 
 namespace Piotrpolak\Pepiscms\Formbuilder\Component;
 
-if (!defined('BASEPATH')) exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Password
@@ -53,6 +53,6 @@ class Password extends AbstractComponent
      */
     public function shouldRenderHiddenForReadOnly()
     {
-        return FALSE;
+        return false;
     }
 }

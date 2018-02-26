@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * MY_Lang, provides some extra features
@@ -28,7 +30,7 @@ class PEPISCMS_Lang extends CI_Lang
      *
      * @return string[]    Array containing translations, if $return is set to TRUE
      */
-    public function load($langfile, $idiom = '', $return = FALSE, $add_suffix = TRUE, $alt_path = '')
+    public function load($langfile, $idiom = '', $return = false, $add_suffix = true, $alt_path = '')
     {
         // Loading English translation no matter what (if it exists)
         if ($idiom !== 'english') {
@@ -46,13 +48,13 @@ class PEPISCMS_Lang extends CI_Lang
      * @param null $default_value
      * @return null|string
      */
-    public function line($line = '', $default_value = NULL)
+    public function line($line = '', $default_value = null)
     {
         // Changed parameter order - might be problematic
 
         if ($line == '' || !isset($this->language[$line])) {
             //trigger_error('Language field <em>'.$line.'</em> is not defined', E_USER_WARNING);
-            if ($default_value === NULL) {
+            if ($default_value === null) {
                 return $line;
             }
 
@@ -74,7 +76,7 @@ class PEPISCMS_Lang extends CI_Lang
     public function getCurrentLanguage()
     {
         $CI = &get_instance();
-        $idiom = FALSE;
+        $idiom = false;
 
         if (class_exists('Dispatcher') && ($d_lang = Dispatcher::getSiteLanguage())) {
             if (isset($d_lang->ci_language) && $d_lang->ci_language) {
@@ -112,10 +114,10 @@ class PEPISCMS_Lang extends CI_Lang
         if (in_array($language, $languages)) {
             get_instance()->load->helper('cookie');
             set_cookie('language', $language, 10000);
-            return TRUE;
+            return true;
         }
 
-        return FALSE;
+        return false;
     }
 
     /**
@@ -161,13 +163,13 @@ class PEPISCMS_Lang extends CI_Lang
      * @param bool|string $module_name
      * @return bool
      */
-    public function loadForModule($langfile = '', $idiom = '', $return = FALSE, $module_name = FALSE)
+    public function loadForModule($langfile = '', $idiom = '', $return = false, $module_name = false)
     {
         // TODO Remove this hack
         $langfile = str_replace('.php', '', str_replace('_lang.', '', $langfile)) . '_lang.php';
 
-        if (!$module_name && in_array($langfile, $this->is_loaded, TRUE)) {
-            return FALSE;
+        if (!$module_name && in_array($langfile, $this->is_loaded, true)) {
+            return false;
         }
 
         $CI = &get_instance();
@@ -181,7 +183,7 @@ class PEPISCMS_Lang extends CI_Lang
             $idiom = ($deft_lang == '') ? 'english' : $deft_lang;
         }
 
-        $something_loaded = FALSE;
+        $something_loaded = false;
 
 
         // For modules
@@ -192,13 +194,13 @@ class PEPISCMS_Lang extends CI_Lang
             // Loading English translation no matter what (if it exists)
             if ($idiom != 'english' && file_exists($module_path . 'language/english/' . $langfile)) {
                 include($module_path . 'language/english/' . $langfile);
-                $something_loaded = TRUE;
+                $something_loaded = true;
             }
 
             // Attempting to load the final language
             if (file_exists($module_path . 'language/' . $idiom . '/' . $langfile)) {
                 include($module_path . 'language/' . $idiom . '/' . $langfile);
-                $something_loaded = TRUE;
+                $something_loaded = true;
             }
         }
 
@@ -211,23 +213,23 @@ class PEPISCMS_Lang extends CI_Lang
             // Loading English translation no matter what (if it exists)
             if ($idiom != 'english' && file_exists(APPPATH . 'language/english/' . $langfile)) {
                 include(APPPATH . 'language/english/' . $langfile);
-                $something_loaded = TRUE;
+                $something_loaded = true;
             }
 
             if (file_exists(APPPATH . 'language/' . $idiom . '/' . $langfile)) {
                 include(APPPATH . 'language/' . $idiom . '/' . $langfile);
-                $something_loaded = TRUE;
+                $something_loaded = true;
             } else {
                 // Loading English translation no matter what (if it exists)
                 if ($idiom != 'english' && file_exists(BASEPATH . 'language/english/' . $langfile)) {
                     include(BASEPATH . 'language/english/' . $langfile);
-                    $something_loaded = TRUE;
+                    $something_loaded = true;
                 }
 
                 // Attempting to load the final language
                 if (file_exists(BASEPATH . 'language/' . $idiom . '/' . $langfile)) {
                     include(BASEPATH . 'language/' . $idiom . '/' . $langfile);
-                    $something_loaded = TRUE;
+                    $something_loaded = true;
                 }
             }
         }
@@ -239,15 +241,15 @@ class PEPISCMS_Lang extends CI_Lang
             } else {
                 show_error('Unable to load the requested language file: language/' . $idiom . '/' . $langfile);
             }
-            return FALSE;
+            return false;
         }
 
         if (!isset($lang)) {
             log_message('error', 'Language file contains no data: language/' . $idiom . '/' . $langfile);
-            return FALSE;
+            return false;
         }
 
-        if ($return == TRUE) {
+        if ($return == true) {
             return $lang;
         }
 
@@ -256,7 +258,6 @@ class PEPISCMS_Lang extends CI_Lang
         unset($lang);
 
         log_message('debug', 'Language file loaded: language/' . $idiom . '/' . $langfile);
-        return TRUE;
+        return true;
     }
-
 }

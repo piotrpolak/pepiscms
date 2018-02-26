@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -12,6 +12,8 @@
  * @link                http://www.polak.ro/
  */
 
+defined('BASEPATH') or exit('No direct script access allowed');
+
 /**
  * Abstract class for building module descriptors
  *
@@ -21,7 +23,6 @@ abstract class ModuleDescriptor extends ContainerAware implements ModuleDescript
 {
     public function __construct()
     {
-
     }
 
     /**
@@ -53,7 +54,7 @@ abstract class ModuleDescriptor extends ContainerAware implements ModuleDescript
      */
     public function isDisplayedInMenu()
     {
-        return FALSE;
+        return false;
     }
 
     /**
@@ -61,7 +62,7 @@ abstract class ModuleDescriptor extends ContainerAware implements ModuleDescript
      */
     public function isDisplayedInUtilities()
     {
-        return FALSE;
+        return false;
     }
 
     /**
@@ -69,7 +70,7 @@ abstract class ModuleDescriptor extends ContainerAware implements ModuleDescript
      */
     public function getAdminSubmenuElements($language)
     {
-        return FALSE;
+        return false;
     }
 
     /**
@@ -78,7 +79,7 @@ abstract class ModuleDescriptor extends ContainerAware implements ModuleDescript
     public function getAdminUtilitiesElements($language)
     {
         // NOT IMPLEMENTED YET
-        return FALSE;
+        return false;
     }
 
     /**
@@ -86,7 +87,7 @@ abstract class ModuleDescriptor extends ContainerAware implements ModuleDescript
      */
     public function getAdminDashboardElements($language)
     {
-        return FALSE;
+        return false;
     }
 
     /**
@@ -94,7 +95,7 @@ abstract class ModuleDescriptor extends ContainerAware implements ModuleDescript
      */
     public function onInstall()
     {
-        return TRUE;
+        return true;
     }
 
     /**
@@ -102,7 +103,7 @@ abstract class ModuleDescriptor extends ContainerAware implements ModuleDescript
      */
     public function onUninstall()
     {
-        return TRUE;
+        return true;
     }
 
     /**
@@ -110,7 +111,7 @@ abstract class ModuleDescriptor extends ContainerAware implements ModuleDescript
      */
     public function getSitemapURLs()
     {
-        return FALSE;
+        return false;
     }
 
     /**
@@ -118,7 +119,6 @@ abstract class ModuleDescriptor extends ContainerAware implements ModuleDescript
      */
     public function getConfigVariables()
     {
-        return FALSE;
+        return false;
     }
-
 }

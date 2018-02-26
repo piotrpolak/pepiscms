@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Utility class to "upgrade" old backup files to the most current version.
@@ -81,12 +83,12 @@ class BackupCompatibilityTransformationUtility
             if (isset($sxe->menu->item)) {
                 foreach ($sxe->menu->item as $item) {
                     $key = '' . $item->item_id;
-                    $item->item_url = isset($menu2uri_map[$key]) ? '' . $menu2uri_map[$key] : NULL;
-                    $item->page_id = isset($page2menu_map[$key]) ? '' . $page2menu_map[$key] : NULL;
+                    $item->item_url = isset($menu2uri_map[$key]) ? '' . $menu2uri_map[$key] : null;
+                    $item->page_id = isset($page2menu_map[$key]) ? '' . $page2menu_map[$key] : null;
                 }
             }
 
-            return TRUE;
+            return true;
         } elseif ($from_version == '1.1' && $to_version == '1.2') {
             if (isset($sxe->pages->item)) {
                 foreach ($sxe->pages->item as $item) {
@@ -109,7 +111,7 @@ class BackupCompatibilityTransformationUtility
             $item->addChild('ci_language', 'english');
 
 
-            return TRUE;
+            return true;
         } elseif ($from_version == '1.0' && $to_version == '1.1') {
             if (isset($sxe->pages->item)) {
                 foreach ($sxe->pages->item as $item) {
@@ -123,9 +125,9 @@ class BackupCompatibilityTransformationUtility
                 }
             }
 
-            return TRUE;
+            return true;
         }
 
-        return FALSE;
+        return false;
     }
 }

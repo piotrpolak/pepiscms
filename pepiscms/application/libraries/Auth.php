@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * User authentication library
@@ -31,14 +33,14 @@ class Auth extends ContainerAware
      *
      * @var bool
      */
-    private $session_must_match_ip = FALSE;
+    private $session_must_match_ip = false;
 
     /**
      * Indicates if authorized, cache variable
      *
      * @var bool
      */
-    private $is_authorized = NULL;
+    private $is_authorized = null;
 
     /**
      * Auth update timeout in seconds
@@ -121,7 +123,7 @@ class Auth extends ContainerAware
             $this->setSessionVariable('auth_last_activity', $time);
             $this->setSessionVariable('auth_ip', $this->input->ip_address());
             $this->setSessionVariable('auth_instance_key', md5(INSTALLATIONPATH));
-            $this->setSessionVariable('is_user_password_expired', NULL);
+            $this->setSessionVariable('is_user_password_expired', null);
             $this->setSessionVariable('user_data', $row);
             $this->setSessionVariable('pepiscms_version', PEPISCMS_VERSION);
             setcookie('pepiscms_logged', 1, 0, '/');
@@ -137,10 +139,10 @@ class Auth extends ContainerAware
      * @param bool $force_do_all_checks_again
      * @return bool
      */
-    public function isAuthorized($force_do_all_checks_again = FALSE)
+    public function isAuthorized($force_do_all_checks_again = false)
     {
         if (!$force_do_all_checks_again) {
-            if ($this->is_authorized !== NULL) {
+            if ($this->is_authorized !== null) {
                 // Kind of cache
                 return $this->is_authorized;
             }
@@ -162,17 +164,17 @@ class Auth extends ContainerAware
                 $time = time();
 
                 if ($this->getSessionVariable('auth_last_activity') + self::auth_max_idle_time >= $time) {
-                    $success = TRUE;
+                    $success = true;
                     if ($this->getSessionVariable('auth_last_update') + self::auth_update_timeout < $time) {
                         // Check whenever CAS session is still active
-                        $success = FALSE;
+                        $success = false;
                         if ($this->driver->onAuthRecheck()) {
                             $success = $this->renewUserData($user_id);
                         }
                     }
                     if ($success) {
                         $this->setSessionVariable('auth_last_activity', $time);
-                        $this->is_authorized = TRUE;
+                        $this->is_authorized = true;
 
                         return $this->is_authorized;
                     }
@@ -185,7 +187,7 @@ class Auth extends ContainerAware
         }
 
         $this->logout();
-        $this->is_authorized = FALSE;
+        $this->is_authorized = false;
         return $this->is_authorized;
     }
 
@@ -196,7 +198,7 @@ class Auth extends ContainerAware
      */
     public function getUserData()
     {
-        return isset($_SESSION[$this->session_variable_preffix]['user_data']) ? $_SESSION[$this->session_variable_preffix]['user_data'] : FALSE;
+        return isset($_SESSION[$this->session_variable_preffix]['user_data']) ? $_SESSION[$this->session_variable_preffix]['user_data'] : false;
     }
 
     /**
@@ -215,7 +217,7 @@ class Auth extends ContainerAware
             }
         }
 
-        return FALSE;
+        return false;
     }
 
     /**
@@ -235,7 +237,7 @@ class Auth extends ContainerAware
      */
     public function getUserEmail()
     {
-        return isset($_SESSION[$this->session_variable_preffix]['user_email']) ? $_SESSION[$this->session_variable_preffix]['user_email'] : FALSE;
+        return isset($_SESSION[$this->session_variable_preffix]['user_email']) ? $_SESSION[$this->session_variable_preffix]['user_email'] : false;
     }
 
     /**
@@ -245,7 +247,7 @@ class Auth extends ContainerAware
      */
     public function getUserId()
     {
-        return isset($_SESSION[$this->session_variable_preffix]['user_id']) ? $_SESSION[$this->session_variable_preffix]['user_id'] : FALSE;
+        return isset($_SESSION[$this->session_variable_preffix]['user_id']) ? $_SESSION[$this->session_variable_preffix]['user_id'] : false;
     }
 
     /**
@@ -255,7 +257,7 @@ class Auth extends ContainerAware
      */
     public function getUserAccess()
     {
-        return isset($_SESSION[$this->session_variable_preffix]['user_access']) ? $_SESSION[$this->session_variable_preffix]['user_access'] : FALSE;
+        return isset($_SESSION[$this->session_variable_preffix]['user_access']) ? $_SESSION[$this->session_variable_preffix]['user_access'] : false;
     }
 
     /**
@@ -265,7 +267,7 @@ class Auth extends ContainerAware
      */
     public function isUserRoot()
     {
-        return isset($_SESSION[$this->session_variable_preffix]['is_root']) ? $_SESSION[$this->session_variable_preffix]['is_root'] > 0 : FALSE;
+        return isset($_SESSION[$this->session_variable_preffix]['is_root']) ? $_SESSION[$this->session_variable_preffix]['is_root'] > 0 : false;
     }
 
     /**
@@ -275,18 +277,18 @@ class Auth extends ContainerAware
      */
     public function isUserPasswordExpired()
     {
-        if ($this->getSessionVariable('is_user_password_expired') !== NULL) {
+        if ($this->getSessionVariable('is_user_password_expired') !== null) {
             return $this->getSessionVariable('is_user_password_expired');
         }
 
         $maximum_password_age_in_seconds = $this->config->item('security_maximum_password_age_in_seconds');
         if (!($maximum_password_age_in_seconds > 0)) {
-            $this->setSessionVariable('is_user_password_expired', FALSE); // Disabled
+            $this->setSessionVariable('is_user_password_expired', false); // Disabled
             return $this->getSessionVariable('is_user_password_expired');
         }
         $password_last_changed_timestamp = strtotime($this->getAttribute('password_last_changed_timestamp'));
         if (!$password_last_changed_timestamp) {
-            $this->setSessionVariable('is_user_password_expired', TRUE); // Expired because never changed
+            $this->setSessionVariable('is_user_password_expired', true); // Expired because never changed
             return $this->getSessionVariable('is_user_password_expired');
         }
 
@@ -294,11 +296,11 @@ class Auth extends ContainerAware
 
         // If the last time + difference is in future
         if ($password_last_changed_timestamp + $maximum_password_age_in_seconds < $now_timestamp) {
-            $this->setSessionVariable('is_user_password_expired', TRUE); // Expired
+            $this->setSessionVariable('is_user_password_expired', true); // Expired
             return $this->getSessionVariable('is_user_password_expired');
         }
 
-        $this->setSessionVariable('is_user_password_expired', FALSE);  // Not expired
+        $this->setSessionVariable('is_user_password_expired', false);  // Not expired
         return $this->getSessionVariable('is_user_password_expired');
     }
 
@@ -310,7 +312,7 @@ class Auth extends ContainerAware
      */
     public function setSessionVariable($name, $value)
     {
-        if ($value === NULL) {
+        if ($value === null) {
             unset($_SESSION[$this->session_variable_preffix][$name]);
             return;
         }
@@ -327,7 +329,7 @@ class Auth extends ContainerAware
     public function getSessionVariable($name)
     {
         if (!isset($_SESSION[$this->session_variable_preffix][$name])) {
-            return NULL;
+            return null;
         }
         return $_SESSION[$this->session_variable_preffix][$name];
     }
@@ -380,7 +382,7 @@ class Auth extends ContainerAware
 
             setcookie('pepiscms_logged', 1, 0, '/');
 
-            $this->setSessionVariable('is_user_password_expired', NULL);
+            $this->setSessionVariable('is_user_password_expired', null);
             return true;
         }
 
@@ -399,10 +401,10 @@ class Auth extends ContainerAware
             $user_id = $this->getUserId();
             $this->unsetSession();
             $this->renewUserData($user_id);
-            return TRUE;
+            return true;
         }
 
-        return FALSE;
+        return false;
     }
 
     /**
@@ -420,12 +422,12 @@ class Auth extends ContainerAware
      * @param bool $explicit
      * @return bool
      */
-    public function logout($explicit = FALSE)
+    public function logout($explicit = false)
     {
         $this->driver->logout($explicit);
         $this->unsetSession();
 
-        return TRUE;
+        return true;
     }
 
     /**

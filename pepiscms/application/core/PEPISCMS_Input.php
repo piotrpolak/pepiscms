@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * MY_Input, provides some extra features.
@@ -53,7 +55,7 @@ class PEPISCMS_Input extends CI_Input
             $total_segments = $CI->uri->total_segments();
             for ($i = 0; $i <= $total_segments; $i++) {
                 $segment = $CI->uri->segment($i);
-                if (strpos($segment, '-') !== FALSE) {
+                if (strpos($segment, '-') !== false) {
                     $segment = explode('-', $segment, 2); // 2 is required here as we accept - in the valie
                     $this->get_parameters[$segment[0]] = $segment[1];
                 }

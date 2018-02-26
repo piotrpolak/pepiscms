@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -12,6 +12,7 @@
  * @link                http://www.polak.ro/
  */
 
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Menu tree representation used by theme template (frontend).
@@ -22,7 +23,7 @@
 class Menu
 {
     /** @var array|null */
-    private $children = NULL;
+    private $children = null;
 
     /**
      * Returns children elements of the current menu element
@@ -32,7 +33,7 @@ class Menu
     public function getChildren()
     {
         // Initializing children
-        if ($this->children == NULL) {
+        if ($this->children == null) {
             $this->initializeChildren();
             $menu_items_array = get_instance()->Menu_model->getSubMenu($this->getId(), Dispatcher::getSiteLanguage()->code); // Hardcoded, to be fixed
             foreach ($menu_items_array as &$item) {
@@ -70,7 +71,7 @@ class Menu
     private static function searchForChildByCanonicalAbsoluteUrl($children, $url)
     {
         if (!is_array($children) || !(count($children) > 0)) {
-            return FALSE;
+            return false;
         }
 
         foreach ($children as $sub_child) {
@@ -87,7 +88,7 @@ class Menu
             }
         }
 
-        return FALSE;
+        return false;
     }
 
     /**
@@ -107,7 +108,7 @@ class Menu
      */
     public function getParent()
     {
-        return FALSE;
+        return false;
     }
 
     /**
@@ -118,11 +119,11 @@ class Menu
      */
     private function initializeChildren()
     {
-        if ($this->children == NULL) {
+        if ($this->children == null) {
             $this->children = array();
-            return TRUE;
+            return true;
         }
-        return FALSE;
+        return false;
     }
 
     /**
@@ -181,10 +182,10 @@ class Menu
      * @param int|bool $current_id
      * @return bool
      */
-    private static function preftechChildren($children, $current_id = FALSE)
+    private static function preftechChildren($children, $current_id = false)
     {
         if (!(count($children) > 0)) {
-            return TRUE;
+            return true;
         }
 
         foreach ($children as $child) {
@@ -195,7 +196,7 @@ class Menu
             self::preftechChildren($child->getChildren(), $child->getId());
         }
 
-        return TRUE;
+        return true;
     }
 
     /**
@@ -215,5 +216,4 @@ class Menu
 
         return $url;
     }
-
 }

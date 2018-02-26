@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 $config['html_customization_logged_in_head_prepend'] = '';
 $config['html_customization_not_logged_in_head_prepend'] = '';

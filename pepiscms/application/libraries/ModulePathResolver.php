@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Resolves module absolute paths.
@@ -41,7 +43,7 @@ class ModulePathResolver extends ContainerAware implements \Piotrpolak\Pepiscms\
     {
         $module_directory = $this->load->resolveModuleDirectory($module_name);
 
-        $path = FALSE;
+        $path = false;
         foreach ($this->moduleLocators as $moduleLocator) {
             $resolved_file = $moduleLocator->getPublicControllerPath($module_name);
             $resolved_path = $module_directory . '/' . $resolved_file;
@@ -62,7 +64,7 @@ class ModulePathResolver extends ContainerAware implements \Piotrpolak\Pepiscms\
     {
         $module_directory = $this->load->resolveModuleDirectory($module_name);
 
-        $path = FALSE;
+        $path = false;
         foreach ($this->moduleLocators as $moduleLocator) {
             $resolved_file = $moduleLocator->getAdminControllerPath($module_name);
             $resolved_path = $module_directory . '/' . $resolved_file;
@@ -82,7 +84,7 @@ class ModulePathResolver extends ContainerAware implements \Piotrpolak\Pepiscms\
     {
         $module_directory = $this->load->resolveModuleDirectory($module_name);
 
-        $path = FALSE;
+        $path = false;
         foreach ($this->moduleLocators as $moduleLocator) {
             $resolved_file = $moduleLocator->getDescriptorPath($module_name);
             $resolved_path = $module_directory . '/' . $resolved_file;
@@ -114,7 +116,7 @@ class ModulePathResolver extends ContainerAware implements \Piotrpolak\Pepiscms\
      */
     public function getModelPathUsingBaseDir($module_name, $model_name, $module_directory)
     {
-        $path = FALSE;
+        $path = false;
         foreach ($this->moduleLocators as $moduleLocator) {
             $resolved_file = $moduleLocator->getModelPath($module_name, $model_name);
             $resolved_path = $module_directory . '/' . $resolved_file;
@@ -126,5 +128,4 @@ class ModulePathResolver extends ContainerAware implements \Piotrpolak\Pepiscms\
 
         return $path;
     }
-
 }

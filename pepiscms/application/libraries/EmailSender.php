@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -12,6 +12,8 @@
  * @link                http://www.polak.ro/
  */
 
+defined('BASEPATH') or exit('No direct script access allowed');
+
 /**
  * Utility library for sending emails
  *
@@ -24,11 +26,11 @@ class EmailSender extends ContainerAware
      * Debug flag
      * @var boolean
      */
-    private $debug = FALSE;
+    private $debug = false;
     private $charset = 'UTF-8';
     private $new_line = "\r\n";
-    private $is_failsafe_enabled = FALSE;
-    private $conf = FALSE;
+    private $is_failsafe_enabled = false;
+    private $conf = false;
 
     /**
      * Sets new line delimiter
@@ -97,7 +99,7 @@ class EmailSender extends ContainerAware
      * @param $debug
      *
      */
-    public function debug($debug = TRUE)
+    public function debug($debug = true)
     {
         $this->debug = $debug;
     }
@@ -146,7 +148,7 @@ class EmailSender extends ContainerAware
      * @return bool
      */
     public function send($to, $from, $from_name, $subject, $message,
-                         $html = FALSE, $attachments = array(), $reply_to = FALSE, $reply_to_name = FALSE)
+                         $html = false, $attachments = array(), $reply_to = false, $reply_to_name = false)
     {
         if (!$html) {
             $message = str_replace("\r\n", "\n", $message);
@@ -176,7 +178,7 @@ class EmailSender extends ContainerAware
             $config['mailtype'] = 'html';
         } else {
             $config['mailtype'] = 'text';
-            $config['wordwrap'] = TRUE;
+            $config['wordwrap'] = true;
         }
 
         $this->email->initialize($config);
@@ -228,18 +230,18 @@ class EmailSender extends ContainerAware
                 if (!$this->email->send()) {
                     LOGGER::error('Unable to send email using MAIL (SMTP failsafe): ' .
                         strip_tags($this->email->print_debugger()), 'EMAIL');
-                    return FALSE;
+                    return false;
                 }
 
-                return TRUE;
+                return true;
             }
 
             LOGGER::error('Unable to send email using SMTP protocol: ' .
-                strip_tags($this->email->print_debugger()), 'EMAIL', FALSE, FALSE);
-            return FALSE;
+                strip_tags($this->email->print_debugger()), 'EMAIL', false, false);
+            return false;
         }
 
-        return TRUE;
+        return true;
     }
 
     /**
@@ -257,7 +259,7 @@ class EmailSender extends ContainerAware
      * @return bool
      */
     public function sendTemplate($to, $from, $from_name, $subject, $email_template_path,
-                                 $data = array(), $html = FALSE, $attachments = array())
+                                 $data = array(), $html = false, $attachments = array())
     {
         ob_start();
         $this->load->theme($email_template_path, $data);
@@ -282,7 +284,7 @@ class EmailSender extends ContainerAware
      * @return bool
      */
     public function sendSystemTemplate($to, $from, $from_name, $subject, $email_template_name,
-                                       $data = array(), $html = FALSE, $language = FALSE, $attachments = array())
+                                       $data = array(), $html = false, $language = false, $attachments = array())
     {
         if (!$language) {
             $language = 'english';
@@ -297,5 +299,4 @@ class EmailSender extends ContainerAware
         $email_template_path = APPPATH . 'emails/' . $language . '/' . $email_template_name . '.php';
         return $this->sendTemplate($to, $from, $from_name, $subject, $email_template_path, $data, $html, $attachments);
     }
-
 }

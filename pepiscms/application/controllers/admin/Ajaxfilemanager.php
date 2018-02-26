@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -12,6 +12,8 @@
  * @link                http://www.polak.ro/
  */
 
+defined('BASEPATH') or exit('No direct script access allowed');
+
 /**
  * Filemanager controller
  */
@@ -20,11 +22,11 @@ class Ajaxfilemanager extends AdminController
     public function __construct()
     {
         parent::__construct();
-        if ($this->config->item('cms_enable_filemanager') === FALSE || !$this->config->item('feature_is_enabled_filemanager')) {
+        if ($this->config->item('cms_enable_filemanager') === false || !$this->config->item('feature_is_enabled_filemanager')) {
             show_error($this->lang->line('global_feature_not_enabled'));
         }
 
-        $this->assign('is_editor', FALSE);
+        $this->assign('is_editor', false);
         $this->load->language('filemanager');
 
         $this->assign('title', $this->lang->line('filemanager_label'));
@@ -107,8 +109,8 @@ class Ajaxfilemanager extends AdminController
      */
     public function editorbrowse()
     {
-        $this->assign('is_editor', TRUE);
-        $this->assign('popup_layout', TRUE);
+        $this->assign('is_editor', true);
+        $this->assign('popup_layout', true);
         $this->assign('adminmenu', '');
         $this->browse();
     }
@@ -130,8 +132,8 @@ class Ajaxfilemanager extends AdminController
         $error_messages = array();
 
         switch ($command) {
-            case 'create' :
-                $new_path = isset($_POST['new_location']) ? $_POST['new_location'] : FALSE;
+            case 'create':
+                $new_path = isset($_POST['new_location']) ? $_POST['new_location'] : false;
                 $new_path = str_replace('/', '_', $new_path);
                 $new_path = str_replace('\\', '_', $new_path);
 
@@ -146,7 +148,7 @@ class Ajaxfilemanager extends AdminController
                 }
                 break;
 
-            case 'delete' :
+            case 'delete':
                 foreach ($files as $file) {
                     if (is_file($user_files_dir . $current_path . $file)) {
                         if (@unlink($user_files_dir . $current_path . $file)) {
@@ -164,8 +166,8 @@ class Ajaxfilemanager extends AdminController
                 }
                 break;
 
-            case 'move' :
-                $new_path = isset($_POST['new_location']) ? $_POST['new_location'] : FALSE;
+            case 'move':
+                $new_path = isset($_POST['new_location']) ? $_POST['new_location'] : false;
 
                 if (!is_dir($user_files_dir . '/' . $new_path)) {
                     $error_messages[] = 'New location does not exist';
@@ -189,7 +191,7 @@ class Ajaxfilemanager extends AdminController
                 }
                 break;
 
-            case 'rename' :
+            case 'rename':
                 if (count($files) < 1) {
                     $error_messages[] = 'Wrong command syntax, you must submit at least 2 file names.';
                     $e_status = 0;
@@ -267,11 +269,11 @@ class Ajaxfilemanager extends AdminController
         echo $this->genericupload($_POST['path']);
     }
 
-    public function genericupload($current_path = '', $json = TRUE, $file_field_name = 'file')
+    public function genericupload($current_path = '', $json = true, $file_field_name = 'file')
     {
-        $make_filenames_nice = TRUE;
+        $make_filenames_nice = true;
 
-        $error = FALSE;
+        $error = false;
 
         $config['upload_path'] = $this->config->item('uploads_path') . $current_path;
         $config['allowed_types'] = $this->config->item('upload_allowed_types');
@@ -351,7 +353,7 @@ class Ajaxfilemanager extends AdminController
         return $this->genericthumb();
     }
 
-    private function genericthumb($absolute = FALSE, $size = 60, $current_path = FALSE)
+    private function genericthumb($absolute = false, $size = 60, $current_path = false)
     {
         if (!$current_path) {
             $start_word = 'thumb';
@@ -387,7 +389,6 @@ class Ajaxfilemanager extends AdminController
         $source_file = $image_path . $current_path;
 
         if (file_exists($source_file)) {
-
             $hash = md5(filemtime($source_file) . filesize($source_file));
             $thumb_file = $cache_path . $hash . '__s' . $size . '.jpg';
 
@@ -480,5 +481,4 @@ class Ajaxfilemanager extends AdminController
         readfile($current_path);
         die();
     }
-
 }

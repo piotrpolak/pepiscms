@@ -14,7 +14,7 @@
 
 namespace Piotrpolak\Pepiscms\Editor;
 
-if (!defined('BASEPATH')) exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * RTF Editor abstract class, base for any driver
@@ -24,7 +24,7 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 abstract class DefaultRTEditorDriver implements RTEditor
 {
     protected $config = array();
-    protected $is_full = FALSE;
+    protected $is_full = false;
 
     /**
      * @inheritdoc
@@ -53,7 +53,7 @@ abstract class DefaultRTEditorDriver implements RTEditor
     /**
      * @inheritdoc
      */
-    public function setFull($is_full = TRUE)
+    public function setFull($is_full = true)
     {
         $this->is_full = $is_full;
     }
@@ -65,5 +65,4 @@ abstract class DefaultRTEditorDriver implements RTEditor
     {
         return $this->is_full;
     }
-
 }

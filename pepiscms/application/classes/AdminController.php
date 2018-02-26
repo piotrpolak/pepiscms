@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Parent class for all admin controllers (not modules).
@@ -25,7 +27,7 @@ abstract class AdminController extends EnhancedController
      * @param bool $render_menu
      * @param bool $skip_authorization
      */
-    public function __construct($render_menu = TRUE, $skip_authorization = FALSE)
+    public function __construct($render_menu = true, $skip_authorization = false)
     {
         parent::__construct();
 
@@ -97,7 +99,7 @@ abstract class AdminController extends EnhancedController
             // Rendering menu only if the layout is different from popup
             if (!$popup_layout) {
                 $this->benchmark->mark('menu_render_start');
-                $rendered_menu = NULL;
+                $rendered_menu = null;
 
                 // Checking whether the hook method exists
                 if (method_exists($this, 'renderMenu')) {
@@ -115,13 +117,13 @@ abstract class AdminController extends EnhancedController
         }
 
         // Checking user access rights
-        $this->assign('security_policy_violaton', FALSE);
+        $this->assign('security_policy_violaton', false);
         if (!SecurityManager::hasAccess($controller, $method)) {
             Logger::warning('Security policy violation ' . $controller . '/' . $method, 'SECURITY');
 
             ob_start();
-            $this->assign('security_policy_violaton', TRUE);
-            $this->display('admin/no_sufficient_priviliges', TRUE, TRUE);
+            $this->assign('security_policy_violaton', true);
+            $this->display('admin/no_sufficient_priviliges', true, true);
             $out = ob_get_contents();
             ob_end_clean();
             die($out);
@@ -139,11 +141,11 @@ abstract class AdminController extends EnhancedController
      * @param boolean $return
      * @return bool
      */
-    public function display($view = false, $display_header = true, $display_footer = true, $return = FALSE)
+    public function display($view = false, $display_header = true, $display_footer = true, $return = false)
     {
-        $return_html = TRUE;
+        $return_html = true;
         if ($this->already_displayed && !$return) {
-            return FALSE;
+            return false;
         }
 
         if (!$view) {
@@ -156,7 +158,6 @@ abstract class AdminController extends EnhancedController
             if ($return) {
                 $return_html .= $last_view_html;
             }
-
         }
 
         $last_view_html = $this->load->view($view, $this->response_attributes, $return);

@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -12,6 +12,8 @@
  * @link                http://www.polak.ro/
  */
 
+defined('BASEPATH') or exit('No direct script access allowed');
+
 /**
  * ACL controller
  *
@@ -19,7 +21,7 @@
  */
 class Acl extends AdminController
 {
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
         if (!$this->config->item('feature_is_enabled_acl')) {

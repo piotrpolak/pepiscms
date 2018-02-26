@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -12,6 +12,8 @@
  * @link                http://www.polak.ro/
  */
 
+defined('BASEPATH') or exit('No direct script access allowed');
+
 /**
  * Module runner responsible for creating a new context for module controllers
  *
@@ -23,7 +25,7 @@ class ModuleRunner extends ContainerAware
      * Name of the currently running module. When module action is finished, the value becomes FALSE
      * @var mixed
      */
-    private $running_module = FALSE;
+    private $running_module = false;
 
     /**
      * Instance of modules
@@ -66,7 +68,7 @@ class ModuleRunner extends ContainerAware
      * This should be private
      * @param string|boolean $running_module
      */
-    public function setRunningModuleName($running_module = FALSE)
+    public function setRunningModuleName($running_module = false)
     {
         $this->running_module = $running_module;
     }
@@ -82,7 +84,7 @@ class ModuleRunner extends ContainerAware
     {
         $this->load->model('Module_model');
         if (!$module_name || !self::isModuleInstalled($module_name)) {
-            return FALSE;
+            return false;
         }
 
         $module_directory = $this->load->resolveModuleDirectory($module_name);
@@ -96,7 +98,7 @@ class ModuleRunner extends ContainerAware
         if (!$this->securitymanager->hasAccess($module_name, $method, $module_name)) {
             Logger::warning('Security policy violation for module ' . $module_name . '/' . $method, 'SECURITY');
             ob_start();
-            $this->display('admin/no_sufficient_priviliges', TRUE, FALSE);
+            $this->display('admin/no_sufficient_priviliges', true, false);
             $out = ob_get_contents();
             ob_end_clean();
             die($out);
@@ -104,7 +106,7 @@ class ModuleRunner extends ContainerAware
 
 
         $controller_path = $this->modulepathresolver->getAdminControllerPath($module_name);
-        if ($controller_path !== FALSE) {
+        if ($controller_path !== false) {
             include_once($controller_path);
 
             $class = ucfirst($module_name) . 'Admin';
@@ -142,7 +144,7 @@ class ModuleRunner extends ContainerAware
             show_error($error_msg);
         }
 
-        return FALSE;
+        return false;
     }
 
     /**
@@ -154,11 +156,11 @@ class ModuleRunner extends ContainerAware
      * @param string|bool $uri
      * @return bool
      */
-    public function runModule($module_name, $method, $site_language, $uri = FALSE)
+    public function runModule($module_name, $method, $site_language, $uri = false)
     {
         $this->load->model('Module_model');
         if (!$module_name || !self::isModuleInstalled($module_name)) {
-            return FALSE;
+            return false;
         }
 
         $module_directory = $this->load->resolveModuleDirectory($module_name);
@@ -170,7 +172,7 @@ class ModuleRunner extends ContainerAware
         }
 
         $controller_path = $this->modulepathresolver->getPublicControllerPath($module_name);
-        if ($controller_path !== FALSE) {
+        if ($controller_path !== false) {
             include_once($controller_path);
 
             $class = ucfirst($module_name);
@@ -213,7 +215,7 @@ class ModuleRunner extends ContainerAware
             show_error($error_msg);
         }
 
-        return FALSE;
+        return false;
     }
 
     /**
@@ -259,7 +261,7 @@ class ModuleRunner extends ContainerAware
         $CI->load->library('Cachedobjectmanager');
 
         $object = $CI->cachedobjectmanager->getObject('module_names_in_menu', 3600 * 24, 'modules');
-        if ($object === FALSE) {
+        if ($object === false) {
             $CI->load->model('Module_model');
             $object = $CI->Module_model->getInstalledModulesNamesDisplayedInMenu();
             $CI->cachedobjectmanager->setObject('module_names_in_menu', $object, 'modules');
@@ -278,7 +280,7 @@ class ModuleRunner extends ContainerAware
         $CI->load->library('Cachedobjectmanager');
 
         $object = $CI->cachedobjectmanager->getObject('modules_in_menu', 3600 * 24, 'modules');
-        if ($object === FALSE) {
+        if ($object === false) {
             $CI->load->model('Module_model');
             $object = $CI->Module_model->getInstalledModulesDisplayedInMenu();
             $CI->cachedobjectmanager->setObject('modules_in_menu', $object, 'modules');
@@ -297,7 +299,7 @@ class ModuleRunner extends ContainerAware
         $CI->load->library('Cachedobjectmanager');
 
         $object = $CI->cachedobjectmanager->getObject('module_names_installed', 3600 * 24, 'modules');
-        if ($object === FALSE) {
+        if ($object === false) {
             $CI->load->model('Module_model');
             $object = $CI->Module_model->getInstalledModulesNames();
             $CI->cachedobjectmanager->setObject('module_names_installed', $object, 'modules');
@@ -328,7 +330,7 @@ class ModuleRunner extends ContainerAware
         $CI->load->library('Cachedobjectmanager');
 
         $object = $CI->cachedobjectmanager->getObject('modules_in_utilities', 3600 * 24, 'modules');
-        if ($object === FALSE) {
+        if ($object === false) {
             $CI->load->model('Module_model');
             $object = $CI->Module_model->getInstalledModulesNamesDisplayedInUtilities();
             $CI->cachedobjectmanager->setObject('modules_in_utilities', $object, 'modules');
@@ -342,7 +344,7 @@ class ModuleRunner extends ContainerAware
      * @param $module_name
      * @return bool
      */
-    public static function isModuleDisplayedInUtilities($module_name = FALSE)
+    public static function isModuleDisplayedInUtilities($module_name = false)
     {
         // No module name specified
         if (!$module_name) {
@@ -351,7 +353,7 @@ class ModuleRunner extends ContainerAware
 
         // No running module specified nor detected
         if (!$module_name) {
-            return FALSE;
+            return false;
         }
 
         $module_names = self::getInstalledModulesNamesDisplayedInUtilitiesCached();
@@ -364,7 +366,7 @@ class ModuleRunner extends ContainerAware
      * @param $module_name
      * @return bool
      */
-    public static function isModuleDisplayedInMenu($module_name = FALSE)
+    public static function isModuleDisplayedInMenu($module_name = false)
     {
         // No module name specified
         if (!$module_name) {
@@ -373,7 +375,7 @@ class ModuleRunner extends ContainerAware
 
         // No running module specified nor detected
         if (!$module_name) {
-            return FALSE;
+            return false;
         }
 
         $module_names = self::getInstalledModulesNamesDisplayedInMenuCached();
@@ -385,7 +387,7 @@ class ModuleRunner extends ContainerAware
      * @param bool $module_name
      * @return bool|null
      */
-    public static function getParentModuleName($module_name = FALSE)
+    public static function getParentModuleName($module_name = false)
     {
         $CI = get_instance();
         $CI->load->library('Cachedobjectmanager');
@@ -397,16 +399,16 @@ class ModuleRunner extends ContainerAware
 
         // No running module specified nor detected
         if (!$module_name) {
-            return FALSE;
+            return false;
         }
 
         // Cache key
         $cache_key = 'parent_module_name_' . $module_name;
 
         $object = $CI->cachedobjectmanager->getObject($cache_key, 3600 * 24, 'modules');
-        if ($object === FALSE) {
+        if ($object === false) {
             // Need to store null not false
-            $object = NULL;
+            $object = null;
             $parent_module = $CI->Module_model->getParentInfoByName($module_name);
 
             if ($parent_module) {

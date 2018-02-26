@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -12,13 +12,15 @@
  * @link                http://www.polak.ro/
  */
 
+defined('BASEPATH') or exit('No direct script access allowed');
+
 /**
  * Bootstrap hook overwrites some features of common
  * @param string $level
  * @param string $message
  * @param bool $php_error
  */
-function log_message($level = 'error', $message, $php_error = FALSE)
+function log_message($level = 'error', $message, $php_error = false)
 {
     if (!class_exists('Logger')) {
         return;

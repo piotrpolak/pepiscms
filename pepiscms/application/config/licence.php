@@ -1,6 +1,8 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
-$config['licence'] = FALSE;
+defined('BASEPATH') or exit('No direct script access allowed');
+
+$config['licence'] = false;
 
 // PepisCMS bypass
 if (file_exists(INSTALLATIONPATH . 'application/config/licence.php')) {

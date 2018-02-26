@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -593,8 +593,8 @@ class CrudFieldDefinitionBuilder
 
         // Getting description
         if (!isset($definition['description'])) {
-            $description = $this->lang->line($this->moduleName . '_' . $this->fieldName . '_description', FALSE);
-            if ($description !== FALSE) {
+            $description = $this->lang->line($this->moduleName . '_' . $this->fieldName . '_description', false);
+            if ($description !== false) {
                 $definition['description'] = $description;
             }
         }

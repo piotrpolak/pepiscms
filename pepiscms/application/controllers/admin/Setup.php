@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * CMS setup controller
@@ -158,7 +160,7 @@ class Setup extends AdminController
             'validation_rules' => '',
             'input_group' => 'setup_input_group_customization',
             'input_type' => FormBuilder::TEXTAREA,
-            'input_is_editable' => TRUE,
+            'input_is_editable' => true,
         );
         $definition['cms_customization_support_link'] = array(
             'label' => $this->lang->line('setup_cms_customization_support_link'),
@@ -177,14 +179,14 @@ class Setup extends AdminController
             'description' => $this->lang->line('setup_read_only_desc'),
             'validation_rules' => '',
             'input_group' => 'setup_input_group_customization',
-            'input_is_editable' => FALSE,
+            'input_is_editable' => false,
         );
         $definition['cms_customization_on_login_redirect_url'] = array(
             'label' => $this->lang->line('setup_cms_customization_on_login_redirect_url'),
             'description' => $this->lang->line('setup_read_only_desc'),
             'validation_rules' => '',
             'input_group' => 'setup_input_group_customization',
-            'input_is_editable' => FALSE,
+            'input_is_editable' => false,
         );
 
 
@@ -331,7 +333,7 @@ class Setup extends AdminController
 
         // No need to change filename? Then we are fine
         if ($filename == $new_name) {
-            return TRUE;
+            return true;
         }
 
         // Finally here we go!
@@ -340,9 +342,9 @@ class Setup extends AdminController
             $path = $base_path . $new_name;
             $filename = $new_base_path . $new_name;
 
-            return TRUE;
+            return true;
         }
-        return FALSE;
+        return false;
     }
 
     public function _fb_callback_after_save(&$data)
@@ -353,5 +355,4 @@ class Setup extends AdminController
         $this->db->cache_delete_all();
         ModuleRunner::flushCache();
     }
-
 }

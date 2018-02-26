@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -12,6 +12,8 @@
  * @link                http://www.polak.ro/
  */
 
+defined('BASEPATH') or exit('No direct script access allowed');
+
 /**
  * Menu model
  *
@@ -19,7 +21,6 @@
  */
 class Menu_model extends Generic_model implements BackupableInterface
 {
-
     public function __construct()
     {
         parent::__construct();
@@ -101,7 +102,7 @@ class Menu_model extends Generic_model implements BackupableInterface
             }
 
             $data['item_order'] = $row->max_order;
-            $id = FALSE;
+            $id = false;
         }
 
         return parent::saveById($id, $data);
@@ -144,7 +145,7 @@ class Menu_model extends Generic_model implements BackupableInterface
      * @param string $prefix
      * @return array|void
      */
-    public function getMenuFlat($parent_item_id = 0, $language_code = 'en', $dont_enter_item_id = FALSE, $separator = FALSE, &$menu = array(), $return = TRUE, $prefix = '')
+    public function getMenuFlat($parent_item_id = 0, $language_code = 'en', $dont_enter_item_id = false, $separator = false, &$menu = array(), $return = true, $prefix = '')
     {
         if (!$language_code) {
             $language_code = 'en';
@@ -162,7 +163,7 @@ class Menu_model extends Generic_model implements BackupableInterface
             }
 
             $menu[$row['item_id']] = $prefix . $row['item_name'];
-            $this->getMenuFlat($row['item_id'], $language_code, $dont_enter_item_id, $separator, $menu, FALSE, $menu[$row['item_id']] . $separator);
+            $this->getMenuFlat($row['item_id'], $language_code, $dont_enter_item_id, $separator, $menu, false, $menu[$row['item_id']] . $separator);
         }
 
         if ($return) {
@@ -184,7 +185,7 @@ class Menu_model extends Generic_model implements BackupableInterface
         $object_name = 'menu_' . $parent_item_id . '_' . $language_code;
         $object = $this->cachedobjectmanager->getObject($object_name, 3600 * 24, 'pages');
 
-        if ($object === FALSE) {
+        if ($object === false) {
             $object = $this->getMenu($parent_item_id, $language_code);
             $this->cachedobjectmanager->setObject($object_name, $object, 'pages');
         }
@@ -201,7 +202,7 @@ class Menu_model extends Generic_model implements BackupableInterface
      */
     public function getSubMenu($parent_item_id = 0, $language_code = 'en')
     {
-        if ($parent_item_id === NULL) {
+        if ($parent_item_id === null) {
             return array();
         }
 
@@ -225,8 +226,8 @@ class Menu_model extends Generic_model implements BackupableInterface
      */
     public function getSuperMenu($item_id = 0, $language_code = 'en')
     {
-        if ($item_id === NULL) {
-            return NULL;
+        if ($item_id === null) {
+            return null;
         }
 
         $row = $this->db->select($this->config->item('database_table_menu') . '.*, ' . $this->config->item('database_table_pages') . '.page_uri, ' . $this->config->item('database_table_menu') . '.item_url AS item_uri, ' . $this->config->item('database_table_pages') . '.timestamp_modified, ' . $this->config->item('database_table_pages') . '.timestamp_created, ' . $this->config->item('database_table_pages') . '.page_id, ' . $this->config->item('database_table_pages') . '.page_is_default')
@@ -256,7 +257,7 @@ class Menu_model extends Generic_model implements BackupableInterface
     public function getElementByPageId($page_id)
     {
         if (!$page_id) {
-            return FALSE;
+            return false;
         }
         return $this->db->select('*')->where('page_id', $page_id)->get($this->getTable())->row();
     }
@@ -351,7 +352,7 @@ class Menu_model extends Generic_model implements BackupableInterface
      * @param int|null $user_id
      * @return void
      */
-    public function doBackupRestore(&$items, $user_id = NULL)
+    public function doBackupRestore(&$items, $user_id = null)
     {
         $this->db->query('ALTER TABLE ' . $this->config->item('database_table_menu') . ' DISABLE KEYS');
         $this->db->query('SET FOREIGN_KEY_CHECKS=0');
@@ -364,7 +365,7 @@ class Menu_model extends Generic_model implements BackupableInterface
             }
 
             if (strlen('' . $item->parent_item_id) == 0) {
-                $this->db->set('parent_item_id', NULL);
+                $this->db->set('parent_item_id', null);
             }
 
             $success = $this->db->insert($this->config->item('database_table_menu'));
@@ -376,7 +377,6 @@ class Menu_model extends Generic_model implements BackupableInterface
                         ->update($this->config->item('database_table_menu'));
                 }
             }
-
         }
 
         $this->db->query('SET FOREIGN_KEY_CHECKS=1');
@@ -406,5 +406,4 @@ class Menu_model extends Generic_model implements BackupableInterface
         // Trunkates table
         $this->db->truncate($this->config->item('database_table_menu'));
     }
-
 }

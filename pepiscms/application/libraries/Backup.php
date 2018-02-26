@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Utility for generating and parsing PepisCMS specific XML backup files
@@ -37,7 +39,7 @@ class Backup extends ContainerAware
      *
      * @param array|null $params
      */
-    function __construct($params = NULL)
+    public function __construct($params = null)
     {
         $this->load->model('Page_model');
         $this->load->model('Menu_model');
@@ -52,10 +54,10 @@ class Backup extends ContainerAware
      * @return bool
      * @throws Exception
      */
-    function restore($file_path, $user_id)
+    public function restore($file_path, $user_id)
     {
         try {
-            $sxe = @new SimpleXMLElement($file_path, NULL, TRUE);
+            $sxe = @new SimpleXMLElement($file_path, null, true);
         } catch (Exception $exception) {
             throw new Exception('not_a_valid_xml_document');
         }
@@ -65,7 +67,6 @@ class Backup extends ContainerAware
         if ($this->supported_name != $sxe->getName() || !in_array($attributes->version, Backup::getSupportedVersions())) {
             throw new Exception('not_a_valid_backup_file');
         } else {
-
             if ($attributes->version != $this->current_version) {
                 BackupCompatibilityTransformationUtility::transform($sxe, $attributes->version, Backup::getSupportedVersions());
             }
@@ -96,7 +97,7 @@ class Backup extends ContainerAware
 
             $this->db->trans_complete();
 
-            return !($this->db->trans_status() === FALSE);
+            return !($this->db->trans_status() === false);
         }
     }
 
@@ -105,7 +106,7 @@ class Backup extends ContainerAware
      *
      * @return string
      */
-    function create()
+    public function create()
     {
         $this->load->helper('xml');
 
@@ -139,9 +140,7 @@ class Backup extends ContainerAware
             $item_name = &$backup_item[0];
             $item_elements = &$backup_item[1];
 
-            if (count($item_elements) > 0) // If there are pages
-            {
-
+            if (count($item_elements) > 0) { // If there are pages
                 $backup .= "\t<$item_name>\r\n";
 
                 $properties = $backup_item[2];
@@ -162,5 +161,4 @@ class Backup extends ContainerAware
 
         return $backup;
     }
-
 }

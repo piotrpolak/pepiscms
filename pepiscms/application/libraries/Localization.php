@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Localization helper
@@ -29,7 +31,7 @@ class Localization extends ContainerAware
      * @param Language|bool $language
      * @return string|bool
      */
-    public static function localize($object, $field, $language = FALSE)
+    public static function localize($object, $field, $language = false)
     {
         if (!$language) {
             $language = Dispatcher::getSiteLanguage();
@@ -41,7 +43,7 @@ class Localization extends ContainerAware
             return $object->$field;
         }
 
-        return FALSE;
+        return false;
     }
 
     /**
@@ -52,14 +54,14 @@ class Localization extends ContainerAware
      * @param Language|bool $language
      * @return string|bool
      */
-    public static function localizeHTML($object, $field, $language = FALSE)
+    public static function localizeHTML($object, $field, $language = false)
     {
         $line = self::localize($object, $field, $language);
         if ($line) {
             return str_replace('"', '&quot;', $line);
         }
 
-        return FALSE;
+        return false;
     }
 
     /**
@@ -68,7 +70,7 @@ class Localization extends ContainerAware
      * @param string|boolean $language
      * @return string
      */
-    public static function getFieldLanguageSuffix($language = FALSE)
+    public static function getFieldLanguageSuffix($language = false)
     {
         if (!$language) {
             $language = Dispatcher::getSiteLanguage();
@@ -86,7 +88,7 @@ class Localization extends ContainerAware
      * @param Language|bool $language
      * @return string
      */
-    public static function getUriPrefix($language = FALSE)
+    public static function getUriPrefix($language = false)
     {
         if (!$language) {
             $language = Dispatcher::getSiteLanguage();
@@ -109,8 +111,9 @@ class Localization extends ContainerAware
     {
         $this->load->model('Site_language_model');
         $languages = $this->Site_language_model->getLanguages();
-        if (count($languages) == 1)
+        if (count($languages) == 1) {
             return;
+        }
 
         // For non default languages
         foreach ($languages as $language) {
@@ -122,7 +125,7 @@ class Localization extends ContainerAware
             foreach ($object->getTranslateableFieldNames() as $field) {
                 if (isset($definition[$field])) {
                     $definition[$field . $suffix] = $definition[$field];
-                    $definition[$field . $suffix]['show_in_grid'] = FALSE;
+                    $definition[$field . $suffix]['show_in_grid'] = false;
                     $definition[$field . $suffix]['label'] .= ' ' . strtoupper($language->code);
                     if (isset($definition[$field . $suffix]['field']) && $definition[$field . $suffix]['field']) {
                         $definition[$field . $suffix]['field'] .= $suffix;

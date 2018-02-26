@@ -1,9 +1,11 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /*
  * When set to true, using SMTP
  */
-$config['email_use_smtp'] = FALSE;
+$config['email_use_smtp'] = false;
 
 /*
  * Example ssl://smtp.googlemail.com

@@ -1,10 +1,12 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 require_once BASEPATH . '../application/config/config.php';
 
 $config['uri_protocol'] = 'QUERY_STRING';
 $config['url_suffix'] = ".html";
-$config['enable_hooks'] = TRUE;
+$config['enable_hooks'] = true;
 $config['subclass_prefix'] = 'MY_';
 $config['permitted_uri_chars'] = 'a-z 0-9~%.:_&=@-';
 $config['log_path'] = INSTALLATIONPATH . 'application/logs/';
@@ -80,7 +82,7 @@ $config['module_uri_separator'] = '/';
 | Profiler helps you to determine bottlenecks of your application
 |
 */
-$config['enable_profiler'] = FALSE;
+$config['enable_profiler'] = false;
 
 /*
 |--------------------------------------------------------------------------
@@ -136,7 +138,7 @@ $config['security_minimum_allowed_password_length'] = 4;
 | Warning: when using mobile internet it is common that the IP of the client varies!
 |
 */
-$config['security_session_must_match_ip'] = FALSE;
+$config['security_session_must_match_ip'] = false;
 
 
 /*
@@ -147,7 +149,7 @@ $config['security_session_must_match_ip'] = FALSE;
 | Specifies module to be served as mainpage
 |
 */
-$config['mainpage_module'] = FALSE;
+$config['mainpage_module'] = false;
 
 /*
 |--------------------------------------------------------------------------
@@ -157,12 +159,12 @@ $config['mainpage_module'] = FALSE;
 | Specifies module method to be served as mainpage
 |
 */
-$config['mainpage_module_method'] = FALSE;
+$config['mainpage_module_method'] = false;
 
 
 // PepisCMS bypass
 if (!file_exists(INSTALLATIONPATH . 'application/config/config.php')) {
-    if (!is_cli() && strpos($_SERVER['REQUEST_URI'], '/installer/') === FALSE) {
+    if (!is_cli() && strpos($_SERVER['REQUEST_URI'], '/installer/') === false) {
         header('Location: ./installer/');
         die();
     }

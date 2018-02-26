@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -12,6 +12,8 @@
  * @link                http://www.polak.ro/
  */
 
+defined('BASEPATH') or exit('No direct script access allowed');
+
 /**
  * Floating renderer for FormBuilder
  *
@@ -20,8 +22,7 @@
  */
 class FloatingFormRenderer extends DefaultFormRenderer
 {
-
-    public function __construct($template_absolute_path = FALSE)
+    public function __construct($template_absolute_path = false)
     {
         parent::__construct(APPPATH . 'views/templates/formbuilder_floating.php');
     }

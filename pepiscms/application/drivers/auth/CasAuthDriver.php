@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -12,6 +12,8 @@
  * @link                http://www.polak.ro/
  */
 
+defined('BASEPATH') or exit('No direct script access allowed');
+
 /**
  * CAS authentication driver
  *
@@ -19,9 +21,9 @@
  */
 class CasAuthDriver extends ContainerAware implements AuthDriverableInterface
 {
-    private $is_initialized = FALSE;
+    private $is_initialized = false;
     private $conf = array();
-    private $auth = NULL;
+    private $auth = null;
 
     /**
      * Constructs auth driver
@@ -40,7 +42,7 @@ class CasAuthDriver extends ContainerAware implements AuthDriverableInterface
     private function _init()
     {
         if (!$this->is_initialized) {
-            $this->is_initialized = TRUE;
+            $this->is_initialized = true;
 
             if (!isset($this->conf['cas_host']) || !$this->conf['cas_host']) {
                 show_error(sprintf($this->lang->line('auth_cas_misconfig'), INSTALLATIONPATH));
@@ -60,7 +62,7 @@ class CasAuthDriver extends ContainerAware implements AuthDriverableInterface
      */
     public function authorize($user_email_or_login, $password)
     {
-        return FALSE;
+        return false;
     }
 
     /**
@@ -79,12 +81,12 @@ class CasAuthDriver extends ContainerAware implements AuthDriverableInterface
         $user_id = $this->User_model->getUserIdByEmail(phpCAS::getUser());
 
         // Trying to register an user
-        if ($user_id === FALSE) {
+        if ($user_id === false) {
             // Checking whether allowed usernames are set and whether an user is one of them
             if (isset($this->conf['allowed_usernames']) && count($this->conf['allowed_usernames']) > 0) {
                 if (!in_array(phpCAS::getUser(), $this->conf['allowed_usernames'])) {
                     Logger::warning('Username ' . phpCAS::getUser() . ' is not allowed by AUTH driver option allowed_usernames.', 'AUTH');
-                    return FALSE;
+                    return false;
                 }
             }
 
@@ -93,7 +95,7 @@ class CasAuthDriver extends ContainerAware implements AuthDriverableInterface
                 $domain = substr(phpCAS::getUser(), strpos(phpCAS::getUser(), '@') + 1);
                 if (!in_array($domain, $this->conf['allowed_domains'])) {
                     Logger::warning('User domain ' . $domain . ' is not allowed.', 'AUTH');
-                    return FALSE;
+                    return false;
                 }
             }
 
@@ -111,7 +113,7 @@ class CasAuthDriver extends ContainerAware implements AuthDriverableInterface
             $display_name = ucwords(str_replace(array('.', '-', '_'), ' ', $display_name[0]));
 
             $is_root = !$this->User_model->countAll();
-            $this->User_model->register($display_name, phpCAS::getUser(), FALSE, FALSE, $user_group_ids, $is_root, FALSE, array('status' => $status));
+            $this->User_model->register($display_name, phpCAS::getUser(), false, false, $user_group_ids, $is_root, false, array('status' => $status));
             $user_id = $this->User_model->getUserIdByEmail(phpCAS::getUser());
         }
 
@@ -120,13 +122,13 @@ class CasAuthDriver extends ContainerAware implements AuthDriverableInterface
                 Logger::warning('Attempt to login using inactive account (deactivated locally). User ID ' . $user_id, 'AUTH');
                 show_error($this->lang->line('auth_cas_attempt_to_login_using_inactive_account'), 403, $this->lang->line('auth_no_access'));
             }
-            return TRUE;
+            return true;
         }
 
         Logger::warning('Unable to login using CAS driver. Unknown reason. Please check database conectivity', 'AUTH');
         show_error($this->lang->line('auth_cas_unknown_error_check_database'), 403, $this->lang->line('auth_no_access'));
 
-        return FALSE;
+        return false;
     }
 
     /**
@@ -140,7 +142,7 @@ class CasAuthDriver extends ContainerAware implements AuthDriverableInterface
         $this->_init();
         phpCAS::forceAuthentication();
 
-        return TRUE;
+        return true;
     }
 
     /**
@@ -150,7 +152,7 @@ class CasAuthDriver extends ContainerAware implements AuthDriverableInterface
      */
     public function isPasswordChangeSupported()
     {
-        return FALSE;
+        return false;
     }
 
     /**
@@ -159,7 +161,7 @@ class CasAuthDriver extends ContainerAware implements AuthDriverableInterface
      * @param boolean $explicit
      * @return boolean
      */
-    public function logout($explicit = FALSE)
+    public function logout($explicit = false)
     {
         if ($explicit) {
             // This sucks but otherwise the session is never terminated
@@ -169,7 +171,6 @@ class CasAuthDriver extends ContainerAware implements AuthDriverableInterface
             $this->_init();
             return @phpCAS::logoutWithUrl(base_url());
         }
-        return TRUE;
+        return true;
     }
-
 }

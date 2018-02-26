@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Array model is the an abstract model implementing feedable interface out of
@@ -29,7 +31,7 @@ abstract class Array_model extends CI_Model implements BasicDataFeedableInterfac
      *
      * @var bool|string
      */
-    private $_order_by_column = FALSE;
+    private $_order_by_column = false;
 
     /**
      * Order type ASC or DESC
@@ -50,7 +52,7 @@ abstract class Array_model extends CI_Model implements BasicDataFeedableInterfac
      *
      * @var mixed
      */
-    private $cache_param = NULL;
+    private $cache_param = null;
 
     /**
      * Basic feed cache array
@@ -153,7 +155,9 @@ abstract class Array_model extends CI_Model implements BasicDataFeedableInterfac
         // For every line
         foreach ($output as $line) {
             // Checking if the column is defined in the input feed and not defined in the output feed
-            if (!isset($line->$column) || isset($distinct_assoc[$line->$column])) continue;
+            if (!isset($line->$column) || isset($distinct_assoc[$line->$column])) {
+                continue;
+            }
 
             // Building the output feed
             $distinct_assoc[$line->$column] = $line->$column;
@@ -308,7 +312,7 @@ abstract class Array_model extends CI_Model implements BasicDataFeedableInterfac
         // Reading the original feed line by line
         foreach ($output as &$line) {
             // Value indicating whether the line should be added to the feed
-            $add_line = TRUE;
+            $add_line = true;
 
             foreach ($filters as $filter) {
                 // Filtering is case insensitive
@@ -335,10 +339,10 @@ abstract class Array_model extends CI_Model implements BasicDataFeedableInterfac
 
                 // Applying IN (in array) filter
                 if ($filter['condition'] == 'in') {
-                    $add_line = FALSE;
+                    $add_line = false;
                     foreach ($filter['values'] as $query) {
                         if ($column_value == $query) {
-                            $add_line = TRUE;
+                            $add_line = true;
                             break;
                         }
                     }
@@ -348,44 +352,44 @@ abstract class Array_model extends CI_Model implements BasicDataFeedableInterfac
 
                     // Applying LIKE filter
                     if ($filter['condition'] == 'like') {
-                        if (strpos($column_value, $query) === FALSE) {
-                            $add_line = FALSE;
+                        if (strpos($column_value, $query) === false) {
+                            $add_line = false;
                             break;
                         }
                     } // Applying EQ (equals) filter
                     elseif ($filter['condition'] == 'eq') {
                         if ($column_value != $query) {
-                            $add_line = FALSE;
+                            $add_line = false;
                             break;
                         }
                     } // Applying NE (not equals) filter
                     elseif ($filter['condition'] == 'ne') {
                         if ($column_value == $query) {
-                            $add_line = FALSE;
+                            $add_line = false;
                             break;
                         }
                     } // Applying GT (greater) filter
                     elseif ($filter['condition'] == 'gt') {
                         if (!($column_value > $query)) {
-                            $add_line = FALSE;
+                            $add_line = false;
                             break;
                         }
                     } // Applying GE (greater or equal) filter
                     elseif ($filter['condition'] == 'ge') {
                         if (!($column_value >= $query)) {
-                            $add_line = FALSE;
+                            $add_line = false;
                             break;
                         }
                     } // Applying LT (less than) filter
                     elseif ($filter['condition'] == 'lt') {
                         if (!($column_value < $query)) {
-                            $add_line = FALSE;
+                            $add_line = false;
                             break;
                         }
                     } // Applying LE (less or equal) filter
                     elseif ($filter['condition'] == 'le') {
                         if (!($column_value <= $query)) {
-                            $add_line = FALSE;
+                            $add_line = false;
                             break;
                         }
                     }
@@ -395,7 +399,7 @@ abstract class Array_model extends CI_Model implements BasicDataFeedableInterfac
 
             // Cleaning some memory and going to the next element
             if (!$add_line) {
-                $line = NULL;
+                $line = null;
                 unset($line);
                 continue;
             }
@@ -422,7 +426,7 @@ abstract class Array_model extends CI_Model implements BasicDataFeedableInterfac
     public function getById($id)
     {
         // Getting all the items
-        $feed = $this->getAdvancedFeed('*', 0, 999999, FALSE, FALSE, array(), FALSE);
+        $feed = $this->getAdvancedFeed('*', 0, 999999, false, false, array(), false);
 
         // Getting id field name
         $id_field_name = $this->getIdFieldName();
@@ -434,7 +438,7 @@ abstract class Array_model extends CI_Model implements BasicDataFeedableInterfac
             }
         }
 
-        return FALSE;
+        return false;
     }
 
     /**
@@ -447,7 +451,7 @@ abstract class Array_model extends CI_Model implements BasicDataFeedableInterfac
     public function deleteById($id)
     {
         $this->cleanCache();
-        return FALSE;
+        return false;
     }
 
     /**
@@ -462,7 +466,7 @@ abstract class Array_model extends CI_Model implements BasicDataFeedableInterfac
     public function saveById($id, $data)
     {
         $this->cleanCache();
-        return FALSE;
+        return false;
     }
 
     // -------------------------------------------------------------------------
@@ -477,7 +481,7 @@ abstract class Array_model extends CI_Model implements BasicDataFeedableInterfac
      */
     public function getAll()
     {
-        $feed = $this->getAdvancedFeed('*', 0, 999999, FALSE, FALSE, array(), FALSE);
+        $feed = $this->getAdvancedFeed('*', 0, 999999, false, false, array(), false);
         return $feed[0];
     }
 
@@ -501,6 +505,6 @@ abstract class Array_model extends CI_Model implements BasicDataFeedableInterfac
      */
     public function getTable()
     {
-        return FALSE;
+        return false;
     }
 }

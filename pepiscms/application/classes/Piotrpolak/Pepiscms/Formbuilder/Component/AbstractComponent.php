@@ -14,7 +14,7 @@
 
 namespace Piotrpolak\Pepiscms\Formbuilder\Component;
 
-if (!defined('BASEPATH')) exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * AbstractComponent
@@ -56,7 +56,7 @@ abstract class AbstractComponent implements ComponentInterface
      */
     public function shouldAttachAdditionalJavaScript()
     {
-        return FALSE;
+        return false;
     }
 
     /**
@@ -64,6 +64,6 @@ abstract class AbstractComponent implements ComponentInterface
      */
     public function shouldRenderHiddenForReadOnly()
     {
-        return TRUE;
+        return true;
     }
 }

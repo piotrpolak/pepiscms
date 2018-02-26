@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -12,6 +12,8 @@
  * @link                http://www.polak.ro/
  */
 
+defined('BASEPATH') or exit('No direct script access allowed');
+
 /**
  * Site language model
  *
@@ -23,7 +25,7 @@ class Site_language_model extends Generic_model implements BackupableInterface
      * Cache
      * @var Array
      */
-    private $language_codes = NULL;
+    private $language_codes = null;
 
     /**
      * Default constructor
@@ -76,7 +78,7 @@ class Site_language_model extends Generic_model implements BackupableInterface
 
         $object_name = 'language_' . $language_code;
         $object = $this->cachedobjectmanager->getObject($object_name, 3600 * 24, 'pages');
-        if ($object === FALSE) {
+        if ($object === false) {
             $object = $this->getLanguageByCode($language_code);
             $this->cachedobjectmanager->setObject($object_name, $object, 'pages');
         }
@@ -92,7 +94,7 @@ class Site_language_model extends Generic_model implements BackupableInterface
     public function getLanguageCodes()
     {
         // When there is no cache initialized
-        if ($this->language_codes === NULL) {
+        if ($this->language_codes === null) {
             // Initialize cache
             $this->language_codes = array();
 
@@ -153,7 +155,7 @@ class Site_language_model extends Generic_model implements BackupableInterface
                 ->row();
 
             if (!$row) {
-                return FALSE;
+                return false;
             }
 
             // Make one language default
@@ -162,7 +164,7 @@ class Site_language_model extends Generic_model implements BackupableInterface
                 ->update($this->getTable());
         }
 
-        return FALSE;
+        return false;
     }
 
     /**
@@ -198,7 +200,7 @@ class Site_language_model extends Generic_model implements BackupableInterface
      * @param type $data
      * @return type
      */
-    function saveById($id, $data)
+    public function saveById($id, $data)
     {
         foreach ($data as $_param_name => $_param_value) {
             if (!in_array($_param_name, $this->getAcceptedPostFields())) {
@@ -211,11 +213,10 @@ class Site_language_model extends Generic_model implements BackupableInterface
 
         $this->db->trans_start();
 
-        if ($id !== FALSE) {
+        if ($id !== false) {
             $this->db->where('code', $id)->update($this->getTable());
 
-            if ($data['code'] != $id) // When code is changed
-            {
+            if ($data['code'] != $id) { // When code is changed
                 $this->db->where('language_code', $id)
                     ->set('language_code', $data['code'])
                     ->update($this->config->item('database_table_menu'));
@@ -254,7 +255,7 @@ class Site_language_model extends Generic_model implements BackupableInterface
             ->result();
     }
 
-    public function doBackupRestore(&$items, $user_id = NULL)
+    public function doBackupRestore(&$items, $user_id = null)
     {
         foreach ($items as $item) {
             $this->db->set('code', '' . $item->code)
@@ -268,7 +269,7 @@ class Site_language_model extends Generic_model implements BackupableInterface
     public function doBackupPrepare()
     {
         $this->db->from($this->getTable())
-            ->where('1 = 1', FALSE, FALSE)
+            ->where('1 = 1', false, false)
             ->delete();
 
         $this->db->truncate($this->getTable());

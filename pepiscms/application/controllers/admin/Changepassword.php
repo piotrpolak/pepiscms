@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -12,12 +12,13 @@
  * @link                http://www.polak.ro/
  */
 
+defined('BASEPATH') or exit('No direct script access allowed');
+
 /**
  * Change own password controller
  */
 class Changepassword extends AdminController
 {
-
     public function index()
     {
         if (!$this->auth->getDriver()->isPasswordChangeSupported()) {
@@ -36,7 +37,7 @@ class Changepassword extends AdminController
 
         // TODO WHENEVER USER AUTH DRIVER WAS DIFFERENT THAN native
         // This is used whren migrating from CAS to NATIVE driver
-        $is_user_password_virgin = FALSE;
+        $is_user_password_virgin = false;
 
         // On form submit
         if ($this->input->post('confirm')) {
@@ -76,5 +77,4 @@ class Changepassword extends AdminController
         $this->assign('is_user_password_virgin', $is_user_password_virgin);
         $this->display();
     }
-
 }

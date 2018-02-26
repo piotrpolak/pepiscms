@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Sitemap controller
@@ -27,7 +29,7 @@ class Sitemap extends CI_Controller
             $cache_path = INSTALLATIONPATH . $cache_path;
         }
 
-        $this->load->library('CachedDirectoryReader', Array('cache_directory' => $cache_path, 'cache_expires' => 60 * 60 * 12));
+        $this->load->library('CachedDirectoryReader', array('cache_directory' => $cache_path, 'cache_expires' => 60 * 60 * 12));
         $this->load->model('Page_model');
         $this->load->model('Site_language_model');
 
@@ -62,5 +64,4 @@ class Sitemap extends CI_Controller
             $this->load->view('public/sitemap_xml', $data);
         }
     }
-
 }

@@ -1,4 +1,18 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+/**
+ * PepisCMS
+ *
+ * Simple content management system
+ *
+ * @package             PepisCMS
+ * @author              Piotr Polak
+ * @copyright           Copyright (c) 2007-2018, Piotr Polak
+ * @license             See license.txt
+ * @link                http://www.polak.ro/
+ */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * PepisCMS file bridge
@@ -47,11 +61,11 @@ if (!$ext) {
 
 
 $slash_pos = strpos($bridged_path, "/");
-if ($slash_pos == FALSE) {
+if ($slash_pos == false) {
     bridge_show_not_found();
 }
 
-$destination_file_path = FALSE;
+$destination_file_path = false;
 foreach ($section_base_paths as $key => $path) {
     if (strpos($bridged_path, $key) === 0) {
         $destination_file_path = $path . substr($bridged_path, strlen($key));

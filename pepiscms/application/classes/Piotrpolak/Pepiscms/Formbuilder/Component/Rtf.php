@@ -14,7 +14,7 @@
 
 namespace Piotrpolak\Pepiscms\Formbuilder\Component;
 
-if (!defined('BASEPATH')) exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Rtf
@@ -23,13 +23,13 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
  */
 class Rtf extends AbstractComponent
 {
-    private $isFull = FALSE;
+    private $isFull = false;
 
     /**
      * Rtf constructor.
      * @param bool $isFull
      */
-    public function __construct($isFull = FALSE)
+    public function __construct($isFull = false)
     {
         $this->isFull = $isFull;
     }

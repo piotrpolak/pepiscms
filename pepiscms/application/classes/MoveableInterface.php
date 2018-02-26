@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Defines method used to change order of elements
@@ -36,5 +38,5 @@ interface MoveableInterface
      * @return void
      * @local
      */
-    public function move($id, $direction, $table = FALSE, $constraint_field_name = FALSE, $item_order_field_name = 'item_order', $id_field_name = 'id');
+    public function move($id, $direction, $table = false, $constraint_field_name = false, $item_order_field_name = 'item_order', $id_field_name = 'id');
 }

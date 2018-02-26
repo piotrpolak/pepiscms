@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * A component responsible to read and write SecurityPolicies
@@ -102,14 +104,14 @@ class SecurityPolicy extends ContainerAware
     private function parsePolicy($path)
     {
         if (!file_exists($path)) {
-            return FALSE;
+            return false;
         }
 
         $security_policy = array();
         try {
-            $sxe = @new SimpleXMLElement($path, NULL, TRUE);
+            $sxe = @new SimpleXMLElement($path, null, true);
         } catch (Exception $exception) {
-            return FALSE;
+            return false;
         }
 
         $controllers = $sxe->policy->children();
@@ -271,7 +273,7 @@ class SecurityPolicy extends ContainerAware
             return array();
         }
 
-        $classDescription = $this->describeClass($class, FALSE);
+        $classDescription = $this->describeClass($class, false);
         $classDescription->name = str_replace('admin', '', $classDescription->name); // TODO only the suffix
 
         $controllers = array($classDescription);
@@ -319,7 +321,7 @@ class SecurityPolicy extends ContainerAware
      * @return object
      * @throws ReflectionException
      */
-    private function describeClass($class, $must_be_declaring = TRUE)
+    private function describeClass($class, $must_be_declaring = true)
     {
         $ignored_methods = array(
             'ModuleAdminController',

@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * PepisCMS
@@ -41,7 +41,7 @@ interface AuthDriverableInterface
      * @param bool $explicit
      * @return bool
      */
-    public function logout($explicit = FALSE);
+    public function logout($explicit = false);
 
     /**
      * Method called on auth request, usually when redirecting to the login page

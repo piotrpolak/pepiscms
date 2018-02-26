@@ -14,7 +14,7 @@
 
 namespace Piotrpolak\Pepiscms\Editor;
 
-if (!defined('BASEPATH')) exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * TinyMCE driver for RTF Editor

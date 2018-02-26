@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * System installer controller
@@ -47,7 +49,7 @@ class Installer extends AdminController
     public function __construct()
     {
         // Do not render menu and skip authorization
-        parent::__construct(FALSE, TRUE);
+        parent::__construct(false, true);
 
         $this->load->language('installer');
         $this->load->library('Installer_helper');
@@ -71,32 +73,32 @@ class Installer extends AdminController
 
         $this->steps = array(
             'database' => array(
-                'active' => FALSE,
+                'active' => false,
                 'description' => '',
                 'name' => $this->lang->line('installer_database_connection')
             ),
             'auth' => array(
-                'active' => FALSE,
+                'active' => false,
                 'description' => '',
                 'name' => $this->lang->line('installer_auth_driver')
             ),
             'account' => array(
-                'active' => FALSE,
+                'active' => false,
                 'description' => '',
                 'name' => $this->lang->line('installer_administrator_account')
             ),
             'features' => array(
-                'active' => FALSE,
+                'active' => false,
                 'description' => '',
                 'name' => $this->lang->line('installer_features')
             ),
             'installed_modules' => array(
-                'active' => FALSE,
+                'active' => false,
                 'description' => '',
                 'name' => $this->lang->line('installer_installed_modules')
             ),
             'build_success' => array(
-                'active' => FALSE,
+                'active' => false,
                 'description' => '',
                 'name' => $this->lang->line('installer_build_success')
             ),
@@ -183,13 +185,16 @@ class Installer extends AdminController
                     @list($key, $value) = explode(':', $row);
                     $key = trim($key);
                     $value = trim($value);
-                    if (!$key) continue;
+                    if (!$key) {
+                        continue;
+                    }
                     $conf[$key] = $value;
                 }
 
                 $hostname = $conf['database_host'];
                 $username = $conf['database_user'];
-                $password = trim($conf['database_password'], "'\"");;
+                $password = trim($conf['database_password'], "'\"");
+                ;
                 $database = $conf['database_name'];
                 $port = '';
             }
@@ -197,11 +202,11 @@ class Installer extends AdminController
             $link = @mysqli_connect($hostname, $username, $password, $database, $port);
             if (mysqli_connect_errno($link)) {
                 $that->formbuilder->setValidationErrorMessage(sprintf($that->lang->line('installer_unable_to_establish_connection_to_database'), mysqli_connect_error()));
-                return FALSE;
+                return false;
             }
 
             redirect(admin_url() . 'installer/auth_driver');
-            return TRUE;
+            return true;
         }, FormBuilder::CALLBACK_ON_SAVE);
 
         $validation_rules = isset($_POST['database_config_type']) && $_POST['database_config_type'] != 'cas' ? '' : 'required';
@@ -227,7 +232,7 @@ class Installer extends AdminController
         $definition = $this->merge_definition_with_session_data($definition);
         $this->formbuilder->setDefinition($definition);
 
-        $this->steps['database']['active'] = TRUE;
+        $this->steps['database']['active'] = true;
         $this->assign('steps', $this->steps);
         $this->display();
     }
@@ -273,7 +278,7 @@ class Installer extends AdminController
         $definition = $this->merge_definition_with_session_data($definition);
         $this->formbuilder->setDefinition($definition);
 
-        $this->steps['auth']['active'] = TRUE;
+        $this->steps['auth']['active'] = true;
         $this->assign('steps', $this->steps);
         $this->display();
     }
@@ -293,13 +298,13 @@ class Installer extends AdminController
         $this->formbuilder->setCallback(function ($data_array) use ($that) {
             if ($data_array['admin_password'] != $data_array['admin_password_confirm']) {
                 $that->formbuilder->setValidationErrorMessage($this->lang->line('installer_passwords_must_match'));
-                return FALSE;
+                return false;
             }
 
             $that->merge_installation_data($data_array);
             redirect(admin_url() . 'installer/features');
 
-            return TRUE;
+            return true;
         }, FormBuilder::CALLBACK_ON_SAVE);
 
         $definition = array(
@@ -316,7 +321,7 @@ class Installer extends AdminController
         $definition = $this->merge_definition_with_session_data($definition);
         $this->formbuilder->setDefinition($definition);
 
-        $this->steps['account']['active'] = TRUE;
+        $this->steps['account']['active'] = true;
         $this->assign('steps', $this->steps);
         $this->display();
     }
@@ -386,7 +391,7 @@ class Installer extends AdminController
         $definition = $this->merge_definition_with_session_data($definition);
         $this->formbuilder->setDefinition($definition);
 
-        $this->steps['features']['active'] = TRUE;
+        $this->steps['features']['active'] = true;
         $this->assign('steps', $this->steps);
         $this->display();
     }
@@ -433,7 +438,6 @@ class Installer extends AdminController
             }
 
             redirect(admin_url() . 'installer/build_success');
-
         }, FormBuilder::CALLBACK_ON_SAVE);
 
         $modules = ModuleRunner::getAvailableModules();
@@ -462,7 +466,7 @@ class Installer extends AdminController
         $definition = $this->merge_definition_with_session_data($definition);
         $this->formbuilder->setDefinition($definition);
 
-        $this->steps['installed_modules']['active'] = TRUE;
+        $this->steps['installed_modules']['active'] = true;
         $this->assign('steps', $this->steps);
         $this->display();
     }
@@ -472,7 +476,7 @@ class Installer extends AdminController
      */
     public function build_success()
     {
-        $this->steps['build_success']['active'] = TRUE;
+        $this->steps['build_success']['active'] = true;
         $this->assign('steps', $this->steps);
         $this->display();
     }
@@ -529,7 +533,7 @@ class Installer extends AdminController
             return $_SESSION['cms_installation'][$key];
         }
 
-        return NULL;
+        return null;
     }
 
     /**

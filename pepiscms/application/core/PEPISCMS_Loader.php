@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Enhanced loader
@@ -28,7 +30,7 @@ class PEPISCMS_Loader extends CI_Loader
      * @param null $active_record
      * @return object
      */
-    public function database($params = '', $return = FALSE, $active_record = NULL)
+    public function database($params = '', $return = false, $active_record = null)
     {
         // load our version of the CI_DB_Cache class. The database library checks
         // if this class is already loaded before instantiating it. Loading it now
@@ -41,13 +43,13 @@ class PEPISCMS_Loader extends CI_Loader
         $CI = &get_instance();
 
         // Do we even need to load the database class?
-        if (class_exists('CI_DB') AND $return == FALSE AND $active_record == NULL AND isset($CI->db) AND is_object($CI->db)) {
-            return FALSE;
+        if (class_exists('CI_DB') and $return == false and $active_record == null and isset($CI->db) and is_object($CI->db)) {
+            return false;
         }
 
         require_once(BASEPATH . 'database/DB.php');
 
-        if ($return === TRUE) {
+        if ($return === true) {
             return DB($params, $active_record);
         }
 
@@ -67,7 +69,7 @@ class PEPISCMS_Loader extends CI_Loader
      * @param boolean $return
      * @return object
      */
-    public function theme($path, $vars = array(), $return = FALSE)
+    public function theme($path, $vars = array(), $return = false)
     {
         return $this->_ci_load(array(
                 '_ci_path' => $path,
@@ -87,7 +89,7 @@ class PEPISCMS_Loader extends CI_Loader
      * @param    bool $hardfail
      * @return    void
      */
-    public function model($model, $name = '', $db_conn = FALSE, $hardfail = TRUE)
+    public function model($model, $name = '', $db_conn = false, $hardfail = true)
     {
         // Keep this redundancy
         $original_model = $model;
@@ -109,7 +111,7 @@ class PEPISCMS_Loader extends CI_Loader
             }
 
             // Is the model in a sub-folder? If so, parse out the filename and path.
-            if (strpos($model, '/') === FALSE) {
+            if (strpos($model, '/') === false) {
                 $path = '';
             } else {
                 $x = explode('/', $model);
@@ -122,7 +124,7 @@ class PEPISCMS_Loader extends CI_Loader
                 $name = $model;
             }
 
-            if (in_array($name, $this->_ci_models, TRUE)) {
+            if (in_array($name, $this->_ci_models, true)) {
                 return;
             }
 
@@ -132,7 +134,7 @@ class PEPISCMS_Loader extends CI_Loader
 
             $running_module_name = $CI->modulerunner->getRunningModuleName();
 
-            $model_path = FALSE;
+            $model_path = false;
             $model_directories = array(
                 $this->resolveModuleDirectory($running_module_name),
                 INSTALLATIONPATH . 'application/'
@@ -147,15 +149,16 @@ class PEPISCMS_Loader extends CI_Loader
             }
 
             if ($model_path) {
-                if ($db_conn !== FALSE AND !class_exists('CI_DB')) {
-                    if ($db_conn === TRUE)
+                if ($db_conn !== false and !class_exists('CI_DB')) {
+                    if ($db_conn === true) {
                         $db_conn = '';
+                    }
 
-                    $CI->load->database($db_conn, FALSE, TRUE);
+                    $CI->load->database($db_conn, false, true);
                 }
 
                 if (!class_exists('CI_Model')) {
-                    load_class('CI_Model', FALSE);
+                    load_class('CI_Model', false);
                 }
 
                 require_once($model_path);
@@ -181,7 +184,7 @@ class PEPISCMS_Loader extends CI_Loader
      * @param bool $db_conn
      * @param bool $hardfail
      */
-    private function _model($model, $name = '', $db_conn = FALSE, $hardfail = TRUE)
+    private function _model($model, $name = '', $db_conn = false, $hardfail = true)
     {
         if (is_array($model)) {
             foreach ($model as $babe) {
@@ -197,7 +200,7 @@ class PEPISCMS_Loader extends CI_Loader
         $path = '';
 
         // Is the model in a sub-folder? If so, parse out the filename and path.
-        if (($last_slash = strrpos($model, '/')) !== FALSE) {
+        if (($last_slash = strrpos($model, '/')) !== false) {
             // The path is in front of the last slash
             $path = substr($model, 0, $last_slash + 1);
 
@@ -209,7 +212,7 @@ class PEPISCMS_Loader extends CI_Loader
             $name = $model;
         }
 
-        if (in_array($name, $this->_ci_models, TRUE)) {
+        if (in_array($name, $this->_ci_models, true)) {
             return;
         }
 
@@ -223,12 +226,12 @@ class PEPISCMS_Loader extends CI_Loader
                 continue;
             }
 
-            if ($db_conn !== FALSE AND !class_exists('CI_DB')) {
-                if ($db_conn === TRUE) {
+            if ($db_conn !== false and !class_exists('CI_DB')) {
+                if ($db_conn === true) {
                     $db_conn = '';
                 }
 
-                $CI->load->database($db_conn, FALSE, TRUE);
+                $CI->load->database($db_conn, false, true);
             }
 
             if (!class_exists('CI_Model')) {
@@ -269,12 +272,12 @@ class PEPISCMS_Loader extends CI_Loader
      * @param string|bool $idiom
      * @return bool
      */
-    public function language($langfile, $idiom = FALSE)
+    public function language($langfile, $idiom = false)
     {
         $CI = &get_instance();
         if (isset($CI->modulerunner) && ($module_name = $CI->modulerunner->getRunningModuleName())) {
-            if ($CI->lang->loadForModule($langfile, $idiom, FALSE, $module_name)) {
-                return TRUE;
+            if ($CI->lang->loadForModule($langfile, $idiom, false, $module_name)) {
+                return true;
             }
         }
         return $CI->lang->load($langfile, $idiom);
@@ -288,7 +291,7 @@ class PEPISCMS_Loader extends CI_Loader
      * @param string|bool $idiom
      * @return mixed
      */
-    public function moduleLanguage($module_name = FALSE, $langfile = FALSE, $idiom = FALSE)
+    public function moduleLanguage($module_name = false, $langfile = false, $idiom = false)
     {
         if (!$idiom) {
             if (class_exists('Dispatcher') && ($d_lang = Dispatcher::getSiteLanguage())) {
@@ -306,7 +309,7 @@ class PEPISCMS_Loader extends CI_Loader
             $langfile = $module_name;
         }
 
-        return $CI->lang->loadForModule($langfile, $idiom, FALSE, $module_name);
+        return $CI->lang->loadForModule($langfile, $idiom, false, $module_name);
     }
 
     /**
@@ -320,7 +323,7 @@ class PEPISCMS_Loader extends CI_Loader
      * @param null $object_name
      * @return bool|PEPISCMS_Loader|object
      */
-    public function library($library = '', $params = NULL, $object_name = NULL)
+    public function library($library = '', $params = null, $object_name = null)
     {
         if (empty($library)) {
             return $this;
@@ -337,12 +340,12 @@ class PEPISCMS_Loader extends CI_Loader
         }
 
         $CI = &get_instance();
-        $isLoaded = FALSE;
+        $isLoaded = false;
         if (isset($CI->modulerunner) && $CI->modulerunner->getRunningModuleName()) {
             $isLoaded = $this->moduleLibrary($CI->modulerunner->getRunningModuleName(), $library, $params);
         }
         if ($isLoaded) {
-            return TRUE;
+            return true;
         }
         return parent::library($library, $params, $object_name);
     }
@@ -355,14 +358,14 @@ class PEPISCMS_Loader extends CI_Loader
      * @param mixed $params
      * @return bool|void
      */
-    public function moduleLibrary($module_name, $library, $params = NULL)
+    public function moduleLibrary($module_name, $library, $params = null)
     {
         if ($library == '') {
-            return FALSE;
+            return false;
         }
 
-        if (!is_null($params) AND !is_array($params)) {
-            $params = NULL;
+        if (!is_null($params) and !is_array($params)) {
+            $params = null;
         }
 
         // Get the class name
@@ -381,10 +384,10 @@ class PEPISCMS_Loader extends CI_Loader
 
                 include_once($library_file_path);
                 $this->_ci_init_library($class, '', $params);
-                return TRUE;
+                return true;
             }
         } // END FOREACH
-        return FALSE;
+        return false;
     }
 
     /**
@@ -395,10 +398,10 @@ class PEPISCMS_Loader extends CI_Loader
      * @param string $name
      * @param string|bool $db_conn
      */
-    public function moduleModel($module_name, $model, $name = '', $db_conn = FALSE)
+    public function moduleModel($module_name, $model, $name = '', $db_conn = false)
     {
         $CI = &get_instance();
-        $current_module_name = FALSE;
+        $current_module_name = false;
         if (isset($CI->modulerunner)) {
             $current_module_name = $CI->modulerunner->getRunningModuleName();
         } else {
@@ -432,7 +435,7 @@ class PEPISCMS_Loader extends CI_Loader
      *
      * @return string|bool
      */
-    public function resolveModuleDirectory($module_name, $web_path = FALSE)
+    public function resolveModuleDirectory($module_name, $web_path = false)
     {
         if (isset($this->module_directory_cache[$module_name][$web_path])) {
             // Some kind of runtime cache
@@ -451,8 +454,8 @@ class PEPISCMS_Loader extends CI_Loader
                 $module_directory = $core_module_directory;
             }
         } else {
-            $this->module_directory_cache[$module_name][$web_path] = FALSE;
-            return FALSE;
+            $this->module_directory_cache[$module_name][$web_path] = false;
+            return false;
         }
 
         $this->module_directory_cache[$module_name][$web_path] = $module_directory . $module_name . '/';

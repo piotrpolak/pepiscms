@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -12,6 +12,8 @@
  * @link                http://www.polak.ro/
  */
 
+defined('BASEPATH') or exit('No direct script access allowed');
+
 /**
  * Class TranslatorHook
  *
@@ -19,7 +21,7 @@
  */
 class TranslatorHook
 {
-    public static $enableTranslator = FALSE;
+    public static $enableTranslator = false;
 
     public function filterContent()
     {
@@ -36,7 +38,6 @@ class TranslatorHook
 
     public function enableTranslator()
     {
-        self::$enableTranslator = TRUE;
+        self::$enableTranslator = true;
     }
-
 }

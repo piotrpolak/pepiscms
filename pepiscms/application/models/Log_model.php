@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * User group model
@@ -167,7 +169,7 @@ class Log_model extends Generic_model
         $ips = $this->getIpsByUserId($user_id);
 
         if (count($ips) == 0) {
-            return FALSE;
+            return false;
         }
 
         return $this->db->select($this->config->item('database_table_users') . '.*')
@@ -218,7 +220,7 @@ class Log_model extends Generic_model
 
         // Return if there are no logs
         if (!$logs || count($logs) == 0) {
-            return FALSE;
+            return false;
         }
 
         // For every file
@@ -250,7 +252,7 @@ class Log_model extends Generic_model
 
 
                 // Logging notice
-                if (strpos($message, 'Severity: Notice') !== FALSE) {
+                if (strpos($message, 'Severity: Notice') !== false) {
                     $message = str_replace('Severity: Notice', '', $message);
                     $servity = 'NOTICE';
                     $collection = 'PHP';
@@ -258,12 +260,12 @@ class Log_model extends Generic_model
                         continue;
                     }
                 } // Logging error
-                elseif (strpos($message, 'Severity: Error') !== FALSE) {
+                elseif (strpos($message, 'Severity: Error') !== false) {
                     $message = str_replace('Severity: Error', '', $message);
                     $servity = 'ERROR';
                     $collection = 'PHP';
                 } // Logging warning
-                elseif (strpos($message, 'Severity: Warning') !== FALSE) {
+                elseif (strpos($message, 'Severity: Warning') !== false) {
                     $message = str_replace('Severity: Warning', '', $message);
                     $servity = 'WARNING';
                     $collection = 'PHP';
@@ -290,7 +292,7 @@ class Log_model extends Generic_model
             unlink($log_file);
         }
 
-        return TRUE;
+        return true;
     }
 
     /**
@@ -302,5 +304,4 @@ class Log_model extends Generic_model
     {
         return $this->db->where('collection', 'FRAMEWORK')->or_where('collection', 'PHP')->delete($this->getTable());
     }
-
 }

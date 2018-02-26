@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -12,8 +12,11 @@
  * @link                http://www.polak.ro/
  */
 
+defined('BASEPATH') or exit('No direct script access allowed');
+
 /**
  * Upgradedb utility controller
+ *
  * @since 0.2.3
  */
 class Upgradedb extends EnhancedController
@@ -60,5 +63,4 @@ class Upgradedb extends EnhancedController
         // TODO Translation
         show_error($message . ' <a href="' . admin_url() . '">Go back to admin panel</a>', 400, 'Status');
     }
-
 }

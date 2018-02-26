@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -12,10 +12,12 @@
  * @link                http://www.polak.ro/
  */
 
+defined('BASEPATH') or exit('No direct script access allowed');
+
 /**
  * Menu item representation. Not a menu itself.
  *
- * @since        0.2
+ * @since 0.2.0
  */
 class MenuItem extends Menu
 {
@@ -109,7 +111,7 @@ class MenuItem extends Menu
      */
     public function getCanonicalAbsoluteUrl()
     {
-        if ($this->canonical_url === NULL) {
+        if ($this->canonical_url === null) {
             $this->setCanonicalAbsoluteUrl(base_url() . $this->getRelativeUrl());
         }
         return $this->canonical_url;

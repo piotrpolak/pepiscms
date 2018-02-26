@@ -14,7 +14,7 @@
 
 namespace Piotrpolak\Pepiscms\Formbuilder\Component;
 
-if (!defined('BASEPATH')) exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * File
@@ -64,7 +64,7 @@ class File extends AbstractComponent
             $extension = end($extension);
             $extension = strtolower($extension);
         } else {
-            $extension = FALSE;
+            $extension = false;
         }
         return $extension;
     }
@@ -102,9 +102,9 @@ class File extends AbstractComponent
         if ($valueEscaped) {
             $extension = $this->getExtension($valueEscaped);
 
-            $is_real_image = FALSE;
+            $is_real_image = false;
             if (in_array($extension, array('jpg', 'jpeg', 'png', 'bmp', 'tiff'))) {
-                $is_real_image = TRUE;
+                $is_real_image = true;
             }
 
             if ($is_real_image) {
@@ -138,7 +138,6 @@ class File extends AbstractComponent
 
             $output_element .= strtoupper($extension) . ' ' . $file_size . '<br><br>' . $last_modified_at . '</div>' .
                 '</div>';
-
         }
         return $output_element;
     }

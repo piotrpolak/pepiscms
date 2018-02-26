@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * RTF Editor
@@ -61,7 +63,7 @@ class RTFEditor extends ContainerAware
     public function setAvailableEditors($available_editors)
     {
         if (!is_array($available_editors)) {
-            return FALSE;
+            return false;
         }
 
         $this->available_editors = array();
@@ -71,7 +73,7 @@ class RTFEditor extends ContainerAware
                 $this->available_editors[$key] = $value;
             }
         }
-        return TRUE;
+        return true;
     }
 
     /**
@@ -115,7 +117,7 @@ class RTFEditor extends ContainerAware
         }
 
         $css_file = base_url() . 'theme/' . $this->config->item('current_theme') . '/' . $descriptor['editor_css_file'];
-        if (strpos($descriptor['editor_css_file'], 'http://') !== FALSE || strpos($descriptor['editor_css_file'], 'https://') !== FALSE) {
+        if (strpos($descriptor['editor_css_file'], 'http://') !== false || strpos($descriptor['editor_css_file'], 'https://') !== false) {
             $css_file = $descriptor['editor_css_file'];
         } elseif ($descriptor['editor_css_file'][0] == '/') {
             $css_file = base_url() . $descriptor['editor_css_file'];
@@ -125,7 +127,7 @@ class RTFEditor extends ContainerAware
 
         if ($descriptor['editor_styles_set_file']) {
             $styles_set_file = base_url() . 'theme/' . $this->config->item('current_theme') . '/' . $descriptor['editor_styles_set_file'];
-            if (strpos($descriptor['editor_styles_set_file'], 'http://') !== FALSE || strpos($descriptor['editor_styles_set_file'], 'https://') !== FALSE) {
+            if (strpos($descriptor['editor_styles_set_file'], 'http://') !== false || strpos($descriptor['editor_styles_set_file'], 'https://') !== false) {
                 $styles_set_file = $descriptor['editor_styles_set_file'];
             } elseif ($descriptor['editor_styles_set_file'][0] == '/') {
                 $styles_set_file = base_url() . $descriptor['editor_styles_set_file'];
@@ -155,7 +157,7 @@ class RTFEditor extends ContainerAware
      *
      * @param bool $is_full
      */
-    public function setFull($is_full = TRUE)
+    public function setFull($is_full = true)
     {
         $this->driver->setFull($is_full);
     }
@@ -169,5 +171,4 @@ class RTFEditor extends ContainerAware
     {
         return $this->driver->isFull();
     }
-
 }

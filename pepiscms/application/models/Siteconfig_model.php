@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Site config model
@@ -30,7 +32,7 @@ class Siteconfig_model extends CI_Model implements EntitableInterface
      */
     public function saveById($id, $data)
     {
-        array_merge($data, (array)$this->getById(FALSE));
+        array_merge($data, (array)$this->getById(false));
 
         $config_files = array('_pepiscms.php', 'debug.php', 'email.php');
         $booleans = array(
@@ -62,7 +64,7 @@ class Siteconfig_model extends CI_Model implements EntitableInterface
         if (isset($data['cms_customization_logo']) && $data['cms_customization_logo']) {
             $data['cms_customization_logo'] = $this->config->item('theme_path') . $data['cms_customization_logo'];
         } else {
-            $data['cms_customization_logo'] = FALSE;
+            $data['cms_customization_logo'] = false;
         }
 
         $config_search = $config_replace = array();
@@ -124,7 +126,7 @@ class Siteconfig_model extends CI_Model implements EntitableInterface
      */
     public function deleteById($id)
     {
-        return TRUE;
+        return true;
     }
 
     /**
@@ -283,10 +285,10 @@ class Siteconfig_model extends CI_Model implements EntitableInterface
         $errors = $this->makeConfigurationTestsAngGetErrors();
         foreach ($errors as $error) {
             if ($error) {
-                return TRUE;
+                return true;
             }
         }
-        return FALSE;
+        return false;
     }
 
     /**
@@ -308,39 +310,39 @@ class Siteconfig_model extends CI_Model implements EntitableInterface
         $configuration_tests['error_php_reporting_enabled'] = ENVIRONMENT !== 'production' && PEPISCMS_PRODUCTION_RELEASE;
         $configuration_tests['error_development_release'] = !PEPISCMS_PRODUCTION_RELEASE;
         $configuration_tests['error_wrong_uri_protocol'] = $this->config->item('uri_protocol') != 'QUERY_STRING';
-        $configuration_tests['error_cache_not_writeable'] = FALSE;
-        $configuration_tests['error_logs_not_writeable'] = FALSE;
+        $configuration_tests['error_cache_not_writeable'] = false;
+        $configuration_tests['error_logs_not_writeable'] = false;
 
         // Extended cache test
         if (!is_writeable($cache_path)) {
-            $configuration_tests['error_cache_not_writeable'] = TRUE;
+            $configuration_tests['error_cache_not_writeable'] = true;
         } else {
             $tmp_cache_path = $cache_path . '/_test_' . rand(9999, 10000) . '/';
             if (!mkdir($tmp_cache_path)) {
-                $configuration_tests['error_cache_not_writeable'] = TRUE;
+                $configuration_tests['error_cache_not_writeable'] = true;
             } else {
                 if (!rmdir($tmp_cache_path)) {
-                    $configuration_tests['error_cache_not_writeable'] = TRUE;
+                    $configuration_tests['error_cache_not_writeable'] = true;
                 }
             }
         }
 
         // Extended logs test
         if (!is_writeable($logs_path)) {
-            $configuration_tests['error_logs_not_writeable'] = TRUE;
+            $configuration_tests['error_logs_not_writeable'] = true;
         } else {
             $tmp_logs_path = $logs_path . '/_test_' . rand(9999, 10000) . '.php';
             if (!touch($tmp_logs_path)) {
-                $configuration_tests['error_logs_not_writeable'] = TRUE;
+                $configuration_tests['error_logs_not_writeable'] = true;
             } else {
                 if (!unlink($tmp_logs_path)) {
-                    $configuration_tests['error_logs_not_writeable'] = TRUE;
+                    $configuration_tests['error_logs_not_writeable'] = true;
                 }
             }
         }
 
 
-        $configuration_tests['error_wrong_file_owner'] = FALSE;
+        $configuration_tests['error_wrong_file_owner'] = false;
         if (function_exists('posix_getpwuid')) {
             $owner = posix_getpwuid(fileowner(INSTALLATIONPATH));
             $whoaim = exec('whoami');
@@ -368,5 +370,4 @@ class Siteconfig_model extends CI_Model implements EntitableInterface
 
         return $failed_tests;
     }
-
 }

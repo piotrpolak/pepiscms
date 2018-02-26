@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Library for managing cached objects
@@ -54,7 +56,7 @@ class Cachedobjectmanager extends ContainerAware
     /**
      * Storing all the objects at destruction
      */
-    function __destruct()
+    public function __destruct()
     {
         // Delayed save of every object
         foreach ($this->objects as $o) {
@@ -80,16 +82,16 @@ class Cachedobjectmanager extends ContainerAware
 
         if (!file_exists($path)) {
             $this->benchmark->mark('cached_object_manager_get_object_' . $collection . '_' . $hash . '_end');
-            return FALSE;
+            return false;
         }
 
         // Comparing timestamps
         if (filemtime($path) < time() - $time_to_live) {
             $this->benchmark->mark('cached_object_manager_get_object_' . $collection . '_' . $hash . '_end');
-            return FALSE;
+            return false;
         }
 
-        $object = FALSE; // Supposed to be overwritten
+        $object = false; // Supposed to be overwritten
         /** @noinspection PhpIncludeInspection */
         @include($path);
         $this->benchmark->mark('cached_object_manager_get_object_' . $collection . '_' . $hash . '_end');
@@ -106,7 +108,7 @@ class Cachedobjectmanager extends ContainerAware
      *
      * @return bool
      */
-    public function setObject($name, $object, $collection = '', $store_on_destruct = FALSE)
+    public function setObject($name, $object, $collection = '', $store_on_destruct = false)
     {
         if (!$store_on_destruct) {
             return $this->storeObject($name, $object, $collection);
@@ -118,7 +120,7 @@ class Cachedobjectmanager extends ContainerAware
             'collection' => $collection
         );
 
-        return TRUE;
+        return true;
     }
 
     /**
@@ -165,10 +167,10 @@ class Cachedobjectmanager extends ContainerAware
 
         if ($error) {
             Logger::error('Unable to write system cache ' . $path, 'SYSTEM');
-            return FALSE;
+            return false;
         }
 
-        return TRUE;
+        return true;
     }
 
     /**
@@ -225,5 +227,4 @@ class Cachedobjectmanager extends ContainerAware
         $hash = md5($name);
         return $hash;
     }
-
 }

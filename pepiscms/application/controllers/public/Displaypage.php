@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -12,13 +12,15 @@
  * @link                http://www.polak.ro/
  */
 
+defined('BASEPATH') or exit('No direct script access allowed');
+
 /**
  * Frontend dispatcher controller
  */
 class Dispatcher extends EnhancedController
 {
-    protected static $site_language = NULL;
-    protected static $uri_prefix = NULL;
+    protected static $site_language = null;
+    protected static $uri_prefix = null;
 
     /**
      * Returns object representing site language
@@ -49,7 +51,7 @@ class Dispatcher extends EnhancedController
      */
     public static function getUriPrefix()
     {
-        if (self::$uri_prefix === NULL) {
+        if (self::$uri_prefix === null) {
             self::$uri_prefix = self::$site_language->is_default ? '' : self::$site_language->code . '/';
         }
 
@@ -109,7 +111,7 @@ class DisplayPage extends Dispatcher
 
         // If there is no frontend enabled, then lets redirect the user to the admin page
         $enable_frontend = $this->config->item('cms_enable_frontend');
-        if ($enable_frontend === FALSE) {
+        if ($enable_frontend === false) {
             redirect(admin_url() . 'login');
         }
 

@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Provides a way to overwrite default cache mechanisms.
@@ -45,7 +47,7 @@ class PEPISCMS_Output extends CI_Output
             return parent::_write_cache($output);
         }
 
-        return FALSE;
+        return false;
     }
 
     /**
@@ -68,14 +70,14 @@ class PEPISCMS_Output extends CI_Output
                 $no_fastcacheable = false;
 
                 $cache = fast_cache_get_cache_for_uri($_SERVER[self::REQUEST_URI_SERVER_ATTRIBUTE_NAME]);
-                if ($cache === FALSE) {
-                    return FALSE;
+                if ($cache === false) {
+                    return false;
                 }
 
                 // Display the cache
                 $this->_display($cache);
                 log_message('debug', "Cache file is current. Sending it to browser.");
-                return TRUE;
+                return true;
             }
         }
 
@@ -84,7 +86,6 @@ class PEPISCMS_Output extends CI_Output
             return parent::_display_cache($CFG, $URI);
         }
 
-        return FALSE;
+        return false;
     }
-
 }

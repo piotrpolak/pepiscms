@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -12,6 +12,8 @@
  * @link                http://www.polak.ro/
  */
 
+defined('BASEPATH') or exit('No direct script access allowed');
+
 /**
  * User group model
  *
@@ -19,7 +21,6 @@
  */
 class Group_model extends Generic_model
 {
-
     public function __construct()
     {
         parent::__construct();
@@ -98,7 +99,7 @@ class Group_model extends Generic_model
      */
     public function isGroupNameTaken($group_name)
     {
-        if ($this->db->where('UPPER(group_name)', 'UPPER(' . $this->db->escape($group_name) . ')', FALSE)->count_all_results($this->getTable())) {
+        if ($this->db->where('UPPER(group_name)', 'UPPER(' . $this->db->escape($group_name) . ')', false)->count_all_results($this->getTable())) {
             return true;
         }
 
@@ -112,7 +113,7 @@ class Group_model extends Generic_model
      * @param bool $group_name
      * @param array $access
      */
-    public function update($group_id, $group_name = FALSE, $access = array())
+    public function update($group_id, $group_name = false, $access = array())
     {
         if ($group_name) {
             $this->db->set('group_name', $group_name)

@@ -1,4 +1,18 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+/**
+ * PepisCMS
+ *
+ * Simple content management system
+ *
+ * @package             PepisCMS
+ * @author              Piotr Polak
+ * @copyright           Copyright (c) 2007-2018, Piotr Polak
+ * @license             See license.txt
+ * @link                http://www.polak.ro/
+ */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * PepisCMS Fast cache
@@ -27,7 +41,7 @@ function fast_cache_get_cache_for_uri($uri)
 function fast_cache_set_cache_for_uri($uri, $output, $expires_in_seconds = 360)
 {
     if ($expires_in_seconds < 1) {
-        return FALSE;
+        return false;
     }
 
     $uri_hash = md5(INSTALLATIONPATH . $uri);
@@ -49,12 +63,12 @@ function fast_cache_serve_for_uri_if_exists($uri)
      * Logged in administrators should be served with no-cache pages
      */
     if (count($_POST) > 0) {
-        return FALSE;
+        return false;
     }
 
     $cache = fast_cache_get_cache_for_uri($uri);
-    if ($cache === FALSE) {
-        return FALSE;
+    if ($cache === false) {
+        return false;
     }
 
     header("PepisCMS-cache: true");

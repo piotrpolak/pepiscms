@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -12,14 +12,16 @@
  * @link                http://www.polak.ro/
  */
 
+defined('BASEPATH') or exit('No direct script access allowed');
+
 /**
  * TimeZoneHook
  */
 class TimeZoneHook
 {
-    public function setTimezone($params = FALSE)
+    public function setTimezone($params = false)
     {
-        $timezone = FALSE;
+        $timezone = false;
         $file = INSTALLATIONPATH . 'application/config/_pepiscms.php';
 
         if (file_exists($file)) {
@@ -33,5 +35,4 @@ class TimeZoneHook
             date_default_timezone_set($timezone);
         }
     }
-
 }

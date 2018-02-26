@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Module management controller
@@ -26,7 +28,8 @@ class Module extends AdminController
         $this->load->library('ConfigBuilder');
         $this->load->library('ModuleRunner');
         $this->load->library('Cachedobjectmanager');
-        $this->load->library('User_agent');;
+        $this->load->library('User_agent');
+        ;
         $this->assign('title', $this->lang->line('label_installed_modules'));
     }
 
@@ -38,7 +41,7 @@ class Module extends AdminController
         $controller = 'utilities';
         $method = 'index';
         if ($this->input->getMethodName() == 'run') {
-            return FALSE;
+            return false;
         }
 
         return $this->menurendor->render($controller, $method, $this->input->getParam('language_code'));
@@ -137,8 +140,8 @@ class Module extends AdminController
             $modules_with_no_parent[$module_with_no_parent->module_id] = $this->Module_model->getModuleLabel($module_with_no_parent->name, $this->lang->getCurrentLanguage());
         }
 
-        $is_displayed_in_menu = FALSE;
-        $is_displayed_in_utilities = FALSE;
+        $is_displayed_in_menu = false;
+        $is_displayed_in_utilities = false;
         $moduleDescriptor = $this->Module_model->getModuleDescriptor($module);
         if ($moduleDescriptor) {
             $is_displayed_in_menu = $moduleDescriptor->isDisplayedInMenu();
@@ -149,7 +152,7 @@ class Module extends AdminController
             'module' => array(
                 'label' => $this->lang->line('label_module'),
                 'validation_rules' => 'required',
-                'input_is_editable' => FALSE,
+                'input_is_editable' => false,
             ),
             'is_displayed_in_menu' => array(
                 'input_type' => FormBuilder::CHECKBOX,
@@ -160,9 +163,9 @@ class Module extends AdminController
             'parent_module_id' => array(
                 'input_type' => FormBuilder::SELECTBOX,
                 'validation_rules' => '',
-                'input_is_editable' => TRUE,
+                'input_is_editable' => true,
                 'values' => $modules_with_no_parent,
-                'foreign_key_accept_null' => TRUE,
+                'foreign_key_accept_null' => true,
                 'label' => $this->lang->line('label_module_parent_module_id'),
             ),
             'is_displayed_in_utilities' => array(
@@ -270,7 +273,7 @@ class Module extends AdminController
         $module_name = $this->formbuilder->getId();
 
         if (!$data['is_displayed_in_menu']) {
-            $data['parent_module_id'] = NULL;
+            $data['parent_module_id'] = null;
         }
 
         if ($is_install) {

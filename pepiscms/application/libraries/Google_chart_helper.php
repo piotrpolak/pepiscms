@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Utility class for drawing charts using Google chart API
@@ -36,7 +38,7 @@ class Google_chart_helper
      *
      * @var bool
      */
-    private $is_js_included = FALSE;
+    private $is_js_included = false;
 
     /**
      * Generates a pseudorandom ID used to name JavaScript objects
@@ -46,7 +48,7 @@ class Google_chart_helper
      */
     private function generateId($prefix = 'chart')
     {
-        while (TRUE) {
+        while (true) {
             $id = $prefix . '_' . rand(10000, 99999);
             if (!in_array($id, $this->used_ids)) {
                 $this->used_ids[] = $id;
@@ -54,7 +56,7 @@ class Google_chart_helper
             }
         }
 
-        return FALSE;
+        return false;
     }
 
     /**
@@ -66,7 +68,7 @@ class Google_chart_helper
         if ($this->is_js_included) {
             return '';
         }
-        $this->is_js_included = TRUE;
+        $this->is_js_included = true;
 
         return '<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
@@ -273,5 +275,4 @@ google.load("visualization", "1", {packages: ["corechart"]});
 
         return $out;
     }
-
 }

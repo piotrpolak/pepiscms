@@ -14,7 +14,7 @@
 
 namespace Piotrpolak\Pepiscms\Formbuilder\Component;
 
-if (!defined('BASEPATH')) exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Colorpicker
@@ -36,7 +36,7 @@ class Colorpicker extends AbstractComponent
      */
     public function shouldAttachAdditionalJavaScript()
     {
-        return TRUE;
+        return true;
     }
 
     /**

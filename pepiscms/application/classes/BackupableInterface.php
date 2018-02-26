@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Backupable interface specifying methods required by the backup system.
@@ -35,7 +37,7 @@ interface BackupableInterface
      * @param null $user_id
      * @return mixed
      */
-    public function doBackupRestore(&$parameters, $user_id = NULL);
+    public function doBackupRestore(&$parameters, $user_id = null);
 
     /**
      * Prepares the storage for the import

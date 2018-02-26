@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -12,6 +12,8 @@
  * @link                http://www.polak.ro/
  */
 
+defined('BASEPATH') or exit('No direct script access allowed');
+
 /**
  * SSH model for working on remote filesystems
  *
@@ -22,7 +24,7 @@ class SSH_model extends Array_model
     /**
      * @var string|bool
      */
-    private $host = FALSE;
+    private $host = false;
 
     /**
      * @var int
@@ -34,21 +36,21 @@ class SSH_model extends Array_model
      *
      * @var string|bool
      */
-    private $username = FALSE;
+    private $username = false;
 
     /**
      * SSH password
      *
      * @var string|bool
      */
-    private $password = FALSE;
+    private $password = false;
 
     /**
      * Default command to be executed remotely
      *
      * @var string|bool
      */
-    private $command = FALSE;
+    private $command = false;
 
     /**
      * List of fields those values can contain spaces
@@ -247,7 +249,7 @@ class SSH_model extends Array_model
      * @return array
      * @throws Exception
      */
-    public static function executeSshCommand($host, $port, $login = FALSE, $password = FALSE, $command = FALSE)
+    public static function executeSshCommand($host, $port, $login = false, $password = false, $command = false)
     {
         // Attempting to connect
         $connection = self::getSshConnection($host, $port, $login, $password);
@@ -287,7 +289,7 @@ class SSH_model extends Array_model
      * @return bool
      * @throws Exception
      */
-    public static function copyFileSsh($host, $port, $login = FALSE, $password = FALSE, $local_file = FALSE, $remote_file = FALSE)
+    public static function copyFileSsh($host, $port, $login = false, $password = false, $local_file = false, $remote_file = false)
     {
         // Attempting to connect
         $connection = self::getSshConnection($host, $port, $login, $password);
@@ -336,7 +338,7 @@ class SSH_model extends Array_model
                 $count_header_starting_positions = count($header_positions);
                 for ($j = 0; $j < $count_header_starting_positions; $j++) {
                     // Getting end position as the starting position of the next header
-                    $field_length = isset($header_positions[$j + 1][1]) ? $header_positions[$j + 1][1] - $header_positions[$j][1] : NULL;
+                    $field_length = isset($header_positions[$j + 1][1]) ? $header_positions[$j + 1][1] - $header_positions[$j][1] : null;
                     // Saving the array
                     $header_positions[$j] = array($header_positions[$j][0], $header_positions[$j][1], $field_length);
                 }
@@ -358,7 +360,7 @@ class SSH_model extends Array_model
                     }
 
                     // Slicing the value - for the last element do not specify the length
-                    if ($header_position[2] === NULL) {
+                    if ($header_position[2] === null) {
                         $value = trim(substr($line, $field_starting_position));
                     } // Slicing the value - for any other element specify the length
                     else {
@@ -370,7 +372,7 @@ class SSH_model extends Array_model
                         // Getting first space position
                         $space_pos = strpos($value, ' ');
                         // Checking whether the space occurs and trimming the value
-                        if ($space_pos !== FALSE) {
+                        if ($space_pos !== false) {
                             $value = substr($value, 0, $space_pos);
                         }
                     }
@@ -454,7 +456,7 @@ class SSH_model extends Array_model
                 // Parsing data according to header definitions
                 for ($line_counter = 0; $line_counter < count($headers); $line_counter++) {
                     // Building the object according to Active Record data format
-                    $row->{$headers[$line_counter]} = isset($line[$line_counter]) ? trim($line[$line_counter]) : NULL;
+                    $row->{$headers[$line_counter]} = isset($line[$line_counter]) ? trim($line[$line_counter]) : null;
                 }
 
                 // Building array of objects

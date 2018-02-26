@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Widget provides support for widget elements.
@@ -29,7 +31,7 @@ class Widget extends ContainerAware
      *
      * @param array|null $params
      */
-    public function __construct($params = NULL)
+    public function __construct($params = null)
     {
     }
 
@@ -92,7 +94,7 @@ class Widget extends ContainerAware
     {
         $module_directory = $this->load->resolveModuleDirectory($this->modulerunner->getRunningModuleName());
 
-        $contents = $this->load->theme($module_directory . '/views/widget/' . $view . '.php', $this->response_attributes, TRUE);
+        $contents = $this->load->theme($module_directory . '/views/widget/' . $view . '.php', $this->response_attributes, true);
 
         // Resetting
         $this->response_attributes = array();
@@ -111,7 +113,6 @@ class Widget extends ContainerAware
     {
         return new WidgetRenderer($module_name, $method);
     }
-
 }
 
 /**
@@ -197,7 +198,6 @@ class WidgetRenderer extends ContainerAware
             show_error($error_msg);
         }
 
-        return FALSE;
+        return false;
     }
-
 }

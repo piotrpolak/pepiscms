@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Generic model is the improved version od CodeIgniter model.
@@ -29,14 +31,14 @@ class Generic_model extends CI_Model implements EntitableInterface, MoveableInte
      *
      * @var bool|string
      */
-    private $table = FALSE;
+    private $table = false;
 
     /**
      * Associative array containing where conditions
      *
      * @var bool|array
      */
-    private $where = FALSE;
+    private $where = false;
 
     /**
      * ID field name
@@ -70,21 +72,21 @@ class Generic_model extends CI_Model implements EntitableInterface, MoveableInte
      *
      * @var bool|string
      */
-    private $delete_flag_field_name = FALSE;
+    private $delete_flag_field_name = false;
 
     /**
      * Value of the field that should be marked upon deletion
      *
      * @var mixed
      */
-    private $delete_flag_field_value = FALSE;
+    private $delete_flag_field_value = false;
 
     /**
      * Whether to hide from feed the rows having deleted items (marked as deleted)
      *
      * @var bool
      */
-    private $hide_from_feed_marked_as_deleted = FALSE;
+    private $hide_from_feed_marked_as_deleted = false;
 
     /**
      * Returns current database object
@@ -106,7 +108,7 @@ class Generic_model extends CI_Model implements EntitableInterface, MoveableInte
      * @return Generic_model
      * @local
      */
-    public function setFlagOnDelete($delete_flag_field_name, $delete_flag_field_value, $hide_from_feed_marked_as_deleted = FALSE)
+    public function setFlagOnDelete($delete_flag_field_name, $delete_flag_field_value, $hide_from_feed_marked_as_deleted = false)
     {
         $this->delete_flag_field_name = $delete_flag_field_name;
         $this->delete_flag_field_value = $delete_flag_field_value;
@@ -127,11 +129,11 @@ class Generic_model extends CI_Model implements EntitableInterface, MoveableInte
         require INSTALLATIONPATH . 'application/config/database.php';
 
         if (!isset($db[$database_group])) {
-            return FALSE;
+            return false;
         }
 
-        $this->db = $this->load->database($db[$database_group], TRUE);
-        return TRUE;
+        $this->db = $this->load->database($db[$database_group], true);
+        return true;
     }
 
     /**
@@ -143,7 +145,7 @@ class Generic_model extends CI_Model implements EntitableInterface, MoveableInte
      * @return $this
      * @local
      */
-    public function setTable($table, $where_conditions = FALSE)
+    public function setTable($table, $where_conditions = false)
     {
         $this->table = $table;
 
@@ -316,7 +318,7 @@ class Generic_model extends CI_Model implements EntitableInterface, MoveableInte
     {
         if (!$fields_array || count($fields_array) == 0) {
             $this->mapped_filter_fields = array();
-            return TRUE;
+            return true;
         }
         foreach ($fields_array as $key => $value) {
             if (!$key || !$value) {
@@ -325,7 +327,7 @@ class Generic_model extends CI_Model implements EntitableInterface, MoveableInte
 
             $this->mapped_filter_fields[$key] = $value;
         }
-        return TRUE;
+        return true;
     }
 
     /**
@@ -343,8 +345,7 @@ class Generic_model extends CI_Model implements EntitableInterface, MoveableInte
      */
     public function getAdvancedFeed($columns, $offset, $rowcount, $order_by_column, $order, $filters, $extra_param)
     {
-        if (!$columns || $columns == '*') // TODO Check if $columns == '*' is ok
-        {
+        if (!$columns || $columns == '*') { // TODO Check if $columns == '*' is ok
             $columns = $this->getTable() . '.*';
         }
 
@@ -470,7 +471,7 @@ class Generic_model extends CI_Model implements EntitableInterface, MoveableInte
 
             // We allays pass an array (for simplicity) so we need to extract the exact value
             $query = $filter['values'][0];
-            $escape = TRUE;
+            $escape = true;
 
             switch ($filter['type']) {
                 case DataGrid::FILTER_SELECT:
@@ -484,7 +485,7 @@ class Generic_model extends CI_Model implements EntitableInterface, MoveableInte
                 case DataGrid::FILTER_DATE:
                     $filter['column'] = "DATE_FORMAT(" . $filter['column'] . ",'%Y-%m-%d')"; // We extract the date only
                     $query = '\'' . $db->escape_str($query) . '\'';
-                    $escape = FALSE;
+                    $escape = false;
                     $comparison_method = 'where';
                     break;
 
@@ -501,7 +502,7 @@ class Generic_model extends CI_Model implements EntitableInterface, MoveableInte
                         }
                     }
 
-                    $escape = FALSE;
+                    $escape = false;
                     break;
             }
 
@@ -534,9 +535,9 @@ class Generic_model extends CI_Model implements EntitableInterface, MoveableInte
      * @return object
      * @local
      */
-    public function getById($id, $fields = FALSE)
+    public function getById($id, $fields = false)
     {
-        if ($fields === FALSE) {
+        if ($fields === false) {
             $fields = $this->getTable() . '.*, '; // Selecting all fields
         } elseif ($fields == $this->getIdFieldName()) {
             $fields = ''; // This is selected anyway
@@ -584,7 +585,7 @@ class Generic_model extends CI_Model implements EntitableInterface, MoveableInte
         $accepted_post_fields = $this->getAcceptedPostFields();
         if (!is_array($accepted_post_fields) || count($accepted_post_fields) == 0) {
             trigger_error('Method Generic_model::saveById() has no accepted fields defined. Make sure there are accepted fields set.');
-            return FALSE;
+            return false;
         }
 
         // Reading fields that should be nullified when empty
@@ -601,7 +602,7 @@ class Generic_model extends CI_Model implements EntitableInterface, MoveableInte
 
             // Checking if the field should be nullified
             if (in_array($_param_name, $nullify_on_empty_post_fields) && !$_param_value) {
-                $_param_value = NULL;
+                $_param_value = null;
             }
 
             // Building save array
@@ -611,7 +612,7 @@ class Generic_model extends CI_Model implements EntitableInterface, MoveableInte
         // Checking if there is anything to be saved
         if (!count($data_to_save)) {
             trigger_error('Method Generic_model::saveById() has no fields to save. Make sure there are accepted fields set.');
-            return FALSE;
+            return false;
         }
 
         // Journaling if case
@@ -622,7 +623,7 @@ class Generic_model extends CI_Model implements EntitableInterface, MoveableInte
         // Building query
         $this->db->set($data_to_save);
 
-        if ($id !== FALSE) {
+        if ($id !== false) {
             // Updating for existing records
             $this->db->where($this->getIdFieldName(), $id);
             $success = $this->db->update($this->getTable());
@@ -651,7 +652,7 @@ class Generic_model extends CI_Model implements EntitableInterface, MoveableInte
      * @return bool
      * @local
      */
-    public function move($id, $direction, $table = FALSE, $constraint_field_name = FALSE, $item_order_field_name = 'item_order', $id_field_name = 'id')
+    public function move($id, $direction, $table = false, $constraint_field_name = false, $item_order_field_name = 'item_order', $id_field_name = 'id')
     {
         // When no table is specified, taking table from the object
         if (!$table) {
@@ -661,17 +662,17 @@ class Generic_model extends CI_Model implements EntitableInterface, MoveableInte
         // Protection against executing query on no table
         if (!$table) {
             trigger_error('Method Generic_model::move() has no database table specified.');
-            return FALSE;
+            return false;
         }
 
         // Lets set up the initial values if there are any nulls
-        $this->db->set($item_order_field_name, '0')->where($item_order_field_name . ' IS NULL', FALSE, FALSE)->update($table);
+        $this->db->set($item_order_field_name, '0')->where($item_order_field_name . ' IS NULL', false, false)->update($table);
 
 
         $relations = array('down' => '>=', 'up' => '<=');
         if (!isset($relations[$direction])) {
             trigger_error('Method Generic_model::move() direction accepts only up and down values.');
-            return FALSE;
+            return false;
         }
         $relation = $relations[$direction];
 
@@ -700,7 +701,7 @@ class Generic_model extends CI_Model implements EntitableInterface, MoveableInte
 
         // There are no other elements
         if ($row->count == 0) {
-            return FALSE;
+            return false;
         }
 
         // Getting all the elements to be ordered
@@ -746,9 +747,9 @@ class Generic_model extends CI_Model implements EntitableInterface, MoveableInte
         }
 
         // We will order the elements anyway, but when there is no difference we will return false
-        $success = TRUE;
+        $success = true;
         if ($update_map[$id] == $item_order) {
-            $success = FALSE;
+            $success = false;
         }
 
         // Now updating
@@ -771,13 +772,13 @@ class Generic_model extends CI_Model implements EntitableInterface, MoveableInte
      * @return array|bool
      * @local
      */
-    public function getDistinctAssoc($column, $table = FALSE, $pairs = FALSE, $where_conditions = FALSE)
+    public function getDistinctAssoc($column, $table = false, $pairs = false, $where_conditions = false)
     {
         if (!$table) {
             $table = $this->getTable();
         }
         // It needs to be automatically appended with the apostrophes in order to avoid wrong queries when the first letter of field name is capital
-        $this->db->select('DISTINCT(`' . $column . '`) as distinct_value', FALSE)->order_by($column);
+        $this->db->select('DISTINCT(`' . $column . '`) as distinct_value', false)->order_by($column);
 
         if ($where_conditions) {
             $this->applyWhere($this->db, $where_conditions);
@@ -785,7 +786,7 @@ class Generic_model extends CI_Model implements EntitableInterface, MoveableInte
 
         $query = $this->db->get($table);
         if (!$query) {
-            return FALSE;
+            return false;
         }
 
         $result = $query->result();
@@ -822,12 +823,11 @@ class Generic_model extends CI_Model implements EntitableInterface, MoveableInte
         if ($where_conditions) {
             foreach ($where_conditions as $key => $condition) {
                 if (!$key || is_numeric($key)) {
-                    $db->where($condition, FALSE, FALSE);
-                } elseif ($condition === NULL) {
-                    $db->where($key, NULL, FALSE);
-                } elseif (!$condition && $condition !== 0 && $condition !== '0') // Fix as 0.2.2
-                {
-                    $db->where($key, FALSE, FALSE);
+                    $db->where($condition, false, false);
+                } elseif ($condition === null) {
+                    $db->where($key, null, false);
+                } elseif (!$condition && $condition !== 0 && $condition !== '0') { // Fix as 0.2.2
+                    $db->where($key, false, false);
                 } else {
                     $db->where($key, $condition);
                 }
@@ -848,7 +848,7 @@ class Generic_model extends CI_Model implements EntitableInterface, MoveableInte
      * @return array|bool
      * @local
      */
-    public function getAssocPairs($key_column_name, $value_column_name, $table = FALSE, $imitial_array = FALSE, $possible_keys = FALSE, $where_conditions = FALSE)
+    public function getAssocPairs($key_column_name, $value_column_name, $table = false, $imitial_array = false, $possible_keys = false, $where_conditions = false)
     {
         if (!$table) {
             $table = $this->getTable();
@@ -859,7 +859,7 @@ class Generic_model extends CI_Model implements EntitableInterface, MoveableInte
         }
 
         $this->db->select($key_column_name . ', ' . $value_column_name)->order_by($value_column_name);
-        if ($possible_keys !== FALSE && count($possible_keys) > 0) {
+        if ($possible_keys !== false && count($possible_keys) > 0) {
             $this->db->where_in($key_column_name, $possible_keys);
         }
 
@@ -883,27 +883,27 @@ class Generic_model extends CI_Model implements EntitableInterface, MoveableInte
     /**
      * @var bool
      */
-    private $journaling_is_enabled = FALSE;
+    private $journaling_is_enabled = false;
 
     /**
      * @var null|string
      */
-    private $journaling_table = NULL;
+    private $journaling_table = null;
 
     /**
      * @var null|string
      */
-    private $journaling_tag = NULL;
+    private $journaling_tag = null;
 
     /**
      * @var null|callback
      */
-    private $journaling_serialization_method = NULL;
+    private $journaling_serialization_method = null;
 
     /**
      * @var null|callback
      */
-    private $journaling_unserialization_method = NULL;
+    private $journaling_unserialization_method = null;
 
     /**
      * @var array
@@ -927,20 +927,20 @@ class Generic_model extends CI_Model implements EntitableInterface, MoveableInte
      * @return bool
      * @local
      */
-    public function enableJournaling($journaling_table = FALSE, $include_fields = array(), $exclude_fields = array(), $tag = NULL, $serialization_method = NULL, $unserialization_method = NULL)
+    public function enableJournaling($journaling_table = false, $include_fields = array(), $exclude_fields = array(), $tag = null, $serialization_method = null, $unserialization_method = null)
     {
         if (!$tag) {
             $tag = $this->getTable();
         }
 
-        $this->setJournalingIsEnabled(TRUE);
+        $this->setJournalingIsEnabled(true);
         $this->setJournalingTable($journaling_table);
         $this->setJournalingIncludeFields($include_fields);
         $this->setJournalingTag($tag);
         $this->setJournalingSerializationMethod($serialization_method);
         $this->setJournalingUnserializationMethod($unserialization_method);
 
-        return TRUE;
+        return true;
     }
 
     /**
@@ -954,12 +954,12 @@ class Generic_model extends CI_Model implements EntitableInterface, MoveableInte
     protected function journalingPersistPreSave($id, $data)
     {
         if (!$id || !$this->getJournalingIsEnabled()) {
-            return FALSE;
+            return false;
         }
 
         $row = $this->getById($id);
         if (!$row) {
-            return FALSE;
+            return false;
         }
 
         $row = (array)$row;
@@ -967,7 +967,7 @@ class Generic_model extends CI_Model implements EntitableInterface, MoveableInte
         $use_include_fields = is_array($this->getJournalingIncludeFields()) && count($this->getJournalingIncludeFields()) > 0;
         $use_exclude_fields = is_array($this->getJournalingExcludeFields()) && count($this->getJournalingExcludeFields()) > 0;
 
-        $is_data_changed = FALSE;
+        $is_data_changed = false;
 
         $data_to_archive = array();
         foreach ($row as $key => $value) {
@@ -986,14 +986,14 @@ class Generic_model extends CI_Model implements EntitableInterface, MoveableInte
             }
 
             if (isset($data[$key]) && $value != $data[$key]) {
-                $is_data_changed = TRUE;
+                $is_data_changed = true;
             }
 
             $data_to_archive[$key] = $value;
         }
 
         if (!$is_data_changed) {
-            return FALSE;
+            return false;
         }
 
         $metadata = array();
@@ -1020,7 +1020,7 @@ class Generic_model extends CI_Model implements EntitableInterface, MoveableInte
      * @return object
      * @local
      */
-    public function journalingGetById($id, $revision_id = FALSE)
+    public function journalingGetById($id, $revision_id = false)
     {
         $row = $this->getById($id);
         if ($revision_id && $this->getJournalingIsEnabled()) {

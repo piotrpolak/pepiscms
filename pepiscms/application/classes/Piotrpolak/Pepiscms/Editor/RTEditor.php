@@ -14,7 +14,7 @@
 
 namespace Piotrpolak\Pepiscms\Editor;
 
-if (!defined('BASEPATH')) exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * RTF Editor driver interface
@@ -71,7 +71,7 @@ interface RTEditor
      *
      * @param bool $is_full
      */
-    public function setFull($is_full = TRUE);
+    public function setFull($is_full = true);
 
     /**
      * Returns whether the editor is in full mode

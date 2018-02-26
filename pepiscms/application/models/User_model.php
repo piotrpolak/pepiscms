@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * User model
@@ -87,7 +89,7 @@ class User_model extends Generic_model
     {
         // Checking whether the specified algorithm is allowed
         if (!in_array($algorithm, $this->allowed_hashing_algorithms)) {
-            return FALSE;
+            return false;
         }
 
         // HAHA Plaintext by default!
@@ -95,7 +97,7 @@ class User_model extends Generic_model
 
         // Iterating digest, gluing salt at the end at every iteration
         for ($i = 0; $i < $iterations; $i++) {
-            $digest = hash($algorithm, $digest . $salt, FALSE);
+            $digest = hash($algorithm, $digest . $salt, false);
         }
 
         return $digest;
@@ -135,7 +137,7 @@ class User_model extends Generic_model
      * @param int $account_type
      * @return bool
      */
-    public function register($display_name, $user_email, $user_login = FALSE, $password = FALSE, $group_ids = array(), $is_root = FALSE, $send_email_notification = TRUE, $data = array(), $account_type = 0)
+    public function register($display_name, $user_email, $user_login = false, $password = false, $group_ids = array(), $is_root = false, $send_email_notification = true, $data = array(), $account_type = 0)
     {
         // If there is no password specified, lets generate one for the user
         if (!$password) {
@@ -144,7 +146,7 @@ class User_model extends Generic_model
 
         // Reseting user login
         if (!trim($user_login)) {
-            $user_login = NULL;
+            $user_login = null;
         }
 
         // Generating salt and reading algorithm info
@@ -180,7 +182,7 @@ class User_model extends Generic_model
         // Attempting to register user
         $success = $this->db->insert($this->getTable());
         if (!$success) {
-            return FALSE;
+            return false;
         }
 
         $user_id = $this->db->insert_id();
@@ -192,7 +194,7 @@ class User_model extends Generic_model
 
         // Another (useless?) check
         if (!$user_email) {
-            return FALSE;
+            return false;
         }
 
         // Sending notification if case
@@ -314,7 +316,7 @@ class User_model extends Generic_model
     {
         // What a surprise
         if (!$user_login) {
-            return FALSE;
+            return false;
         }
 
         // Reading user id
@@ -327,7 +329,7 @@ class User_model extends Generic_model
 
         // No user, no ID :(
         if (!$row) {
-            return FALSE;
+            return false;
         }
 
         return $row->user_id;
@@ -364,15 +366,15 @@ class User_model extends Generic_model
     {
         // Checking password length
         if (strlen($password) < $this->getMinimumAllowedPasswordLenght()) {
-            return FALSE;
+            return false;
         }
 
         // Checking password strength
         if ($this->getPasswordStrenght($password) < $this->getMinimumAllowedPasswordStrength()) {
-            return FALSE;
+            return false;
         }
 
-        return TRUE;
+        return true;
     }
 
     /**
@@ -516,13 +518,13 @@ class User_model extends Generic_model
         // Reading user info
         $user = $this->getById($user_id, 'user_email, display_name');
         if (!$user) {
-            return FALSE;
+            return false;
         }
         // Generate a new password
         $password = $this->generateAcceptablePassword($this->getMinimumAllowedPasswordLenght());
 
         // Try to change user password
-        if ($this->changePasswordByUserId($user_id, $password, TRUE)) {
+        if ($this->changePasswordByUserId($user_id, $password, true)) {
             $site_name = $this->config->item('site_name');
 
             $this->load->library('EmailSender');
@@ -540,7 +542,7 @@ class User_model extends Generic_model
             $email_subject = sprintf($this->lang->line('email_reset_password_subject'), $site_name);
 
             $success = $this->emailsender->sendSystemTemplate($user->user_email, $this->config->item('site_email'),
-                $this->config->item('site_name'), $email_subject, 'new_password', $email_data, FALSE, $email_language);
+                $this->config->item('site_name'), $email_subject, 'new_password', $email_data, false, $email_language);
 
             // Logging
             if ($success) {
@@ -550,12 +552,12 @@ class User_model extends Generic_model
                 LOGGER::error('User password reseted but email notification not sent', 'USER', $user_id);
             }
 
-            return TRUE;
+            return true;
         } else {
             LOGGER::error('Unable to reset password, probably the resetted pasword is to weak.', 'USER', $user_id);
         }
 
-        return FALSE;
+        return false;
     }
 
     /**
@@ -567,7 +569,7 @@ class User_model extends Generic_model
      */
     public function getNumberOfConsecutiveUnsuccessfullAuthorizationsByUserId($user_id)
     {
-        $start_id = FALSE;
+        $start_id = false;
 
         $row = $this->db->select('id')
             ->from($this->config->item('database_table_logs'))
@@ -604,15 +606,15 @@ class User_model extends Generic_model
      * @param bool $reset
      * @return bool
      */
-    public function changePasswordByUserId($user_id, $password, $reset = FALSE)
+    public function changePasswordByUserId($user_id, $password, $reset = false)
     {
         if (!$this->isPassowrdStrongEnough($password)) {
             // Redundant check but we need to protect the system
-            return FALSE;
+            return false;
         }
 
         if ($reset) {
-            $password_last_changed_timestamp = NULL;
+            $password_last_changed_timestamp = null;
         } else {
             $password_last_changed_timestamp = utc_timestamp();
         }
@@ -699,7 +701,7 @@ class User_model extends Generic_model
      * @param array $data
      * @return bool
      */
-    public function update($user_id, $display_name, $user_login = FALSE, $group_ids = FALSE, $password = FALSE, $is_root = NULL, $data = array())
+    public function update($user_id, $display_name, $user_login = false, $group_ids = false, $password = false, $is_root = null, $data = array())
     {
         // Change user password if specified
         if ($password) {
@@ -716,12 +718,12 @@ class User_model extends Generic_model
         }
 
         // Setting user login if the field is specified
-        if ($user_login !== FALSE) {
+        if ($user_login !== false) {
             $this->db->set('user_login', $user_login);
         }
 
         // Marking user as root if the field is specified
-        if ($is_root !== NULL) {
+        if ($is_root !== null) {
             $this->db->set('is_root', $is_root ? 1 : 0);
         }
 
@@ -787,7 +789,7 @@ class User_model extends Generic_model
             return $row->user_id;
         }
 
-        return FALSE;
+        return false;
     }
 
     /**
@@ -832,7 +834,7 @@ class User_model extends Generic_model
 
         // No row - wrong user id
         if (!$row) {
-            return FALSE;
+            return false;
         }
 
         // Encoding password
@@ -858,7 +860,7 @@ class User_model extends Generic_model
             return $row;
         }
 
-        return FALSE;
+        return false;
     }
 
     /**
@@ -882,7 +884,7 @@ class User_model extends Generic_model
 
         // No row - wrong user id
         if (!$row) {
-            return FALSE;
+            return false;
         }
 
         $password_encoded = $this->encodePassword($password, $row->hashing_salt, $row->hashing_algorithm, $row->hashing_iterations);
@@ -905,7 +907,7 @@ class User_model extends Generic_model
             return $row;
         }
 
-        return FALSE;
+        return false;
     }
 
     /**
@@ -927,7 +929,7 @@ class User_model extends Generic_model
             ->row();
 
         if (!$row) {
-            return FALSE;
+            return false;
         }
 
         // Encoding password
@@ -952,7 +954,7 @@ class User_model extends Generic_model
             return $row;
         }
 
-        return FALSE;
+        return false;
     }
 
     /**
@@ -974,7 +976,7 @@ class User_model extends Generic_model
             return $row;
         }
 
-        return FALSE;
+        return false;
     }
 
     /**

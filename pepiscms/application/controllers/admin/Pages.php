@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Pages management controller
@@ -98,7 +100,7 @@ class Pages extends AdminController
         $page_id = $this->input->getParam('page_id');
 
         $this->load->library('FormBuilder');
-        $this->formbuilder->setTable('pages', FALSE, 'page_id');
+        $this->formbuilder->setTable('pages', false, 'page_id');
         $this->formbuilder->setId($page_id);
         $this->formbuilder->setBackLink(admin_url() . 'pages/index/language_code-' . $site_language->code . ($view ? '/view-' . $view : ''));
 
@@ -158,13 +160,13 @@ class Pages extends AdminController
             'description' => $this->lang->line('pages_label_document_uri_desc'),
         );
 
-        $menu_item = FALSE;
+        $menu_item = false;
         if ($this->config->item('feature_is_enabled_menu')) {
-            $menu_item = $page_id ? $this->Menu_model->getElementByPageId($page_id) : FALSE;
+            $menu_item = $page_id ? $this->Menu_model->getElementByPageId($page_id) : false;
 
             $menu = array('-1' => $this->lang->line('pages_dialog_hidden_menu'), '0' => $this->lang->line('pages_dialog_main_menu'));
 
-            $menu_values = $this->Menu_model->getMenuFlat(0, $site_language->code, FALSE, FALSE, $menu);
+            $menu_values = $this->Menu_model->getMenuFlat(0, $site_language->code, false, false, $menu);
             if ($menu_item) {
                 foreach ($menu_values as $key => &$dontcare) {
                     if ($key == $menu_item->item_id) {
@@ -198,7 +200,7 @@ class Pages extends AdminController
             $definition['user_id_created'] = array(
                 'input_group' => $input_groups['info'],
                 'label' => $this->lang->line('pages_label_user_id_created'),
-                'input_is_editable' => FALSE,
+                'input_is_editable' => false,
                 'foreign_key_table' => $this->User_model->getTable(),
                 'foreign_key_field' => 'user_id',
                 'foreign_key_label_field' => 'user_email',
@@ -207,13 +209,13 @@ class Pages extends AdminController
             $definition['timestamp_created'] = array(
                 'input_group' => $input_groups['info'],
                 'label' => $this->lang->line('pages_label_timestamp_created'),
-                'input_is_editable' => FALSE,
+                'input_is_editable' => false,
                 'validation_rules' => '',
             );
             $definition['user_id_modified'] = array(
                 'input_group' => $input_groups['info'],
                 'label' => $this->lang->line('pages_label_user_id_modified'),
-                'input_is_editable' => FALSE,
+                'input_is_editable' => false,
                 'foreign_key_table' => $this->User_model->getTable(),
                 'foreign_key_field' => 'user_id',
                 'foreign_key_label_field' => 'user_email',
@@ -222,7 +224,7 @@ class Pages extends AdminController
             $definition['timestamp_modified'] = array(
                 'input_group' => $input_groups['info'],
                 'label' => $this->lang->line('pages_label_timestamp_modified'),
-                'input_is_editable' => FALSE,
+                'input_is_editable' => false,
                 'validation_rules' => '',
             );
         }
@@ -263,9 +265,9 @@ class Pages extends AdminController
          */
 
         $site_language = $this->getAttribute('site_language');
-        $current_menu_item = $this->formbuilder->getId() ? $this->Menu_model->getElementByPageId($this->formbuilder->getId()) : FALSE;
-        $was_page_attached_to_menu = ($current_menu_item) ? TRUE : FALSE;
-        $is_page_attached_to_menu = FALSE;
+        $current_menu_item = $this->formbuilder->getId() ? $this->Menu_model->getElementByPageId($this->formbuilder->getId()) : false;
+        $was_page_attached_to_menu = ($current_menu_item) ? true : false;
+        $is_page_attached_to_menu = false;
         $is_new_page = !$this->formbuilder->getId();
 
         if (strlen($data['page_uri']) == 0) {
@@ -276,7 +278,7 @@ class Pages extends AdminController
         if (strlen($data['page_uri']) == 0) {
             // TODO
             $this->formbuilder->setValidationErrorMessage($this->lang->line('pages_dialog_page_uri_cannot_be_empty'));
-            return FALSE;
+            return false;
         }
 
 
@@ -284,14 +286,14 @@ class Pages extends AdminController
             // New pages
             if ($this->Page_model->isUriTaken($data['page_uri'], $site_language->code)) {
                 $this->formbuilder->setValidationErrorMessage($this->lang->line('pages_dialog_uri_already_exists'));
-                return FALSE;
+                return false;
             }
         } else {
             // Existing pages
             $page = $this->Page_model->getById($this->formbuilder->getId(), 'page_uri');
             if ($page->page_uri != $data['page_uri'] && $this->Page_model->isUriTaken($data['page_uri'], $site_language->code)) {
                 $this->formbuilder->setValidationErrorMessage($this->lang->line('pages_dialog_uri_already_exists'));
-                return FALSE;
+                return false;
             }
         }
 
@@ -305,7 +307,7 @@ class Pages extends AdminController
          * -1 indicates that no
          */
         if ($data['parent_item_id'] != -1) {
-            $is_page_attached_to_menu = TRUE;
+            $is_page_attached_to_menu = true;
 
             // For for pages that were not attached to menu
             // and for pages that were attached to another parent
@@ -313,7 +315,7 @@ class Pages extends AdminController
                 // Pages attached to menu element first
                 if ($this->Menu_model->itemExists($data['item_name'], $data['parent_item_id'], $site_language->code)) {
                     $this->formbuilder->setValidationErrorMessage(sprintf($this->lang->line('pages_dialog_item_already_in_selected_menu_branch'), $data['item_name']));
-                    return FALSE;
+                    return false;
                 }
             }
         }
@@ -323,7 +325,7 @@ class Pages extends AdminController
             if (!$is_new_page && !$is_page_attached_to_menu && $was_page_attached_to_menu) {
                 if ($this->Menu_model->hasChildren($current_menu_item->item_id)) {
                     $this->formbuilder->setValidationErrorMessage(sprintf($this->lang->line('has_children'), $data['item_name']));
-                    return FALSE;
+                    return false;
                 } else {
                     // Unpining
                     $this->Menu_model->deleteById($current_menu_item->item_id);
@@ -358,14 +360,14 @@ class Pages extends AdminController
                     $this->Menu_model->saveById($item_id, $data); // Updating
                 } else {
                     $data['page_id'] = $page_id;
-                    $this->Menu_model->saveById(FALSE, $data); // Inserting
+                    $this->Menu_model->saveById(false, $data); // Inserting
                     $item_id = $this->db->insert_id();
                 }
             }
         }
 
         $this->_clear_cache();
-        return TRUE;
+        return true;
 
         //<?=display_success(sprintf($lang->line('pages_dialog_page_updated'), '<a href="'.($site_language->is_default == 1 ? '' : $site_language->code.'/').$this->validation->page_uri.$url_suffix.'" target="_blank">', '</a>', '<a href="admin/pages/index/language_code-'.$site_language->code.($view?'/view-'.$view:'').'">', '</a>'))
         // Setting the message and redirecting
@@ -417,7 +419,7 @@ class Pages extends AdminController
         $item_id = $this->input->getParam('item_id');
         $view = $this->input->getParam('view');
 
-        $success = FALSE;
+        $success = false;
 
         if (!$this->Menu_model->hasChildren($item_id)) {
             $page_id = $this->Menu_model->getPageIdByItemId($item_id); // Must before the deletion code
@@ -495,9 +497,7 @@ class Pages extends AdminController
         try {
             $this->Page_model->clean_pages_cache();
         } catch (Exception $e) {
-
         }
         $this->cachedobjectmanager->cleanup('pages');
     }
-
 }

@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Reads and caches directory content and caches it.
@@ -26,7 +28,7 @@ class CachedDirectoryReader
      * CachedDirectoryReader constructor.
      * @param bool|array $params
      */
-    public function __construct($params = NULL)
+    public function __construct($params = null)
     {
         $this->cache_directory = $params['cache_directory'];
         $this->cache_expires = $params['cache_expires'];
@@ -97,5 +99,4 @@ class CachedDirectoryReader
     {
         return time() - filemtime($file_path) < $this->cache_expires;
     }
-
 }

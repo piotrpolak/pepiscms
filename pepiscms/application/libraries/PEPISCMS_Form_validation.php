@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * MY_Form_validation, provides some extra features
@@ -48,7 +50,7 @@ class PEPISCMS_Form_validation extends CI_Form_validation
      * @param mixed $val
      * @return bool
      */
-    function min($str, $val)
+    public function min($str, $val)
     {
         $success = $str >= $val;
         if (!$success) {
@@ -67,7 +69,7 @@ class PEPISCMS_Form_validation extends CI_Form_validation
      * @param mixed $val
      * @return bool
      */
-    function max($str, $val)
+    public function max($str, $val)
     {
         $success = $str <= $val;
         if (!$success) {
@@ -85,7 +87,7 @@ class PEPISCMS_Form_validation extends CI_Form_validation
      * @param string $str
      * @return bool
      */
-    function odd($str)
+    public function odd($str)
     {
         $success = $str % 2 == 1;
         if (!$success) {
@@ -103,7 +105,7 @@ class PEPISCMS_Form_validation extends CI_Form_validation
      * @param string $str
      * @return bool
      */
-    function even($str)
+    public function even($str)
     {
         $success = $str % 2 == 0;
         if (!$success) {
@@ -122,11 +124,11 @@ class PEPISCMS_Form_validation extends CI_Form_validation
      * @param string $prefix
      * @return bool
      */
-    function valid_phone_number(&$str, $prefix = '')
+    public function valid_phone_number(&$str, $prefix = '')
     {
         $lenght = strlen($str);
         if (!$lenght) {
-            return TRUE;
+            return true;
         }
 
         //preg_replace('/\D/', '', $string)
@@ -155,7 +157,7 @@ class PEPISCMS_Form_validation extends CI_Form_validation
      */
     private function _valid_iban($str)
     {
-        $country_code = FALSE;
+        $country_code = false;
         if (!is_numeric(substr($str, 0, 2))) {
             $country_code = substr($str, 0, 2);
         }
@@ -186,7 +188,7 @@ class PEPISCMS_Form_validation extends CI_Form_validation
      * @param string $str
      * @return bool
      */
-    function valid_iban($str)
+    public function valid_iban($str)
     {
         //http://en.wikipedia.org/wiki/International_Bank_Account_Number
         // 15 min for Norway (with chars)
@@ -210,7 +212,7 @@ class PEPISCMS_Form_validation extends CI_Form_validation
      * @param string $str
      * @return bool
      */
-    function valid_polish_bank_number($str)
+    public function valid_polish_bank_number($str)
     {
         $str = str_replace(array(' ', '-', '.'), '', $str);
         $success = is_numeric($str) && strlen($str) == 26 && $this->_valid_iban($str);
@@ -230,7 +232,7 @@ class PEPISCMS_Form_validation extends CI_Form_validation
      * @param string $str
      * @return bool
      */
-    function valid_swift_code($str)
+    public function valid_swift_code($str)
     {
         // http://en.wikipedia.org/wiki/ISO_9362
 
@@ -239,9 +241,8 @@ class PEPISCMS_Form_validation extends CI_Form_validation
         $success = ($len == 7 || $len == 8 || $len == 11);
 
         if ($success) {
-            if (!ctype_alnum($str)) // TODO NOT A REAL CHECK
-            {
-                $success = FALSE;
+            if (!ctype_alnum($str)) { // TODO NOT A REAL CHECK
+                $success = false;
             }
         }
 
@@ -260,7 +261,7 @@ class PEPISCMS_Form_validation extends CI_Form_validation
      * @param string $str
      * @return bool
      */
-    function valid_pesel($str)
+    public function valid_pesel($str)
     {
         $str = str_replace(' ', '', $str);
         $success = is_numeric($str) && strlen($str) == 11;
@@ -280,7 +281,7 @@ class PEPISCMS_Form_validation extends CI_Form_validation
      * @param string $str
      * @return bool
      */
-    function valid_bank_number_simple($str)
+    public function valid_bank_number_simple($str)
     {
         $str = str_replace(' ', '', $str);
         $success = is_numeric($str) && strlen($str) > 15;
@@ -300,10 +301,10 @@ class PEPISCMS_Form_validation extends CI_Form_validation
      * @param string $str
      * @return bool
      */
-    function valid_date($str)
+    public function valid_date($str)
     {
         if (strlen($str) == 0) {
-            return TRUE;
+            return true;
         }
 
         $matches = array();
@@ -313,12 +314,12 @@ class PEPISCMS_Form_validation extends CI_Form_validation
             $dd = $matches[3];  // third element is days
 
             if (checkdate($mm, $dd, $yy)) {
-                return TRUE;
+                return true;
             }
         }
 
         $this->set_message('valid_date', $this->CI->lang->line('pepiscms_form_validation_valid_date'));
-        return FALSE;
+        return false;
     }
 
     // --------------------------------------------------------------------
@@ -329,10 +330,10 @@ class PEPISCMS_Form_validation extends CI_Form_validation
      * @param string $str
      * @return bool
      */
-    function valid_timestamp($str)
+    public function valid_timestamp($str)
     {
         if (strlen($str) == 0) {
-            return TRUE;
+            return true;
         }
 
         $matches = array();
@@ -350,13 +351,13 @@ class PEPISCMS_Form_validation extends CI_Form_validation
                     && $i >= 0 && $i <= 60
                     && $s >= 0 && $s <= 60
                 ) {
-                    return TRUE;
+                    return true;
                 }
             }
         }
 
         $this->set_message('valid_timestamp', $this->CI->lang->line('pepiscms_form_validation_valid_timestamp'));
-        return FALSE;
+        return false;
     }
 
     // --------------------------------------------------------------------
@@ -367,10 +368,10 @@ class PEPISCMS_Form_validation extends CI_Form_validation
      * @param string $str
      * @return bool
      */
-    function valid_imei($str)
+    public function valid_imei($str)
     {
         // AABBBBBBCCCCCCD
-        $success = FALSE;
+        $success = false;
         if (is_numeric($str) && strlen($str) == 15) {
             $success = self::luhn($str);
         }
@@ -387,7 +388,7 @@ class PEPISCMS_Form_validation extends CI_Form_validation
      * @param string $str
      * @return bool
      */
-    function no_uppercase($str)
+    public function no_uppercase($str)
     {
         $success = ($str == strtolower($str));
         if (!$success) {
@@ -403,7 +404,7 @@ class PEPISCMS_Form_validation extends CI_Form_validation
      * @param string $str
      * @return bool
      */
-    function no_lowercase($str)
+    public function no_lowercase($str)
     {
         $success = ($str == strtoupper($str));
         if (!$success) {
@@ -440,5 +441,4 @@ class PEPISCMS_Form_validation extends CI_Form_validation
         // Check validity.
         return ($sum % 10 == 0) ? true : false;
     }
-
 }

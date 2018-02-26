@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * CMS about page controller
@@ -32,7 +34,7 @@ class About extends AdminController
 
     public function dashboard()
     {
-        $user_manual_path = FALSE;
+        $user_manual_path = false;
         if (file_exists('uploads/user-manual.pdf')) {
             $user_manual_path = 'uploads/user-manual.pdf';
         }
@@ -88,7 +90,7 @@ class About extends AdminController
         // Actions grouping
         $dashboard_elements_grouped = array();
         foreach ($dashboard_elements as $dashboard_element) {
-            if ($this->auth->isUserRoot() || !isset($dashboard_element['controller']) || SecurityManager::hasAccess($dashboard_element['controller'], $dashboard_element['method'], isset($dashboard_element['module']) ? $dashboard_element['module'] : FALSE)) {
+            if ($this->auth->isUserRoot() || !isset($dashboard_element['controller']) || SecurityManager::hasAccess($dashboard_element['controller'], $dashboard_element['method'], isset($dashboard_element['module']) ? $dashboard_element['module'] : false)) {
                 if (isset($dashboard_element['group']) && $dashboard_element['group']) {
                     $group = $dashboard_element['group'];
                 } else {

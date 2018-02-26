@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Native authentication driver
@@ -38,14 +40,14 @@ class NativeAuthDriver extends ContainerAware implements AuthDriverableInterface
      */
     public function authorize($user_email_or_login, $password)
     {
-        if (strpos($user_email_or_login, '@') !== FALSE) {
+        if (strpos($user_email_or_login, '@') !== false) {
             $row = $this->User_model->validateByEmail($user_email_or_login, $password);
         } else {
             $row = $this->User_model->validateByLogin($user_email_or_login, $password);
         }
 
         if (!$row) {
-            return FALSE;
+            return false;
         }
 
         return $row;
@@ -58,7 +60,7 @@ class NativeAuthDriver extends ContainerAware implements AuthDriverableInterface
      */
     public function onAuthRequest()
     {
-        return TRUE;
+        return true;
     }
 
     /**
@@ -68,7 +70,7 @@ class NativeAuthDriver extends ContainerAware implements AuthDriverableInterface
      */
     public function onAuthRecheck()
     {
-        return TRUE;
+        return true;
     }
 
     /**
@@ -78,7 +80,7 @@ class NativeAuthDriver extends ContainerAware implements AuthDriverableInterface
      */
     public function isPasswordChangeSupported()
     {
-        return TRUE;
+        return true;
     }
 
     /**
@@ -87,8 +89,8 @@ class NativeAuthDriver extends ContainerAware implements AuthDriverableInterface
      * @param bool $explicit
      * @return bool
      */
-    public function logout($explicit = FALSE)
+    public function logout($explicit = false)
     {
-        return TRUE;
+        return true;
     }
 }

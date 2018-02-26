@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * PDF Generator based on WKPDF
@@ -90,11 +92,11 @@ class PDFGenerator
     private static function _getCPU()
     {
         if (self::$cpu == '') {
-            if (`grep -i amd /proc/cpuinfo` != '')
+            if (`grep -i amd /proc/cpuinfo` != '') {
                 self::$cpu = 'amd64';
-            elseif (`grep -i intel /proc/cpuinfo` != '')
+            } elseif (`grep -i intel /proc/cpuinfo` != '') {
                 self::$cpu = 'i386';
-            else {
+            } else {
                 if (class_exists('Logger')) {
                     Logger::error('WKPDF couldn\'t determine CPU ("' . `grep -i vendor_id /proc/cpuinfo` . '").', 'PDFGENERATOR');
                 }
@@ -109,15 +111,14 @@ class PDFGenerator
      */
     public function __construct()
     {
-
     }
 
     public function getCMD()
     {
         $cmd = $this->getBinaryBasePath() . 'wkhtmltopdf-' . self::_getCPU();
         if (!file_exists($cmd)) {
-            $output = NULL;
-            $return_val = NULL;
+            $output = null;
+            $return_val = null;
             $last_line = exec('which wkhtmltopdf', $output, $return_val);
             if ($return_val == 0) {
                 $cmd = 'xvfb-run wkhtmltopdf';
@@ -262,8 +263,8 @@ class PDFGenerator
             . ' "' . $input_temporar_file . '" '                       // URL and optional to write to STDOUT
             . ' "' . $output_temporar_file . '" ';
 
-        $output = FALSE;
-        $return_var = FALSE;
+        $output = false;
+        $return_var = false;
         exec($command, $output, $return_var);
         unlink($input_temporar_file);
 
@@ -325,5 +326,4 @@ class PDFGenerator
         $output_temporar_file = $this->render();
         return rename($output_temporar_file, $to_file);
     }
-
 }

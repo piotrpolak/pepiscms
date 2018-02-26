@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Menu model
@@ -87,7 +89,7 @@ class Page_model extends Generic_model implements BackupableInterface
 
         $object_name = 'uri_page_' . md5($page_uri) . '_' . $language_code;
         $object = $this->cachedobjectmanager->getObject($object_name, 3600 * 24, 'pages');
-        if ($object === FALSE) {
+        if ($object === false) {
             $object = $this->getPageByUri($page_uri, $language_code);
             $this->cachedobjectmanager->setObject($object_name, $object, 'pages');
         }
@@ -141,7 +143,7 @@ class Page_model extends Generic_model implements BackupableInterface
 
         $object_name = 'default_page_' . $language_code;
         $object = $this->cachedobjectmanager->getObject($object_name, 3600 * 24, 'pages');
-        if ($object === FALSE) {
+        if ($object === false) {
             $object = $this->getDefaultPage($language_code);
             $this->cachedobjectmanager->setObject($object_name, $object, 'pages');
         }
@@ -221,7 +223,7 @@ class Page_model extends Generic_model implements BackupableInterface
             ->result();
     }
 
-    public function doBackupRestore(&$items, $user_id = NULL)
+    public function doBackupRestore(&$items, $user_id = null)
     {
         foreach ($items as $item) {
             $this->db->set('page_id', $item->page_id)
@@ -244,7 +246,7 @@ class Page_model extends Generic_model implements BackupableInterface
     {
         // Removes all the items
         $this->db->from($this->config->item('database_table_pages'))
-            ->where('1 = 1', FALSE, FALSE)
+            ->where('1 = 1', false, false)
             ->delete();
 
         // Trunkates table
@@ -271,7 +273,7 @@ class Page_model extends Generic_model implements BackupableInterface
         $cache_path .= $pages_cache_path;
 
         if (!file_exists($cache_path) || !is_dir($cache_path)) {
-            return FALSE;
+            return false;
         }
 
         $dir = @opendir($cache_path);
@@ -293,5 +295,4 @@ class Page_model extends Generic_model implements BackupableInterface
 
         return $return;
     }
-
 }

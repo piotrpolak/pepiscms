@@ -1,4 +1,6 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 $config['menu'] = array(
     'mainmenu' => array(
@@ -6,13 +8,13 @@ $config['menu'] = array(
             'controller' => 'about',
             'method' => 'dashboard',
             'icon_path' => 'pepiscms/theme/img/about/dashboard_16.png',
-            'show_label' => FALSE,
+            'show_label' => false,
         ),
         array(
             'controller' => 'pages',
             'method' => 'index',
             'label' => 'menu_pages',
-            'append_language_code' => TRUE,
+            'append_language_code' => true,
             'append_parameters' => array('language_code', 'view'),
             'icon_path' => 'pepiscms/theme/img/pages/page_16.png',
         ),

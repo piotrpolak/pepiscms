@@ -14,7 +14,7 @@
 
 namespace Piotrpolak\Pepiscms\Editor;
 
-if (!defined('BASEPATH')) exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * CKE driver for  RTF Editor
@@ -23,7 +23,7 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
  */
 class CKEditorDriver extends DefaultRTEditorDriver
 {
-    private $js_included = FALSE;
+    private $js_included = false;
 
     /**
      * @inheritdoc
@@ -62,7 +62,7 @@ class CKEditorDriver extends DefaultRTEditorDriver
     /**
      * @inheritdoc
      */
-    public function setFull($is_full = TRUE)
+    public function setFull($is_full = true)
     {
         if ($is_full) {
             $this->setConfig('customConfig', base_url() . 'pepiscms/js/cke_full_config.js');
@@ -81,7 +81,7 @@ class CKEditorDriver extends DefaultRTEditorDriver
 
         $r = '';
         if (!$this->js_included) {
-            $this->js_included = TRUE;
+            $this->js_included = true;
             $r = '<script type="text/javascript" src="pepiscms/3rdparty/ckeditor/ckeditor.js"></script>' . "\n";
         }
         $r .= '<textarea id="' . $instance . '" name="' . $instance . '" class="rte">' . htmlspecialchars($text) . '</textarea>' . "\n";
@@ -95,5 +95,4 @@ class CKEditorDriver extends DefaultRTEditorDriver
         $r .= '</script>' . "\n";
         return $r;
     }
-
 }

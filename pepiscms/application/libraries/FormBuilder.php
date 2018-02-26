@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * FormBuilder - utility for generating web forms
@@ -360,25 +362,25 @@ class FormBuilder extends ContainerAware
     public function clear()
     {
         $this->callbacks = array();
-        $this->is_overwrite_files_on_upload = TRUE;
-        $this->form_submit_label = FALSE;
+        $this->is_overwrite_files_on_upload = true;
+        $this->form_submit_label = false;
         $this->form_action = '';
-        $this->is_submit_button_enabled = TRUE;
-        $this->is_apply_button_enabled = FALSE;
-        $this->use_simple_session_message_on_save_success = TRUE;
-        $this->redirect_on_save_success = TRUE;
-        $this->validation_error_message = FALSE;
-        $this->back_link = FALSE;
-        $this->object = FALSE;
-        $this->read_only = FALSE;
-        $this->instance_code = NULL;
-        $this->id = FALSE;
+        $this->is_submit_button_enabled = true;
+        $this->is_apply_button_enabled = false;
+        $this->use_simple_session_message_on_save_success = true;
+        $this->redirect_on_save_success = true;
+        $this->validation_error_message = false;
+        $this->back_link = false;
+        $this->object = false;
+        $this->read_only = false;
+        $this->instance_code = null;
+        $this->id = false;
         $this->file_upload_fields = array();
         $this->input_groups = array();
         $this->fields = array();
-        $this->renderer = NULL;
-        $this->feed_object = FALSE;
-        $this->title = FALSE;
+        $this->renderer = null;
+        $this->feed_object = false;
+        $this->title = false;
         $this->default_uploads_path = $this->default_upload_display_path = $this->config->item('uploads_path');
         $this->upload_warnings = array();
 
@@ -502,7 +504,7 @@ class FormBuilder extends ContainerAware
      * @param bool $is_submit_button_enabled
      * @return FormBuilder
      */
-    public function setSubmitButtonEnabled($is_submit_button_enabled = TRUE)
+    public function setSubmitButtonEnabled($is_submit_button_enabled = true)
     {
         $this->is_submit_button_enabled = $is_submit_button_enabled;
         return $this;
@@ -524,7 +526,7 @@ class FormBuilder extends ContainerAware
      * @param bool $is_apply_button_enabled
      * @return FormBuilder
      */
-    public function setApplyButtonEnabled($is_apply_button_enabled = TRUE)
+    public function setApplyButtonEnabled($is_apply_button_enabled = true)
     {
         $this->is_apply_button_enabled = $is_apply_button_enabled;
         return $this;
@@ -547,7 +549,7 @@ class FormBuilder extends ContainerAware
      */
     public function isApplyEventFired()
     {
-        return ($this->input->get('apply', NULL) !== NULL
+        return ($this->input->get('apply', null) !== null
             && $this->input->get('apply') == '');
     }
 
@@ -589,7 +591,7 @@ class FormBuilder extends ContainerAware
      */
     public function getField($field_name)
     {
-        return (isset($this->fields[$field_name]) ? $this->fields[$field_name] : FALSE);
+        return (isset($this->fields[$field_name]) ? $this->fields[$field_name] : false);
     }
 
     /**
@@ -617,17 +619,17 @@ class FormBuilder extends ContainerAware
      * @param bool $values
      * @return FormBuilder
      */
-    public function addField($field, $label = FALSE, $type = FALSE, $default_value = FALSE, $rules = FALSE, $values = FALSE)
+    public function addField($field, $label = false, $type = false, $default_value = false, $rules = false, $values = false)
     {
         // If the first element is array, then setting field by definition
         if (is_array($field)) {
             return $this->addFieldByDefinition($field);
         }
 
-        if ($type === FALSE) {
+        if ($type === false) {
             $type = FormBuilder::TEXTFIELD;
         }
-        if ($rules === FALSE) {
+        if ($rules === false) {
             $rules = 'required';
         }
 
@@ -650,52 +652,52 @@ class FormBuilder extends ContainerAware
     public function getFieldDefaults()
     {
         $defaults = array();
-        $defaults['field'] = FALSE; // Field name
-        $defaults['label'] = FALSE; // Field label
-        $defaults['description'] = FALSE; // Field description
+        $defaults['field'] = false; // Field name
+        $defaults['label'] = false; // Field label
+        $defaults['description'] = false; // Field description
         // Display options
-        $defaults['show_in_form'] = TRUE; // Display in form?
-        $defaults['show_in_grid'] = TRUE; // Display in grid?
+        $defaults['show_in_form'] = true; // Display in form?
+        $defaults['show_in_grid'] = true; // Display in grid?
         // Foreign key
         $defaults['foreign_key_relationship_type'] = FormBuilder::FOREIGN_KEY_ONE_TO_MANY;
-        $defaults['foreign_key_table'] = FALSE;
+        $defaults['foreign_key_table'] = false;
         $defaults['foreign_key_field'] = 'id';
         $defaults['foreign_key_label_field'] = 'id';
-        $defaults['foreign_key_accept_null'] = FALSE;
-        $defaults['foreign_key_where_conditions'] = FALSE;
+        $defaults['foreign_key_accept_null'] = false;
+        $defaults['foreign_key_where_conditions'] = false;
 
-        $defaults['foreign_key_junction_table'] = FALSE;
-        $defaults['foreign_key_junction_id_field_left'] = FALSE;
-        $defaults['foreign_key_junction_id_field_right'] = FALSE;
-        $defaults['foreign_key_junction_where_conditions'] = FALSE;
+        $defaults['foreign_key_junction_table'] = false;
+        $defaults['foreign_key_junction_id_field_left'] = false;
+        $defaults['foreign_key_junction_id_field_right'] = false;
+        $defaults['foreign_key_junction_where_conditions'] = false;
 
         //
         // Input specific
         //
         $defaults['input_type'] = FormBuilder::TEXTFIELD; // Input type, see FormBuilder constants
-        $defaults['input_default_value'] = FALSE; // Default value for field
-        $defaults['values'] = FALSE; // Values for to select among them, must be an associative array
+        $defaults['input_default_value'] = false; // Default value for field
+        $defaults['values'] = false; // Values for to select among them, must be an associative array
         $defaults['validation_rules'] = 'required'; // Validation rules
-        $defaults['input_is_editable'] = TRUE;
-        $defaults['input_group'] = FALSE;
-        $defaults['input_css_class'] = FALSE;
+        $defaults['input_is_editable'] = true;
+        $defaults['input_group'] = false;
+        $defaults['input_css_class'] = false;
         $defaults['options'] = array();
 
         // File upload
-        $defaults['upload_complete_callback'] = FALSE;
+        $defaults['upload_complete_callback'] = false;
         $defaults['upload_path'] = $this->default_uploads_path;
         $defaults['upload_display_path'] = $this->default_upload_display_path;
-        $defaults['upload_allowed_types'] = FALSE;
-        $defaults['upload_encrypt_name'] = FALSE;
+        $defaults['upload_allowed_types'] = false;
+        $defaults['upload_encrypt_name'] = false;
 
         //
         // Grid specific
         //
-        $defaults['grid_formating_callback'] = FALSE;
-        $defaults['grid_is_orderable'] = TRUE;
-        $defaults['grid_css_class'] = FALSE;
-        $defaults['filter_type'] = FALSE;
-        $defaults['filter_values'] = FALSE;
+        $defaults['grid_formating_callback'] = false;
+        $defaults['grid_is_orderable'] = true;
+        $defaults['grid_css_class'] = false;
+        $defaults['filter_type'] = false;
+        $defaults['filter_values'] = false;
         $defaults['filter_condition'] = 'like';
 
         // Autocomplete
@@ -710,7 +712,7 @@ class FormBuilder extends ContainerAware
      * @param bool $is_overwrite_files_on_upload
      * @return FormBuilder
      */
-    public function setOverwriteFilesOnUpload($is_overwrite_files_on_upload = TRUE)
+    public function setOverwriteFilesOnUpload($is_overwrite_files_on_upload = true)
     {
         $this->is_overwrite_files_on_upload = $is_overwrite_files_on_upload;
         return $this;
@@ -740,7 +742,7 @@ class FormBuilder extends ContainerAware
 
         foreach ($fields as $key => &$field) {
             // Make it work with associative
-            if ($key && (!isset($field['field']) || $field['field'] === FALSE)) {
+            if ($key && (!isset($field['field']) || $field['field'] === false)) {
                 $field['field'] = $key;
             }
             $this->addFieldByDefinition($field);
@@ -757,7 +759,7 @@ class FormBuilder extends ContainerAware
     public function addFieldByDefinition($field)
     {
         if (!isset($field['field']) || !$field['field']) {
-            return FALSE;
+            return false;
         }
 
         $defaults = $this->getFieldDefaults();
@@ -791,7 +793,7 @@ class FormBuilder extends ContainerAware
         if (!isset($this->input_groups[$defaults['input_group']])) {
             $this->input_groups[$defaults['input_group']] = array(
                 'label' => ucfirst(str_replace('_', ' ', $defaults['input_group'])),
-                'description' => FALSE,
+                'description' => false,
                 'fields' => array()
             );
         }
@@ -801,12 +803,12 @@ class FormBuilder extends ContainerAware
         if ($defaults['input_type'] == FormBuilder::IMAGE || $defaults['input_type'] == FormBuilder::FILE) {
             $this->file_upload_fields[$defaults['field']] = $defaults['field'];
             $defaults['validation_rules'] = '';
-            if ($defaults['upload_allowed_types'] === FALSE && $defaults['input_type'] == FormBuilder::IMAGE) {
+            if ($defaults['upload_allowed_types'] === false && $defaults['input_type'] == FormBuilder::IMAGE) {
                 $defaults['upload_allowed_types'] = 'jpg|jpeg|gif|png|bmp';
             }
         }
 
-        $defaults['label'] = $defaults['label'] !== FALSE ?
+        $defaults['label'] = $defaults['label'] !== false ?
             $defaults['label'] : ucfirst(str_replace('_', ' ', $defaults['field']));
 
         $this->fields[$defaults['field']] = $defaults;
@@ -844,7 +846,7 @@ class FormBuilder extends ContainerAware
      * @param bool|string $idFieldName
      * @return FormBuilder
      */
-    public function setTable($tableName, $acceptedPostFields = array(), $idFieldName = FALSE)
+    public function setTable($tableName, $acceptedPostFields = array(), $idFieldName = false)
     {
         // Initializes a cloned Generic Model with a specified table
         $feed_object = clone $this->Generic_model;
@@ -912,7 +914,7 @@ class FormBuilder extends ContainerAware
     {
         if (!$this->id) {
             // TODO Rewrite POST parameter access
-            $this->id = isset($_POST['form_builder_id']) ? $_POST['form_builder_id'] : FALSE;
+            $this->id = isset($_POST['form_builder_id']) ? $_POST['form_builder_id'] : false;
         }
 
         return $this->id;
@@ -924,7 +926,7 @@ class FormBuilder extends ContainerAware
      * @param bool $read_only
      * @return FormBuilder
      */
-    public function setReadOnly($read_only = TRUE)
+    public function setReadOnly($read_only = true)
     {
         $this->read_only = $read_only;
         return $this;
@@ -997,7 +999,7 @@ class FormBuilder extends ContainerAware
      *
      * @param bool
      */
-    public function setUseSimpleSessionMessageOnSuccess($use = TRUE)
+    public function setUseSimpleSessionMessageOnSuccess($use = true)
     {
         $this->use_simple_session_message_on_save_success = $use;
     }
@@ -1042,7 +1044,7 @@ class FormBuilder extends ContainerAware
      * @param bool $check_callable
      * @return FormBuilder
      */
-    public function setCallback($callback, $type, $check_callable = TRUE)
+    public function setCallback($callback, $type, $check_callable = true)
     {
         if ($check_callable && !is_callable($callback)) {
             trigger_error('FormBuilder specified callback is not callable', E_USER_WARNING);
@@ -1106,7 +1108,7 @@ class FormBuilder extends ContainerAware
         $this->generateSetNoCacheHeaders();
 
         // Default value
-        $save_success = TRUE;
+        $save_success = true;
 
 
         // Checking if the request was sent by a form builder generated form
@@ -1139,14 +1141,14 @@ class FormBuilder extends ContainerAware
                 try {
                     $save_success = $this->generateDoSave($save_array);
                 } catch (Exception $e) {
-                    $save_success = FALSE;
+                    $save_success = false;
                     $this->setValidationErrorMessage($e->getMessage());
                     Logger::error('Unable to save. Exception ' . get_class($e) . ' ' . $e->getTraceAsString(),
                         'FORMBUILDER');
                 }
 
                 if ($save_success) {
-                    $is_apply = $this->input->post('apply') !== NULL;
+                    $is_apply = $this->input->post('apply') !== null;
 
                     if (!$this->getId()) { // There were no ID, try to determine it after the form is saved
                         $this->generateRefreshId($save_success);
@@ -1165,7 +1167,6 @@ class FormBuilder extends ContainerAware
                     }
 
                     $this->generateHandleRedirectOnSuccess($is_apply);
-
                 } else {
                     if (isset($this->callbacks[self::CALLBACK_ON_SAVE_FAILURE])) {
                         call_user_func_array($this->callbacks[self::CALLBACK_ON_SAVE_FAILURE], array(&$save_array));
@@ -1214,11 +1215,11 @@ class FormBuilder extends ContainerAware
 
         // Checking foreign keys for null values
         foreach ($this->fields as &$field) {
-            $save_array[$field['field']] = $this->input->post($field['field']) !== NULL ?
+            $save_array[$field['field']] = $this->input->post($field['field']) !== null ?
                 $this->input->post($field['field']) : '';
 
             if (!$save_array[$field['field']] && $field['foreign_key_accept_null']) {
-                $save_array[$field['field']] = NULL;
+                $save_array[$field['field']] = null;
             }
         }
         return $save_array;
@@ -1272,7 +1273,7 @@ class FormBuilder extends ContainerAware
                 // Meaning no POST variable was set
                 //FIXME Check validation of multiselect/multicheckbox when not selecting any values
                 //echo $field['field'] . '=' . FALSE."<br>";
-                $this->object->$field['field'] = FALSE;
+                $this->object->$field['field'] = false;
             }
         }
     }
@@ -1288,17 +1289,17 @@ class FormBuilder extends ContainerAware
             // Checking if something else than a directory
             if (!is_dir($field['upload_path'])) {
                 Logger::error('Upload path is a regular file and not a directory ' . $field['upload_path'], 'FORMBUILDER');
-                return FALSE;
+                return false;
             }
         } else {
             // If the file does not exist, attempt to create the path
             if (!@mkdir($field['upload_path'])) {
                 Logger::error('Unable to create directory ' . $field['upload_path'], 'FORMBUILDER');
-                return FALSE;
+                return false;
             }
         }
 
-        return TRUE;
+        return true;
     }
 
     /**
@@ -1309,9 +1310,9 @@ class FormBuilder extends ContainerAware
     {
         // $_POST['form_builder_files_remove'] field is a hidden field generated by the JavaScript
         if (isset($_POST['form_builder_files_remove'][$field_name]) && $_POST['form_builder_files_remove'][$field_name]) {
-            return TRUE;
+            return true;
         }
-        return FALSE;
+        return false;
     }
 
     /**
@@ -1323,7 +1324,7 @@ class FormBuilder extends ContainerAware
         if (isset($_POST['form_builder_files'][$field_name]) && strlen($_POST['form_builder_files'][$field_name]) > 0) {
             return $_POST['form_builder_files'][$field_name];
         }
-        return NULL;
+        return null;
     }
 
     /**
@@ -1417,7 +1418,7 @@ class FormBuilder extends ContainerAware
             foreach ($this->fields as &$field) {
                 // If there is no value, lets try to get the implicit value
                 if (!isset($this->object->$field['field'])) {
-                    $this->object->$field['field'] = (isset($field['input_default_value']) && $field['input_default_value'] !== FALSE ? $field['input_default_value'] : '');
+                    $this->object->$field['field'] = (isset($field['input_default_value']) && $field['input_default_value'] !== false ? $field['input_default_value'] : '');
                 }
             }
         }
@@ -1501,7 +1502,7 @@ class FormBuilder extends ContainerAware
         // Fixing boolean field values, assigning TRUE or FALSE values
         foreach ($this->fields as &$field) {
             if ($field['input_type'] == FormBuilder::CHECKBOX) {
-                $save_array[$field['field']] = (isset($save_array[$field['field']]) && $save_array[$field['field']] ? TRUE : FALSE);
+                $save_array[$field['field']] = (isset($save_array[$field['field']]) && $save_array[$field['field']] ? true : false);
             }
         }
     }
@@ -1511,8 +1512,8 @@ class FormBuilder extends ContainerAware
      */
     private function generateConvertComasIntoDotsForNumericTypes($field)
     {
-        if (strpos($field['validation_rules'], 'numeric') !== FALSE
-            && $this->input->post($field['field']) !== NULL) {
+        if (strpos($field['validation_rules'], 'numeric') !== false
+            && $this->input->post($field['field']) !== null) {
             $replaced = str_replace(',', '.', $this->input->post($field['field']));
             $_POST[$field['field']] = $replaced;
         }
@@ -1530,7 +1531,7 @@ class FormBuilder extends ContainerAware
 
         foreach ($this->fields as $field) {
             // Protection against empty string, required by CI3
-            $field_validation_rules = $field['validation_rules'] ? $field['validation_rules'] : FALSE;
+            $field_validation_rules = $field['validation_rules'] ? $field['validation_rules'] : false;
 
             if ($field_validation_rules) {
                 $validation_rules[] = array(
@@ -1551,7 +1552,7 @@ class FormBuilder extends ContainerAware
      */
     private function generateDoSave(&$save_array)
     {
-        $save_success = FALSE;
+        $save_success = false;
         // For forms that are not saved in database directly // The order of these rows matter
         if (($use_callback = isset($this->callbacks[self::CALLBACK_ON_SAVE])) || !$this->feed_object) {
             // CALLBACK on save
@@ -1577,7 +1578,6 @@ class FormBuilder extends ContainerAware
                 redirect($this->back_link);
                 return;
             }
-
         }
 
         // END Prevent from redirecting on apply
@@ -1614,8 +1614,8 @@ class FormBuilder extends ContainerAware
                 $this->object->$field['field'] = $this
                     ->Generic_model->getAssocPairs($field['foreign_key_junction_id_field_right'],
                         $field['foreign_key_junction_id_field_right'], $field['foreign_key_junction_table'],
-                        FALSE,
-                        FALSE,
+                        false,
+                        false,
                         $where_conditions);
             }
         }
@@ -1627,11 +1627,11 @@ class FormBuilder extends ContainerAware
      */
     private function generateComputeIsValid($validation_rules)
     {
-        $isValid = TRUE;
+        $isValid = true;
         // Setting validation rules if any of them exist
         if (count($validation_rules) > 0) {
             $this->form_validation->set_rules($validation_rules);
-            $isValid = $this->form_validation->run() === TRUE;
+            $isValid = $this->form_validation->run() === true;
         }
         return $isValid;
     }
@@ -1642,7 +1642,7 @@ class FormBuilder extends ContainerAware
      */
     private function generateForeignKeyFillFieldPossibleValues(&$field)
     {
-        $should_fetch = FALSE;
+        $should_fetch = false;
         if (!$field['input_is_editable']) {
             // is_array is required for multiple checkbox fields, etc - avoiding errors
             if (isset($this->object->$field['field'])) {
@@ -1652,10 +1652,9 @@ class FormBuilder extends ContainerAware
                 $possible_values = array($field['input_default_value']);
             }
             $should_fetch = true;
-
         } elseif (!is_array($field['values'])) {
             $should_fetch = true;
-            $possible_values = FALSE;
+            $possible_values = false;
         }
 
 
@@ -1663,7 +1662,7 @@ class FormBuilder extends ContainerAware
             $field['values'] = $this->Generic_model->getAssocPairs($field['foreign_key_field'],
                 $field['foreign_key_label_field'],
                 $field['foreign_key_table'],
-                FALSE,
+                false,
                 $possible_values,
                 $field['foreign_key_where_conditions']);
         }

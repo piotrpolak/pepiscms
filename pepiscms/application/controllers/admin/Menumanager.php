@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -12,6 +12,8 @@
  * @link                http://www.polak.ro/
  */
 
+defined('BASEPATH') or exit('No direct script access allowed');
+
 /**
  * Menu management controller
  */
@@ -21,7 +23,7 @@ class Menumanager extends AdminController
     {
         parent::__construct();
 
-        if ($this->config->item('cms_enable_pages') === FALSE || !$this->config->item('feature_is_enabled_menu')) {
+        if ($this->config->item('cms_enable_pages') === false || !$this->config->item('feature_is_enabled_menu')) {
             show_error($this->lang->line('global_feature_not_enabled'));
         }
 
@@ -68,7 +70,7 @@ class Menumanager extends AdminController
                 'parent_item_id' => array(
                     'input_type' => FormBuilder::SELECTBOX,
                     'label' => $this->lang->line('pages_label_location_in_menu'),
-                    'values' => $this->Menu_model->getMenuFlat(0, $site_language->code, $item_id, FALSE, $menu),
+                    'values' => $this->Menu_model->getMenuFlat(0, $site_language->code, $item_id, false, $menu),
                 ),
                 'item_name' => array(
                     'label' => $this->lang->line('pages_label_menu_item_name'),
@@ -96,16 +98,15 @@ class Menumanager extends AdminController
             $item = $this->Menu_model->getById($this->formbuilder->getId(), 'item_name, parent_item_id');
 
             if ($str == $item->item_name && $_POST['parent_item_id'] == $item->parent_item_id) {
-                return TRUE; // As nothing changed
+                return true; // As nothing changed
             }
         }
 
         if ($this->Menu_model->itemExists($str, $_POST['parent_item_id'])) {
             $this->form_validation->set_message('_name_check', sprintf($this->lang->line('pages_dialog_item_already_in_selected_menu_branch'), $str));
-            return FALSE;
+            return false;
         } else {
-            return TRUE;
+            return true;
         }
     }
-
 }

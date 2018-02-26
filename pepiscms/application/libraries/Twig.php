@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -12,6 +12,8 @@
  * @link                http://www.polak.ro/
  */
 
+defined('BASEPATH') or exit('No direct script access allowed');
+
 /**
  * Templating
  *
@@ -22,12 +24,12 @@
  */
 class Twig extends ContainerAware
 {
-    private static $twig_instance = NULL;
+    private static $twig_instance = null;
 
     /**
      * @var string|null
      */
-    private $site_theme_basepath = NULL;
+    private $site_theme_basepath = null;
 
     /**
      * Default constructor

@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -12,6 +12,8 @@
  * @link                http://www.polak.ro/
  */
 
+defined('BASEPATH') or exit('No direct script access allowed');
+
 /**
  * CMS Utilities controller
  */
@@ -20,7 +22,7 @@ class Utilities extends AdminController
     public function __construct()
     {
         parent::__construct();
-        if ($this->config->item('cms_enable_utilities') === FALSE) {
+        if ($this->config->item('cms_enable_utilities') === false) {
             show_error($this->lang->line('global_feature_not_enabled'));
         }
         $this->load->language('acl');

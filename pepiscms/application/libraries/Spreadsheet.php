@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Spreadsheet class for generating and parsing both
@@ -30,7 +32,6 @@ class Spreadsheet extends ContainerAware
      */
     public function __construct($parameters = array())
     {
-
     }
 
     /**
@@ -64,7 +65,7 @@ class Spreadsheet extends ContainerAware
      * @throws PHPExcel_Exception
      * @throws PHPExcel_Reader_Exception
      */
-    public function parseExcel($path, $first_row_as_keys = TRUE, $normalize_keys = TRUE)
+    public function parseExcel($path, $first_row_as_keys = true, $normalize_keys = true)
     {
         $data = array();
         $keys = array();
@@ -123,13 +124,13 @@ class Spreadsheet extends ContainerAware
      * @param bool|string $separator
      * @return array
      */
-    public function parseCSV($path, $first_row_as_keys = TRUE, $normalize_keys = TRUE, $separator = FALSE)
+    public function parseCSV($path, $first_row_as_keys = true, $normalize_keys = true, $separator = false)
     {
         $lines = array();
         $keys = array();
         if (file_exists($path)) {
             $rowIndex = 0;
-            if (($handle = fopen($path, "r")) !== FALSE) {
+            if (($handle = fopen($path, "r")) !== false) {
                 $line = fgets($handle);
                 rewind($handle);
 
@@ -152,8 +153,7 @@ class Spreadsheet extends ContainerAware
                     }
                 }
 
-                while (($line = fgetcsv($handle, 4096, $separator)) !== FALSE) {
-
+                while (($line = fgetcsv($handle, 4096, $separator)) !== false) {
                     if ($rowIndex++ == 0) {
                         if ($first_row_as_keys) {
                             $offset = 1;
@@ -218,7 +218,7 @@ class Spreadsheet extends ContainerAware
      * @throws PHPExcel_Reader_Exception
      * @throws PHPExcel_Writer_Exception
      */
-    public function generateExcel($feed, $headers = FALSE, $file_name = FALSE, $send = TRUE, $print_headers = TRUE, $excel_type = Spreadsheet::EXCEL_XLS)
+    public function generateExcel($feed, $headers = false, $file_name = false, $send = true, $print_headers = true, $excel_type = Spreadsheet::EXCEL_XLS)
     {
         // Create new PHPExcel object
         $excel = new PHPExcel();
@@ -386,7 +386,7 @@ class Spreadsheet extends ContainerAware
      * @param bool $print_headers
      * @return bool
      */
-    public function generateCSV($feed, $headers = FALSE, $file_name = FALSE, $send = TRUE, $separator = FALSE, $print_headers = TRUE)
+    public function generateCSV($feed, $headers = false, $file_name = false, $send = true, $separator = false, $print_headers = true)
     {
         if (!$separator) {
             $separator = ',';
@@ -449,7 +449,7 @@ class Spreadsheet extends ContainerAware
                         $value = $line[$key];
                     }
 
-                    if (strpos($value, $separator) !== FALSE) {
+                    if (strpos($value, $separator) !== false) {
                         $value = '"' . str_replace('"', '\\"', $value) . '"';
                     }
 
@@ -488,7 +488,7 @@ class Spreadsheet extends ContainerAware
      * @param string|bool $item_name
      * @return bool
      */
-    public function generateXML($feed, $headers = FALSE, $file_name = FALSE, $send = TRUE, $root_name = FALSE, $item_name = FALSE)
+    public function generateXML($feed, $headers = false, $file_name = false, $send = true, $root_name = false, $item_name = false)
     {
         if (!$file_name) {
             $file_name = 'spreadsheet-' . date('Y-m-d-h-i-s') . '.xml';
@@ -554,5 +554,4 @@ class Spreadsheet extends ContainerAware
 
         return file_put_contents($file_name, $file_contents);
     }
-
 }

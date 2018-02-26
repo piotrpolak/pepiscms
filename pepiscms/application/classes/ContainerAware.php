@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * ContainerAware makes it possible to "inject" CodeIgniter services (models, libraries) into libraries so that you can
@@ -110,16 +112,16 @@ class ContainerAware
     public static function __doGet($var)
     {
         static $CI;
-        isset($CI) OR $CI = CI_Controller::get_instance();
+        isset($CI) or $CI = CI_Controller::get_instance();
 
         static $AVAILABLE_MODULES;
-        isset($AVAILABLE_MODULES) OR $AVAILABLE_MODULES = NULL;
+        isset($AVAILABLE_MODULES) or $AVAILABLE_MODULES = null;
 
         // Automatic loading of module models
-        if (!isset($CI->$var) && strpos($var, '_model') !== FALSE) {
+        if (!isset($CI->$var) && strpos($var, '_model') !== false) {
             $CI->load->model($var);
             if (!isset($CI->$var)) {
-                if ($AVAILABLE_MODULES === NULL) {
+                if ($AVAILABLE_MODULES === null) {
                     $AVAILABLE_MODULES = ModuleRunner::getAvailableModules();
                 }
 

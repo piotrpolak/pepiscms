@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Class Installer_helper
@@ -69,7 +71,6 @@ class Installer_helper extends ContainerAware
                 } else {
                     throw new Exception('Unable to create directory ' . $directory . '. File already exists.');
                 }
-
             }
 
             if (!mkdir($directory)) {
@@ -165,7 +166,7 @@ class Installer_helper extends ContainerAware
             $config_files['database_symfony.php'] = 'database.php';
         }
 
-        $error = FALSE;
+        $error = false;
 
 
         foreach ($config_files as $input_config_file => $output_config_file) {
@@ -217,7 +218,7 @@ class Installer_helper extends ContainerAware
      */
     public function writeDatabase($data)
     {
-        $db = $this->load->database($this->getDefaultDatabaseConfig($data), TRUE);
+        $db = $this->load->database($this->getDefaultDatabaseConfig($data), true);
 
         $error = false;
 
@@ -248,14 +249,13 @@ class Installer_helper extends ContainerAware
                 $db->query($query);
             }
 
-            if ($db->trans_status() === FALSE) {
+            if ($db->trans_status() === false) {
                 $db->trans_rollback();
 
                 show_error('Database error', 500, 'A Database Error Occurred');
             } else {
                 $db->trans_commit();
             }
-
         }
         return $error;
     }
@@ -270,9 +270,9 @@ class Installer_helper extends ContainerAware
         $email = strtolower($email);
         $this->load->database();
         if (!$this->User_model->emailExists($email)) {
-            return $this->User_model->register($email, $email, FALSE, $password, array(), TRUE, FALSE);
+            return $this->User_model->register($email, $email, false, $password, array(), true, false);
         }
-        return FALSE;
+        return false;
     }
 
     /**
@@ -292,18 +292,18 @@ class Installer_helper extends ContainerAware
             'dbdriver' => 'mysqli',
             'port' => $port,
             'dbprefix' => '',
-            'pconnect' => FALSE,
-            'db_debug' => TRUE, // MUST BE FALSE FOR ROLLBACK
-            'cache_on' => FALSE,
+            'pconnect' => false,
+            'db_debug' => true, // MUST BE FALSE FOR ROLLBACK
+            'cache_on' => false,
             'cachedir' => '',
             'char_set' => 'utf8',
             'dbcollat' => 'utf8_general_ci',
             'swap_pre' => '',
-            'encrypt' => FALSE,
-            'compress' => FALSE,
-            'stricton' => FALSE,
+            'encrypt' => false,
+            'compress' => false,
+            'stricton' => false,
             'failover' => array(),
-            'save_queries' => TRUE
+            'save_queries' => true
         );
         return $database_config;
     }

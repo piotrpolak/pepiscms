@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * MY_Config adds a default config path and possibility to load module config.
@@ -34,7 +36,6 @@ class PEPISCMS_Config extends CI_Config
 
         // Set the base_url automatically if none was provided
         if (empty($this->config['base_url'])) {
-
             $protocol = (is_https() ? 'https' : 'http');
 
             // The regular expression is only a basic validation for a valid "Host" header.
@@ -66,18 +67,18 @@ class PEPISCMS_Config extends CI_Config
     {
         $file = INSTALLATIONPATH . 'application/config/modules/' . $module_name . '.php';
 
-        if (in_array($file, $this->is_loaded, TRUE)) {
-            return TRUE;
+        if (in_array($file, $this->is_loaded, true)) {
+            return true;
         }
 
         $this->is_loaded[] = $file;
         if (file_exists($file)) {
             include($file);
         } else {
-            return FALSE;
+            return false;
         }
 
-        if (!isset($config) OR !is_array($config)) {
+        if (!isset($config) or !is_array($config)) {
             show_error('Your ' . $file . ' file does not appear to contain a valid configuration array.');
         }
 
@@ -86,6 +87,6 @@ class PEPISCMS_Config extends CI_Config
         unset($config);
 
         log_message('debug', 'Config file loaded: ' . $file);
-        return TRUE;
+        return true;
     }
 }

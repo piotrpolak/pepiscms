@@ -14,7 +14,7 @@
 
 namespace Piotrpolak\Pepiscms\Formbuilder\Component;
 
-if (!defined('BASEPATH')) exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Selectbox
@@ -41,14 +41,13 @@ class Selectbox extends AbstractComponent
             $output_element .= '<select name="' . $field['field'] . '" id="' . $field['field'] . '" class="text' .
                 $extra_css_classes . '" >' . "\n";
 
-            $was_selected = FALSE;
+            $was_selected = false;
             $selected_code = '';
             foreach ($field['values'] as $key => $val) {
                 $key_escaped = htmlspecialchars($key);
 
-                if (!$was_selected && $value == $key) // This is required to support null values, we can not use === operator neither to cast the values
-                {
-                    $was_selected = TRUE;
+                if (!$was_selected && $value == $key) { // This is required to support null values, we can not use === operator neither to cast the values
+                    $was_selected = true;
                     $selected_code = ' selected="selected"';
                 }
                 $output_element .= '<option value="' . $key_escaped . '" ' . $selected_code . '>' . htmlspecialchars($val) . '</option>' . "\n";
@@ -74,6 +73,4 @@ class Selectbox extends AbstractComponent
 
         return $output_element;
     }
-
-
 }

@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Module model
@@ -50,17 +52,17 @@ class Module_model extends CI_Model
      *
      * @return bool
      */
-    function isCoreModule($module_name)
+    public function isCoreModule($module_name)
     {
         $user_module_directory = 'modules/';
         $core_module_directory = APPPATH . '../modules/';
 
         // Checks whenever system module directrory exists and if it is not overwritten by user space module
         if (file_exists($core_module_directory . $module_name) && !file_exists($user_module_directory . $module_name)) {
-            return TRUE;
+            return true;
         }
 
-        return FALSE;
+        return false;
     }
 
     /**
@@ -123,7 +125,7 @@ class Module_model extends CI_Model
     {
         $info = $this->getInfoByName($module_name);
         if (!$info || !$info->parent_module_id) {
-            return FALSE;
+            return false;
         }
 
         return $this->db->where('module_id', $info->parent_module_id)
@@ -154,7 +156,7 @@ class Module_model extends CI_Model
     public function getInstalledModulesHavingNoParent()
     {
         return $this->db->select('*')
-            ->where('parent_module_id', NULL)
+            ->where('parent_module_id', null)
             ->order_by('is_displayed_in_menu', 'desc')
             ->order_by('item_order_menu')
             ->get($this->config->item('database_table_modules'))
@@ -170,7 +172,7 @@ class Module_model extends CI_Model
     {
         return $this->db->select('*')
             ->where('is_displayed_in_menu', '1')
-            ->where('parent_module_id', NULL)
+            ->where('parent_module_id', null)
             ->order_by('item_order_menu')
             ->get($this->config->item('database_table_modules'))
             ->result();
@@ -185,7 +187,7 @@ class Module_model extends CI_Model
     {
         $result = $this->db->select('*')
             ->where('is_displayed_in_menu', '1')
-            ->where('parent_module_id IS NOT NULL', NULL, FALSE)
+            ->where('parent_module_id IS NOT NULL', null, false)
             ->order_by('item_order_menu')
             ->get($this->config->item('database_table_modules'))
             ->result();
@@ -267,7 +269,7 @@ class Module_model extends CI_Model
      * @param string|boolean $default
      * @return string
      */
-    public function getModuleDescription($module_name, $language, $default = FALSE)
+    public function getModuleDescription($module_name, $language, $default = false)
     {
         $descriptor = $this->getModuleDescriptor($module_name);
         if (!$descriptor) {
@@ -288,7 +290,7 @@ class Module_model extends CI_Model
      * @param string|boolean $default
      * @return string
      */
-    public function getModuleLabel($module_name, $language, $default = FALSE)
+    public function getModuleLabel($module_name, $language, $default = false)
     {
         $descriptor = $this->getModuleDescriptor($module_name);
         if (!$descriptor) {
@@ -312,7 +314,7 @@ class Module_model extends CI_Model
     {
         $descriptor = $this->getModuleDescriptor($module_name);
         if (!$descriptor) {
-            return FALSE;
+            return false;
         }
 
         return $descriptor->getAdminSubmenuElements($language);
@@ -328,7 +330,7 @@ class Module_model extends CI_Model
     {
         $descriptor = $this->getModuleDescriptor($module_name);
         if (!$descriptor) {
-            return FALSE;
+            return false;
         }
 
         return $descriptor->getConfigVariables();
@@ -344,7 +346,7 @@ class Module_model extends CI_Model
     {
         $descriptor = $this->getModuleDescriptor($module_name);
         if (!$descriptor) {
-            return FALSE;
+            return false;
         }
 
         return $descriptor->getSitemapURLs();
@@ -367,13 +369,13 @@ class Module_model extends CI_Model
         $descriptor_path = CI_Controller::get_instance()->modulepathresolver->getDescriptorPath($module_name);
 
         if (!$descriptor_path) {
-            return FALSE;
+            return false;
         }
 
         require_once($descriptor_path);
 
         if (!class_exists($class_name)) {
-            return FALSE;
+            return false;
         }
 
         return new $class_name();
@@ -387,7 +389,7 @@ class Module_model extends CI_Model
      */
     public function isAdminControllerRunnable($module_name)
     {
-        return $this->modulepathresolver->getAdminControllerPath($module_name) !== FALSE;
+        return $this->modulepathresolver->getAdminControllerPath($module_name) !== false;
     }
 
     /**
@@ -398,7 +400,7 @@ class Module_model extends CI_Model
      */
     public function isPublicControllerRunnable($module_name)
     {
-        return $this->modulepathresolver->getPublicControllerPath($module_name) !== FALSE;
+        return $this->modulepathresolver->getPublicControllerPath($module_name) !== false;
     }
 
     /**
@@ -410,14 +412,14 @@ class Module_model extends CI_Model
      * @param int|Null $parent_module_id
      * @return bool
      */
-    public function install($module_name, $is_displayed_in_menu = FALSE, $is_displayed_in_utilities = TRUE, $parent_module_id = NULL)
+    public function install($module_name, $is_displayed_in_menu = false, $is_displayed_in_utilities = true, $parent_module_id = null)
     {
         if ($this->isInstalled($module_name)) {
-            return FALSE;
+            return false;
         }
 
         if (!$parent_module_id) {
-            $parent_module_id = NULL;
+            $parent_module_id = null;
         }
 
         $success = $this->db->set('is_displayed_in_utilities', $is_displayed_in_utilities ? 1 : 0)
@@ -447,10 +449,10 @@ class Module_model extends CI_Model
                 Logger::info('Installing module ' . $module_name . '. No default config file found.', 'MODULE');
             }
 
-            return TRUE;
+            return true;
         }
 
-        return FALSE;
+        return false;
     }
 
 
@@ -463,7 +465,7 @@ class Module_model extends CI_Model
     private function getMaximumOrder($field)
     {
         if (!in_array($field, array('item_order_menu', 'item_order_utilities'))) {
-            return FALSE;
+            return false;
         }
 
         $item_order = 0;
@@ -490,7 +492,7 @@ class Module_model extends CI_Model
      * @param int|boolean $parent_module_id
      * @return bool
      */
-    public function update($module_name, $is_displayed_in_menu = FALSE, $is_displayed_in_utilities = TRUE, $parent_module_id = FALSE)
+    public function update($module_name, $is_displayed_in_menu = false, $is_displayed_in_utilities = true, $parent_module_id = false)
     {
         // Reading module info
         $module_info = $this->getInfoByName($module_name);
@@ -543,7 +545,7 @@ class Module_model extends CI_Model
     {
         $configVariables = $this->getModuleConfigVariables($module_name);
         if (!$configVariables) {
-            return FALSE;
+            return false;
         }
         return (count($configVariables) > 0);
     }
@@ -569,7 +571,7 @@ class Module_model extends CI_Model
             ->row();
 
         if ($row) {
-            $this->db->set('parent_module_id', NULL)
+            $this->db->set('parent_module_id', null)
                 ->where('parent_module_id', $row->module_id)
                 ->update($this->config->item('database_table_modules'));
         }

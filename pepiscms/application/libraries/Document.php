@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * HTML Document representation.
@@ -32,11 +34,11 @@ class Document extends ContainerAware
     /** @var string */
     private $keywords;
     /** @var string */
-    private $relative_url = NULL;
+    private $relative_url = null;
     /** @var string */
-    private $canonical_url = NULL;
+    private $canonical_url = null;
     /** @var bool */
-    private $is_default = FALSE;
+    private $is_default = false;
     /** @var string */
     private $page_style;
     /** @var array */
@@ -44,15 +46,15 @@ class Document extends ContainerAware
     /** @var array */
     private $page_javascript;
     /** @var int */
-    private $menu_item_id = NULL; // To be checked if needed
+    private $menu_item_id = null; // To be checked if needed
     /** @var Menu */
-    private $menu = NULL; // Kind of cache
+    private $menu = null; // Kind of cache
 
     /**
      * Document constructor.
      * @param null|array $params
      */
-    public function __construct($params = NULL)
+    public function __construct($params = null)
     {
         $this->load->model('Menu_model');
     }
@@ -99,7 +101,7 @@ class Document extends ContainerAware
      */
     public function getMenu()
     {
-        if ($this->menu == NULL) {
+        if ($this->menu == null) {
             $this->menu = new Menu();
         }
         return $this->menu;
@@ -202,7 +204,7 @@ class Document extends ContainerAware
      */
     public function getCanonicalAbsoluteUrl()
     {
-        if ($this->canonical_url === NULL) {
+        if ($this->canonical_url === null) {
             $this->setCanonicalAbsoluteUrl(base_url() . $this->getRelativeUrl());
         }
         return $this->canonical_url;
@@ -233,7 +235,7 @@ class Document extends ContainerAware
      *
      * @param bool $is_default
      */
-    public function setDefault($is_default = TRUE)
+    public function setDefault($is_default = true)
     {
         $this->is_default = $is_default;
     }
@@ -281,12 +283,11 @@ class Document extends ContainerAware
         $item = $this->getMenu()->getMenuItemByCanonicalAbsoluteUrl($this->getCanonicalAbsoluteUrl());
 
         if ($item) {
-            while (TRUE) {
+            while (true) {
                 $breadcrumb_items[] = $item;
                 $parent = $item->getParent();
 
-                if (!($parent instanceof MenuItem)) // When we reach top most element
-                {
+                if (!($parent instanceof MenuItem)) { // When we reach top most element
                     break;
                 }
                 $item = $parent;
@@ -401,5 +402,4 @@ class Document extends ContainerAware
     {
         $this->page_javascript = $javascript;
     }
-
 }

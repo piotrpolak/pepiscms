@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * SimpleSessionMessage
@@ -32,7 +34,7 @@ class SimpleSessionMessage extends ContainerAware
      *
      * @param array|boolean $params
      */
-    public function __construct($params = FALSE)
+    public function __construct($params = false)
     {
         if (!isset($_SESSION[$this->session_var_name . '_formatting_function'])) {
             $_SESSION[$this->session_var_name . '_formatting_function'] = self::FUNCTION_SUCCESS;
@@ -94,7 +96,7 @@ class SimpleSessionMessage extends ContainerAware
     public function getLocalizedMessage()
     {
         if (!isset($_SESSION[$this->session_var_name])) {
-            return FALSE;
+            return false;
         }
 
         $message = $_SESSION[$this->session_var_name];
@@ -109,5 +111,4 @@ class SimpleSessionMessage extends ContainerAware
 
         return $function($message);
     }
-
 }

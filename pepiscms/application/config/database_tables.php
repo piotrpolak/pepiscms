@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 $config['database_table_users'] = 'cms_users';
 $config['database_table_group_to_entity'] = 'cms_group_to_entity';

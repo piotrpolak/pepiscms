@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * SubmenuItemBuilder.
@@ -25,15 +27,15 @@ class SubmenuItemBuilder
     private $submenuItemsBuilder;
 
     private $data = array(
-        'controller' => FALSE,
+        'controller' => false,
         'method' => '',
         'description' => '',
-        'label' => FALSE,
-        'item_url' => FALSE,
-        'url' => FALSE,
-        'target' => FALSE,
-        'group' => FALSE,
-        'is_popup' => FALSE,
+        'label' => false,
+        'item_url' => false,
+        'url' => false,
+        'target' => false,
+        'group' => false,
+        'is_popup' => false,
     );
 
     /**

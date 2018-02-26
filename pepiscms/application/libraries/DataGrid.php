@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Datagrid utility class for rendering database views
@@ -203,21 +205,21 @@ class DataGrid extends ContainerAware
      */
     public function clear()
     {
-        $this->title = FALSE;
-        $this->base_url = FALSE;
-        $this->feed_object = FALSE;
+        $this->title = false;
+        $this->base_url = false;
+        $this->feed_object = false;
         $this->definition = array();
         $this->filter_definitions = array();
         $this->manually_applied_filters = array();
         $this->items_per_page = 100;
         $this->field_names = array();
-        $this->default_order = FALSE;
-        $this->is_orderable = TRUE;
-        $this->row_css_class_formatting_callback = FALSE;
-        $this->is_date_js_included = FALSE;
-        $this->is_table_head_visible = TRUE;
-        $this->is_filters_shown_before = TRUE;
-        $this->is_filters_shown_after = FALSE;
+        $this->default_order = false;
+        $this->is_orderable = true;
+        $this->row_css_class_formatting_callback = false;
+        $this->is_date_js_included = false;
+        $this->is_table_head_visible = true;
+        $this->is_filters_shown_before = true;
+        $this->is_filters_shown_after = false;
 
         return $this;
     }
@@ -228,7 +230,7 @@ class DataGrid extends ContainerAware
      * @param bool $is_filters_shown_before
      * @return DataGrid
      */
-    public function setFiltersShownBeforeGrid($is_filters_shown_before = TRUE)
+    public function setFiltersShownBeforeGrid($is_filters_shown_before = true)
     {
         $this->is_filters_shown_before = $is_filters_shown_before;
         return $this;
@@ -240,7 +242,7 @@ class DataGrid extends ContainerAware
      * @param bool $is_filters_shown_after
      * @return DataGrid
      */
-    public function setFiltersShownAfterGrid($is_filters_shown_after = TRUE)
+    public function setFiltersShownAfterGrid($is_filters_shown_after = true)
     {
         $this->is_filters_shown_after = $is_filters_shown_after;
         return $this;
@@ -274,7 +276,7 @@ class DataGrid extends ContainerAware
      * @param bool $is_table_head_visible
      * @return DataGrid
      */
-    public function setTableHeadVisible($is_table_head_visible = TRUE)
+    public function setTableHeadVisible($is_table_head_visible = true)
     {
         $this->is_table_head_visible = $is_table_head_visible;
         return $this;
@@ -395,7 +397,7 @@ class DataGrid extends ContainerAware
      * @param bool $grid_css_class
      * @return DataGrid
      */
-    public function addColumn($label, $field = FALSE, $grid_formating_callback = FALSE, $grid_css_class = FALSE)
+    public function addColumn($label, $field = false, $grid_formating_callback = false, $grid_css_class = false)
     {
         // If the first element is array, then setting field by definition
         if (is_array($label)) {
@@ -407,7 +409,7 @@ class DataGrid extends ContainerAware
             'field' => $field,
             'grid_formating_callback' => $grid_formating_callback,
             'grid_css_class' => $grid_css_class,
-            'grid_is_orderable' => TRUE
+            'grid_is_orderable' => true
         );
         return $this->addColumnByDefinition($column);
     }
@@ -420,59 +422,59 @@ class DataGrid extends ContainerAware
     public function getFieldDefaults()
     {
         $defaults = array();
-        $defaults['field'] = FALSE; // Field name
-        $defaults['label'] = FALSE; // Field label
-        $defaults['description'] = FALSE; // Field description
+        $defaults['field'] = false; // Field name
+        $defaults['label'] = false; // Field label
+        $defaults['description'] = false; // Field description
         // Display options
-        $defaults['show_in_form'] = TRUE;  // Display in form?
-        $defaults['show_in_grid'] = TRUE;  // Display in grid?
+        $defaults['show_in_form'] = true;  // Display in form?
+        $defaults['show_in_grid'] = true;  // Display in grid?
         // Foreign key
         $defaults['foreign_key_relationship_type'] = 0; // FormBuilder::FOREIGN_KEY_ONE_TO_MANY;
-        $defaults['foreign_key_table'] = FALSE;
+        $defaults['foreign_key_table'] = false;
         $defaults['foreign_key_field'] = 'id';
         $defaults['foreign_key_label_field'] = 'id';
-        $defaults['foreign_key_accept_null'] = FALSE;
-        $defaults['foreign_key_where_conditions'] = FALSE; // TODO This is only implemented in FormBuilder, needs to be implemented in filters as well
+        $defaults['foreign_key_accept_null'] = false;
+        $defaults['foreign_key_where_conditions'] = false; // TODO This is only implemented in FormBuilder, needs to be implemented in filters as well
 
-        $defaults['foreign_key_junction_table'] = FALSE;
-        $defaults['foreign_key_junction_id_field_left'] = FALSE;
-        $defaults['foreign_key_junction_id_field_right'] = FALSE;
-        $defaults['foreign_key_junction_where_conditions'] = FALSE;
+        $defaults['foreign_key_junction_table'] = false;
+        $defaults['foreign_key_junction_id_field_left'] = false;
+        $defaults['foreign_key_junction_id_field_right'] = false;
+        $defaults['foreign_key_junction_where_conditions'] = false;
 
         //
         // Input specific
         //
         $defaults['input_type'] = 0; //FormBuilder::TEXTFIELD;	// Input type, see FormBuilder constants
-        $defaults['input_default_value'] = FALSE; // Default value for field
-        $defaults['values'] = FALSE; // Values for to select among them, must be an associative array
+        $defaults['input_default_value'] = false; // Default value for field
+        $defaults['values'] = false; // Values for to select among them, must be an associative array
         $defaults['validation_rules'] = 'required'; // Validation rules
-        $defaults['input_is_editable'] = TRUE;
-        $defaults['input_group'] = FALSE;
-        $defaults['input_css_class'] = FALSE;
+        $defaults['input_is_editable'] = true;
+        $defaults['input_group'] = false;
+        $defaults['input_css_class'] = false;
         $defaults['options'] = array();
 
         // File upload
-        $defaults['upload_complete_callback'] = FALSE;
+        $defaults['upload_complete_callback'] = false;
         $defaults['upload_path'] = ''; //$this->default_uploads_path;
         $defaults['upload_display_path'] = ''; //$this->default_upload_display_path;
         $defaults['upload_allowed_types'] = '*';
-        $defaults['upload_encrypt_name'] = FALSE;
+        $defaults['upload_encrypt_name'] = false;
 
         //
         // Grid specific
         //
-        $defaults['grid_formating_callback'] = FALSE;
-        $defaults['grid_is_orderable'] = TRUE;
-        $defaults['grid_css_class'] = FALSE;
-        $defaults['filter_type'] = FALSE;
-        $defaults['filter_values'] = FALSE; // It is not always the same for values
+        $defaults['grid_formating_callback'] = false;
+        $defaults['grid_is_orderable'] = true;
+        $defaults['grid_css_class'] = false;
+        $defaults['filter_type'] = false;
+        $defaults['filter_values'] = false; // It is not always the same for values
         $defaults['filter_condition'] = 'like';
 
         //
         // Excel cell format column
         //
-        $defaults['excel_cell_format'] = FALSE;
-        $defaults['excel_header_format'] = FALSE;
+        $defaults['excel_cell_format'] = false;
+        $defaults['excel_header_format'] = false;
 
         // Autocomplete
         $defaults['autocomplete_source'] = '';
@@ -507,7 +509,7 @@ class DataGrid extends ContainerAware
      * @param bool $key
      * @return DataGrid
      */
-    public function addColumnByDefinition($column, $key = FALSE)
+    public function addColumnByDefinition($column, $key = false)
     {
         $defaults = $this->getFieldDefaults();
         if (!isset($column['filter_condition']) && isset($column['filter_type'])) {
@@ -531,10 +533,10 @@ class DataGrid extends ContainerAware
         }
 
         // Generating label name if necessary
-        $defaults['label'] = $defaults['label'] !== FALSE ? $defaults['label'] : ucfirst(str_replace('_', ' ', $defaults['field']));
+        $defaults['label'] = $defaults['label'] !== false ? $defaults['label'] : ucfirst(str_replace('_', ' ', $defaults['field']));
 
         // Adding filter
-        if ($defaults['filter_type'] !== FALSE) {
+        if ($defaults['filter_type'] !== false) {
             $this->filter_definitions[$defaults['field'] . '_' . $defaults['filter_condition']] = array(
                 'label' => $defaults['label'],
                 'field' => $defaults['field'],
@@ -576,7 +578,7 @@ class DataGrid extends ContainerAware
 
         foreach ($columns as $key => &$column) {
             // Make it work with associative
-            if ($key && !is_numeric($key) && (!isset($column['field']) || $column['field'] === FALSE)) {
+            if ($key && !is_numeric($key) && (!isset($column['field']) || $column['field'] === false)) {
                 $column['field'] = $key;
             }
 
@@ -606,7 +608,7 @@ class DataGrid extends ContainerAware
      * @param bool $filter_condition
      * @return DataGrid
      */
-    public function addFilter($label, $field = FALSE, $filter_type = self::FILTER_BASIC, $filter_values = FALSE, $filter_condition = FALSE)
+    public function addFilter($label, $field = false, $filter_type = self::FILTER_BASIC, $filter_values = false, $filter_condition = false)
     {
         if (!is_array($label)) {
             if (!$filter_condition) {
@@ -697,7 +699,7 @@ class DataGrid extends ContainerAware
         $defaults = array(
             'label' => $field,
             'field' => $field,
-            'filter_values' => FALSE,
+            'filter_values' => false,
             'filter_type' => self::FILTER_FORCED,
             'filter_condition' => $filter_condition
         );
@@ -758,7 +760,7 @@ class DataGrid extends ContainerAware
      * @param bool $id_field
      * @return DataGrid
      */
-    public function setTable($title, $where_conditions = FALSE, $id_field = FALSE)
+    public function setTable($title, $where_conditions = false, $id_field = false)
     {
         $feed_object = clone $this->Generic_model;
         $feed_object->setTable($title);
@@ -809,7 +811,7 @@ class DataGrid extends ContainerAware
 
         foreach ($pairs as $filter_key => $filter_value) {
             if (!isset($applied_filter_values[$filter_key]) || !is_array($applied_filter_values[$filter_key])) {
-                // This happens only if the filter is not predefined		
+                // This happens only if the filter is not predefined
                 if (!is_array($filter_value)) {
                     // Wrapping into array just for any case
                     $filter_value = array($filter_value);
@@ -830,7 +832,7 @@ class DataGrid extends ContainerAware
             }
 
             if (isset($this->filter_definitions[$filter_key]['foreign_key_relationship_type']) && $this->filter_definitions[$filter_key]['foreign_key_relationship_type'] == FormBuilder::FOREIGN_KEY_MANY_TO_MANY) {
-                $filter_values = $this->Generic_model->getDistinctAssoc($this->filter_definitions[$filter_key]['foreign_key_junction_id_field_left'], $this->filter_definitions[$filter_key]['foreign_key_junction_table'], FALSE, array($this->filter_definitions[$filter_key]['foreign_key_junction_id_field_right'] => $filter_values[0])); // TODO MANY TO MANY will not work
+                $filter_values = $this->Generic_model->getDistinctAssoc($this->filter_definitions[$filter_key]['foreign_key_junction_id_field_left'], $this->filter_definitions[$filter_key]['foreign_key_junction_table'], false, array($this->filter_definitions[$filter_key]['foreign_key_junction_id_field_right'] => $filter_values[0])); // TODO MANY TO MANY will not work
                 $filters_for_data_feed[$filter_key] = array('column' => 'id', 'values' => $filter_values, 'type' => $this->filter_definitions[$filter_key]['filter_type'], 'condition' => 'in');
             } else {
                 $filters_for_data_feed[$filter_key] = array('column' => $this->filter_definitions[$filter_key]['field'], 'values' => $filter_values, 'type' => $this->filter_definitions[$filter_key]['filter_type'], 'condition' => trim($this->filter_definitions[$filter_key]['filter_condition']));
@@ -849,7 +851,7 @@ class DataGrid extends ContainerAware
      * @param int $applied_filter_values
      * @return string
      */
-    public function generateFilters($page = FALSE, $order_by = FALSE, $order = FALSE, $applied_filter_values = -1)
+    public function generateFilters($page = false, $order_by = false, $order = false, $applied_filter_values = -1)
     {
         $filters_output = '';
 
@@ -865,11 +867,11 @@ class DataGrid extends ContainerAware
             }
 
             // If there are no values or the values were not set
-            if (!isset($filter_definition['filter_values']) || $filter_definition['filter_values'] === FALSE) {
+            if (!isset($filter_definition['filter_values']) || $filter_definition['filter_values'] === false) {
                 if (($filter_definition['filter_type'] == DataGrid::FILTER_SELECT || $filter_definition['filter_type'] == DataGrid::FILTER_MULTIPLE_SELECT || $filter_definition['filter_type'] == DataGrid::FILTER_MULTIPLE_CHECKBOX)) {
                     // If there is a relationship
                     if ($filter_definition['foreign_key_table']) {
-                        $filter_definition['filter_values'] = $this->Generic_model->getAssocPairs($filter_definition['foreign_key_field'], $filter_definition['foreign_key_label_field'], $filter_definition['foreign_key_table'], FALSE, FALSE, $filter_definition['foreign_key_where_conditions']);
+                        $filter_definition['filter_values'] = $this->Generic_model->getAssocPairs($filter_definition['foreign_key_field'], $filter_definition['foreign_key_label_field'], $filter_definition['foreign_key_table'], false, false, $filter_definition['foreign_key_where_conditions']);
                     } // In case there is no foreign key relationship and vales is not empty
                     elseif (isset($filter_definition['values']) && count($filter_definition['values']) > 0) {
                         $filter_definition['filter_values'] = $filter_definition['values'];
@@ -886,8 +888,7 @@ class DataGrid extends ContainerAware
                 $filters_output .= '<select name="filters[' . $filter_key . ']" id="filters[' . $filter_key . ']" class="text" >' . "\n";
                 $filters_output .= "\t" . '<option value="">' . $this->lang->line('datagrid_any') . '</option>' . "\n";
 
-                if ($filter_definition['filter_values']) // This could be moved to another place
-                {
+                if ($filter_definition['filter_values']) { // This could be moved to another place
                     foreach ($filter_definition['filter_values'] as $id => $val) {
                         if (!$val && $id) {
                             $val = $id; // This is protection against empty keys or empty values
@@ -924,7 +925,7 @@ class DataGrid extends ContainerAware
                 }
             } elseif ($filter_definition['filter_type'] == DataGrid::FILTER_DATE) {
                 if (!$this->is_date_js_included) {
-                    $this->is_date_js_included = TRUE;
+                    $this->is_date_js_included = true;
                     $filters_output .= '<link href="pepiscms/3rdparty/jquery-ui/theme/smoothness/jquery-ui.custom.css" rel="stylesheet" type="text/css">' . "\n";
                     $filters_output .= '<script type="text/javascript" src="pepiscms/3rdparty/jquery-ui/jquery-ui.custom.min.js?v=' . PEPISCMS_VERSION . '"></script>' . "\n";
                 }
@@ -965,7 +966,7 @@ class DataGrid extends ContainerAware
      * @param int $limit
      * @return array
      */
-    public function getAdvancedFeed($extra_param = FALSE, $start = 0, $limit = 999999)
+    public function getAdvancedFeed($extra_param = false, $start = 0, $limit = 999999)
     {
         $o = $this->getOrder();
         $order_by = $o['order_by'];
@@ -988,7 +989,7 @@ class DataGrid extends ContainerAware
      * @param $extra_param mixed
      * @return string
      */
-    public function generate($extra_param = FALSE)
+    public function generate($extra_param = false)
     {
         $output = '';
 
@@ -1009,7 +1010,7 @@ class DataGrid extends ContainerAware
             $order_by = $this->field_names[0];
         }
 
-        list($feed, $rowcount, $filters_for_data_feed, $applied_filter_values) = $this->getAdvancedFeed($extra_param = FALSE, $start, $this->items_per_page);
+        list($feed, $rowcount, $filters_for_data_feed, $applied_filter_values) = $this->getAdvancedFeed($extra_param = false, $start, $this->items_per_page);
 
         if ($this->is_filters_shown_before) {
             $output .= $this->generateFilters($page, $order_by, $order, $applied_filter_values);
@@ -1028,7 +1029,7 @@ class DataGrid extends ContainerAware
                     $pagination .= '<a href="' . self::generateLink($this->base_url, $i, $order_by, $order, $applied_filter_values) . '"' . ($page == $i ? ' class="active"' : '') . '>' . $i . '</a> ';
                 }
             } else {
-                $print_min_dots = $print_max_dots = TRUE;
+                $print_min_dots = $print_max_dots = true;
                 $min_start = 3;
                 $max_start = $no_of_pages - 3;
 
@@ -1039,17 +1040,17 @@ class DataGrid extends ContainerAware
                 $min = $page - 20;
                 if ($min <= $min_start) {
                     $min = $min_start + 1;
-                    $print_min_dots = FALSE;
+                    $print_min_dots = false;
                 }
                 $max = $min + 40;
                 if ($max >= $max_start) {
                     $max = $max_start - 1;
-                    $print_max_dots = FALSE;
+                    $print_max_dots = false;
                     $min = $max - 40;
                     // One more time
                     if ($min <= $min_start) {
                         $min = $min_start + 1;
-                        $print_min_dots = FALSE;
+                        $print_min_dots = false;
                     }
                 }
 
@@ -1148,9 +1149,9 @@ class DataGrid extends ContainerAware
                             $column['values'][] = $line->$column['field'];
                         }
                         $column['values'] = array_unique($column['values']);
-                        $column['values'] = $this->Generic_model->getAssocPairs($column['foreign_key_field'], $column['foreign_key_label_field'], $column['foreign_key_table'], FALSE, $column['values'], $column['foreign_key_where_conditions']);
+                        $column['values'] = $this->Generic_model->getAssocPairs($column['foreign_key_field'], $column['foreign_key_label_field'], $column['foreign_key_table'], false, $column['values'], $column['foreign_key_where_conditions']);
                     } else {
-                        $column['values'] = $this->Generic_model->getAssocPairs($column['foreign_key_field'], $column['foreign_key_label_field'], $column['foreign_key_table'], FALSE, FALSE, $column['foreign_key_where_conditions']);
+                        $column['values'] = $this->Generic_model->getAssocPairs($column['foreign_key_field'], $column['foreign_key_label_field'], $column['foreign_key_table'], false, false, $column['foreign_key_where_conditions']);
                     }
                 }
             }
@@ -1184,7 +1185,6 @@ class DataGrid extends ContainerAware
 
                     if ($field_name) {
                         if (isset($line->$field_name)) {
-
                             if ($column['values'] && isset($column['values'][$line->$field_name])) {
                                 // Foreign key like
                                 $content = $column['values'][$line->$field_name];
@@ -1207,7 +1207,7 @@ class DataGrid extends ContainerAware
 
 
                                 $d_values = array();
-                                $d_ids = $this->Generic_model->getDistinctAssoc($column['foreign_key_junction_id_field_right'], $column['foreign_key_junction_table'], FALSE, ($where_conditions + array($column['foreign_key_junction_id_field_left'] => $line->id)));
+                                $d_ids = $this->Generic_model->getDistinctAssoc($column['foreign_key_junction_id_field_right'], $column['foreign_key_junction_table'], false, ($where_conditions + array($column['foreign_key_junction_id_field_left'] => $line->id)));
                                 foreach ($d_ids as $d_id) {
                                     $d_values[] = $column['values'][$d_id];
                                 }
@@ -1220,7 +1220,7 @@ class DataGrid extends ContainerAware
 
                     if (is_callable($column['grid_formating_callback'])) {
                         $content = call_user_func_array($column['grid_formating_callback'], array($content, $line));
-                    } elseif ($column['grid_formating_callback'] != FALSE) {
+                    } elseif ($column['grid_formating_callback'] != false) {
                         show_error('Datagrid: Collumn formating callback for field <b>' . $column['field'] . '</b> is not callable.');
                     }
 
@@ -1259,7 +1259,7 @@ class DataGrid extends ContainerAware
     public static function encodeFiltersString($filters)
     {
         if (!is_array($filters)) {
-            return FALSE;
+            return false;
         }
 
         $filters_new = array();
@@ -1270,15 +1270,13 @@ class DataGrid extends ContainerAware
                 $filters_new[$name] = array();
                 foreach ($value as &$item) {
                     $item = trim($item);
-                    if ($item || '' . $item == '0') // Preventing treating 0 as empty string
-                    {
+                    if ($item || '' . $item == '0') { // Preventing treating 0 as empty string
                         $filters_new[$name][] = $item;
                     }
                 }
             } else {
                 $value = trim($value);
-                if ($value || '' . $value == '0') // Preventing treating 0 as empty string
-                {
+                if ($value || '' . $value == '0') { // Preventing treating 0 as empty string
                     $filters_new[$name] = $value;
                 }
             }
@@ -1314,7 +1312,7 @@ class DataGrid extends ContainerAware
      */
     public function setRowCssClassFormattingFunction($callback)
     {
-        if (is_callable($callback) || $callback === FALSE) {
+        if (is_callable($callback) || $callback === false) {
             $this->row_css_class_formatting_callback = $callback;
             return $this;
         }
@@ -1337,7 +1335,7 @@ class DataGrid extends ContainerAware
      * @param bool|string $key
      * @return array
      */
-    public function getManuallyAppliedFilters($key = FALSE)
+    public function getManuallyAppliedFilters($key = false)
     {
         if (!$key) {
             return $this->manually_applied_filters;
@@ -1351,7 +1349,7 @@ class DataGrid extends ContainerAware
      * @return array
      * @deprecated as PepisCMS 1.0.0
      */
-    public function getManualyAppliedFilters($key = FALSE)
+    public function getManualyAppliedFilters($key = false)
     {
         return $this->getManuallyAppliedFilters($key);
     }
@@ -1383,7 +1381,7 @@ class DataGrid extends ContainerAware
      * @return array
      * @deprecated as PepisCMS 1.0.0
      */
-    public function getFieldNames($key = FALSE)
+    public function getFieldNames($key = false)
     {
         if (!$key) {
             return $this->field_names;
@@ -1402,7 +1400,7 @@ class DataGrid extends ContainerAware
      * @param bool|array $filters
      * @return string
      */
-    private static function generateLink($base_url, $page = 1, $order_by = FALSE, $order = FALSE, $filters = FALSE)
+    private static function generateLink($base_url, $page = 1, $order_by = false, $order = false, $filters = false)
     {
         $url = $base_url;
         if ($page > 1) {

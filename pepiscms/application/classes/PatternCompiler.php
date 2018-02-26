@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Pattern compiler utility.
@@ -42,8 +44,7 @@ class PatternCompiler
                     continue;
                 }
                 $pattern = trim(str_replace('{' . $key . '}', $object_with_data->$key, $pattern));
-            } else // Array
-            {
+            } else { // Array
                 if (!isset($object_with_data[$key])) {
                     continue;
                 }

@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -12,6 +12,8 @@
  * @link                http://www.polak.ro/
  */
 
+defined('BASEPATH') or exit('No direct script access allowed');
+
 /**
  * Parent class for all admin controllers (module)
  */
@@ -22,7 +24,7 @@ abstract class ModuleAdminController extends AdminController
      */
     public function __construct()
     {
-        parent::__construct(FALSE);
+        parent::__construct(false);
         $this->benchmark->mark('module_admin_controller_start');
 
         // Determining controller and method names
@@ -37,7 +39,7 @@ abstract class ModuleAdminController extends AdminController
         $this->assign('adminmenu', ''); // Just in case
         if (!$this->getAttribute('popup_layout')) {
             $this->benchmark->mark('menu_render_start');
-            $rendered_menu = NULL;
+            $rendered_menu = null;
             if (method_exists($this, 'renderMenu')) {
                 $rendered_menu = $this->renderMenu();
                 $this->assign('adminmenu', $rendered_menu);
@@ -53,7 +55,7 @@ abstract class ModuleAdminController extends AdminController
         // Preventing from having uninitialized variable
         if (!$this->getAttribute('is_utilities_only_module')) {
             // This weird order is necessary as renderMenu() sometimes enters first
-            $this->assign('is_utilities_only_module', FALSE);
+            $this->assign('is_utilities_only_module', false);
         }
 
         $this->benchmark->mark('module_admin_controller_end');
@@ -66,14 +68,14 @@ abstract class ModuleAdminController extends AdminController
 
         // This weird order is necessary as renderMenu() sometimes enters first
         if (ModuleRunner::isModuleDisplayedInUtilities($module_name) && !ModuleRunner::isModuleDisplayedInMenu($module_name)) {
-            $this->assign('is_utilities_only_module', TRUE);
+            $this->assign('is_utilities_only_module', true);
         }
 
         $this->load->library('MenuRendor');
         if ($this->getAttribute('is_utilities_only_module')) {
             return $this->menurendor->render('utilities', 'index', $this->input->getParam('language_code'));
         }
-        return NULL;
+        return null;
     }
 
     /**
@@ -93,11 +95,11 @@ abstract class ModuleAdminController extends AdminController
      * @param bool $return
      * @return bool
      */
-    public function display($view = false, $display_header = true, $display_footer = true, $return = FALSE)
+    public function display($view = false, $display_header = true, $display_footer = true, $return = false)
     {
         // Preventing from displaying the same page for several times
         if ($this->already_displayed) {
-            return FALSE;
+            return false;
         }
 
 
@@ -145,7 +147,7 @@ abstract class ModuleAdminController extends AdminController
         if ($return) {
             return $return_html;
         }
-        return TRUE;
+        return true;
     }
 
     /**
@@ -158,7 +160,7 @@ abstract class ModuleAdminController extends AdminController
     public function displayPDF($view = false, $display_header = true, $display_footer = true)
     {
         $this->load->helper('pdf');
-        html_to_pdf($this->display($view, $display_header, $display_footer, true), FALSE, base_url());
+        html_to_pdf($this->display($view, $display_header, $display_footer, true), false, base_url());
         die();
     }
 }

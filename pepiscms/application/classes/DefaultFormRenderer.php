@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -12,6 +12,8 @@
  * @link                http://www.polak.ro/
  */
 
+defined('BASEPATH') or exit('No direct script access allowed');
+
 /**
  * Default renderer for FormBuilder
  *
@@ -24,10 +26,10 @@
  */
 class DefaultFormRenderer extends ContainerAware implements FormRenderableInterface
 {
-    protected $is_js_included = FALSE;
-    protected $validation_message_prefix = FALSE;
-    protected $validation_message_suffix = FALSE;
-    protected $template_absolute_path = FALSE;
+    protected $is_js_included = false;
+    protected $validation_message_prefix = false;
+    protected $validation_message_suffix = false;
+    protected $template_absolute_path = false;
     /** @var FormBuilder */
     protected $formbuilder;
     protected $success;
@@ -36,7 +38,7 @@ class DefaultFormRenderer extends ContainerAware implements FormRenderableInterf
      * DefaultFormRenderer constructor.
      * @param array|bool $template_absolute_path
      */
-    public function __construct($template_absolute_path = FALSE)
+    public function __construct($template_absolute_path = false)
     {
         if (!$template_absolute_path) {
             $template_absolute_path = APPPATH . 'views/templates/formbuilder_default.php';
@@ -112,7 +114,7 @@ class DefaultFormRenderer extends ContainerAware implements FormRenderableInterf
             }
 
             if ($this->formbuilder->isSubmitButtonEnabled()) {
-                $output .= button_save('', FALSE, $this->formbuilder->getSubmitLabel()) . "\n";
+                $output .= button_save('', false, $this->formbuilder->getSubmitLabel()) . "\n";
             }
         }
         $output .= '</div>' . "\n";
@@ -153,9 +155,9 @@ class DefaultFormRenderer extends ContainerAware implements FormRenderableInterf
     {
         $field = $this->formbuilder->getField($field_name);
         if (!$field) {
-            return FALSE;
+            return false;
         }
-        return TRUE;
+        return true;
     }
 
     /**
@@ -169,11 +171,11 @@ class DefaultFormRenderer extends ContainerAware implements FormRenderableInterf
     {
         $field = $this->formbuilder->getField($field_name);
         if (!$field) {
-            return FALSE;
+            return false;
         }
 
         if ($html) {
-            $extra_css_classes = ($field['input_is_editable'] && strpos($field['validation_rules'], 'required') !== FALSE ? ' required' : '');
+            $extra_css_classes = ($field['input_is_editable'] && strpos($field['validation_rules'], 'required') !== false ? ' required' : '');
             return '<label for="' . $field_name . '"' . ($extra_css_classes ? ' class="' . $extra_css_classes . '"' : '') . '>' . $field['label'] . '</label>';
         }
         return $field['label'];
@@ -190,7 +192,7 @@ class DefaultFormRenderer extends ContainerAware implements FormRenderableInterf
     {
         $field = $this->formbuilder->getField($field_name);
         if (!isset($field[$attribute_name])) {
-            return FALSE;
+            return false;
         }
 
         return $field[$attribute_name];
@@ -213,12 +215,12 @@ class DefaultFormRenderer extends ContainerAware implements FormRenderableInterf
      * @param bool|callable $formatting_function_for_uneditable
      * @return bool|string
      */
-    public function getFieldInput($field_name, $formatting_function_for_uneditable = FALSE)
+    public function getFieldInput($field_name, $formatting_function_for_uneditable = false)
     {
         $object = $this->formbuilder->getObject();
         $field = $this->formbuilder->getField($field_name);
         if (!$field) {
-            return FALSE;
+            return false;
         }
 
         //TODO Check if this is not redundant, see the object population on database read
@@ -230,7 +232,7 @@ class DefaultFormRenderer extends ContainerAware implements FormRenderableInterf
             $component_html = $this->computeReadOnlyComponentHtml($field, $value, $object, $component, $formatting_function_for_uneditable);
             return $this->wrapReadOnlyComponent($field, $component_html);
         } else {
-            return $this->renderInput($field, $value, $object, $component, FALSE);
+            return $this->renderInput($field, $value, $object, $component, false);
         }
     }
 
@@ -246,7 +248,7 @@ class DefaultFormRenderer extends ContainerAware implements FormRenderableInterf
         $field = $this->formbuilder->getField($field_name);
 
         if (!$field) {
-            return FALSE;
+            return false;
         }
         if (($object && isset($object->$field_name))) {
             return $object->$field_name;
@@ -344,8 +346,7 @@ class DefaultFormRenderer extends ContainerAware implements FormRenderableInterf
             $valueEscaped = htmlspecialchars($value);
         } else {
             $valueEscaped = array();
-            foreach ($value as $key => $val) // Important do not use reference as the in_array function goes crazy!
-            {
+            foreach ($value as $key => $val) { // Important do not use reference as the in_array function goes crazy!
                 $valueEscaped[$key] = htmlspecialchars($val);
             }
         }
@@ -385,8 +386,8 @@ class DefaultFormRenderer extends ContainerAware implements FormRenderableInterf
             new \Piotrpolak\Pepiscms\Formbuilder\Component\Image(),
             new \Piotrpolak\Pepiscms\Formbuilder\Component\File(),
             new \Piotrpolak\Pepiscms\Formbuilder\Component\Hidden(),
-            new \Piotrpolak\Pepiscms\Formbuilder\Component\Rtf(FALSE),
-            new \Piotrpolak\Pepiscms\Formbuilder\Component\Rtf(TRUE),
+            new \Piotrpolak\Pepiscms\Formbuilder\Component\Rtf(false),
+            new \Piotrpolak\Pepiscms\Formbuilder\Component\Rtf(true),
             new \Piotrpolak\Pepiscms\Formbuilder\Component\MultipleCheckbox(),
             new \Piotrpolak\Pepiscms\Formbuilder\Component\Date(),
             new \Piotrpolak\Pepiscms\Formbuilder\Component\Timestamp(),
@@ -412,7 +413,7 @@ class DefaultFormRenderer extends ContainerAware implements FormRenderableInterf
     {
         $output_element = '';
         if (!$this->is_js_included) {
-            $this->is_js_included = TRUE;
+            $this->is_js_included = true;
             $output_element .= '<link href="pepiscms/3rdparty/jquery-ui/theme/smoothness/jquery-ui.custom.css" rel="stylesheet" type="text/css"/>' . "\n";
             $output_element .= '<link href="pepiscms/3rdparty/jquery-ui/jquery-ui.timepicker.css" rel="stylesheet" type="text/css"/>' . "\n";
             $output_element .= '<script type="text/javascript" src="pepiscms/3rdparty/jquery-ui/jquery-ui.custom.min.js?v=' . PEPISCMS_VERSION . '"></script>' . "\n";
@@ -452,11 +453,11 @@ class DefaultFormRenderer extends ContainerAware implements FormRenderableInterf
         if (is_callable($formatting_function_for_uneditable)) {
             return call_user_func_array($formatting_function_for_uneditable, array($valueEscaped));
         } else {
-            $output = $this->renderInput($field, $valueEscaped, $object, $component, TRUE);
+            $output = $this->renderInput($field, $valueEscaped, $object, $component, true);
 
             if ($component->shouldRenderHiddenForReadOnly()) {
                 $output .= $this->renderInput($field, $valueEscaped, $object,
-                    new \Piotrpolak\Pepiscms\Formbuilder\Component\Hidden(), FALSE);
+                    new \Piotrpolak\Pepiscms\Formbuilder\Component\Hidden(), false);
             }
 
             return $output;

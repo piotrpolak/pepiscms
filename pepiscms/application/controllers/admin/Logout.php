@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -12,6 +12,8 @@
  * @link                http://www.polak.ro/
  */
 
+defined('BASEPATH') or exit('No direct script access allowed');
+
 /**
  * Logout controller
  */
@@ -20,7 +22,7 @@ class Logout extends AdminController
     public function index()
     {
         Logger::info('Logout', 'LOGIN');
-        $this->auth->logout(TRUE);
+        $this->auth->logout(true);
         redirect(admin_url() . 'login/logout');
     }
 }

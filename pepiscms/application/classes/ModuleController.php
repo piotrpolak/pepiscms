@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -11,6 +11,8 @@
  * @license             See license.txt
  * @link                http://www.polak.ro/
  */
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Parent class for all public controllers (module)
@@ -58,12 +60,12 @@ abstract class ModuleController extends EnhancedController
      * @param bool $return
      * @return bool
      */
-    public function display($view = false, $display_header = true, $display_footer = true, $return = FALSE)
+    public function display($view = false, $display_header = true, $display_footer = true, $return = false)
     {
         $this->benchmark->mark('display_start');
         // Preventing from displaying the same page for several times
         if ($this->already_displayed) {
-            return FALSE;
+            return false;
         }
 
         // If there is no view specified, the default view is index
@@ -76,22 +78,22 @@ abstract class ModuleController extends EnhancedController
         $site_theme_basepath = INSTALLATIONPATH . $this->config->item('theme_path') . $this->config->item('current_theme');
 
         $twig_suffix = '.html.twig';
-        $use_twig = FALSE;
+        $use_twig = false;
 
         // Check if twig suffix is attached to the view string
-        if (strpos($view, $twig_suffix) !== FALSE) {
-            $use_twig = TRUE;
+        if (strpos($view, $twig_suffix) !== false) {
+            $use_twig = true;
         } // Check if the twig file is present for a given view
         elseif (file_exists($views_basepath . $view . $twig_suffix)) {
             $view = $view . $twig_suffix;
-            $use_twig = TRUE;
+            $use_twig = true;
         }
 
 
         // Building document object
         $this->document->setRelativeUrl(str_replace(base_url(), '', current_url()));
         $this->document->setCanonicalAbsoluteUrl(current_url());
-        $this->document->setDefault(FALSE);
+        $this->document->setDefault(false);
 
 
         // Rendering Twig template
@@ -102,7 +104,7 @@ abstract class ModuleController extends EnhancedController
             $output = $this->twig->render($views_basepath . $view, $this->response_attributes);
             CI_Controller::get_instance()->output->set_output($output);
         } else {
-            $this->document->setContents($this->load->theme($views_basepath . $view . '.php', $this->response_attributes, TRUE));
+            $this->document->setContents($this->load->theme($views_basepath . $view . '.php', $this->response_attributes, true));
             $data['document'] = $this->document;
             $this->load->theme($site_theme_basepath . '/index' . '.php', $data);
         }
@@ -112,6 +114,6 @@ abstract class ModuleController extends EnhancedController
         $this->already_displayed = true;
 
         $this->benchmark->mark('display_end');
-        return TRUE;
+        return true;
     }
 }

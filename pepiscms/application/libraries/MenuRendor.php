@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -12,6 +12,8 @@
  * @link                http://www.polak.ro/
  */
 
+defined('BASEPATH') or exit('No direct script access allowed');
+
 /**
  * Menu Rendor used in admin panel
  *
@@ -19,7 +21,7 @@
  */
 class MenuRendor extends ContainerAware
 {
-    private $use_cache = TRUE;
+    private $use_cache = true;
 
     /**
      * Default constructor, empty
@@ -61,7 +63,7 @@ class MenuRendor extends ContainerAware
      * @param bool $pull_submenu_from_controller
      * @return string
      */
-    public function render($controller, $method, $language_code = '', $pull_submenu_from_controller = FALSE)
+    public function render($controller, $method, $language_code = '', $pull_submenu_from_controller = false)
     {
         $menu = $this->config->item('menu');
 
@@ -70,7 +72,7 @@ class MenuRendor extends ContainerAware
         }
 
         // Get currently running module
-        $current_module = isset($this->modulerunner) ? $this->modulerunner->getRunningModuleName() : FALSE;
+        $current_module = isset($this->modulerunner) ? $this->modulerunner->getRunningModuleName() : false;
 
         $cache_var_name = 'menu_c:' . $controller . '_m:' . $method . '_lc:' . $language_code . '_psfc:' . $pull_submenu_from_controller . '_cm:' . $current_module . '_lng:' . $this->lang->getCurrentLanguage();
 
@@ -109,10 +111,10 @@ class MenuRendor extends ContainerAware
             $menu_map_item = $menu_map_item_template; // RESET
 
             // Detecting menu icon
-            $menu_map_item['icon_url'] = isset($item['icon_path']) && $item['icon_path'] ? $item['icon_path'] : FALSE;
+            $menu_map_item['icon_url'] = isset($item['icon_path']) && $item['icon_path'] ? $item['icon_path'] : false;
 
             if ($item['controller'] == $pull_submenu_from_controller || $item['controller'] == $current_module) {
-                $menu_map_item['is_active'] = TRUE;
+                $menu_map_item['is_active'] = true;
             }
 
             if (isset($item['show_label']) && !$item['show_label']) {
@@ -169,7 +171,7 @@ class MenuRendor extends ContainerAware
             $main_menu_modules = array();
             $sub_menu_modules = array();
             foreach ($modules as $module) {
-                if ($module->parent_module_id !== NULL) {
+                if ($module->parent_module_id !== null) {
                     if (!isset($sub_menu_modules[$module->parent_module_id])) {
                         $sub_menu_modules[$module->parent_module_id] = array();
                     }
@@ -232,21 +234,20 @@ class MenuRendor extends ContainerAware
 
                         // The following if prevents 2 elements to be active when $pull_submenu_from_controller is specified
                         if ($pull_submenu_from_controller && $pull_submenu_from_controller == $item['controller']) {
-                            $is_active = TRUE;
+                            $is_active = true;
                         } elseif ($item['controller'] == $controller) {
-                            $is_active = TRUE;
+                            $is_active = true;
                         } else {
-                            $is_active = FALSE;
+                            $is_active = false;
                         }
 
                         if ($is_active && $method == $item['method']) {
-                            $menu_map_item_submenu['is_active'] = TRUE;
+                            $menu_map_item_submenu['is_active'] = true;
                         }
 
                         /* BEGIN Setting URL */
                         if (!$module->name) {
                             $menu_map_item_submenu['url'] = admin_url() . $item['controller'] . '/';
-
                         } elseif (isset($item['module']) && $item['module']) {
                             $menu_map_item_submenu['url'] = module_url($item['module']);
                         } else {
@@ -306,9 +307,9 @@ class MenuRendor extends ContainerAware
         }
         $out = "\n" . $prefix . '<ul' . $ul_class . '>';
         foreach ($menu_items as $menu_item) {
-            $has_submenu = FALSE;
+            $has_submenu = false;
             if (count($menu_item['submenu'])) {
-                $has_submenu = TRUE;
+                $has_submenu = true;
                 $menu_item['extra_css_classes'][] = 'hasSubmenu';
             }
 
@@ -336,5 +337,4 @@ class MenuRendor extends ContainerAware
 
         return $out;
     }
-
 }

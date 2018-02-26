@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PepisCMS
@@ -12,6 +12,8 @@
  * @link                http://www.polak.ro/
  */
 
+defined('BASEPATH') or exit('No direct script access allowed');
+
 /**
  * Deprecated, please use ModuleDescriptableInterface
  *
@@ -19,5 +21,4 @@
  */
 interface ModuleDescriptable extends ModuleDescriptableInterface
 {
-
 }

@@ -14,7 +14,7 @@
 
 namespace Piotrpolak\Pepiscms\Formbuilder\Component;
 
-if (!defined('BASEPATH')) exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * MultipleCheckbox
@@ -38,8 +38,8 @@ class MultipleCheckbox extends AbstractComponent
     {
         $output_element = '';
         if (is_array($field['values'])) {
-            if ($field['input_default_value'] === FALSE) {
-                $field['input_default_value'] = NULL;
+            if ($field['input_default_value'] === false) {
+                $field['input_default_value'] = null;
             }
             $value = $value ? $value : $field['input_default_value'];
             $value = is_array($value) ? array_merge(array(), $value) : array($value);

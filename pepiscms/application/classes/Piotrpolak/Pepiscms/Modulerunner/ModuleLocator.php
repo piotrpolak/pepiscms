@@ -14,7 +14,7 @@
 
 namespace Piotrpolak\Pepiscms\Modulerunner;
 
-if (!defined('BASEPATH')) exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Default module locator
