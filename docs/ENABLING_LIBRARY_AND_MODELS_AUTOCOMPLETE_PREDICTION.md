@@ -1,9 +1,14 @@
 # Enabling library and models autocomplete prediction
 
-Since CodeIgniter dynamically registers libraries and models in a controller, by default you can't benefit from
-IDE autocomplete predictions and method suggestions.
+Autocomplete and method prediction works out of the box for classes that extend either
+[EnhancedController](../../../tree/master/pepiscms/application/classes/EnhancedController.php)
+(all PepisCMS controller types) and [ContainerAware](../../../tree/master/pepiscms/application/classes/ContainerAware.php).
 
-To enable autocomplete predictions for CodeIgniter in PepisCMS you need to:
+This is obtained by adding `@property` annotations to the above mentioned classes.
+
+# Generating project headers manually
+
+To regenerate libraries and models definition and enable autocomplete predictions for CodeIgniter in PepisCMS you need to:
 
 1. Install [Development tools](MODULES.md#development-tools) module and navigate to the module's dashboard
     ![Autocomplete](screens/ENABLING_LIBRARY_AND_MODELS_AUTOCOMPLETE_PREDICTION_1.png)
