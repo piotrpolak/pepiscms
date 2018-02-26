@@ -2,7 +2,7 @@
 
 PepisCMS is installed as a composer dependency and then instantiated in the user directory.
 
-Once composer dependency has been configured downloaded (see below) there are two ways of bootstrapping PepisCMS instance:
+Once composer dependency has been configured and downloaded (see below) there are two ways of bootstrapping PepisCMS instance:
 * [attended](#attended-(user)-installation) (user) and
 * [unattended](#unattended-installation) (manual).
 
