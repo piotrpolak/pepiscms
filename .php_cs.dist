@@ -1,0 +1,17 @@
+<?php
+
+$finder = PhpCsFixer\Finder::create()
+    ->exclude('views')
+    ->exclude('emails')
+    ->exclude('helpers')
+    ->exclude('language')
+    ->exclude('modules')
+    ->exclude('resources')
+    ->in(__DIR__.'/pepiscms');
+
+return PhpCsFixer\Config::create()
+    ->setRules(array(
+        '@PSR2' => true,
+        'array_syntax' => array('syntax' => 'long'),
+    ))
+    ->setFinder($finder);

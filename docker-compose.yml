@@ -26,6 +26,7 @@ services:
       - ./tests:/app/vendor/piotrpolak/pepiscms/tests
       - ./phpunit.xml:/app/vendor/piotrpolak/pepiscms/phpunit.xml
       - ./composer.json:/app/composer.json
+      - ./.php_cs.dist:/app/.php_cs.dist
     build: ./web/
     command: /install.sh
 

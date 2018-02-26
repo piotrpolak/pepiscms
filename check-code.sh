@@ -11,4 +11,7 @@ then
     exit -1
 fi
 
-echo "Everything OK"
+echo "PHP code validation OK"
+
+composer require --dev friendsofphp/php-cs-fixer && ./vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run --stop-on-violation --using-cache=no
+exit $?
