@@ -17,7 +17,7 @@ services:
     links:
       - db
     volumes:
-#      - ./app:/app # Uncomment if you want to preview/edit files
+      - ./app:/app # Uncomment if you want to preview/edit files
 #      - /home/${USER}/.ssh/id_rsa:/root/.ssh/id_rsa # Uncomment if you need to pull any custom composer packages
       - ./pepiscms:/app/vendor/piotrpolak/pepiscms/pepiscms
       - ./features:/app/features

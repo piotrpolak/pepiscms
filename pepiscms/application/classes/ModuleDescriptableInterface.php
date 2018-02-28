@@ -35,14 +35,14 @@ interface ModuleDescriptableInterface
      * @param $language
      * @return string
      */
-    public function getDescription($language); // TODO Not implemented
+    public function getDescription($language);
 
     /**
      * Returns module version
      *
      * @return string
      */
-    public function getVersion(); // TODO Not implemented
+    public function getVersion();
 
     /**
      * Tells whether the module should be displayed in menu
