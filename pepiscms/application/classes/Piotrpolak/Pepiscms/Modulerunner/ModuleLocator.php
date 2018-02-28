@@ -43,6 +43,14 @@ class ModuleLocator implements ModuleLocatorInterface
     /**
      * @inheritDoc
      */
+    public function getWidgetControllerPath($module_name)
+    {
+        return 'controllers/' . ucfirst($module_name) . 'Widget.php';
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getDescriptorPath($module_name)
     {
         return ucfirst($module_name) . 'Descriptor.php';

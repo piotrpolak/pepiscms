@@ -150,16 +150,11 @@ class WidgetRenderer extends ContainerAware
      */
     public function render()
     {
-        $file_suffix = '_widget';
-        $class_suffix = 'Widget';
+        $controller_path = $this->modulepathresolver->getWidgetControllerPath($this->module_name);
 
-        $module_directory = $this->load->resolveModuleDirectory($this->module_name);
-        $controller_file = $this->module_name . $file_suffix . '.php';
-
-        if (file_exists($module_directory . '/' . $controller_file)) {
-            // Including controller class definition
-            include_once($module_directory . '/' . $controller_file);
-            $class = ucfirst($this->module_name) . $class_suffix; // Building class name
+        if ($controller_path) {
+            require_once($controller_path);
+            $class = ucfirst($this->module_name) . 'Widget';
 
             if (class_exists($class)) {
                 if (!in_array(strtolower($this->method), array_map('strtolower', get_class_methods($class)))) {
@@ -193,7 +188,7 @@ class WidgetRenderer extends ContainerAware
                 show_error($error_msg);
             }
         } else {
-            $error_msg = 'Unable to run module ' . $this->module_name . '. Controller file ' . $controller_file . ' not found.';
+            $error_msg = 'Unable to run module ' . $this->module_name . '. Controller file ' . $controller_path . ' not found.';
             Logger::error($error_msg, 'MODULE');
             show_error($error_msg);
         }

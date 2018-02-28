@@ -43,6 +43,14 @@ class LegacyModuleLocator implements ModuleLocatorInterface
     /**
      * @inheritDoc
      */
+    public function getWidgetControllerPath($module_name)
+    {
+        return strtolower($module_name) . '_widget.php';
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getDescriptorPath($module_name)
     {
         return strtolower($module_name) . '_descriptor.php';

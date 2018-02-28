@@ -80,6 +80,26 @@ class ModulePathResolver extends ContainerAware implements \Piotrpolak\Pepiscms\
     /**
      * @inheritdoc
      */
+    public function getWidgetControllerPath($module_name)
+    {
+        $module_directory = $this->load->resolveModuleDirectory($module_name);
+
+        $path = false;
+        foreach ($this->moduleLocators as $moduleLocator) {
+            $resolved_file = $moduleLocator->getWidgetControllerPath($module_name);
+            $resolved_path = $module_directory . '/' . $resolved_file;
+            if (file_exists($resolved_path)) {
+                $path = $resolved_path;
+                break;
+            }
+        }
+
+        return $path;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getDescriptorPath($module_name)
     {
         $module_directory = $this->load->resolveModuleDirectory($module_name);

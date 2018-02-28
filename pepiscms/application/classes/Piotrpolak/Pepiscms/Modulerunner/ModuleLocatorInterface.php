@@ -40,6 +40,14 @@ interface ModuleLocatorInterface
     public function getAdminControllerPath($module_name);
 
     /**
+     * Locates module's widget controller
+     *
+     * @param string $module_name
+     * @return string
+     */
+    public function getWidgetControllerPath($module_name);
+
+    /**
      * Locates module's descriptor
      *
      * @param string $module_name
