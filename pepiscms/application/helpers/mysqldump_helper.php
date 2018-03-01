@@ -46,9 +46,21 @@ if (!function_exists('mysqldump')) {
         system('command -v mysqldump >/dev/null 2>&1', $return_var);
         if ($return_var !== 0) {
             if (class_exists('Logger')) {
-                Logger::warning('mysqldump command not found', 'BACKUP');
+                Logger::warning('mysqldump command not found. Using fallback method. $dump_structure flag will be ignored', 'BACKUP');
             }
-            return false;
+            CI_Controller::get_instance()->load->dbutil();
+            $config = array('format' => 'txt');
+            if (is_array($tables)) {
+                $config['tables'] = $tables;
+            }
+
+            $dump = CI_Controller::get_instance()->dbutil->backup($config);
+
+            if ($dump_to_filename) {
+                return file_put_contents($dump_to_filename, $dump);
+            } else {
+                return $dump;
+            }
         }
 
 

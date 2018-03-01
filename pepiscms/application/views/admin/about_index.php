@@ -38,17 +38,18 @@ $actions = array(
         <ul>
             <li>PepisCMS codebase is cleaned up an the project is released as open source!</li>
             <li>PepisCMS is now Composer compatible and supports Composer autoload!</li>
-            <li>Codebase cleaned up from proprietary code</li>
-            <li>Improved installer and migration scripts</li>
+            <li>Codebase cleaned up from any proprietary code</li>
+            <li>Improved installer and migration scripts, implemented command line unattended installer</li>
             <li>Installation script now reads default values from ENV variables</li>
             <li>Implemented automatic loading of module models upon first use</li>
             <li>Dropped support for Spanish and Romanian languages</li>
-            <li>Dropped support for deprecated Google OpenId authentication</li>
-            <li>Implemented command line installer</li>
             <li>Added basic Behat smoke tests</li>
             <li>Implemented CrudDefinitionBuilder and CrudFieldDefinitionBuilder aiming to simplify CRUD definition setup</li>
-            <li>Improved module generation</li>
+            <li>Improved module generation, implemented new module file structure with fallback to the legacy module structure (pre 1.0.0)</li>
             <li>Fixed file manager previews</li>
+            <li>Improved backup utility now works even without mysqldump command available</li>
+            <li>Implemented fluent API for most used libraries</li>
+            <li>Dropped support for deprecated features</li>
         </ul>
         <h2>0.2.4.4 (04.01.2017)</h2>
         <ul>
