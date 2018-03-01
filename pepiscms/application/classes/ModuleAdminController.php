@@ -149,18 +149,4 @@ abstract class ModuleAdminController extends AdminController
         }
         return true;
     }
-
-    /**
-     * Displays the specified view as PDF.
-     *
-     * @param string|bool $view
-     * @param bool $display_header
-     * @param bool $display_footer
-     */
-    public function displayPDF($view = false, $display_header = true, $display_footer = true)
-    {
-        $this->load->helper('pdf');
-        html_to_pdf($this->display($view, $display_header, $display_footer, true), false, base_url());
-        die();
-    }
 }

@@ -329,7 +329,6 @@ class SecurityPolicy extends ContainerAware
             'getConfigVariables',
             'ModuleAdminController',
             'display',
-            'displayPDF',
             'AdminController',
             'setControllerName',
             'setMethodName',

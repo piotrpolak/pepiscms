@@ -433,33 +433,6 @@ if (!function_exists('button_save')) {
     }
 }
 
-if (!function_exists('button_print')) {
-
-    /**
-     * Helper that generates HTML button for print action
-     *
-     * @param string $printUrl
-     * @param string|bool $label
-     * @param string|bool $labelDownload
-     * @param string|bool $css_class
-     * @return string
-     */
-    function button_print($printUrl, $label = false, $labelDownload = false, $css_class = false)
-    {
-        if (!$label) {
-            $label = CI_Controller::get_instance()->lang->line('global_button_print');
-        }
-        if (!$labelDownload) {
-            $labelDownload = CI_Controller::get_instance()->lang->line('global_button_download_as_pdf');
-        }
-        if (!$css_class) {
-            $css_class = 'doPrint';
-        }
-
-        return '<a class="button popup noappend" href="' . $printUrl . '/print-1" title="' . $label . '"><img src="pepiscms/theme/img/dialog/buttons/print_16.png" alt="">' . $label . '</a> <a class="button" href="' . $printUrl . '" title="' . $labelDownload . '" target="_blank"><img src="pepiscms/theme/img/dialog/buttons/print_pdf_16.png" alt="">' . $labelDownload . '</a>';
-    }
-}
-
 if (!function_exists('dashboard_box')) {
 
     /**

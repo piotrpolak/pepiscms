@@ -46,7 +46,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
  * @property MenuRendor $menurendor
  * @property ModulePathResolver $modulepathresolver
  * @property ModuleRunner $modulerunner
- * @property PDFGenerator $pdfgenerator
  * @property PEPISCMS_Email $email
  * @property PEPISCMS_Form_validation $form_validation
  * @property PEPISCMS_Upload $upload

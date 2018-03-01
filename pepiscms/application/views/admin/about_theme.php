@@ -95,9 +95,6 @@
     <h3>Popup</h3>
     <p>Press <a href="<?= admin_url() ?>about/theme" class="popup" title="Popup window">here to open popup</a> window containing the same page.</p>
 
-    <h3>Printing</h3>
-    <?= button_print('http://static.googleusercontent.com/external_content/untrusted_dlcp/www.google.com/en//googlephone/AndroidUsersGuide-2.3.pdf', 'Print Android 2.3 manual', 'Download Android 2.3 manual as PDF'); ?>
-
     <h3>Messages</h3>
     <?= display_error('Error: PageMaker including versions of Lorem Ipsum!') ?>
     <?= display_warning('Warning: PageMaker including versions of Lorem Ipsum!') ?>
