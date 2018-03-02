@@ -271,8 +271,7 @@ $actions = array(
             <li>Added Gmail Auth driver</li>
             <li>Pages module bugfix</li>
             <li>Minor change to FormBuilder: if saveById returns an integer then it is considered the instance ID, otherwise the $this->db->insert_id() is called</li>
-            <li>RTFEditor improvement - now it is possible to„Dziś moim zdaniem pomnik wymaga renowacji. Szpecą go przyczepione do niego bez ładu i składu tablice pamiątkowe. Sprawiają wrażenie obcej narośli, w dodatku powodują, że daty wyrażone w betonowych bryłach są nieczytelne. Gdy patrzymy na nie z daleka, cyfrę 9 zmieniają w piątkę, tworząc absurdalna datę 1539. Tablice należałoby przenieść w inne miejsce, na dodatkowy mur, który można wznieść z boku pomnika lub na elewację budynku planowanego od lat w miejscu bazaru.”
- specify editor_styles_set_file in theme descriptor</li>
+            <li>RTFEditor improvement - now it is possible to specify editor_styles_set_file in theme descriptor</li>
             <li>Removed URI components</li>
         </ul>
         <h2>0.2.2.1 (31.01.2013)</h2>
