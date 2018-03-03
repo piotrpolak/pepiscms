@@ -105,11 +105,11 @@ class ModuleContext extends \Behat\MinkExtension\Context\RawMinkContext
     /**
      * @When I hit module's :arg1 run URL
      */
-    public function iHitModulesRunUrl($arg1)
+    public function iHitModulesRunUrl($moduleName)
     {
         $this->flushCache();
         sleep(3); // Wait for the cache to be invalidated
-        $this->visitPath('admin/module/run/' . $this->toModuleUrlPath($arg1));
+        $this->visitPath('admin/module/run/' . $this->toModuleUrlPath($moduleName));
     }
 
 
@@ -164,18 +164,18 @@ class ModuleContext extends \Behat\MinkExtension\Context\RawMinkContext
     /**
      * @When I fill the :arg1 field with contents of :arg2
      */
-    public function iFillTheFieldWithContentsOf($arg1, $arg2)
+    public function iFillTheFieldWithContentsOf($textareaId, $relativePath)
     {
         $this->assertSession()->pageTextContains('SQL Console v1.');
-        $path = './docs/sql/' . $arg2;
+        $path = './docs/sql/' . $relativePath;
 
         if (!file_exists($path)) {
             throw new RuntimeException('File ' . $path . ' does not exist on page ' . $this->getSession()->getCurrentUrl());
         }
 
         $contents = file_get_contents($path);
-        $this->assertSession()->elementExists('xpath', $this->textareaSelector($arg1));
-        $this->getSession()->getPage()->find('xpath', $this->textareaSelector($arg1))->setValue($contents);
+        $this->assertSession()->elementExists('xpath', $this->textareaSelector($textareaId));
+        $this->getSession()->getPage()->find('xpath', $this->textareaSelector($textareaId))->setValue($contents);
     }
 
     /**
@@ -194,20 +194,18 @@ class ModuleContext extends \Behat\MinkExtension\Context\RawMinkContext
     /**
      * @Then I should not see :arg1 table in the database table list
      */
-    public function iShouldNotSeeTableInTheDatabaseTableList($arg1)
+    public function iShouldNotSeeTableInTheDatabaseTableList($moduleName)
     {
-        $this->assertSession()->elementNotExists('xpath', $this->tableSelector($arg1));
+        $this->assertSession()->elementNotExists('xpath', $this->tableSelector($moduleName));
     }
-
 
     /**
      * @Then I should see :arg1 table in the database table list
      */
-    public function iShouldSeeTableInTheDatabaseTableList($arg1)
+    public function iShouldSeeTableInTheDatabaseTableList($moduleName)
     {
-        $this->assertSession()->elementExists('xpath', $this->tableSelector($arg1));
+        $this->assertSession()->elementExists('xpath', $this->tableSelector($moduleName));
     }
-
 
     /**
      * @param $moduleName
@@ -236,25 +234,18 @@ class ModuleContext extends \Behat\MinkExtension\Context\RawMinkContext
         return '//*[@id="content"]//ul/li/a[normalize-space()="' . $moduleName . '"]';
     }
 
-    private function dumpCurrent()
-    {
-        echo $this->getSession()->getCurrentUrl() . "\n\n";
-        echo $this->getSession()->getPage()->getHtml();
-//        die();
-    }
-
     private function flushCache()
     {
         $this->visitPath('/admin/utilities/flush_system_cache');
     }
 
     /**
-     * @param $arg1
+     * @param $id
      * @return string
      */
-    private function textareaSelector($arg1)
+    private function textareaSelector($id)
     {
-        return '//textarea[@id="' . $arg1 . '"]';
+        return '//textarea[@id="' . $id . '"]';
     }
 
     /**
@@ -266,12 +257,12 @@ class ModuleContext extends \Behat\MinkExtension\Context\RawMinkContext
     }
 
     /**
-     * @param $arg1
+     * @param $tableName
      * @return string
      */
-    private function tableSelector($arg1)
+    private function tableSelector($tableName)
     {
-        return '//li[@class="has_items"]/a[text()="' . $arg1 . '"]';
+        return '//li[@class="has_items"]/a[text()="' . $tableName . '"]';
     }
 
 }
