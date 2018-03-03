@@ -25,10 +25,24 @@ class ModuleContext extends \Behat\MinkExtension\Context\RawMinkContext
     /**
      * @When I select module :arg1 mode
      */
-    public function iSelectModuleMode($moduleName)
+    public function iSelectModuleMode($mode)
     {
-        $this->getSession()->getPage()->checkField($moduleName);
-        $this->assertSession()->checkboxChecked($moduleName);
+        $this->getSession()->getPage()->checkField($mode);
+        $this->getSession()->getPage()->uncheckField('is_displayed_in_utilities');
+        $this->assertSession()->checkboxChecked($mode);
+        $this->assertSession()->checkboxNotChecked('is_displayed_in_utilities');
+        $this->getSession()->getPage()->pressButton('Save and close');
+    }
+
+    /**
+     * @When I select module :arg1 and :arg2 mode
+     */
+    public function iSelectModuleAndMode($mode1, $mode2)
+    {
+        $this->getSession()->getPage()->checkField($mode1);
+        $this->assertSession()->checkboxChecked($mode1);
+        $this->getSession()->getPage()->checkField($mode2);
+        $this->assertSession()->checkboxChecked($mode2);
         $this->getSession()->getPage()->pressButton('Save and close');
     }
 
@@ -37,7 +51,7 @@ class ModuleContext extends \Behat\MinkExtension\Context\RawMinkContext
      */
     public function theModuleShouldBeDisplayedInMenu($moduleName)
     {
-        assert($this->getSession()->getPage()->find('xpath', '//ul/li//*[text()="' . $moduleName . '"]') != null);
+        $this->assertSession()->elementExists('xpath', $this->getModuleMenuSelector($moduleName));
     }
 
     /**
@@ -45,7 +59,7 @@ class ModuleContext extends \Behat\MinkExtension\Context\RawMinkContext
      */
     public function iNavigateToPageDisplayingInstalledModules()
     {
-        $this->getSession()->visit('/admin/module');
+        $this->visitPath('/admin/module');
     }
 
     /**
@@ -65,6 +79,199 @@ class ModuleContext extends \Behat\MinkExtension\Context\RawMinkContext
      */
     public function theModuleShouldBeNotDisplayedInMenuAnymore($moduleName)
     {
-        assert($this->getSession()->getPage()->find('xpath', '//ul/li//*[text()="' . $moduleName . '"]') === null);
+        $this->assertSession()->elementNotExists('xpath', $this->getModuleMenuSelector($moduleName));
     }
+
+    /**
+     * @When I run module :arg1
+     */
+    public function iRunModule($moduleName)
+    {
+        $this->flushCache();
+        sleep(3); // Wait for the cache to be invalidated
+        $path = $this->getModuleMenuSelector($moduleName);
+        $this->getSession()->getPage()->getHtml();
+        $element = $this->getSession()->getPage()->find('xpath', $path);
+        if ($element == null) {
+            $this->flushCache();
+            $element = $this->getSession()->getPage()->find('xpath', $this->getUtilitiesModuleSelector($moduleName));
+        }
+        if ($element == null) {
+            throw new RuntimeException("Unable to run module $moduleName");
+        }
+        $element->click();
+    }
+
+    /**
+     * @When I hit module's :arg1 run URL
+     */
+    public function iHitModulesRunUrl($arg1)
+    {
+        $this->flushCache();
+        sleep(3); // Wait for the cache to be invalidated
+        $this->visitPath('admin/module/run/' . $this->toModuleUrlPath($arg1));
+    }
+
+
+    /**
+     * @Then the module :arg1 should be runnable
+     */
+    public function theModuleShouldBeRunnable($moduleName)
+    {
+        $this->flushCache();
+        sleep(3); // Wait for the cache to be invalidated
+        $this->assertSession()->pageTextContains($moduleName);
+        $this->assertSession()->statusCodeEquals(200);
+    }
+
+    /**
+     * @Then the module :arg1 should not be runnable
+     */
+    public function theModuleShouldNotBeRunnable($moduleName)
+    {
+        $this->assertSession()->pageTextNotContains($moduleName);
+        $this->assertSession()->pageTextContains('404');
+        $this->assertSession()->statusCodeEquals(404);
+    }
+
+    /**
+     * @Then the module :arg1 should not be displayed in utilities
+     */
+    public function theModuleShouldNotBeDisplayedInUtilities($moduleName)
+    {
+        $this->getSession()->visit('/admin/utilities');
+        $this->assertSession()->elementNotExists('xpath', $this->getUtilitiesModuleSelector($moduleName));
+    }
+
+    /**
+     * @Then the module :arg1 should be displayed in utilities
+     */
+    public function theModuleShouldBeDisplayedInUtilities($moduleName)
+    {
+        $this->getSession()->visit('/admin/utilities');
+        $this->assertSession()->elementExists('xpath', $this->getUtilitiesModuleSelector($moduleName));
+    }
+
+    /**
+     * @When I navigate to :arg1 module from menu
+     */
+    public function iNavigateToModuleFromMenu($moduleName)
+    {
+        $this->visitPath('/admin/utilities');
+        $this->getSession()->getPage()->clickLink($moduleName);
+    }
+
+    /**
+     * @When I fill the :arg1 field with contents of :arg2
+     */
+    public function iFillTheFieldWithContentsOf($arg1, $arg2)
+    {
+        $this->assertSession()->pageTextContains('SQL Console v1.');
+        $path = './docs/sql/' . $arg2;
+
+        if (!file_exists($path)) {
+            throw new RuntimeException('File ' . $path . ' does not exist on page ' . $this->getSession()->getCurrentUrl());
+        }
+
+        $contents = file_get_contents($path);
+        $this->assertSession()->elementExists('xpath', $this->textareaSelector($arg1));
+        $this->getSession()->getPage()->find('xpath', $this->textareaSelector($arg1))->setValue($contents);
+    }
+
+    /**
+     * @When I press :arg1
+     */
+    public function iPress($arg1)
+    {
+        $this->assertSession()->elementExists('xpath', $this->submitSelector());
+        $element = $this->getSession()->getPage()->find('xpath', $this->submitSelector());
+        if (!$element) {
+            throw new RuntimeException('Button ' . $arg1 . ' does not exists!');
+        }
+        $element->press();
+    }
+
+    /**
+     * @Then I should not see :arg1 table in the database table list
+     */
+    public function iShouldNotSeeTableInTheDatabaseTableList($arg1)
+    {
+        $this->assertSession()->elementNotExists('xpath', $this->tableSelector($arg1));
+    }
+
+
+    /**
+     * @Then I should see :arg1 table in the database table list
+     */
+    public function iShouldSeeTableInTheDatabaseTableList($arg1)
+    {
+        $this->assertSession()->elementExists('xpath', $this->tableSelector($arg1));
+    }
+
+
+    /**
+     * @param $moduleName
+     * @return string
+     */
+    private function toModuleUrlPath($moduleName)
+    {
+        return trim(strtolower(str_replace(' ', '', $moduleName)));
+    }
+
+    /**
+     * @param $moduleName
+     * @return string
+     */
+    private function getModuleMenuSelector($moduleName)
+    {
+        return '//*[@id="primary_navigation"]//ul/li//span[text()="' . $moduleName . '"]/..';
+    }
+
+    /**
+     * @param $moduleName
+     * @return string
+     */
+    private function getUtilitiesModuleSelector($moduleName)
+    {
+        return '//*[@id="content"]//ul/li/a[normalize-space()="' . $moduleName . '"]';
+    }
+
+    private function dumpCurrent()
+    {
+        echo $this->getSession()->getCurrentUrl() . "\n\n";
+        echo $this->getSession()->getPage()->getHtml();
+//        die();
+    }
+
+    private function flushCache()
+    {
+        $this->visitPath('/admin/utilities/flush_system_cache');
+    }
+
+    /**
+     * @param $arg1
+     * @return string
+     */
+    private function textareaSelector($arg1)
+    {
+        return '//textarea[@id="' . $arg1 . '"]';
+    }
+
+    /**
+     * @return string
+     */
+    private function submitSelector()
+    {
+        return '//input[@type="submit"]';
+    }
+
+    /**
+     * @param $arg1
+     * @return string
+     */
+    private function tableSelector($arg1)
+    {
+        return '//li[@class="has_items"]/a[text()="' . $arg1 . '"]';
+    }
+
 }

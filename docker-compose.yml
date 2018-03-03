@@ -21,6 +21,7 @@ services:
 #      - /home/${USER}/.ssh/id_rsa:/root/.ssh/id_rsa # Uncomment if you need to pull any custom composer packages
       - ./pepiscms:/app/vendor/piotrpolak/pepiscms/pepiscms
       - ./features:/app/features
+      - ./docs:/app/docs
       - ./behat.yml:/app/behat.yml
       - ./composer.json:/app/vendor/piotrpolak/pepiscms/composer.json
       - ./tests:/app/vendor/piotrpolak/pepiscms/tests
