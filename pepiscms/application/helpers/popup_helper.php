@@ -28,8 +28,8 @@ if (!function_exists('popup_close_html')) {
 				<head>
 					<base href="' . base_url() . '" />
 					<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-					<script type="text/javascript" src="' . base_url() . 'pepiscms/3rdparty/jquery/jquery.min.js"></script>
-					<script type="text/javascript" src="' . base_url() . 'pepiscms/js/popup.js?v=' . PEPISCMS_VERSION . '"></script>
+					<script src="' . base_url() . 'pepiscms/3rdparty/jquery/jquery.min.js"></script>
+					<script src="' . base_url() . 'pepiscms/js/popup.js?v=' . PEPISCMS_VERSION . '"></script>
 				</head>
 				<body class="popup"><span class="popup_close"></span></body></html>';
 

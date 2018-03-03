@@ -99,4 +99,4 @@ if (!$is_editable): $disabled = ' disabled="disabled"'; ?>
     <?php endif; ?>
 </form>
 
-<script type="text/javascript" src="<?=module_resources_url('cms_groups')?>cms_groups.js?v=<?= PEPISCMS_VERSION ?>"></script>
+<script src="<?=module_resources_url('cms_groups')?>cms_groups.js?v=<?= PEPISCMS_VERSION ?>"></script>

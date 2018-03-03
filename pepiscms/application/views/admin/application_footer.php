@@ -5,7 +5,7 @@
 <?php if (!$popup_layout): ?>
     <?php if ($this->auth->isAuthorized()): ?>		
         <footer>
-            <p class="rFloated"><span><?php if ($this->config->item('cms_customization_support_line')): ?><?= $this->config->item('cms_customization_support_line') ?></span><?php endif; ?><?php if ($this->config->item('cms_customization_support_link')): ?> <a href="<?= $this->config->item('cms_customization_support_link') ?>" title="Help">Help</a><?php endif; ?></p>
+            <p class="rFloated"><span><?php if ($this->config->item('cms_customization_support_line')): ?><?= $this->config->item('cms_customization_support_line') ?><?php endif; ?><?php if ($this->config->item('cms_customization_support_link')): ?> <a href="<?= $this->config->item('cms_customization_support_link') ?>" title="Help">Help</a><?php endif; ?></span></p>
             <p>PepisCMS <?= PEPISCMS_VERSION ?>
                 <span class="separable">
                     <a href="<?= admin_url() ?>about"><?= $lang->line('about_the_system') ?></a>

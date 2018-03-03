@@ -82,10 +82,10 @@ class CKEditorDriver extends DefaultRTEditorDriver
         $r = '';
         if (!$this->js_included) {
             $this->js_included = true;
-            $r = '<script type="text/javascript" src="pepiscms/3rdparty/ckeditor/ckeditor.js"></script>' . "\n";
+            $r = '<script src="pepiscms/3rdparty/ckeditor/ckeditor.js"></script>' . "\n";
         }
         $r .= '<textarea id="' . $instance . '" name="' . $instance . '" class="rte">' . htmlspecialchars($text) . '</textarea>' . "\n";
-        $r .= '<script type="text/javascript">' . "\n";
+        $r .= '<script>' . "\n";
 
         foreach ($this->config as $key => $value) {
             $r .= "\t" . 'CKEDITOR.config.' . $key . ' = "' . $value . '";' . "\n";

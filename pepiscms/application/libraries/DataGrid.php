@@ -927,11 +927,11 @@ class DataGrid extends ContainerAware
                 if (!$this->is_date_js_included) {
                     $this->is_date_js_included = true;
                     $filters_output .= '<link href="pepiscms/3rdparty/jquery-ui/theme/smoothness/jquery-ui.custom.css" rel="stylesheet" type="text/css">' . "\n";
-                    $filters_output .= '<script type="text/javascript" src="pepiscms/3rdparty/jquery-ui/jquery-ui.custom.min.js?v=' . PEPISCMS_VERSION . '"></script>' . "\n";
+                    $filters_output .= '<script src="pepiscms/3rdparty/jquery-ui/jquery-ui.custom.min.js?v=' . PEPISCMS_VERSION . '"></script>' . "\n";
                 }
 
                 $filters_output .= '<div class="date_selector"><input type="text" name="filters[' . $filter_key . ']" id="filter_' . $filter_key . '" value="' . $current_filter_values[0] . '" class="text date" maxlength="8" size="8"><a href="#" id="filter_clear_' . $filter_key . '" title="' . $this->lang->line('datagrid_clear_date_filter') . '"><img src="pepiscms/theme/img/dialog/actions/delete_16.png" alt="remove"></a></div>' . "\n";
-                $filters_output .= '<script type="text/javascript">$("#filter_' . $filter_key . '").datepicker({dateFormat: "yy-mm-dd" });' . "\n";
+                $filters_output .= '<script>$("#filter_' . $filter_key . '").datepicker({dateFormat: "yy-mm-dd" });' . "\n";
 
                 // The following line might cause some errors when using multiple forms on a single page
                 $filters_output .= '$("#filter_clear_' . $filter_key . '").click(function(event) { event.stopPropagation();	event.preventDefault(); $("#filter_' . $filter_key . '").val(""); $(".filter_form").submit();});</script>' . "\n";

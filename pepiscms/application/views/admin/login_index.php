@@ -1,6 +1,6 @@
 <?php include('application_header.php'); ?>
 
-<script type="text/javascript">
+<script>
     <!--
 $('document').ready(function() {
 <?php if ($user_email): ?>

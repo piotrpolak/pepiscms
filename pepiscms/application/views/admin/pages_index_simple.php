@@ -31,7 +31,7 @@ function formatCells($menu, $level = 1, &$lang, &$url_suffix, $site_language)
     }
 }
 ?>
-<script language="javascript" type="text/javascript" src="pepiscms/js/pages_search.js?v=<?= PEPISCMS_VERSION ?>"></script>
+<script language="javascript" src="pepiscms/js/pages_search.js?v=<?= PEPISCMS_VERSION ?>"></script>
 
 <?php if($site_language): ?>
 

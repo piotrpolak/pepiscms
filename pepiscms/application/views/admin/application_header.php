@@ -12,23 +12,23 @@
 
         <?php /* <link rel="stylesheet" type="text/css" href="pepiscms/theme/grey/css/style.css?v=<?=PEPISCMS_VERSION?>" media="screen"> */ ?>
 
-        <script type="text/javascript" src="pepiscms/3rdparty/jquery/jquery.min.js"></script>
+        <script src="pepiscms/3rdparty/jquery/jquery.min.js"></script>
 
         <link rel="stylesheet" type="text/css" href="pepiscms/3rdparty/colorbox/theme/colorbox.css" media="screen">
-        <script type="text/javascript" src="pepiscms/3rdparty/colorbox/jquery.colorbox-min.js"></script>
+        <script src="pepiscms/3rdparty/colorbox/jquery.colorbox-min.js"></script>
 
         <!-- qTip2 -->
         <link rel="stylesheet" type="text/css" href="pepiscms/3rdparty/qtip2/jquery.qtip.min.css" media="screen">
-        <script type="text/javascript" src="pepiscms/3rdparty/qtip2/jquery.qtip.min.js"></script>
+        <script src="pepiscms/3rdparty/qtip2/jquery.qtip.min.js"></script>
 
         <link rel="stylesheet" href="pepiscms/3rdparty/jqueryvalidation/css/validationEngine.jquery.css?v=<?= PEPISCMS_VERSION ?>" type="text/css"/>
-        <script type="text/javascript" charset="utf-8" src="pepiscms/3rdparty/jqueryvalidation/js/languages/jquery.validationEngine-<?= $this->lang->getAdminLanguageCode() ?>.js?v=<?= PEPISCMS_VERSION ?>"></script>
-        <script type="text/javascript" src="pepiscms/3rdparty/jqueryvalidation/js/jquery.validationEngine.js?v=<?= PEPISCMS_VERSION ?>"></script>
+        <script src="pepiscms/3rdparty/jqueryvalidation/js/languages/jquery.validationEngine-<?= $this->lang->getAdminLanguageCode() ?>.js?v=<?= PEPISCMS_VERSION ?>"></script>
+        <script src="pepiscms/3rdparty/jqueryvalidation/js/jquery.validationEngine.js?v=<?= PEPISCMS_VERSION ?>"></script>
 
-        <script type="text/javascript" src="pepiscms/js/jquery.frontend.js?v=<?= PEPISCMS_VERSION ?>"></script>
+        <script src="pepiscms/js/jquery.frontend.js?v=<?= PEPISCMS_VERSION ?>"></script>
 
-        <script type="text/javascript" src="pepiscms/js/popup.js?v=<?= PEPISCMS_VERSION ?>"></script>
-        <script type="text/javascript" src="pepiscms/js/formvalidation.js?v=<?= PEPISCMS_VERSION ?>"></script>
+        <script src="pepiscms/js/popup.js?v=<?= PEPISCMS_VERSION ?>"></script>
+        <script src="pepiscms/js/formvalidation.js?v=<?= PEPISCMS_VERSION ?>"></script>
 
         <!--[if IE]>
                 <link rel="stylesheet" type="text/css" href="pepiscms/theme/default/css/ie.css" media="screen">
@@ -112,7 +112,7 @@
                 <p><?= $this->lang->line('session_expires_in_min') ?> <span class="left">{min}</span>. <a href="<?= admin_url() ?>" class="refresh"><?= $this->lang->line('session_expires_refresh') ?></a></p>
             </div>
 
-            <script type="text/javascript">
+            <script>
                 var sessionNowUTC = <?= time() ?>;
                 var sessionTimeoutUTC = <?= $this->auth->getExpirationTimestamp() ?>;
                 var adminUrl = '<?= admin_url() ?>';

@@ -10,4 +10,4 @@
 
 <?= $form ?>
 
-<script type="text/javascript" src="pepiscms/js/setup.js?v=<?= PEPISCMS_VERSION ?>"></script>
+<script src="pepiscms/js/setup.js?v=<?= PEPISCMS_VERSION ?>"></script>

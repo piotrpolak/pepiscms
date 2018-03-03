@@ -45,8 +45,8 @@ class TinyMCEEditorDriver extends DefaultRTEditorDriver
     {
         $this->setConfig('height', $height);
 
-        $r = '<script type="text/javascript" src="pepiscms/3rdparty/tiny_mce/tiny_mce.js"></script>' . "\n";
-        $r .= '<script type="text/javascript">' . "\n";
+        $r = '<script src="pepiscms/3rdparty/tiny_mce/tiny_mce.js"></script>' . "\n";
+        $r .= '<script>' . "\n";
         $r .= 'tinyMCE.init({' . "\n";
         foreach ($this->config as $key => $value) {
             $r .= "\t" . $key . ' : "' . $value . '",' . "\n";

@@ -46,6 +46,6 @@ class Date extends AbstractComponent
     {
         return '<input type="text" name="' . $field['field'] . '" id="' . $field['field'] . '" value="' .
             $valueEscaped . '" class="text date' . $extra_css_classes . '" />' .
-            '<script type="text/javascript">$("#' . $field['field'] . '").datepicker({dateFormat: "yy-mm-dd", changeYear: true, changeMonth: true, yearRange: \'' . (date('Y') - 100) . ':c+10\' });</script>';
+            '<script>$("#' . $field['field'] . '").datepicker({dateFormat: "yy-mm-dd", changeYear: true, changeMonth: true, yearRange: \'' . (date('Y') - 100) . ':c+10\' });</script>';
     }
 }

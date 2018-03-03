@@ -70,8 +70,8 @@ class Google_chart_helper
         }
         $this->is_js_included = true;
 
-        return '<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-<script type="text/javascript">
+        return '<script src="https://www.google.com/jsapi"></script>
+<script>
 google.load("visualization", "1", {packages: ["corechart"]});
 </script>';
     }
@@ -90,7 +90,7 @@ google.load("visualization", "1", {packages: ["corechart"]});
         $id = $this->generateId('pie_chart');
 
         $out = $this->includeJavaScripts();
-        $out .= '<script type="text/javascript">' . "\n";
+        $out .= '<script>' . "\n";
         $out .= 'function visualization_draw_' . $id . '() {' . "\n";
         $out .= '	var data = new google.visualization.DataTable();' . "\n";
         $out .= '	data.addColumn("string", "");' . "\n";
@@ -154,7 +154,7 @@ google.load("visualization", "1", {packages: ["corechart"]});
         $id = $this->generateId('line_chart');
 
         $out = $this->includeJavaScripts();
-        $out .= '<script type="text/javascript">' . "\n";
+        $out .= '<script>' . "\n";
         $out .= 'function visualization_draw_' . $id . '() {' . "\n";
         $out .= '	var data = new google.visualization.DataTable();' . "\n";
         $out .= '	data.addColumn("' . $column1_data_type . '", "' . $collumn1_desc . '");' . "\n";
@@ -227,7 +227,7 @@ google.load("visualization", "1", {packages: ["corechart"]});
         $id = $this->generateId('column_chart');
 
         $out = $this->includeJavaScripts();
-        $out .= '<script type="text/javascript">' . "\n";
+        $out .= '<script>' . "\n";
         $out .= 'function visualization_draw_' . $id . '() {' . "\n";
         $out .= '	var data = new google.visualization.DataTable();' . "\n";
         $out .= '	data.addColumn("' . $column1_data_type . '", "' . $collumn1_desc . '");' . "\n";

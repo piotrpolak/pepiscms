@@ -46,6 +46,6 @@ class Timestamp extends AbstractComponent
     {
         return '<input type="text" name="' . $field['field'] . '" id="' . $field['field'] . '" value="' .
             $valueEscaped . '" class="text date' . $extra_css_classes . '" />' .
-            '<script type="text/javascript">$("#' . $field['field'] . '").datetimepicker({dateFormat: "yy-mm-dd", timeFormat: "HH:mm:ss", changeYear: true, changeMonth: true, yearRange: \'' . (date('Y') - 100) . ':c+10\' });</script>';
+            '<script>$("#' . $field['field'] . '").datetimepicker({dateFormat: "yy-mm-dd", timeFormat: "HH:mm:ss", changeYear: true, changeMonth: true, yearRange: \'' . (date('Y') - 100) . ':c+10\' });</script>';
     }
 }

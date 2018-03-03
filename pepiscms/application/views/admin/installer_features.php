@@ -5,7 +5,7 @@
 
 <?=$this->formbuilder->generate()?>
 
-<script type="text/javascript">
+<script>
     $(document).ready(function() {
 
         var $defaultLanguageSelect = $('#default_language');

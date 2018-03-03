@@ -117,7 +117,7 @@ function formatCells($menu, $level = 1, &$lang, &$url_suffix, $site_language, $v
 }
 ?>
 <?php if($site_language): ?>
-    <script language="javascript" type="text/javascript" src="pepiscms/js/pages_search.js?v=<?= PEPISCMS_VERSION ?>"></script>
+    <script language="javascript" src="pepiscms/js/pages_search.js?v=<?= PEPISCMS_VERSION ?>"></script>
 
     <div class="lFloated">
         <?= display_breadcrumb(array(admin_url() . 'pages/index/language_code-' . $site_language->code . '/view-' . $view => $this->lang->line('pages_module_name')), 'pepiscms/theme/img/pages/page_white_world_32.png') ?>

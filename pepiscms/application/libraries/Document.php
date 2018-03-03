@@ -332,7 +332,7 @@ class Document extends ContainerAware
 
         if (count($this->page_javascript)) {
             foreach ($this->page_javascript as $item) {
-                $code .= '<script src="' . site_theme_url() . $item . '" type="text/javascript"></script>' . "\n";
+                $code .= '<script src="' . site_theme_url() . $item . '"></script>' . "\n";
             }
         }
 

@@ -193,6 +193,6 @@
 
 <?php endif; ?>
 
-<script type="text/javascript">
+<script>
     ppLib_2.applyOvTitle('.overlay_window', 'Siała baba mak...', 'pepiscms/theme/img/ajaxfilemanager/folder_16.png');
 </script>

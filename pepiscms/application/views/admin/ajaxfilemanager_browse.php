@@ -1,16 +1,16 @@
 <?php if ($is_editor): ?>
-    <script type="text/javascript">
+    <script>
         self.resizeTo(1000, 700);
         self.moveTo((screen.width - 1000) / 2, (screen.height - 700) / 2);
     </script>
 <?php endif; ?>
 
-<script type="text/javascript" src="pepiscms/3rdparty/ajaxupload/ajaxupload.js?v=<?=PEPISCMS_VERSION?>"></script>
-<script type="text/javascript" src="pepiscms/js/fileicon.js?v=<?=PEPISCMS_VERSION?>"></script>
-<script type="text/javascript" src="pepiscms/js/ajaxfilemanager.js?v=<?=PEPISCMS_VERSION?>"></script>
+<script src="pepiscms/3rdparty/ajaxupload/ajaxupload.js?v=<?=PEPISCMS_VERSION?>"></script>
+<script src="pepiscms/js/fileicon.js?v=<?=PEPISCMS_VERSION?>"></script>
+<script src="pepiscms/js/ajaxfilemanager.js?v=<?=PEPISCMS_VERSION?>"></script>
 
 <link href="pepiscms/3rdparty/jquery-ui/theme/smoothness/jquery-ui.custom.css" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="pepiscms/3rdparty/jquery-ui/jquery-ui.custom.min.js?v=<?=PEPISCMS_VERSION?>"></script>
+<script src="pepiscms/3rdparty/jquery-ui/jquery-ui.custom.min.js?v=<?=PEPISCMS_VERSION?>"></script>
 
 	
 <div id="whereami">
@@ -110,7 +110,7 @@
     </form>
 </div>
 
-<script type="text/javascript">
+<script>
 
 	<?php foreach( $upload_allowed_types as &$ext) { $ext = '"'.$ext.'"'; } ?>
 	var fmi = new FileManagerUI( {label_new_folder_name : "<?=$this->lang->line('filemanager_label_new_folder_name')?>", label_new_file_name_for : "<?=$this->lang->line('filemanager_label_new_file_name_for')?>", label_loading_list_of_files : "<?=$this->lang->line('filemanager_label_loading_list_of_files')?>"}, <?=$this->config->item('cms_intranet') ? 'true' : 'false' ?> );

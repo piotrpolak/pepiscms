@@ -46,6 +46,6 @@ class Colorpicker extends AbstractComponent
     {
         return '<input type="text" name="' . $field['field'] . '" id="' . $field['field'] . '" value="' . $valueEscaped .
             '" class="text corolpicker ' . $extra_css_classes . '" maxlength="6" size="6" />' .
-            '<script type="text/javascript">$("#' . $field['field'] . '").colpick({layout:"hex", onChange:function(hsb,hex,rgb,el,bySetColor){$(el).css("border-right", "solid 20px #"+hex);if(!bySetColor) $(el).val(hex);},onSubmit:function(hsb,hex,rgb,el) {$(el).css("border-right", "solid 20px #"+hex);$(el).colpickHide();}}).keyup(function(){$(this).colpickSetColor(this.value);}).css("border-right", "solid 20px #"+$("#' . $field['field'] . '").val());</script>';
+            '<script>$("#' . $field['field'] . '").colpick({layout:"hex", onChange:function(hsb,hex,rgb,el,bySetColor){$(el).css("border-right", "solid 20px #"+hex);if(!bySetColor) $(el).val(hex);},onSubmit:function(hsb,hex,rgb,el) {$(el).css("border-right", "solid 20px #"+hex);$(el).colpickHide();}}).keyup(function(){$(this).colpickSetColor(this.value);}).css("border-right", "solid 20px #"+$("#' . $field['field'] . '").val());</script>';
     }
 }
