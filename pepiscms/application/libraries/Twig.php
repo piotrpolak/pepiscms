@@ -24,6 +24,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
  */
 class Twig extends ContainerAware
 {
+    /**
+     * @var Twig_Environment
+     */
     private static $twig_instance = null;
 
     /**

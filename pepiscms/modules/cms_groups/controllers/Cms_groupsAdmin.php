@@ -123,7 +123,7 @@ class Cms_groupsAdmin extends ModuleAdminController
                     $this->simplesessionmessage->setMessage('global_header_success');
                 } else {
                     // Validation ok
-                    $id = $this->Group_model->insertGroup($_POST['display_name'], $access);
+                    $this->Group_model->insertGroup($_POST['display_name'], $access);
                     $this->simplesessionmessage->setMessage($this->module_name . '_dialog_group_added_success');
                 }
                 if (!isset($_POST['apply'])) {

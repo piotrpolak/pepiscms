@@ -71,9 +71,11 @@ class PEPISCMS_Loader extends CI_Loader
      */
     public function theme($path, $vars = array(), $return = false)
     {
+        // In CodeIgniter < 3.1 _ci_prepare_view_vars was called _ci_object_to_array
+        $ci_vars = $this->_ci_prepare_view_vars($vars);
         return $this->_ci_load(array(
                 '_ci_path' => $path,
-                '_ci_vars' => $this->_ci_prepare_view_vars($vars),
+                '_ci_vars' => $ci_vars,
                 '_ci_return' => $return)
         );
     }

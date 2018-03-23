@@ -351,7 +351,7 @@ class Cms_usersAdmin extends AdminCRUDController
                     $is_root = true;
                 }
 
-                $user_id = $this->User_model->register($data['display_name'], strtolower($data['user_email']), strtolower($data['user_login']), $password, $groups_ids, $is_root, $data['send_email_notification'], $data);
+                $this->User_model->register($data['display_name'], strtolower($data['user_email']), strtolower($data['user_login']), $password, $groups_ids, $is_root, $data['send_email_notification'], $data);
 
                 $this->simplesessionmessage->setMessage('cms_users_dialog_user_registered_success');
                 return true;

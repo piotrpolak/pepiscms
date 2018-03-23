@@ -1405,8 +1405,6 @@ abstract class AdminCRUDController extends ModuleAdminController
         $out .= '<span class="description">';
         $description = $this->getCompiledDescription($content, $line);
 
-        $title_prefix = ($title ? $title . ' - ' : '');
-
         /* Actions */
         $action_out = '';
         $running_module = $this->getAttribute('running_module');

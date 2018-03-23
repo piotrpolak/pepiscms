@@ -231,7 +231,7 @@ class SSH_model extends Array_model
         } catch (Exception $e) {
             // Logging and parsing exception
             Logger::warning($e->getMessage(), 'SSH');
-            show_error($e->getMessage()); // TODO Throw exception as PepisCMS 0.25
+            show_error($e->getMessage()); // TODO Throw exception as PepisCMS 0.2.5
         }
 
         // Parsing command output
