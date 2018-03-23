@@ -1382,7 +1382,7 @@ abstract class AdminCRUDController extends ModuleAdminController
 
                 $image_out = '<img class="image" src="' . $image_path . '" alt="" />';
             } elseif (is_callable($this->meta_image_field)) {
-                $image_field_name = call_user_func_array($this->meta_image_field, array($content, $line));
+                $image_field_name = call_user_func_array($this->meta_image_field, array($content, &$line));
                 if ($image_field_name) {
                     $image_out = '<img class="image" src="' . admin_url() . 'ajaxfilemanager/absolutethumb/50/' . $this->meta_image_base_url . $image_field_name . '" alt="" />';
                 } else {
@@ -1426,13 +1426,13 @@ abstract class AdminCRUDController extends ModuleAdminController
 
         foreach ($this->datagrid_meta_actions as &$action) {
             if (is_callable($action['label_pattern'])) {
-                $label = call_user_func_array($action['label_pattern'], array($content, $line));
+                $label = call_user_func_array($action['label_pattern'], array($content, &$line));
             } else {
                 $label = PatternCompiler::compile($action['label_pattern'], $line, $action['label_pattern_keys']);
             }
 
             if (is_callable($action['link_pattern'])) {
-                $link = call_user_func_array($action['link_pattern'], array($content, $line));
+                $link = call_user_func_array($action['link_pattern'], array($content, &$line));
                 if (!$link) {
                     continue;
                 }
@@ -1475,7 +1475,7 @@ abstract class AdminCRUDController extends ModuleAdminController
             return '';
         }
         if (is_callable($this->meta_title_pattern)) {
-            $title = call_user_func_array($this->meta_title_pattern, array($content, $line));
+            $title = call_user_func_array($this->meta_title_pattern, array($content, &$line));
         } else {
             $title = PatternCompiler::compile($this->meta_title_pattern, $line, $this->meta_title_pattern_keys);
         }
@@ -1498,11 +1498,11 @@ abstract class AdminCRUDController extends ModuleAdminController
 
         if (!$this->meta_description_pattern) {
             // description_pattern_callback was previously defined
-            $title = call_user_func_array($this->meta_description_pattern_callback, array($content, $line));
+            $title = call_user_func_array($this->meta_description_pattern_callback, array($content, &$line));
         } else {
             $title = PatternCompiler::compile($this->meta_description_pattern, $line, $this->meta_description_pattern_keys);
             if ($this->meta_description_pattern_callback) {
-                $title = call_user_func_array($this->meta_description_pattern_callback, array($title, $line));
+                $title = call_user_func_array($this->meta_description_pattern_callback, array($title, &$line));
             }
         }
 
@@ -2234,7 +2234,7 @@ abstract class AdminCRUDController extends ModuleAdminController
 
             // callback modifier
             if ($is_callable) {
-                $data = call_user_func_array($this->is_importable_data_formatting_callback, array($data, $line));
+                $data = call_user_func_array($this->is_importable_data_formatting_callback, array($data, &$line));
             }
 
             // extra protection

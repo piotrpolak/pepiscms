@@ -1,4 +1,5 @@
 <?= display_breadcrumb(array(admin_url() . 'about' => $this->lang->line('global_about_pepiscms')), 'pepiscms/theme/img/about/about_32.png') ?>
+<?= display_breadcrumb(array(admin_url() . 'about' => $this->lang->line('global_about_pepiscms')), 'pepiscms/theme/img/about/about_32.png') ?>
 
 <?php
 $actions = array(
@@ -50,6 +51,7 @@ $actions = array(
             <li>Improved backup utility now works even without mysqldump command available</li>
             <li>Implemented fluent API for most used libraries</li>
             <li>Dropped support for deprecated features</li>
+            <li>CodeIgniter upgraded to version 3.1.8</li>
         </ul>
         <h2>0.2.4.4 (04.01.2017)</h2>
         <ul>

@@ -1266,14 +1266,14 @@ class FormBuilder extends ContainerAware
 
         foreach ($this->fields as $field) {
             if (isset($save_array[$field['field']])) {
-                $this->object->$field['field'] = $save_array[$field['field']];
+                $this->object->{$field['field']} = $save_array[$field['field']];
             } elseif (isset($_POST['form_builder_files'][$field['field']])) {
-                $this->object->$field['field'] = $_POST['form_builder_files'][$field['field']];
+                $this->object->{$field['field']} = $_POST['form_builder_files'][$field['field']];
             } elseif ($field['input_type'] == FormBuilder::CHECKBOX || $field['input_type'] == FormBuilder::MULTIPLESELECT) {
                 // Meaning no POST variable was set
                 //FIXME Check validation of multiselect/multicheckbox when not selecting any values
                 //echo $field['field'] . '=' . FALSE."<br>";
-                $this->object->$field['field'] = false;
+                $this->object->{$field['field']} = false;
             }
         }
     }
@@ -1417,8 +1417,9 @@ class FormBuilder extends ContainerAware
             // For every field from the form definition
             foreach ($this->fields as &$field) {
                 // If there is no value, lets try to get the implicit value
-                if (!isset($this->object->$field['field'])) {
-                    $this->object->$field['field'] = (isset($field['input_default_value']) && $field['input_default_value'] !== false ? $field['input_default_value'] : '');
+
+                if (!isset($this->object->{$field['field']})) {
+                    $this->object->{$field['field']} = (isset($field['input_default_value']) && $field['input_default_value'] !== false ? $field['input_default_value'] : '');
                 }
             }
         }
@@ -1595,7 +1596,7 @@ class FormBuilder extends ContainerAware
             && $field['foreign_key_junction_id_field_right']
             && $field['foreign_key_junction_id_field_left']) {
             // This IF prevents from overwriting when the validation fails
-            if (isset($this->object->$field['field']) && !$this->object->$field['field']) {
+            if (isset($this->object->{$field['field']}) && !$this->object->{$field['field']}) {
                 // Building where conditions based on the user input and the object ID
                 // Since 0.2.4.3 $where_conditions is read from foreign_key_junction_where_conditions instead of foreign_key_where_conditions
                 // The elseif( is_array($field['foreign_key_where_conditions']) ) remains ONLY for backward compatibility
@@ -1611,7 +1612,7 @@ class FormBuilder extends ContainerAware
                     $where_conditions += array($field['foreign_key_junction_id_field_left'] => $this->getId());
                 }
 
-                $this->object->$field['field'] = $this
+                $this->object->{$field['field']} = $this
                     ->Generic_model->getAssocPairs($field['foreign_key_junction_id_field_right'],
                         $field['foreign_key_junction_id_field_right'], $field['foreign_key_junction_table'],
                         false,
@@ -1645,9 +1646,9 @@ class FormBuilder extends ContainerAware
         $should_fetch = false;
         if (!$field['input_is_editable']) {
             // is_array is required for multiple checkbox fields, etc - avoiding errors
-            if (isset($this->object->$field['field'])) {
-                $possible_values = (is_array($this->object->$field['field'])
-                    ? $this->object->$field['field'] : array($this->object->$field['field']));
+            if (isset($this->object->{$field['field']})) {
+                $possible_values = (is_array($this->object->{$field['field']})
+                    ? $this->object->{$field['field']} : array($this->object->{$field['field']}));
             } else {
                 $possible_values = array($field['input_default_value']);
             }
