@@ -37,12 +37,12 @@ class Checkbox extends AbstractComponent
     public function renderComponent($field, $value, $valueEscaped, &$object, $extra_css_classes)
     {
         /// $value takes default value or object value but not POST
-        // $this->object->$field['field'] takes object from DB or post
+        // $this->object->{$field['field']} takes object from DB or post
         if (!$value) {
             $value = $valueEscaped = 1;
         }
-        $is_checked = $value && isset($object->$field['field']) ?
-            $value == $object->$field['field'] :
+        $is_checked = $value && isset($object->{$field['field']}) ?
+            $value == $object->{$field['field']} :
             $value == $field['input_default_value'];
 
         return '<input type="checkbox" name="' . $field['field'] . '" id="' . $field['field'] . '" value="' .

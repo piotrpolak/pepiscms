@@ -1146,7 +1146,7 @@ class DataGrid extends ContainerAware
 
                         // Getting possible values
                         foreach ($feed as &$line) {
-                            $column['values'][] = $line->$column['field'];
+                            $column['values'][] = $line->{$column['field']};
                         }
                         $column['values'] = array_unique($column['values']);
                         $column['values'] = $this->Generic_model->getAssocPairs($column['foreign_key_field'], $column['foreign_key_label_field'], $column['foreign_key_table'], false, $column['values'], $column['foreign_key_where_conditions']);
@@ -1219,7 +1219,7 @@ class DataGrid extends ContainerAware
                     $content = htmlentities($content, ENT_COMPAT, 'UTF-8');
 
                     if (is_callable($column['grid_formating_callback'])) {
-                        $content = call_user_func_array($column['grid_formating_callback'], array($content, $line));
+                        $content = call_user_func_array($column['grid_formating_callback'], array($content, &$line));
                     } elseif ($column['grid_formating_callback'] != false) {
                         show_error('Datagrid: Collumn formating callback for field <b>' . $column['field'] . '</b> is not callable.');
                     }

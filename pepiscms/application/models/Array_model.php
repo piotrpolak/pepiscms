@@ -316,7 +316,7 @@ abstract class Array_model extends CI_Model implements BasicDataFeedableInterfac
 
             foreach ($filters as $filter) {
                 // Filtering is case insensitive
-                $column_value = strtolower($line->$filter['column']);
+                $column_value = strtolower($line->{$filter['column']});
 
                 // Rounding up dates, correcting the behavior
                 if ($filter['type'] == DataGrid::FILTER_DATE) {
