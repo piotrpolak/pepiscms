@@ -73,7 +73,7 @@ class PEPISCMS_Loader extends CI_Loader
     {
         return $this->_ci_load(array(
                 '_ci_path' => $path,
-                '_ci_vars' => $this->_ci_object_to_array($vars),
+                '_ci_vars' => $this->_ci_prepare_view_vars($vars),
                 '_ci_return' => $return)
         );
     }
