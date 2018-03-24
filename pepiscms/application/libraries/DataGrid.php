@@ -180,7 +180,7 @@ class DataGrid extends ContainerAware
     public function __construct($params = array())
     {
         $this->clear();
-        
+
 
         // The following code should be re-enabled when datafeed interface becomes compatible with multiple filters
         if (isset($_POST['reload_datagrid'])) {
@@ -1020,58 +1020,7 @@ class DataGrid extends ContainerAware
 
         //unset( $filters_for_data_feed ); // Saving some memory?
 
-        $pagination = '';
-        if ($no_of_pages > 0) {
-            $pagination .= '<div class="datagrid_pagination">' . $this->lang->line('datagrid_page') . '' . "\n";
-            ++$no_of_pages;
-            if ($no_of_pages < 50) {
-                for ($i = 1; $i <= $no_of_pages; $i++) {
-                    $pagination .= '<a href="' . self::generateLink($this->base_url, $i, $order_by, $order, $applied_filter_values) . '"' . ($page == $i ? ' class="active"' : '') . '>' . $i . '</a> ';
-                }
-            } else {
-                $print_min_dots = $print_max_dots = true;
-                $min_start = 3;
-                $max_start = $no_of_pages - 3;
-
-                for ($i = 1; $i <= $min_start; $i++) {
-                    $pagination .= '<a href="' . self::generateLink($this->base_url, $i, $order_by, $order, $applied_filter_values) . '"' . ($page == $i ? ' class="active"' : '') . '>' . $i . '</a> ';
-                }
-
-                $min = $page - 20;
-                if ($min <= $min_start) {
-                    $min = $min_start + 1;
-                    $print_min_dots = false;
-                }
-                $max = $min + 40;
-                if ($max >= $max_start) {
-                    $max = $max_start - 1;
-                    $print_max_dots = false;
-                    $min = $max - 40;
-                    // One more time
-                    if ($min <= $min_start) {
-                        $min = $min_start + 1;
-                        $print_min_dots = false;
-                    }
-                }
-
-                if ($print_min_dots) {
-                    $pagination .= '... ';
-                }
-
-                for ($i = $min; $i <= $max; $i++) {
-                    $pagination .= '<a href="' . self::generateLink($this->base_url, $i, $order_by, $order, $applied_filter_values) . '"' . ($page == $i ? ' class="active"' : '') . '>' . $i . '</a> ';
-                }
-
-                if ($print_max_dots) {
-                    $pagination .= '... ';
-                }
-
-                for ($i = $max_start; $i <= $no_of_pages; $i++) {
-                    $pagination .= '<a href="' . self::generateLink($this->base_url, $i, $order_by, $order, $applied_filter_values) . '"' . ($page == $i ? ' class="active"' : '') . '>' . $i . '</a> ';
-                }
-            }
-            $pagination .= '</div>';
-        }
+        $pagination = $this->generatePagination($no_of_pages, $order_by, $order, $applied_filter_values, $page);
 
         $output .= $pagination;
 
@@ -1425,5 +1374,72 @@ class DataGrid extends ContainerAware
         }
 
         return $url;
+    }
+
+    /**
+     * @param $no_of_pages
+     * @param $order_by
+     * @param $order
+     * @param $applied_filter_values
+     * @param $page
+     * @return string
+     */
+    private function generatePagination($no_of_pages, $order_by, $order, $applied_filter_values, $page): string
+    {
+        if ($no_of_pages < 1) {
+            return '';
+        }
+
+        $pagination = '<div class="datagrid_pagination">' . $this->lang->line('datagrid_page') . '' . "\n";
+        ++$no_of_pages;
+        if ($no_of_pages < 50) {
+            for ($i = 1; $i <= $no_of_pages; $i++) {
+                $pagination .= '<a href="' . self::generateLink($this->base_url, $i, $order_by, $order, $applied_filter_values) . '"' . ($page == $i ? ' class="active"' : '') . '>' . $i . '</a> ';
+            }
+        } else {
+            $print_min_dots = $print_max_dots = true;
+            $min_start = 3;
+            $max_start = $no_of_pages - 3;
+
+            for ($i = 1; $i <= $min_start; $i++) {
+                $pagination .= '<a href="' . self::generateLink($this->base_url, $i, $order_by, $order, $applied_filter_values) . '"' . ($page == $i ? ' class="active"' : '') . '>' . $i . '</a> ';
+            }
+
+            $min = $page - 20;
+            if ($min <= $min_start) {
+                $min = $min_start + 1;
+                $print_min_dots = false;
+            }
+            $max = $min + 40;
+            if ($max >= $max_start) {
+                $max = $max_start - 1;
+                $print_max_dots = false;
+                $min = $max - 40;
+                // One more time
+                if ($min <= $min_start) {
+                    $min = $min_start + 1;
+                    $print_min_dots = false;
+                }
+            }
+
+            if ($print_min_dots) {
+                $pagination .= '... ';
+            }
+
+            for ($i = $min; $i <= $max; $i++) {
+                $pagination .= '<a href="' . self::generateLink($this->base_url, $i, $order_by, $order, $applied_filter_values) . '"' . ($page == $i ? ' class="active"' : '') . '>' . $i . '</a> ';
+            }
+
+            if ($print_max_dots) {
+                $pagination .= '... ';
+            }
+
+            for ($i = $max_start; $i <= $no_of_pages; $i++) {
+                $pagination .= '<a href="' . self::generateLink($this->base_url, $i, $order_by, $order, $applied_filter_values) . '"' . ($page == $i ? ' class="active"' : '') . '>' . $i . '</a> ';
+            }
+        }
+        $pagination .= '</div>';
+
+        return $pagination;
     }
 }
