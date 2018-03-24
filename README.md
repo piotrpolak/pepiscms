@@ -33,7 +33,7 @@ are if you don't care about presentation details).
 
 PepisCMS was started in 2007 as an experimental academic project.
 The system is written on top of the [CodeIgniter framework](https://codeigniter.com/) and during its lifespan
-it has been fluently ported from CodeIgniter version 1.5.4 to 3.0 (and counting).
+it has been fluently ported from CodeIgniter version 1.5.4 to 3.1.& (and counting).
 
 As 2018, the project is **fully functional** (and really fast) but you should be aware that its source code is quite far
 away from php latest architectural styles and by some it might be considered a **legacy** (and that would not be
@@ -57,3 +57,17 @@ simplified to incrementing composer versions.
 
 All of the above makes it easy to provide hot fixes and components' updates thus it extends the expected lifespan of the
 product.
+
+### Optional libraries
+
+#### PHPExcel for Excel spreadsheet import/export
+
+```bash
+composer require phpoffice/phpexcel 1.8.1
+```
+
+#### PHPCas for CAS authentication
+
+```bash
+composer require jasig/phpcas 1.3.5
+```
