@@ -52,6 +52,7 @@ $actions = array(
             <li>Implemented fluent API for most used libraries</li>
             <li>Dropped support for deprecated features</li>
             <li>CodeIgniter upgraded to version 3.1.8</li>
+            <li>CKE Editor updated to 4.9.0</li>
         </ul>
         <h2>0.2.4.4 (04.01.2017)</h2>
         <ul>
