@@ -1380,11 +1380,11 @@ abstract class AdminCRUDController extends ModuleAdminController
                     $image_path = 'pepiscms/theme/file_extensions/file_extension_' . $image_extension . '.png';
                 }
 
-                $image_out = '<img class="image" src="' . $image_path . '" alt="" />';
+                $image_out = '<img class="image" data-src="' . $image_path . '" alt="" />';
             } elseif (is_callable($this->meta_image_field)) {
                 $image_field_name = call_user_func_array($this->meta_image_field, array($content, &$line));
                 if ($image_field_name) {
-                    $image_out = '<img class="image" src="' . admin_url() . 'ajaxfilemanager/absolutethumb/50/' . $this->meta_image_base_url . $image_field_name . '" alt="" />';
+                    $image_out = '<img class="image" data-src="' . admin_url() . 'ajaxfilemanager/absolutethumb/50/' . $this->meta_image_base_url . $image_field_name . '" alt="" />';
                 } else {
                     $image_out = '<img class="image" src="pepiscms/theme/img/dialog/datagrid/noimage_50.png" alt="" />';
                 }

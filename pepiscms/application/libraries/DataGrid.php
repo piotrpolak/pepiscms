@@ -1175,7 +1175,7 @@ class DataGrid extends ContainerAware
 
                     if ($content && !$column['grid_formating_callback'] && class_exists('FormBuilder') && $column['input_type'] == FormBuilder::IMAGE && file_exists($column['upload_path'] . $content)) {
                         // This will only work for backend apps
-                        $content = '<img src="admin/ajaxfilemanager/absolutethumb/80/' . $column['upload_display_path'] . $content . '" alt="">';
+                        $content = '<img data-src="admin/ajaxfilemanager/absolutethumb/80/' . $column['upload_display_path'] . $content . '" alt="">';
                     }
 
                     $output .= $content;

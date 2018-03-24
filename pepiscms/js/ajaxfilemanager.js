@@ -257,7 +257,7 @@ function FileManagerUI(transtlation_map, is_intranet) {
 
                         ext = getFileExtension(item.name);
                         if (ext == 'jpg' || ext == 'jpeg' || ext == 'png' || ext == 'gif') {
-                            html += '<td class="link"><a href="uploads' + link_path + '" ' + link_target + ' class="filemanager_file_link image" rel="groupi" title="' + item.name + '"><img src="' + base_path + 'thumb/' + current_path + item.name + '" alt="" /></a></td>';
+                            html += '<td class="link"><a href="uploads' + link_path + '" ' + link_target + ' class="filemanager_file_link image" rel="groupi" title="' + item.name + '"><img data-src="' + base_path + 'thumb/' + current_path + item.name + '" alt="" /></a></td>';
                             html += '<td><a href="uploads' + link_path + '" ' + link_target + ' class="filemanager_file_link image label" rel="groupt" title="' + item.name + '">' + item.name + '</a></td>';
                         }
                         else {
@@ -278,6 +278,8 @@ function FileManagerUI(transtlation_map, is_intranet) {
 
 
                 $("#filemanager_grid tbody").html(html);
+
+                window.lazyload.update();
 
                 $("a.filemanager_nav_link").click(function (event) {
                     event.stopPropagation();

@@ -32,5 +32,8 @@
         <p><?= $this->lang->line('global_heavy_operation_in_progress') ?></p>
     </div>
 
+
+    <script src="pepiscms/3rdparty/lazyload/lazyload.min.js?v=<?= PEPISCMS_VERSION ?>"></script>
+    <script>window.lazyload = new LazyLoad();</script>
 </body>
 </html>

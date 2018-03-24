@@ -18,7 +18,7 @@
     ],
     "require": {
         "php": ">=5.3.0",
-        "piotrpolak/pepiscms-3rdparty": "1.0.0",
+        "piotrpolak/pepiscms-3rdparty": "1.0.1",
         "codeigniter/framework": "3.1.8",
         "phpoffice/phpexcel": "1.8.1",
         "jasig/phpcas": "1.3.5",
