@@ -2,7 +2,8 @@
 
 Autocomplete and method prediction works out of the box for classes that extend either
 [EnhancedController](../../../tree/master/pepiscms/application/classes/EnhancedController.php)
-(all PepisCMS controller types) and [ContainerAware](../../../tree/master/pepiscms/application/classes/ContainerAware.php).
+(all PepisCMS controller types), [Generic_model](../../../tree/master/pepiscms/application/models/Generic_model.php)
+and [ContainerAware](../../../tree/master/pepiscms/application/classes/ContainerAware.php).
 
 This is obtained by adding `@property` annotations to the above mentioned classes.
 
