@@ -26,8 +26,7 @@ class Changepassword extends AdminController
         }
 
         $this->load->model('User_model');
-
-        $this->assign('warning', '');
+        $this->load->model('Password_history_model');
 
         $is_password_expired = $this->auth->isUserPasswordExpired();
         $this->assign('is_password_expired', $is_password_expired);
@@ -35,46 +34,64 @@ class Changepassword extends AdminController
             $this->assign('adminmenu', '');
         }
 
-        // TODO WHENEVER USER AUTH DRIVER WAS DIFFERENT THAN native
-        // This is used whren migrating from CAS to NATIVE driver
-        $is_user_password_virgin = false;
+        $this->load->library('FormBuilder');
 
-        // On form submit
-        if ($this->input->post('confirm')) {
-            if ($is_user_password_virgin || ($this->input->post('password') && $this->User_model->validateByEmail($this->auth->getUser(), $this->input->post('password')))) {
-                if (strlen($this->input->post('new_password')) > 0) {
-                    if ($this->input->post('new_password') == $this->input->post('confirm_new_password')) {
-                        if ($is_user_password_virgin || $this->input->post('password') != $this->input->post('new_password')) {
-                            if ($this->User_model->changePasswordByUserId($this->auth->getUserId(), $this->input->post('new_password'))) {
-                                $this->auth->refreshSession();
-                                LOGGER::info('Changing own password', 'USER');
+        $definition = CrudDefinitionBuilder::create()
+            ->withField('current_password')
+            ->withInputType(FormBuilder::PASSWORD)
+            ->withLabel($this->lang->line('changepassword_label_current_password'))
+            ->end()
+            ->withField('new_password')
+            ->withInputType(FormBuilder::PASSWORD)
+            ->withLabel($this->lang->line('changepassword_label_new_password'))
+            ->end()
+            ->withField('confirm_new_password')
+            ->withInputType(FormBuilder::PASSWORD)
+            ->withLabel($this->lang->line('changepassword_label_confirm_new_password'))
+            ->end()
+            ->build();
 
-                                $this->load->library('SimpleSessionMessage');
-                                $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS);
-                                $this->simplesessionmessage->setMessage('changepassword_dialog_pasword_changed');
-
-                                redirect(admin_url());
-                            } else {
-                                $this->assign('warning', sprintf($this->lang->line('changepassword_dialog_new_password_is_not_strong_enough'), $this->User_model->getMinimumAllowedPasswordLenght()));
-                            }
-                        } else {
-                            $this->assign('warning', $this->lang->line('changepassword_dialog_new_password_must_be_different_from_the_old_one'));
-                        }
-                    } else {
-                        // password does not match
-                        $this->assign('warning', $this->lang->line('changepassword_dialog_new_password_no_match'));
-                    }
-                } else {
-                    // password too short
-                    $this->assign('warning', $this->lang->line('changepassword_dialog_new_password_too_short'));
-                }
-            } else {
-                // Wrong password
-                $this->assign('warning', $this->lang->line('changepassword_dialog_incorrect_current_password'));
+        $that = &$this;
+        $this->formbuilder->setCallback(function ($data) use ($that) {
+            if (!$that->User_model->validateByEmail($that->auth->getUser(), $data['current_password'])) {
+                $that->formbuilder->setValidationErrorMessage($that->lang->line('changepassword_dialog_incorrect_current_password'));
+                return false;
             }
-        }
 
-        $this->assign('is_user_password_virgin', $is_user_password_virgin);
+            if ($data['new_password'] != $data['confirm_new_password']) {
+                $that->formbuilder->setValidationErrorMessage($that->lang->line('changepassword_dialog_new_password_no_match'));
+                return false;
+            }
+
+            if ($data['new_password'] == $data['current_password']) {
+                $that->formbuilder->setValidationErrorMessage($that->lang->line('changepassword_dialog_new_password_must_be_different_from_the_old_one'));
+                return false;
+            }
+
+            $password_last_used = $that->Password_history_model->getPasswordLastUsedDatetime($that->auth->getUserId(), $data['new_password']);
+            if($password_last_used) {
+                $that->formbuilder->setValidationErrorMessage(sprintf($that->lang->line('changepassword_dialog_password_already_used_in_past'), $password_last_used));
+                return false;
+            }
+
+            if ($that->User_model->changePasswordByUserId($that->auth->getUserId(), $data['new_password'])) {
+                $that->auth->refreshSession();
+                LOGGER::info('Changing own password', 'USER');
+
+                $that->load->library('SimpleSessionMessage');
+                $that->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS);
+                $that->simplesessionmessage->setMessage('changepassword_dialog_pasword_changed');
+
+                redirect(admin_url());
+            } else {
+                $that->formbuilder->setValidationErrorMessage(sprintf($that->lang->line('changepassword_dialog_new_password_is_not_strong_enough'), $this->User_model->getMinimumAllowedPasswordLenght()));
+                return false;
+            }
+        }, FormBuilder::CALLBACK_ON_SAVE);
+
+        $this->formbuilder->setTitle($this->lang->line('changepassword_change_password'));
+        $this->formbuilder->setDefinition($definition);
+        $this->assign('form', $this->formbuilder->generate());
         $this->display();
     }
 }

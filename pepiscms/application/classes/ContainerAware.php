@@ -20,7 +20,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
  *
  * @since 1.0.0
  *
- * @property CI_DB_driver $db
+ * The following list of properties needs to be maintained in PEPISCMS_model, ContainerAware and EnhancedController
+ *
+ * @property CI_DB_query_builder $db
  * @property Array_model $Array_model
  * @property Generic_model $Generic_model
  * @property Group_model $Group_model
@@ -33,6 +35,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  * @property Ssh_model $Ssh_model
  * @property User_model $User_model
  * @property Item_model $Item_model
+ * @property Password_history_model $Password_history_model
  * @property Auth $auth
  * @property Backup $backup
  * @property CachedDirectoryReader $cacheddirectoryreader
@@ -116,7 +119,7 @@ class ContainerAware
         static $AVAILABLE_MODULES;
         isset($AVAILABLE_MODULES) or $AVAILABLE_MODULES = null;
 
-        // Automatic loading of module models
+        // Automatic loading ofpepiscms/modules/crud/language/polish/crud_lang.php module models
         if (!isset($CI->$var) && strpos($var, '_model') !== false) {
             $CI->load->model($var);
             if (!isset($CI->$var)) {

@@ -150,12 +150,12 @@ class User_model extends Generic_model
         }
 
         // Generating salt and reading algorithm info
-        $salt = $this->generateSalt();
-        $algorithm = $this->getDefaultHashingAlgorithm();
-        $iterations = $this->getDefaultNumberOfIterations();
+        $hashing_salt = $this->generateSalt();
+        $hashing_algorithm = $this->getDefaultHashingAlgorithm();
+        $hasing_iterations = $this->getDefaultNumberOfIterations();
 
         // Encoding password
-        $encoded_password = $this->encodePassword($password, $salt, $algorithm, $iterations);
+        $encoded_password = $this->encodePassword($password, $hashing_salt, $hashing_algorithm, $hasing_iterations);
 
         // Setting query data
         $this->db->set('display_name', $display_name)
@@ -165,9 +165,9 @@ class User_model extends Generic_model
             ->set('account_type', $account_type)
             ->set('password', $encoded_password)
             ->set('status', 1)
-            ->set('hashing_salt', $salt)
-            ->set('hashing_algorithm', $algorithm)
-            ->set('hashing_iterations', $iterations)
+            ->set('hashing_salt', $hashing_salt)
+            ->set('hashing_algorithm', $hashing_algorithm)
+            ->set('hashing_iterations', $hasing_iterations)
             ->set('title', '');
 
         // Setting extra user information
@@ -619,18 +619,26 @@ class User_model extends Generic_model
             $password_last_changed_timestamp = utc_timestamp();
         }
 
-        $salt = $this->generateSalt();
-        $algorithm = $this->getDefaultHashingAlgorithm();
-        $iterations = $iterations = $this->getDefaultNumberOfIterations();
+        $hashing_salt = $this->generateSalt();
+        $hashing_algorithm = $this->getDefaultHashingAlgorithm();
+        $hashing_iterations = $hashing_iterations = $this->getDefaultNumberOfIterations();
+        $password_encoded = $this->encodePassword($password, $hashing_salt, $hashing_algorithm, $hashing_iterations);
 
-        $this->db->set('password', $this->encodePassword($password, $salt, $algorithm, $iterations))
+        $this->db->set('password', $password_encoded)
             ->set('password_last_changed_timestamp', $password_last_changed_timestamp)
             ->where('user_id', $user_id)
-            ->set('hashing_salt', $salt)
-            ->set('hashing_algorithm', $algorithm)
-            ->set('hashing_iterations', $iterations);
+            ->set('hashing_salt', $hashing_salt)
+            ->set('hashing_algorithm', $hashing_algorithm)
+            ->set('hashing_iterations', $hashing_iterations);
 
-        return $this->db->update($this->getTable());
+        $success = $this->db->update($this->getTable());
+
+        if ($success) {
+            $this->Password_history_model->registerChange($user_id, $password_encoded, $hashing_salt, $hashing_algorithm,
+                $hashing_iterations);
+        }
+
+        return $success;
     }
 
     /**
@@ -837,10 +845,9 @@ class User_model extends Generic_model
             return false;
         }
 
-        // Encoding password
-        $password_encoded = $this->encodePassword($password, $row->hashing_salt, $row->hashing_algorithm, $row->hashing_iterations);
+        $password_encoded = $this->encodePassword($password, $row->hashing_salt, $row->hashing_algorithm,
+            $row->hashing_iterations);
 
-        // Selecting user using password
         $row = $this->db->select('*')
             ->where('user_id', $row->user_id)
             ->where('password', $password_encoded)
@@ -932,7 +939,6 @@ class User_model extends Generic_model
             return false;
         }
 
-        // Encoding password
         $password_encoded = $this->encodePassword($password, $row->hashing_salt, $row->hashing_algorithm, $row->hashing_iterations);
 
         // Selecting user using password

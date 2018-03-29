@@ -17,7 +17,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
 /**
  * Enhanced controller providing some extra features
  *
- * @property CI_DB_driver $db
+ * The following list of properties needs to be maintained in PEPISCMS_model, ContainerAware and EnhancedController
+ *
+ * @property CI_DB_query_builder $db
  * @property Array_model $Array_model
  * @property Generic_model $Generic_model
  * @property Group_model $Group_model
@@ -30,6 +32,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  * @property Ssh_model $Ssh_model
  * @property User_model $User_model
  * @property Item_model $Item_model
+ * @property Password_history_model $Password_history_model
  * @property Auth $auth
  * @property Backup $backup
  * @property CachedDirectoryReader $cacheddirectoryreader

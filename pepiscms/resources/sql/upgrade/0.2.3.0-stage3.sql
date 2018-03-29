@@ -1,4 +1,4 @@
-CREATE  TABLE IF NOT EXISTS `cms_journal` (
+CREATE TABLE IF NOT EXISTS `cms_journal` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `revision_datetime` DATETIME NOT NULL COMMENT 'UTC timestamp' ,
   `tag` VARCHAR(256) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL,
