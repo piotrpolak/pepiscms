@@ -46,8 +46,18 @@ class Upgradedb extends EnhancedController
             $this->Sqlconsole_helper_model->runMultipleSqlQueries($sql_input);
             $count++;
         }
+        if (!$this->db->table_exists('cms_password_history')) {
+            $sql_input = file_get_contents($sql_basepath . '1.0.0-stage1.sql');
+            $this->Sqlconsole_helper_model->runMultipleSqlQueries($sql_input);
+            $count++;
 
-        // TODO Translations
+            if ($this->db->table_exists('cms_menu')) {
+                $sql_input = file_get_contents($sql_basepath . '1.0.0-stage2.sql');
+                $this->Sqlconsole_helper_model->runMultipleSqlQueries($sql_input);
+                $count++;
+            }
+        }
+
         if (!$count) {
             $message = 'System database up to date.';
         } else {
@@ -60,7 +70,6 @@ class Upgradedb extends EnhancedController
         $this->cachedobjectmanager->cleanup();
         $this->db->cache_delete_all();
 
-        // TODO Translation
         show_error($message . ' <a href="' . admin_url() . '">Go back to admin panel</a>', 400, 'Status');
     }
 }
