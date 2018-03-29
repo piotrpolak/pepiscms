@@ -1,5 +1,4 @@
 <?= display_breadcrumb(array(admin_url() . 'about' => $this->lang->line('global_about_pepiscms')), 'pepiscms/theme/img/about/about_32.png') ?>
-<?= display_breadcrumb(array(admin_url() . 'about' => $this->lang->line('global_about_pepiscms')), 'pepiscms/theme/img/about/about_32.png') ?>
 
 <?php
 $actions = array(
