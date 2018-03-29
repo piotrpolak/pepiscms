@@ -1384,7 +1384,7 @@ class DataGrid extends ContainerAware
      * @param $page
      * @return string
      */
-    private function generatePagination($no_of_pages, $order_by, $order, $applied_filter_values, $page): string
+    private function generatePagination($no_of_pages, $order_by, $order, $applied_filter_values, $page)
     {
         if ($no_of_pages < 1) {
             return '';
