@@ -24,6 +24,7 @@ class Array_model_test extends PepisCMS_TestCase
     public function setUp()
     {
         require_once(VENDOR_PATH . 'codeigniter/framework/system/core/Model.php');
+        require_once(PROJECT_BASE . 'pepiscms/application/core/PEPISCMS_Model.php');
         require_once(PROJECT_BASE . 'pepiscms/application/models/Array_model.php');
         require_once(PROJECT_BASE . 'pepiscms/application/libraries/DataGrid.php');
         require_once(__DIR__ . '/Array_model_tester.php');
