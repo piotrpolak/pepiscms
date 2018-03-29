@@ -5,6 +5,5 @@ script:
   - ./check-code.sh
   - composer require phpoffice/phpexcel 1.8.1 && phpunit
 php:
-  - 5.4
   - 5.5
   - 5.6
