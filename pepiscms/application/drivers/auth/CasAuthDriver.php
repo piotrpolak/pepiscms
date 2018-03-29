@@ -39,6 +39,15 @@ class CasAuthDriver extends ContainerAware implements AuthDriverableInterface
         $this->auth = $auth;
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function isEnabled()
+    {
+        return class_exists('phpCAS');
+    }
+
+
     private function _init()
     {
         if (!$this->is_initialized) {
@@ -54,11 +63,7 @@ class CasAuthDriver extends ContainerAware implements AuthDriverableInterface
     }
 
     /**
-     * Authorizes user, tells whenever user-password correct
-     *
-     * @param string $user_email_or_login
-     * @param string $password
-     * @return boolean
+     * @inheritdoc
      */
     public function authorize($user_email_or_login, $password)
     {
@@ -66,10 +71,7 @@ class CasAuthDriver extends ContainerAware implements AuthDriverableInterface
     }
 
     /**
-     * Method called on auth request, usually when redirecting to the login page
-     *
-     * @return bool
-     * @throws Exception
+     * @inheritdoc
      */
     public function onAuthRequest()
     {
@@ -132,9 +134,7 @@ class CasAuthDriver extends ContainerAware implements AuthDriverableInterface
     }
 
     /**
-     * Method called on auth request, usually when the user session is about to expire
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function onAuthRecheck()
     {
@@ -146,9 +146,7 @@ class CasAuthDriver extends ContainerAware implements AuthDriverableInterface
     }
 
     /**
-     * Tells whether the password can be changed by CMS
-     *
-     * @return boolean
+     * @inheritdoc
      */
     public function isPasswordChangeSupported()
     {
@@ -156,10 +154,7 @@ class CasAuthDriver extends ContainerAware implements AuthDriverableInterface
     }
 
     /**
-     * Terminates session
-     *
-     * @param boolean $explicit
-     * @return boolean
+     * @inheritdoc
      */
     public function logout($explicit = false)
     {

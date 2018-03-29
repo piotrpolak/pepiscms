@@ -35,6 +35,14 @@ class Spreadsheet extends ContainerAware
     }
 
     /**
+     * Tells whether all dependencies are present and the feature is fully enabled.
+     */
+    public function isFullyEnabled()
+    {
+        return class_exists('PHPExcel_IOFactory');
+    }
+
+    /**
      * Key normalization helper
      *
      * @param $key

@@ -80,14 +80,18 @@ class Auth extends ContainerAware
 
         $driver_type = $this->config->item('auth_driver');
 
-        $driver_class_name = ucfirst($driver_type) . 'AuthDriver';
+        $this->driver = $this->instantiateDriver($driver_type);
+    }
 
-        $driver_path = APPPATH . 'drivers/auth/' . $driver_class_name . '.php';
-        if (!file_exists($driver_path)) {
-            show_error('Auth driver specified does not exist on the filesystem or driver name empty ' . $driver_path);
-        }
-
-        $this->driver = new $driver_class_name($this);
+    /**
+     * Tells whether given driver is enabled and can be used.
+     *
+     * @param $driver_type
+     * @return bool
+     */
+    public function isAuthDriverEnabled($driver_type)
+    {
+        return $this->instantiateDriver($driver_type)->isEnabled();
     }
 
     /**
@@ -438,5 +442,21 @@ class Auth extends ContainerAware
     public function getExpirationTimestamp()
     {
         return $_SESSION[$this->session_variable_preffix]['auth_last_activity'] + self::auth_max_idle_time;
+    }
+
+    /**
+     * @param $driver_type
+     * @return AuthDriverableInterface
+     */
+    private function instantiateDriver($driver_type)
+    {
+        $driver_class_name = ucfirst($driver_type) . 'AuthDriver';
+
+        $driver_path = APPPATH . 'drivers/auth/' . $driver_class_name . '.php';
+        if (!file_exists($driver_path)) {
+            show_error('Auth driver specified does not exist on the filesystem or driver name empty ' . $driver_path);
+        }
+
+        return new $driver_class_name($this);
     }
 }

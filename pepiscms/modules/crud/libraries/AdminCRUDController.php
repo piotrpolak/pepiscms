@@ -1969,21 +1969,35 @@ abstract class AdminCRUDController extends ModuleAdminController
         $cache_path .= 'tmp/';
 
         $this->load->library('FormBuilder');
+        $this->load->library('Spreadsheet');
+
+
         $this->formbuilder->clear();
         $this->formbuilder->setTitle($this->lang->line('crud_label_import'));
         $this->formbuilder->setSubmitLabel($this->lang->line('crud_label_import_from_file'));
         $this->formbuilder->setCallback(array($this, '_fb_callback_on_import'), FormBuilder::CALLBACK_ON_SAVE);
         $this->formbuilder->setBackLink($this->getModuleBaseUrl()); // TODO Add applied filters to the back link, the same as edit
+
+        $upload_allowed_types = 'csv';
+        if ($this->spreadsheet->isFullyEnabled()) {
+            $description_key = 'crud_file_to_import_description_fully_enabled';
+            $upload_allowed_types .= '|xls|xlsx';
+            $tip_key = 'crud_label_import_tip_fully_enabled';
+        } else {
+            $description_key = 'crud_file_to_import_description';
+            $tip_key = 'crud_label_import_tip';
+        }
+
         $this->formbuilder->setDefinition(array(
             'file_to_import' => array(
                 'upload_path' => $cache_path,
                 'show_in_grid' => false,
                 'show_in_form' => true,
                 'input_type' => FormBuilder::FILE,
-                'upload_allowed_types' => 'xls|xlsx|csv',
+                'upload_allowed_types' => $upload_allowed_types,
                 'validation_rules' => '',
                 'label' => $this->lang->line('crud_file_to_import'),
-                'description' => $this->lang->line('crud_file_to_import_description'),
+                'description' => $this->lang->line($description_key),
             ),
             'commit' => array(
                 'input_type' => FormBuilder::HIDDEN,
@@ -1991,7 +2005,7 @@ abstract class AdminCRUDController extends ModuleAdminController
             )
         ));
 
-        $this->assign('tip', sprintf($this->lang->line('crud_label_import_tip'), implode(', ', $this->getModel()->getAcceptedPostFields()), $this->getModel()->getIdFieldName()));
+        $this->assign('tip', sprintf($this->lang->line($tip_key), implode(', ', $this->getModel()->getAcceptedPostFields()), $this->getModel()->getIdFieldName()));
         $this->assign('title', $this->getPageTitle());
         $this->assign('back_to_items_label', $this->getBackToItemsLabel());
         $this->assign('back_link_for_edit', $this->getBackLinkForEdit());
@@ -2172,7 +2186,12 @@ abstract class AdminCRUDController extends ModuleAdminController
         $ext_arts = explode('.', $file);
         $ext = strtolower(end($ext_arts));
         if ($ext == 'xls' || $ext == 'xlsx') {
-            $result = $this->spreadsheet->parseExcel($file);
+            if (!$this->spreadsheet->isFullyEnabled()) {
+                $this->formbuilder->setValidationErrorMessage($this->lang->line('crud_import_excel_not_fully_enabled'));
+                return false;
+            } else {
+                $result = $this->spreadsheet->parseExcel($file);
+            }
         } elseif ($ext == 'csv') {
             $result = $this->spreadsheet->parseCSV($file);
         }

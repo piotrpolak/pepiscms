@@ -193,8 +193,7 @@ class Installer extends AdminController
 
                 $hostname = $conf['database_host'];
                 $username = $conf['database_user'];
-                $password = trim($conf['database_password'], "'\"");
-                ;
+                $password = trim($conf['database_password'], "'\"");;
                 $database = $conf['database_name'];
                 $port = '';
             }
@@ -244,9 +243,12 @@ class Installer extends AdminController
     public function auth_driver()
     {
         $auth_drivers = array(
-            'cas' => $this->lang->line('installer_auth_driver_cas'),
             'native' => $this->lang->line('installer_auth_driver_native')
         );
+
+        if ($this->auth->isAuthDriverEnabled('cas')) {
+            $auth_drivers['cas'] = $this->lang->line('installer_auth_driver_cas');
+        }
 
         $this->formbuilder->setTitle($this->lang->line('installer_auth_driver'));
         $that = $this;

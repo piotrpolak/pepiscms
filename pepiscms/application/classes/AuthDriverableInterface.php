@@ -27,6 +27,13 @@ interface AuthDriverableInterface
     public function __construct(Auth $auth);
 
     /**
+     * Tells whether the driver is enabled and can be used.
+     *
+     * @return bool
+     */
+    public function isEnabled();
+
+    /**
      * Authorizes user, tell whenether user-password correct
      *
      * @param string $user_email_or_login

@@ -32,11 +32,15 @@ class NativeAuthDriver extends ContainerAware implements AuthDriverableInterface
     }
 
     /**
-     * Authorizes user, tell whenether user-password correct
-     *
-     * @param string $user_email_or_login
-     * @param string $password
-     * @return bool
+     * @inheritdoc
+     */
+    public function isEnabled()
+    {
+        return true;
+    }
+
+    /**
+     * @inheritdoc
      */
     public function authorize($user_email_or_login, $password)
     {
@@ -54,9 +58,7 @@ class NativeAuthDriver extends ContainerAware implements AuthDriverableInterface
     }
 
     /**
-     * Method called on auth request, usually when redirecting to the login page
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function onAuthRequest()
     {
@@ -64,9 +66,7 @@ class NativeAuthDriver extends ContainerAware implements AuthDriverableInterface
     }
 
     /**
-     * Method called on auth request, usually when the user session is about to expire
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function onAuthRecheck()
     {
@@ -74,9 +74,7 @@ class NativeAuthDriver extends ContainerAware implements AuthDriverableInterface
     }
 
     /**
-     * Tells whether the password can be changed by CMS
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function isPasswordChangeSupported()
     {
@@ -84,10 +82,7 @@ class NativeAuthDriver extends ContainerAware implements AuthDriverableInterface
     }
 
     /**
-     * Terminates session
-     *
-     * @param bool $explicit
-     * @return bool
+     * @inheritdoc
      */
     public function logout($explicit = false)
     {
