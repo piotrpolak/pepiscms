@@ -54,7 +54,7 @@ class Password_history_model extends Generic_model
 
             if ($subquery_item) {
                 $this->db->where('user_id', $user_id)
-                    ->where('id <= ' . $subquery_item->id, NULL, FALSE)
+                    ->where('id <= ' . $subquery_item->id, null, false)
                     ->delete('cms_password_history');
             }
         }

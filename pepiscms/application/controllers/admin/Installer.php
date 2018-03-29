@@ -193,7 +193,7 @@ class Installer extends AdminController
 
                 $hostname = $conf['database_host'];
                 $username = $conf['database_user'];
-                $password = trim($conf['database_password'], "'\"");;
+                $password = trim($conf['database_password'], "'\"");
                 $database = $conf['database_name'];
                 $port = '';
             }

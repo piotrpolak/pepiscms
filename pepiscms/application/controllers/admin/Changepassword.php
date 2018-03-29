@@ -58,9 +58,7 @@ class Changepassword extends AdminController
 
         $that = &$this;
         $this->formbuilder->setCallback(function ($data) use ($that, $is_password_expired) {
-
-            if(!$is_password_expired)
-            {
+            if (!$is_password_expired) {
                 if (!$that->User_model->validateByEmail($that->auth->getUser(), $data['current_password'])) {
                     $that->formbuilder->setValidationErrorMessage($that->lang->line('changepassword_dialog_incorrect_current_password'));
                     return false;

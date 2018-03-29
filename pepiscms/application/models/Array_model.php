@@ -21,8 +21,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  *
  * @since 0.2.2.7
  */
-abstract class Array_model extends PEPISCMS_Model
-    implements BasicDataFeedableInterface, AdvancedDataFeedableInterface, EntitableInterface
+abstract class Array_model extends PEPISCMS_Model implements BasicDataFeedableInterface, AdvancedDataFeedableInterface, EntitableInterface
 {
     const DATE_FORMAT = 'Y-m-d';
     const DEFAULT_ID_FIELD_NAME = 'id';
