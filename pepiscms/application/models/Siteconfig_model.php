@@ -19,7 +19,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  *
  * @since 0.1.5
  */
-class Siteconfig_model extends CI_Model implements EntitableInterface
+class Siteconfig_model extends PEPISCMS_Model implements EntitableInterface
 {
 
     /**

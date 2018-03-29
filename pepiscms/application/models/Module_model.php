@@ -19,7 +19,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  *
  * @since 0.1.5
  */
-class Module_model extends CI_Model
+class Module_model extends PEPISCMS_Model
 {
     /**
      * Module_model constructor.

@@ -17,7 +17,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 /**
  * Symfony2_cache_model
  */
-class Symfony2_cache_model extends CI_Model
+class Symfony2_cache_model extends PEPISCMS_Model
 {
     /**
      * Default constructor

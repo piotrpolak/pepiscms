@@ -19,7 +19,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  *
  * @since 0.2.3.0
  */
-class Sqlconsole_helper_model extends CI_Model
+class Sqlconsole_helper_model extends PEPISCMS_Model
 {
     /**
      * Runs multiple queries at once

@@ -17,7 +17,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 /**
  * Class Html_customization_model
  */
-class Html_customization_model extends CI_Model implements EntitableInterface
+class Html_customization_model extends PEPISCMS_Model implements EntitableInterface
 {
     /**
      * {@inheritdoc}
