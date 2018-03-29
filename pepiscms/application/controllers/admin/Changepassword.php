@@ -36,26 +36,40 @@ class Changepassword extends AdminController
 
         $this->load->library('FormBuilder');
 
-        $definition = CrudDefinitionBuilder::create()
-            ->withField('current_password')
-            ->withInputType(FormBuilder::PASSWORD)
-            ->withLabel($this->lang->line('changepassword_label_current_password'))
-            ->end()
+        $builder = CrudDefinitionBuilder::create();
+
+        if (!$is_password_expired) {
+            $builder
+                ->withField('current_password')
+                    ->withInputType(FormBuilder::PASSWORD)
+                    ->withLabel($this->lang->line('changepassword_label_current_password'))
+                ->end();
+        }
+
+        $builder
             ->withField('new_password')
-            ->withInputType(FormBuilder::PASSWORD)
-            ->withLabel($this->lang->line('changepassword_label_new_password'))
+                ->withInputType(FormBuilder::PASSWORD)
+                ->withLabel($this->lang->line('changepassword_label_new_password'))
             ->end()
             ->withField('confirm_new_password')
-            ->withInputType(FormBuilder::PASSWORD)
-            ->withLabel($this->lang->line('changepassword_label_confirm_new_password'))
-            ->end()
-            ->build();
+                ->withInputType(FormBuilder::PASSWORD)
+                ->withLabel($this->lang->line('changepassword_label_confirm_new_password'))
+            ->end();
 
         $that = &$this;
-        $this->formbuilder->setCallback(function ($data) use ($that) {
-            if (!$that->User_model->validateByEmail($that->auth->getUser(), $data['current_password'])) {
-                $that->formbuilder->setValidationErrorMessage($that->lang->line('changepassword_dialog_incorrect_current_password'));
-                return false;
+        $this->formbuilder->setCallback(function ($data) use ($that, $is_password_expired) {
+
+            if(!$is_password_expired)
+            {
+                if (!$that->User_model->validateByEmail($that->auth->getUser(), $data['current_password'])) {
+                    $that->formbuilder->setValidationErrorMessage($that->lang->line('changepassword_dialog_incorrect_current_password'));
+                    return false;
+                }
+
+                if ($data['new_password'] == $data['current_password']) {
+                    $that->formbuilder->setValidationErrorMessage($that->lang->line('changepassword_dialog_new_password_must_be_different_from_the_old_one'));
+                    return false;
+                }
             }
 
             if ($data['new_password'] != $data['confirm_new_password']) {
@@ -63,13 +77,8 @@ class Changepassword extends AdminController
                 return false;
             }
 
-            if ($data['new_password'] == $data['current_password']) {
-                $that->formbuilder->setValidationErrorMessage($that->lang->line('changepassword_dialog_new_password_must_be_different_from_the_old_one'));
-                return false;
-            }
-
             $password_last_used = $that->Password_history_model->getPasswordLastUsedDatetime($that->auth->getUserId(), $data['new_password']);
-            if($password_last_used) {
+            if ($password_last_used) {
                 $that->formbuilder->setValidationErrorMessage(sprintf($that->lang->line('changepassword_dialog_password_already_used_in_past'), $password_last_used));
                 return false;
             }
@@ -90,7 +99,7 @@ class Changepassword extends AdminController
         }, FormBuilder::CALLBACK_ON_SAVE);
 
         $this->formbuilder->setTitle($this->lang->line('changepassword_change_password'));
-        $this->formbuilder->setDefinition($definition);
+        $this->formbuilder->setDefinition($builder->build());
         $this->assign('form', $this->formbuilder->generate());
         $this->display();
     }
