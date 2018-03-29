@@ -587,15 +587,18 @@ class CrudFieldDefinitionBuilder
 
         // Getting label
         if (!isset($definition['label'])) {
-            $definition['label'] =
-                $this->lang->line($this->moduleName . '_' . $this->fieldName);
+            if ($this->lang !== null) {
+                $definition['label'] = $this->lang->line($this->moduleName . '_' . $this->fieldName);
+            }
         }
 
         // Getting description
         if (!isset($definition['description'])) {
-            $description = $this->lang->line($this->moduleName . '_' . $this->fieldName . '_description', false);
-            if ($description !== false) {
-                $definition['description'] = $description;
+            if ($this->lang !== null) {
+                $description = $this->lang->line($this->moduleName . '_' . $this->fieldName . '_description', false);
+                if ($description !== false) {
+                    $definition['description'] = $description;
+                }
             }
         }
 
