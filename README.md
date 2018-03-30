@@ -22,6 +22,7 @@ are if you don't care about presentation details).
     * [DataGrid](docs/LIBRARY_DATAGRID.md)
     * [CrudDefinitionBuilder](docs/LIBRARY_CRUD_DEFINITION_BUILDER.md)
     * [ContainerAware](docs/LIBRARY_CONTAINER_AWARE.md)
+* [Helpers](docs/HELPERS.md)
 * [Breaking API changes and upgrade instructions](CHANGES.md)
 * [Benchmarking](docs/BENCHMARKING.md)
 * [Naming convention inconsistency](docs/NAMING_CONVENTION_INCONSISTENCY.md)
@@ -33,7 +34,7 @@ are if you don't care about presentation details).
 
 PepisCMS was started in 2007 as an experimental academic project.
 The system is written on top of the [CodeIgniter framework](https://codeigniter.com/) and during its lifespan
-it has been fluently ported from CodeIgniter version 1.5.4 to 3.1.& (and counting).
+it has been fluently ported from CodeIgniter version 1.5.4 to 3.1.* (and counting).
 
 As 2018, the project is **fully functional** (and really fast) but you should be aware that its source code is quite far
 away from php latest architectural styles and by some it might be considered a **legacy** (and that would not be
