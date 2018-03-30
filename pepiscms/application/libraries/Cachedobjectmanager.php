@@ -224,7 +224,6 @@ class Cachedobjectmanager extends ContainerAware
      */
     private function computeHash($name)
     {
-        $hash = md5($name);
-        return $hash;
+        return md5($name);
     }
 }
