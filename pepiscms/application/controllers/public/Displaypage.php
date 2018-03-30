@@ -15,54 +15,11 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
- * Frontend dispatcher controller
- */
-class Dispatcher extends EnhancedController
-{
-    protected static $site_language = null;
-    protected static $uri_prefix = null;
-
-    /**
-     * Returns object representing site language
-     *
-     * @return Object
-     */
-    public static function getSiteLanguage()
-    {
-        return self::$site_language;
-    }
-
-    /**
-     * Sets site language
-     * @param object $site_language
-     * @return void
-     *
-     * @example: Dispatcher::setSiteLanguage((object) array('code' => 'pl', 'name' => 'polish', 'label' => 'polish', 'is_default' => true));
-     */
-    public static function setSiteLanguage($site_language)
-    {
-        self::$site_language = $site_language;
-    }
-
-    /**
-     * Returns URI prefix
-     *
-     * @return String
-     */
-    public static function getUriPrefix()
-    {
-        if (self::$uri_prefix === null) {
-            self::$uri_prefix = self::$site_language->is_default ? '' : self::$site_language->code . '/';
-        }
-
-        return self::$uri_prefix;
-    }
-}
-
-/**
  * Frontend dispatcher
+ *
+ * @since 0.1.0
  */
-class DisplayPage extends Dispatcher
+class DisplayPage extends EnhancedController
 {
     public function mainpage()
     {
