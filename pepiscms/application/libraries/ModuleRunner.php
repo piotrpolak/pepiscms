@@ -152,11 +152,9 @@ class ModuleRunner extends ContainerAware
      *
      * @param string $module_name
      * @param string $method
-     * @param object $site_language
-     * @param string|bool $uri
      * @return bool
      */
-    public function runModule($module_name, $method, $site_language, $uri = false)
+    public function runModule($module_name, $method)
     {
         $this->load->model('Module_model');
         if (!$module_name || !self::isModuleInstalled($module_name)) {

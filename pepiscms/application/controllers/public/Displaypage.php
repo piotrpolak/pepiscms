@@ -147,7 +147,7 @@ class DisplayPage extends Dispatcher
             if ($module_name) {
                 $method = $this->config->item('mainpage_module_method');
                 $method = $method ? $method : 'index';
-                if ($this->modulerunner->runModule($module_name, $method, Dispatcher::getSiteLanguage(), $uri)) {
+                if ($this->modulerunner->runModule($module_name, $method)) {
                     return;
                 }
             }
@@ -157,7 +157,7 @@ class DisplayPage extends Dispatcher
             $module_name = $uri_components[0];
             if ($module_name) {
                 $method = isset($uri_components[1]) ? $uri_components[1] : 'index';
-                if ($this->modulerunner->runModule($module_name, $method, Dispatcher::getSiteLanguage(), $uri)) {
+                if ($this->modulerunner->runModule($module_name, $method)) {
                     return;
                 }
             }
