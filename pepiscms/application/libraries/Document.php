@@ -73,10 +73,12 @@ class Document extends ContainerAware
      * Sets ID of the current menu item
      *
      * @param int $id
+     * @return Document
      */
     public function setId($id)
     {
         $this->id = $id;
+        return $this;
     }
 
     /**
@@ -111,10 +113,12 @@ class Document extends ContainerAware
      * Sets page title
      *
      * @param $title
+     * @return Document
      */
     public function setTitle($title)
     {
         $this->title = $title;
+        return $this;
     }
 
     /**
@@ -131,10 +135,12 @@ class Document extends ContainerAware
      * Sets page contents
      *
      * @param string $contents
+     * @return Document
      */
     public function setContents($contents)
     {
         $this->contents = $contents;
+        return $this;
     }
 
     /**
@@ -151,10 +157,12 @@ class Document extends ContainerAware
      * Sets page description
      *
      * @param $description
+     * @return Document
      */
     public function setDescription($description)
     {
         $this->description = $description;
+        return $this;
     }
 
     /**
@@ -171,10 +179,12 @@ class Document extends ContainerAware
      * Sets page keywords
      *
      * @param $keywords
+     * @return Document
      */
     public function setKeywords($keywords)
     {
         $this->keywords = $keywords;
+        return $this;
     }
 
     /**
@@ -191,10 +201,12 @@ class Document extends ContainerAware
      * Sets canonical absolute URL of the page
      *
      * @param string $canonical_url
+     * @return Document
      */
     public function setCanonicalAbsoluteUrl($canonical_url)
     {
         $this->canonical_url = $canonical_url;
+        return $this;
     }
 
     /**
@@ -214,10 +226,12 @@ class Document extends ContainerAware
      * Sets relative URL
      *
      * @param string $relative_url
+     * @return Document
      */
     public function setRelativeUrl($relative_url)
     {
         $this->relative_url = $relative_url;
+        return $this;
     }
 
     /**
@@ -234,10 +248,12 @@ class Document extends ContainerAware
      * Makes the page default
      *
      * @param bool $is_default
+     * @return Document
      */
     public function setDefault($is_default = true)
     {
         $this->is_default = $is_default;
+        return $this;
     }
 
     /**
@@ -343,6 +359,7 @@ class Document extends ContainerAware
      * Inserts code to style section
      *
      * @param string $styles
+     * @return Document
      */
     public function addInlinePageStyles($styles)
     {
@@ -351,25 +368,31 @@ class Document extends ContainerAware
         } else {
             $this->page_style = $styles;
         }
+        return $this;
     }
 
     /**
      * Attaches stylesheet
      *
      * @param string $stylesheet_name
+     * @return Document
      */
     public function attachStyleSheet($stylesheet_name)
     {
         $this->page_stylesheets[] = $stylesheet_name;
+        return $this;
     }
 
 
     /**
      * @param string $stylesheet_name
+     *
      * @deprecated as PepisCMS 1.0.0
      */
     public function attachSyleSheet($stylesheet_name)
     {
+        trigger_error('Document::attachSyleSheet() is deprecated and scheduled for deletion. Please use Document::attachStyleSheet()', E_USER_DEPRECATED);
+
         $this->attachStyleSheet($stylesheet_name);
     }
 
@@ -377,29 +400,35 @@ class Document extends ContainerAware
      * Attaches JavaScript
      *
      * @param string $javascript_file_name
+     * @return Document
      */
     public function attachJavaScript($javascript_file_name)
     {
         $this->page_javascript[] = $javascript_file_name;
+        return $this;
     }
 
     /**
      * Overwrites the entire array of stylesheets
      *
      * @param array $stylesheets
+     * @return Document
      */
     public function setStyleSheets($stylesheets)
     {
         $this->page_stylesheets = $stylesheets;
+        return $this;
     }
 
     /**
      * Sets JavaScript
      *
      * @param array $javascript
+     * @return Document
      */
     public function setJavaScript($javascript)
     {
         $this->page_javascript = $javascript;
+        return $this;
     }
 }
