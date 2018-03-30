@@ -21,31 +21,28 @@ defined('BASEPATH') or exit('No direct script access allowed');
  */
 class DisplayPage extends EnhancedController
 {
+    const LANGUAGE_SEGMENT_INDEX = 4;
+
     public function mainpage()
     {
-        $language_code = '';
-        // If there are exactly 4 segments, that means a language prefix is incuded, the user accessed /<language_iso>/
-        if ($this->uri->total_segments() == 4) {
-            $language_code = $this->uri->segment(4);
-        }
-        $this->execute($language_code);
+        $this->execute($this->getLanguageCode());
     }
 
     public function page()
     {
         // there is no language code prefix
-        if ($this->uri->total_segments() == 4) {
+        if ($this->uri->total_segments() === self::LANGUAGE_SEGMENT_INDEX) {
             $language_code = '';
-            $uri_start_segment = 3;
+            $uri_start_segment = self::LANGUAGE_SEGMENT_INDEX - 1;
         } // there is a language code prefix
         else {
-            $language_code = $this->uri->segment(4);
-            $uri_start_segment = 4; // Array offset not segment position
+            $language_code = $this->uri->segment(self::LANGUAGE_SEGMENT_INDEX);
+            $uri_start_segment = self::LANGUAGE_SEGMENT_INDEX; // Array offset not segment position
 
             // language code prefix should be of 2 charachters long
             if (strlen($language_code) != 2) {
                 $language_code = '';
-                $uri_start_segment = 3;
+                $uri_start_segment = self::LANGUAGE_SEGMENT_INDEX - 1;
             }
         }
 
@@ -66,29 +63,9 @@ class DisplayPage extends EnhancedController
         $this->load->library('ModuleRunner');
         $this->load->library('Widget');
 
-        // If there is no frontend enabled, then lets redirect the user to the admin page
-        $enable_frontend = $this->config->item('cms_enable_frontend');
-        if ($enable_frontend === false) {
-            redirect(admin_url() . 'login');
-        }
+        $this->doFrontendCheck();
+        $this->doIntranetCheck($uri);
 
-        // Intranet pages require Authentification
-        $intranet = $this->config->item('cms_intranet');
-        if ($intranet) {
-            $this->load->library('Auth');
-
-            if (!$this->auth->isAuthorized()) {
-                if ($uri) {
-                    $_SESSION['request_redirect'] = $uri . $this->config->item('url_suffix');
-                } else {
-                    $_SESSION['request_redirect'] = './';
-                }
-
-                redirect(admin_url() . 'login/sessionexpired');
-            }
-        }
-
-        // Detecting the language
         $this->load->model('Site_language_model');
         Dispatcher::setSiteLanguage($this->Site_language_model->getLanguageByCodeCached($language_code));
 
@@ -111,56 +88,106 @@ class DisplayPage extends EnhancedController
         } // Attempt to run a module
         else {
             $uri_components = explode($this->config->item('module_uri_separator'), $uri);
+            $method = isset($uri_components[1]) ? $uri_components[1] : 'index';
             $module_name = $uri_components[0];
             if ($module_name) {
-                $method = isset($uri_components[1]) ? $uri_components[1] : 'index';
                 if ($this->modulerunner->runModule($module_name, $method)) {
                     return;
                 }
             }
         }
 
+        if (!$this->config->item('cms_enable_pages')) {
+            show_404();
+        }
 
-        // No module found, displaying a common CMS page
+
         $this->output->cache($this->config->item('cache_expires'));
         $this->load->model('Page_model');
         $page = null;
 
-        if ($this->config->item('cms_enable_pages')) {
-            if (strlen($uri) == 0) {  // For the default page (no item uri)
-                $page = $this->Page_model->getDefaultPageCached(Dispatcher::getSiteLanguage()->code);
-            } else {  // For any other document
-                $page = $this->Page_model->getPageByUriCached($uri, Dispatcher::getSiteLanguage()->code);
-            }
+        if (strlen($uri) == 0) {  // For the default page (no item uri)
+            $page = $this->Page_model->getDefaultPageCached(Dispatcher::getSiteLanguage()->code);
+        } else {  // For any other document
+            $page = $this->Page_model->getPageByUriCached($uri, Dispatcher::getSiteLanguage()->code);
         }
 
         if ($page == null) {
-            // No page found, attempt to run a module
             show_404();
-        } else {  // Page exists, rolling page
-            $this->load->library('Document');
-            $this->document->setId($page->page_id);
-            $this->document->setTitle($page->page_title);
-            $this->document->setContents($page->page_contents);
-            $this->document->setDescription($page->page_description);
-            $this->document->setKeywords($page->page_keywords);
-            $this->document->setRelativeUrl(Dispatcher::getUriPrefix() . $page->page_uri . '.html');
-            $this->document->setDefault($page->page_is_default);
-            $data['document'] = $this->document;
+        } else {
+            $this->doDisplayPage($page);
+        }
+    }
 
-            // Loading theme
+    /**
+     * @return string
+     */
+    private function getLanguageCode()
+    {
+        // If there are exactly 4 segments, that means a language prefix is incuded, the user accessed /<language_iso>/
+        if ($this->uri->total_segments() === self::LANGUAGE_SEGMENT_INDEX) {
+            return $this->uri->segment(self::LANGUAGE_SEGMENT_INDEX);
+        }
+        return '';
+    }
 
-            $site_theme_basepath = INSTALLATIONPATH . $this->config->item('theme_path') . $this->config->item('current_theme');
-            $site_theme_file = $site_theme_basepath . '/index.php';
-            if (file_exists($site_theme_file)) {
-                $this->load->theme($site_theme_file, $data);
-            } else {
-                $this->load->library('Twig');
-                $data['document'] = $this->document;
-                $this->twig->setSiteThemeBasepath($site_theme_basepath);
-                $output = $this->twig->render(APPPATH . 'views/public/cms_page.html.twig', $data);
-                CI_Controller::get_instance()->output->set_output($output);
+    /**
+     * @param $uri
+     */
+    private function doIntranetCheck($uri)
+    {
+        $intranet = $this->config->item('cms_intranet');
+        if ($intranet) {
+            $this->load->library('Auth');
+
+            if (!$this->auth->isAuthorized()) {
+                if ($uri) {
+                    $_SESSION['request_redirect'] = $uri . $this->config->item('url_suffix');
+                } else {
+                    $_SESSION['request_redirect'] = './';
+                }
+
+                redirect(admin_url() . 'login/sessionexpired');
             }
+        }
+    }
+
+    private function doFrontendCheck()
+    {
+        $enable_frontend = $this->config->item('cms_enable_frontend');
+        if ($enable_frontend === false) {
+            redirect(admin_url() . 'login');
+        }
+    }
+
+    /**
+     * @param $page
+     */
+    private function doDisplayPage($page)
+    {
+        $data = array();
+        $this->load->library('Document');
+        $this->document->setId($page->page_id)
+            ->setTitle($page->page_title)
+            ->setContents($page->page_contents)
+            ->setDescription($page->page_description)
+            ->setKeywords($page->page_keywords)
+            ->setRelativeUrl(Dispatcher::getUriPrefix() . $page->page_uri . '.html')
+            ->setDefault($page->page_is_default);
+        $data['document'] = $this->document;
+
+        // Loading theme
+
+        $site_theme_basepath = INSTALLATIONPATH . $this->config->item('theme_path') . $this->config->item('current_theme');
+        $site_theme_file = $site_theme_basepath . '/index.php';
+        if (file_exists($site_theme_file)) {
+            $this->load->theme($site_theme_file, $data);
+        } else {
+            $this->load->library('Twig');
+            $data['document'] = $this->document;
+            $this->twig->setSiteThemeBasepath($site_theme_basepath);
+            $output = $this->twig->render(APPPATH . 'views/public/cms_page.html.twig', $data);
+            CI_Controller::get_instance()->output->set_output($output);
         }
     }
 }
