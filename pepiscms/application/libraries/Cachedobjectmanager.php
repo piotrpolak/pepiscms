@@ -71,6 +71,8 @@ class Cachedobjectmanager extends ContainerAware
         foreach ($this->objects as $o) {
             $this->storeObject($o['name'], $o['object'], $o['collection']);
         }
+
+        $this->cleanupOpcache();
     }
 
     /**
@@ -226,6 +228,8 @@ class Cachedobjectmanager extends ContainerAware
             }
         }
 
+        $this->cleanupOpcache();
+
         return $return;
     }
 
@@ -246,5 +250,12 @@ class Cachedobjectmanager extends ContainerAware
     private function computeHash($name)
     {
         return md5($name);
+    }
+
+    private function cleanupOpcache(): void
+    {
+        if (function_exists('opcache_reset')) {
+            opcache_reset();
+        }
     }
 }
