@@ -124,7 +124,7 @@ $config['security_minimum_allowed_password_strength'] = 0;
 | Minimum allowed password length
 |--------------------------------------------------------------------------
 |
-| 4 is the minimum, for enterprise systems 12 is reccommended
+| 4 is the minimum, for enterprise systems 12 is recommended
 |
 */
 $config['security_minimum_allowed_password_length'] = 4;
@@ -160,6 +160,17 @@ $config['mainpage_module'] = false;
 |
 */
 $config['mainpage_module_method'] = false;
+
+
+/*
+|--------------------------------------------------------------------------
+| Enables / disables object cache
+|--------------------------------------------------------------------------
+|
+| Object cache significantly improves system performance
+|
+*/
+$config['object_cache_is_enabled'] = true;
 
 
 // PepisCMS bypass

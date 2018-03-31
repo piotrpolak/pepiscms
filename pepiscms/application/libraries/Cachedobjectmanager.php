@@ -21,8 +21,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
  */
 class Cachedobjectmanager extends ContainerAware
 {
-    protected $cache_path;
-    protected $objects = array();
+    private $cache_path;
+    private $is_enabled;
+    private $objects = array();
 
     /**
      * Default constructor
@@ -31,6 +32,12 @@ class Cachedobjectmanager extends ContainerAware
     {
         // Getting cache path from configuration
         $path = $this->config->item('cache_path');
+        $this->is_enabled = $this->config->item('cache_object_is_enabled');
+
+        if ($this->is_enabled !== true) {
+            return;
+        }
+
         $path = ($path === '') ? 'application/cache/' : $path;
 
         // Prepending INSTALLATIONPATH for relative values
@@ -56,6 +63,10 @@ class Cachedobjectmanager extends ContainerAware
      */
     public function __destruct()
     {
+        if ($this->is_enabled !== true) {
+            return;
+        }
+
         // Delayed save of every object
         foreach ($this->objects as $o) {
             $this->storeObject($o['name'], $o['object'], $o['collection']);
@@ -73,6 +84,10 @@ class Cachedobjectmanager extends ContainerAware
      */
     public function getObject($name, $time_to_live, $collection = '')
     {
+        if ($this->is_enabled !== true) {
+            return false;
+        }
+
         $hash = $this->computeHash($name);
         $path = $this->computePath($collection, $hash);
 
@@ -108,6 +123,10 @@ class Cachedobjectmanager extends ContainerAware
      */
     public function setObject($name, $object, $collection = '', $store_on_destruct = false)
     {
+        if ($this->is_enabled !== true) {
+            return false;
+        }
+
         if (!$store_on_destruct) {
             return $this->storeObject($name, $object, $collection);
         }
@@ -180,6 +199,10 @@ class Cachedobjectmanager extends ContainerAware
      */
     public function cleanup($collection = '')
     {
+        if ($this->is_enabled !== true) {
+            return false;
+        }
+
         $return = array(
             'size' => 0,
             'count' => 0
