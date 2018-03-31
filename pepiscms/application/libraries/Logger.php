@@ -33,10 +33,8 @@ class Logger
 
     /**
      * Default constructor
-     *
-     * @param array $config
      */
-    public function __construct($config = array())
+    public function __construct()
     {
         set_error_handler('Logger::errorHandlerWithLogging');
         $CI = &get_instance();

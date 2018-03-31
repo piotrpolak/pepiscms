@@ -22,15 +22,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class SecurityPolicyBuilder
 {
     /**
-     * Default constructor
-     *
-     * @param array $parameters
-     */
-    public function __construct($parameters = array())
-    {
-    }
-
-    /**
      * Builds a string representing XML security policy
      *
      * @param $module_name

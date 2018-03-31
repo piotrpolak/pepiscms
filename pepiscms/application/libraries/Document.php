@@ -52,9 +52,8 @@ class Document extends ContainerAware
 
     /**
      * Document constructor.
-     * @param null|array $params
      */
-    public function __construct($params = null)
+    public function __construct()
     {
         $this->load->model('Menu_model');
     }

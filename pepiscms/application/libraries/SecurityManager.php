@@ -33,15 +33,6 @@ class SecurityManager
     private static $cached_objects_collection_name = 'security_policy';
 
     /**
-     * Default constructor, empty
-     * @param array $params
-     */
-    public function __contruct($params = array())
-    {
-        // Do nothing
-    }
-
-    /**
      * Returns true when a user has access to the method of the controller
      * When the $module parameter the controller method
      * should not be the name of the class but name of the module

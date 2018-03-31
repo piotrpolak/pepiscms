@@ -27,15 +27,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Widget extends ContainerAware
 {
     /**
-     * Widget constructor.
-     *
-     * @param array|null $params
-     */
-    public function __construct($params = null)
-    {
-    }
-
-    /**
      * Array containing context
      *
      * @var array

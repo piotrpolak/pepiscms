@@ -25,9 +25,8 @@ class MenuRendor extends ContainerAware
 
     /**
      * Default constructor, empty
-     * @param array $params
      */
-    public function __construct($params = null)
+    public function __construct()
     {
         $this->load->config('menu');
         $this->load->model('Module_model');

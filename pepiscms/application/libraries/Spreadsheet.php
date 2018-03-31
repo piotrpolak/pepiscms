@@ -26,15 +26,6 @@ class Spreadsheet extends ContainerAware
     const EXCEL_XLSX = 'xlsx';
 
     /**
-     * Default constructor
-     *
-     * @param array $parameters
-     */
-    public function __construct($parameters = array())
-    {
-    }
-
-    /**
      * Tells whether all dependencies are present and the feature is fully enabled.
      */
     public function isFullyEnabled()

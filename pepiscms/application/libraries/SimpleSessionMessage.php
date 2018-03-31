@@ -31,10 +31,8 @@ class SimpleSessionMessage extends ContainerAware
 
     /**
      * Default constructor
-     *
-     * @param array|boolean $params
      */
-    public function __construct($params = false)
+    public function __construct()
     {
         if (!isset($_SESSION[$this->session_var_name . '_formatting_function'])) {
             $_SESSION[$this->session_var_name . '_formatting_function'] = self::FUNCTION_SUCCESS;

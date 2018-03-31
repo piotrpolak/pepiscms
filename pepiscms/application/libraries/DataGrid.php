@@ -174,10 +174,8 @@ class DataGrid extends ContainerAware
 
     /**
      * Default Constructor
-     *
-     * @param array $params
      */
-    public function __construct($params = array())
+    public function __construct()
     {
         $this->clear();
 

@@ -35,15 +35,6 @@ class Twig extends ContainerAware
     private $site_theme_basepath = null;
 
     /**
-     * Default constructor
-     *
-     * @param array $params
-     */
-    public function __construct($params = array())
-    {
-    }
-
-    /**
      * Sets site theme basepath - the path where base.html.tiwg is located
      *
      * @param null|string $site_theme_basepath

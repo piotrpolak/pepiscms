@@ -26,10 +26,8 @@ class Cachedobjectmanager extends ContainerAware
 
     /**
      * Default constructor
-     *
-     * @param array $parameters
      */
-    public function __construct($parameters = array())
+    public function __construct()
     {
         // Getting cache path from configuration
         $path = $this->config->item('cache_path');

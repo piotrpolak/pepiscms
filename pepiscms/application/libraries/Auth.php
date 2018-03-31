@@ -65,9 +65,8 @@ class Auth extends ContainerAware
 
     /**
      * Auth constructor.
-     * @param bool|array $params
      */
-    public function __construct($params = false)
+    public function __construct()
     {
         @session_start();
 

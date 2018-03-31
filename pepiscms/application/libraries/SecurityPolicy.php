@@ -32,17 +32,6 @@ class SecurityPolicy extends ContainerAware
     const READ_WRITE = 3;
     const FULL_CONTROL = 4;
 
-
-    /**
-     * Default constructor
-     *
-     * @param array $variables
-     */
-    public function __construct($variables = array())
-    {
-    }
-
-
     /**
      * Returns system policy path
      *
@@ -52,7 +41,6 @@ class SecurityPolicy extends ContainerAware
     {
         return APPPATH . 'security_policy.xml';
     }
-
 
     /**
      * Returns path of security policy for specified module

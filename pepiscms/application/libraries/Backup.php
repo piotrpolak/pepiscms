@@ -36,10 +36,8 @@ class Backup extends ContainerAware
 
     /**
      * Backup constructor.
-     *
-     * @param array|null $params
      */
-    public function __construct($params = null)
+    public function __construct()
     {
         $this->load->model('Page_model');
         $this->load->model('Menu_model');

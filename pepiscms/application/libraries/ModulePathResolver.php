@@ -28,9 +28,8 @@ class ModulePathResolver extends ContainerAware implements \Piotrpolak\Pepiscms\
 
     /**
      * Default constructor, empty
-     * @param array $params
      */
-    public function __construct($params = array())
+    public function __construct()
     {
         $this->moduleLocators[] = new \Piotrpolak\Pepiscms\Modulerunner\ModuleLocator();
         $this->moduleLocators[] = new \Piotrpolak\Pepiscms\Modulerunner\LegacyModuleLocator();

@@ -36,9 +36,8 @@ class ModuleRunner extends ContainerAware
 
     /**
      * Default constructor, empty
-     * @param array $params
      */
-    public function __construct($params = array())
+    public function __construct()
     {
         $this->load->library('Logger');
         $this->load->library('ModulePathResolver');

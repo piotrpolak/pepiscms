@@ -342,10 +342,8 @@ class FormBuilder extends ContainerAware
 
     /**
      * Default constructor
-     *
-     * @param array $params
      */
-    public function __construct($params = array())
+    public function __construct()
     {
         $this->load->language('formbuilder');
         $this->load->library('form_validation');
