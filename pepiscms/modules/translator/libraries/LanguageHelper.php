@@ -231,12 +231,7 @@ class LanguageHelper extends ContainerAware
         }
 
         $success = file_put_contents($path, $contents);
-        if ($success) {
-            // Protection against optcache introduced in PHP5.6
-            if (function_exists('opcache_invalidate')) {
-                opcache_invalidate($path, true);
-            }
-        }
+        \Piotrpolak\Pepiscms\Modulerunner\OpCacheUtil::safeInvalidate($path);
 
         return $success;
     }
@@ -254,7 +249,7 @@ class LanguageHelper extends ContainerAware
 
         if ($strlen > $length) {
             $value = $value;
-        //$value = substr( $value, 0, $length );
+            //$value = substr( $value, 0, $length );
         } else {
             $diff = $length - $strlen;
 

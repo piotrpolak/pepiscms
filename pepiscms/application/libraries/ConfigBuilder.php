@@ -41,7 +41,9 @@ class ConfigBuilder
             $contents = str_replace('{$' . $key . '}', $this->protectString($value), $contents);
         }
 
-        return file_put_contents($config_path, $contents);
+        $success = file_put_contents($config_path, $contents);
+        \Piotrpolak\Pepiscms\Modulerunner\OpCacheUtil::safeInvalidate($config_path);
+        return $success;
     }
 
     /**

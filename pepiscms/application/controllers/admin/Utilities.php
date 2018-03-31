@@ -74,6 +74,7 @@ class Utilities extends AdminController
         $this->auth->refreshSession();
         $stats = $this->cachedobjectmanager->cleanup();
         $this->db->cache_delete_all();
+        \Piotrpolak\Pepiscms\Modulerunner\OpCacheUtil::safeReset();
 
         $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS)
             ->simplesessionmessage->setMessage('utilities_cache_successfully_cleaned', $stats['count'],

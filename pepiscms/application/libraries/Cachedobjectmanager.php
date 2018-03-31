@@ -175,9 +175,8 @@ class Cachedobjectmanager extends ContainerAware
                 $contents = '<?php // ' . $name . ' - Written at ' . date('Y-m-d, H:i:s') . "\n" . ' $object = @unserialize(base64_decode(\'' . base64_encode(serialize($object_to_write)) . '\'));';
                 if (!file_put_contents($file_path, $contents, LOCK_EX)) {
                     $error = true;
-                }
-                else {
-                    $this->cleanupOpcache($file_path);
+                } else {
+                    \Piotrpolak\Pepiscms\Modulerunner\OpCacheUtil::safeInvalidate($file_path);
                 }
                 $this->benchmark->mark('cached_object_manager_failsafe_store_object_' . $collection . '_' . $hash . '_end');
             }
@@ -229,7 +228,7 @@ class Cachedobjectmanager extends ContainerAware
             }
         }
 
-        $this->cleanupOpcache($file_path);
+        \Piotrpolak\Pepiscms\Modulerunner\OpCacheUtil::safeInvalidate($file_path);
 
         return $return;
     }
@@ -251,20 +250,5 @@ class Cachedobjectmanager extends ContainerAware
     private function computeHash($name)
     {
         return md5($name);
-    }
-
-    /**
-     * Invalidates OP cache for a single file.
-     *
-     * @param $file_path
-     * @return bool
-     */
-    private function cleanupOpcache($file_path)
-    {
-        if (function_exists('opcache_invalidate')) {
-            return opcache_invalidate($file_path);
-        }
-
-        return false;
     }
 }
