@@ -17,7 +17,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 /**
  * CLI tools
  */
-class Tools extends CI_Controller
+class Tools extends EnhancedController
 {
     public function __construct()
     {
@@ -161,7 +161,7 @@ class Tools extends CI_Controller
      *
      * @usage php index.php tools install
      */
-    public function install()
+    public function install($clean_database = false)
     {
         $this->load->library('Installer_helper');
 
@@ -169,6 +169,11 @@ class Tools extends CI_Controller
 
         $this->installer_helper->buildFileStructure(INSTALLATIONPATH);
         $this->installer_helper->writeConfigFiles($data, INSTALLATIONPATH);
+
+        if ($clean_database === true || strtolower($clean_database) === 'true') {
+            $this->clean_database();
+        }
+
         $this->installer_helper->writeDatabase($data);
 
         $this->_exit_with_success("Successfully installed");
@@ -190,5 +195,25 @@ class Tools extends CI_Controller
         } else {
             $this->_throw_exception(1, "Successfully activated root {$user_email}!");
         }
+    }
+
+    /**
+     * Removes all tables from database.
+     */
+    private function clean_database()
+    {
+        $this->load->dbforge();
+        $tables = $this->db->list_tables();
+
+        $this->db->query('SET FOREIGN_KEY_CHECKS = 0');
+        foreach ($tables as $table) {
+            $this->dbforge->drop_table($table);
+        }
+        $this->db->query('SET FOREIGN_KEY_CHECKS = 1');
+
+        $tables_count = count($tables);
+
+        echo "Successfully removed {$tables_count} tables!" . PHP_EOL;
+
     }
 }
