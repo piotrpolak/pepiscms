@@ -71,8 +71,6 @@ class Cachedobjectmanager extends ContainerAware
         foreach ($this->objects as $o) {
             $this->storeObject($o['name'], $o['object'], $o['collection']);
         }
-
-        $this->cleanupOpcache();
     }
 
     /**
@@ -153,7 +151,7 @@ class Cachedobjectmanager extends ContainerAware
     protected function storeObject($name, $object_to_write, $collection = '')
     {
         $hash = $this->computeHash($name);
-        $path = $this->computePath($collection, $hash);
+        $file_path = $this->computePath($collection, $hash);
 
         $this->benchmark->mark('cached_object_manager_store_object_' . $collection . '_' . $hash . '_start');
 
@@ -161,22 +159,25 @@ class Cachedobjectmanager extends ContainerAware
 
         // Serializing and saving - method #1
         $contents = '<?php // ' . $name . ' - Written at ' . date('Y-m-d, H:i:s') . "\n" . ' $object = unserialize(\'' . str_replace('\'', '\\\'', serialize($object_to_write)) . '\');';
-        if (!file_put_contents($path, $contents, LOCK_EX)) {
+        if (!file_put_contents($file_path, $contents, LOCK_EX)) {
             $error = true;
         }
 
         // If there was an error - skip
         if (!$error) {
             // Testing if serialization worked
-            @include($path);
+            @include($file_path);
             /** @noinspection PhpUndefinedVariableInspection */
             if (!$object) {
                 $this->benchmark->mark('cached_object_manager_failsafe_store_object_' . $collection . '_' . $hash . '_start');
 
                 // Serializing and saving - method #2
                 $contents = '<?php // ' . $name . ' - Written at ' . date('Y-m-d, H:i:s') . "\n" . ' $object = @unserialize(base64_decode(\'' . base64_encode(serialize($object_to_write)) . '\'));';
-                if (!file_put_contents($path, $contents, LOCK_EX)) {
+                if (!file_put_contents($file_path, $contents, LOCK_EX)) {
                     $error = true;
+                }
+                else {
+                    $this->cleanupOpcache($file_path);
                 }
                 $this->benchmark->mark('cached_object_manager_failsafe_store_object_' . $collection . '_' . $hash . '_end');
             }
@@ -185,7 +186,7 @@ class Cachedobjectmanager extends ContainerAware
         $this->benchmark->mark('cached_object_manager_store_object_' . $collection . '_' . $hash . '_end');
 
         if ($error) {
-            Logger::error('Unable to write system cache ' . $path, 'SYSTEM');
+            Logger::error('Unable to write system cache ' . $file_path, 'SYSTEM');
             return false;
         }
 
@@ -228,7 +229,7 @@ class Cachedobjectmanager extends ContainerAware
             }
         }
 
-        $this->cleanupOpcache();
+        $this->cleanupOpcache($file_path);
 
         return $return;
     }
@@ -252,10 +253,18 @@ class Cachedobjectmanager extends ContainerAware
         return md5($name);
     }
 
-    private function cleanupOpcache(): void
+    /**
+     * Invalidates OP cache for a single file.
+     *
+     * @param $file_path
+     * @return bool
+     */
+    private function cleanupOpcache($file_path)
     {
-        if (function_exists('opcache_reset')) {
-            opcache_reset();
+        if (function_exists('opcache_invalidate')) {
+            return opcache_invalidate($file_path);
         }
+
+        return false;
     }
 }
