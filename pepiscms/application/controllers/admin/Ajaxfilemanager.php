@@ -100,7 +100,12 @@ class Ajaxfilemanager extends AdminController
         }
         //usleep(100000); // For interface testing only
 
-        header('Content-type: application/x-javascript');
+        $this->output->set_header('Last-Modified: ' . gmdate('D, d M Y H:i:s', time()) . ' GMT')
+            ->set_header('Cache-Control: no-store, no-cache, must-revalidate')
+            ->set_header('Cache-Control: post-check=0, pre-check=0')
+            ->set_header('Pragma: no-cache')
+            ->set_header('Content-type: application/x-javascript');
+
         echo json_encode($response);
     }
 
