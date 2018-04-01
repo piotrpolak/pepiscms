@@ -78,16 +78,18 @@ class Siteconfig_model extends PEPISCMS_Model implements EntitableInterface
         }
 
         foreach ($config_files as $config_file) {
-            $content_config = file_get_contents(APPPATH . '../resources/config_template//template_' . $config_file);
+            $content_config = file_get_contents(APPPATH . '../resources/config_template/template_' . $config_file);
 
             if (!$content_config) {
                 $error = 'Unable to read template_' . $config_file;
             }
 
             if (!isset($error)) {
-                if (!file_put_contents(INSTALLATIONPATH . 'application/config/' . $config_file, str_replace($config_search, $config_replace, $content_config))) {
+                $config_path = INSTALLATIONPATH . 'application/config/' . $config_file;
+                if (!file_put_contents($config_path, str_replace($config_search, $config_replace, $content_config))) {
                     $error = 'Unable to write ' . $config_file;
                 }
+                \Piotrpolak\Pepiscms\Modulerunner\OpCacheUtil::safeInvalidate($config_path);
             }
         }
 
