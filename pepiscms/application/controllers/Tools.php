@@ -214,6 +214,5 @@ class Tools extends EnhancedController
         $tables_count = count($tables);
 
         echo "Successfully removed {$tables_count} tables!" . PHP_EOL;
-
     }
 }
