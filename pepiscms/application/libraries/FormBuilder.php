@@ -1053,7 +1053,7 @@ class FormBuilder extends ContainerAware
     }
 
     /**
-     * Sets the validation error message
+     * Sets the validation error message. This can either be a localized message or translation key.
      *
      * @param string $message
      * @return FormBuilder
@@ -1166,6 +1166,8 @@ class FormBuilder extends ContainerAware
 
                     $this->generateHandleRedirectOnSuccess($is_apply);
                 } else {
+                    $this->generateSetErrorMessage();
+
                     if (isset($this->callbacks[self::CALLBACK_ON_SAVE_FAILURE])) {
                         call_user_func_array($this->callbacks[self::CALLBACK_ON_SAVE_FAILURE], array(&$save_array));
                     }
@@ -1718,5 +1720,20 @@ class FormBuilder extends ContainerAware
             // Prevent from overwriting if the user simply does not wish to delete file
             unset($save_array[$upload_field_name]);
         }
+    }
+
+    private function generateSetErrorMessage()
+    {
+        $this->setValidationErrorMessage('formbuilder_label_unable_to_save');
+
+        $last_db_error = $this->db->error();
+
+        $error_suffix = '';
+        if ($last_db_error && isset($last_db_error['code']) && $last_db_error['code']) {
+            $error_suffix = ' Last database error: ' . $last_db_error['code'] . ': ' . $last_db_error['message'];
+        }
+
+        $message = 'Unable to save the form. Model save method returned false.' . $error_suffix;
+        Logger::error($message, 'FORMBUILDER');
     }
 }
