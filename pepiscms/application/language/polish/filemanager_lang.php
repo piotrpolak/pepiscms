@@ -1,4 +1,5 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if(!defined('BASEPATH')) exit('No direct script access allowed');
+
 
 $lang['filemanager_button_create_folder']                                                                     = 'Utwórz folder';
 $lang['filemanager_button_delete_files']                                                                      = 'Usuń zaznaczone pliki';
@@ -9,7 +10,7 @@ $lang['filemanager_cl_file_last_modified']                                      
 $lang['filemanager_cl_file_name']                                                                             = 'Nazwa pliku';
 $lang['filemanager_cl_file_size']                                                                             = 'Rozmiar';
 $lang['filemanager_dialog_ar_you_sure_to_delete_selected_files']                                              = 'Czy na pewno chcesz usunąć wybrane pliki?';
-$lang['filemanager_dialog_file_already_exists']                                                               = 'Plik o podanej nazwie już istnieje.';
+$lang['filemanager_dialog_file_already_exists']                                                               = 'Plik o podanej nazwie już istnieje!';
 $lang['filemanager_dialog_file_extension_illegal']                                                            = 'Nowe rozszerzenie pliku jest zabronione.';
 $lang['filemanager_dialog_path_not_found_error']                                                              = 'Katalog o podanej ścieżce nie został znaleziony!';
 $lang['filemanager_dialog_select_files']                                                                      = 'Wybierz przynajmniej jeden plik!';

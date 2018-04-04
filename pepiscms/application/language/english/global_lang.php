@@ -1,4 +1,5 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if(!defined('BASEPATH')) exit('No direct script access allowed');
+
 
 $lang['about_the_system']                                          = 'About the system';
 $lang['global_about_pepiscms']                                     = 'About PepisCMS';
@@ -27,4 +28,4 @@ $lang['global_header_success']                                     = 'Success!';
 $lang['global_heavy_operation_in_progress']                        = 'Operation in progress. Please be patient.';
 $lang['global_logout']                                             = 'Logout';
 $lang['global_logs_view_own_login_history']                        = 'View login history';
-$lang['global_reload_privileges']                                  = 'Reload privileges';
+$lang['global_reload_privileges']                                  = 'Reload privileges cache';

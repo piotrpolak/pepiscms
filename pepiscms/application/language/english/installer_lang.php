@@ -1,7 +1,8 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if(!defined('BASEPATH')) exit('No direct script access allowed');
+
 
 $lang['installer_administrator_account']                               = 'Administrator account';
-$lang['installer_application_already_configured']                      = 'Application is already configured. Access to installer is denied.';
+$lang['installer_application_already_configured']                      = 'The application has already been configured. Access to the installer is denied.';
 $lang['installer_auth_driver']                                         = 'Auth driver';
 $lang['installer_auth_driver_cas']                                     = 'CAS authorization driver';
 $lang['installer_auth_driver_native']                                  = 'Native PepisCMS authorization';

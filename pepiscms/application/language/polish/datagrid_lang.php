@@ -1,6 +1,7 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if(!defined('BASEPATH')) exit('No direct script access allowed');
 
-$lang['datagrid_any']                 = 'Dowolny';
+
+$lang['datagrid_any']                 = 'Dowolna wartość';
 $lang['datagrid_apply_filters']       = 'Filtruj';
 $lang['datagrid_clear_all_filters']   = 'Wyczyść wszystkie filtry';
 $lang['datagrid_clear_date_filter']   = 'Wyczyść filtr daty';

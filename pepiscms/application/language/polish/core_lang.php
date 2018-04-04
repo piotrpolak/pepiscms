@@ -1,6 +1,7 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if(!defined('BASEPATH')) exit('No direct script access allowed');
 
-$lang['about_label_theme_preview']                  = 'Podgląd skórki';
+
+$lang['about_label_theme_preview']                  = 'Podgląd szablonu';
 $lang['dashboard_group_default']                    = 'Skróty';
 $lang['dashboard_info']                             = 'To jest standardowa strona pulpitu.';
 $lang['dashboard_system_status']                    = 'Status systemu';
