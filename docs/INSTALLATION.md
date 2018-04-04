@@ -3,8 +3,8 @@
 PepisCMS is installed as a composer dependency and then instantiated in the user directory.
 
 Once composer dependency has been configured and downloaded (see below) there are two ways of bootstrapping PepisCMS instance:
-* [attended](#attended-(user)-installation) (user) and
-* [unattended](#unattended-installation) (manual).
+* [attended](#attended-user-installation) (user)
+* [unattended](#unattended-installation) (manual)
 
 ## Configuring composer
                                                                       
@@ -118,3 +118,6 @@ composer install --prefer-dist && \
     php index.php tools install && \
     php index.php tools register_admin $PEPIS_CMS_AUTH_EMAIL $PEPIS_CMS_AUTH_PASSWORD
 ```
+
+See [demo application setup scripts](https://github.com/piotrpolak/pepiscms-demo) to see PepisCMS unattended
+installation in action.

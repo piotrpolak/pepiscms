@@ -9,6 +9,7 @@ The generated administration panel consists of [modules](docs/MODULES.md) that c
 are if you don't care about presentation details).
 
 * [Features](docs/FEATURES.md)
+* [Demo](#demo)
 * [Installation](docs/INSTALLATION.md)
 * [Modules](docs/MODULES.md)
 * [Generating a CRUD module](docs/GENERATING_A_CRUD_MODULE.md)
@@ -29,6 +30,14 @@ are if you don't care about presentation details).
 * [Changes comparing to CodeIgniter](docs/CHANGES_COMPARING_TO_CODEIGNITER.md)
 * [Enabling library and models autocomplete predictions](docs/ENABLING_LIBRARY_AND_MODELS_AUTOCOMPLETE_PREDICTION.md)
 * [Useful commands](docs/USEFUL_COMMANDS.md)
+
+## Demo
+
+A demo application is automatically deployed to Heroku and can be reached at:
+
+* [https://pepiscms-demo.herokuapp.com/](https://pepiscms-demo.herokuapp.com/)
+
+Please note the demo application contents are automatically cleared up each time a new version is deployed.
 
 ## Some history
 
