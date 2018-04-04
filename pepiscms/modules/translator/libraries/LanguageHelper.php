@@ -249,7 +249,7 @@ class LanguageHelper extends ContainerAware
 
         if ($strlen > $length) {
             $value = $value;
-            //$value = substr( $value, 0, $length );
+        //$value = substr( $value, 0, $length );
         } else {
             $diff = $length - $strlen;
 

@@ -85,7 +85,7 @@ class DevelopmentDescriptor extends ModuleDescriptor
                 ->withController($this->module_name)
                 ->withMethod('module_make')
                 ->withLabel($this->lang->line($this->module_name . '_make_a_new_module'))
-                ->withIconUrl(module_resources_url($this->module_name) . 'module_make_32.png')
+                ->withIconUrl(module_resources_url($this->module_name) . 'module_make_16.png')
             ->end()
             ->addItem()
                 ->withController($this->module_name)
