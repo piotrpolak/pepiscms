@@ -623,7 +623,7 @@ class Generic_model extends PEPISCMS_Model implements EntitableInterface, Moveab
         // Building query
         $this->db->set($data_to_save);
 
-        if ($id !== false) {
+        if ($id !== false && $id !== '') {
             // Updating for existing records
             $this->db->where($this->getIdFieldName(), $id);
             $success = $this->db->update($this->getTable());
