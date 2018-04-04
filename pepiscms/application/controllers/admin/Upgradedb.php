@@ -23,13 +23,17 @@ class Upgradedb extends EnhancedController
 {
     public function index()
     {
+        if (ENVIRONMENT !== 'development') {
+            show_error('Upgradedb utility is only available in development environment. <a href="' . admin_url() . '">Go back to admin panel</a>');
+
+        }
+
         $this->load->moduleModel('sqlconsole', 'Sqlconsole_helper_model');
         $sql_basepath = APPPATH . '../resources/sql/upgrade/';
         $lock_filepath = INSTALLATIONPATH . 'application/cache/upgradedb.lock';
         $count = 0;
 
         if (file_exists($lock_filepath)) {
-            // TODO Translation
             show_error('Application already upgraded at ' . date('Y-m-d H:i:s', filemtime($lock_filepath)) . ' Delete cache/upgradedb.lock to enable upgrade utility. <a href="' . admin_url() . '">Go back to admin panel</a>');
         }
 
