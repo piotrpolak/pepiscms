@@ -4,6 +4,7 @@ $lang['label_common_utilities']                                         = 'Commo
 $lang['label_system_utilities']                                         = 'System utilities';
 $lang['label_utilities_and_settings']                                   = 'Utilities';
 $lang['utilities_cache_successfully_cleaned']                           = 'Removed %s files. %s space saved!';
+$lang['utilities_opcache_and_db_cache_successfully_cleaned']            = 'OPCache and Database cache successfully cleaned!';
 $lang['utilities_dialog_clear_pages_cache']                             = 'Clear static pages\' cache HTML';
 $lang['utilities_dialog_clear_pages_cache_error']                       = 'Unable to open cache directory. %sBack to utilities%s.';
 $lang['utilities_header_clear_pages_cache_error']                       = 'Clear cache error';

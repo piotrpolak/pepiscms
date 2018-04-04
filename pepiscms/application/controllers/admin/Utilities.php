@@ -63,8 +63,10 @@ class Utilities extends AdminController
         $this->auth->refreshSession();
         $stats = SecurityManager::flushCache();
 
-        $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS)
-            ->setMessage('utilities_cache_successfully_cleaned', $stats['count'], byte_format($stats['size']));
+        if ($stats) {
+            $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS)
+                ->setMessage('utilities_cache_successfully_cleaned', $stats['count'], byte_format($stats['size']));
+        }
 
         redirect(admin_url() . 'utilities');
     }
@@ -72,13 +74,17 @@ class Utilities extends AdminController
     public function flush_system_cache()
     {
         $this->auth->refreshSession();
-        $stats = $this->cachedobjectmanager->cleanup();
         $this->db->cache_delete_all();
         \Piotrpolak\Pepiscms\Modulerunner\OpCacheUtil::safeReset();
-
-        $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS)
-            ->simplesessionmessage->setMessage('utilities_cache_successfully_cleaned', $stats['count'],
-                byte_format($stats['size']));
+        $stats = $this->cachedobjectmanager->cleanup();
+        if ($stats) {
+            $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS)
+                ->simplesessionmessage->setMessage('utilities_cache_successfully_cleaned', $stats['count'],
+                    byte_format($stats['size']));
+        } else {
+            $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS)
+                ->simplesessionmessage->setMessage('utilities_opcache_and_db_cache_successfully_cleaned');
+        }
 
         redirect(admin_url() . 'utilities');
     }

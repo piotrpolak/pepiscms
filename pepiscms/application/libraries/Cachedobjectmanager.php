@@ -225,6 +225,8 @@ class Cachedobjectmanager extends ContainerAware
             if (@unlink($file_path)) {
                 $return['size'] += $file_size;
                 $return['count']++;
+            } else {
+                Logger::error('Unable to delete system cache file ' . $file_path, 'SYSTEM');
             }
         }
 

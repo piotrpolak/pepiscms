@@ -170,7 +170,7 @@ $config['mainpage_module_method'] = false;
 | Object cache significantly improves system performance
 |
 */
-$config['object_cache_is_enabled'] = true;
+$config['cache_object_is_enabled'] = true;
 
 
 // PepisCMS bypass
