@@ -28,8 +28,7 @@ class Module extends AdminController
         $this->load->library('ConfigBuilder');
         $this->load->library('ModuleRunner');
         $this->load->library('Cachedobjectmanager');
-        $this->load->library('User_agent');
-        ;
+        $this->load->library('User_agent');;
         $this->assign('title', $this->lang->line('label_installed_modules'));
     }
 
@@ -337,10 +336,9 @@ class Module extends AdminController
 
     private function removeAllCache()
     {
-        $this->auth->refreshSession();
-        $this->cachedobjectmanager->cleanup();
         $this->db->cache_delete_all();
-        ModuleRunner::flushCache();
+        $this->cachedobjectmanager->cleanup();
+        $this->auth->refreshSession();
     }
 
     /**
