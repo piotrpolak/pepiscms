@@ -32,14 +32,23 @@ define('INSTALLATIONPATH', realpath('./') . '/');
  *
  * NOTE: If you change these, also change the error_reporting() code below
  */
-if (isset($_SERVER['CI_ENV'])) {
-    define('ENVIRONMENT', $_SERVER['CI_ENV']);
-} else {
-    if (isset($_SERVER['HTTP_HOST']) &&
-        (strpos($_SERVER['HTTP_HOST'], 'dev.') !== FALSE || $_SERVER['HTTP_HOST'] == 'localhost')) {
-        define('ENVIRONMENT', 'development');
+
+//define('ENVIRONMENT', 'development');
+
+if (!define('ENVIRONMENT')) {
+    $SYSTEM_VARIABLE_ENV = getenv('CI_ENV');
+
+    if (isset($_SERVER['CI_ENV'])) {
+        define('ENVIRONMENT', $_SERVER['CI_ENV']);
+    } elseif ($SYSTEM_VARIABLE_ENV !== false) {
+        define('ENVIRONMENT', $SYSTEM_VARIABLE_ENV);
     } else {
-        define('ENVIRONMENT', 'production');
+        if (isset($_SERVER['HTTP_HOST']) &&
+            (strpos($_SERVER['HTTP_HOST'], 'dev.') !== FALSE || $_SERVER['HTTP_HOST'] == 'localhost')) {
+            define('ENVIRONMENT', 'development');
+        } else {
+            define('ENVIRONMENT', 'production');
+        }
     }
 }
 
