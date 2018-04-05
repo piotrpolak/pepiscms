@@ -228,9 +228,9 @@ class Cachedobjectmanager extends ContainerAware
             } else {
                 Logger::error('Unable to delete system cache file ' . $file_path, 'SYSTEM');
             }
-        }
 
-        \Piotrpolak\Pepiscms\Modulerunner\OpCacheUtil::safeInvalidate($file_path);
+            \Piotrpolak\Pepiscms\Modulerunner\OpCacheUtil::safeInvalidate($file_path);
+        }
 
         return $return;
     }
