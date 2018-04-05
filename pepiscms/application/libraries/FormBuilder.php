@@ -1053,7 +1053,7 @@ class FormBuilder extends ContainerAware
     }
 
     /**
-     * Sets the validation error message. This can either be a localized message or translation key.
+     * Sets the validation error message. The message must already be localized (not a key).
      *
      * @param string $message
      * @return FormBuilder
@@ -1724,7 +1724,7 @@ class FormBuilder extends ContainerAware
 
     private function generateSetErrorMessage()
     {
-        $this->setValidationErrorMessage('formbuilder_label_unable_to_save');
+        $this->setValidationErrorMessage($this->lang->line('formbuilder_label_unable_to_save'));
 
         $last_db_error = $this->db->error();
 
