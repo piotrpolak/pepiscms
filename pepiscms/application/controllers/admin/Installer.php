@@ -438,6 +438,7 @@ class Installer extends AdminController
 
                 $that->Module_model->install($module, $that->input->post($module . '__is_installed_menu') == 1, $that->input->post($module . '__is_installed_utilities') == 1);
             }
+            $this->removeAllCache();
 
             redirect(admin_url() . 'installer/build_success');
         }, FormBuilder::CALLBACK_ON_SAVE);
