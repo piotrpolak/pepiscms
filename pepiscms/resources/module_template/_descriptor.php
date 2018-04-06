@@ -7,7 +7,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  * 
  * @author {author}
  * @date {date}
- * @classTemplateVersion 20180225
+ * @classTemplateVersion 20180406
  */
 class {module_class_name}Descriptor extends ModuleDescriptor {
 
@@ -45,8 +45,7 @@ class {module_class_name}Descriptor extends ModuleDescriptor {
         $this->load->moduleLanguage($this->module_name);
         $description_label = $this->module_name . '_module_description';
         $description = $this->lang->line($this->module_name . '_module_description');
-        if( $description == $description_label )
-        {
+        if($description == $description_label) {
             return '';
         }
 
@@ -75,8 +74,7 @@ class {module_class_name}Descriptor extends ModuleDescriptor {
     public function onInstall()
     {
         $path = $this->load->resolveModuleDirectory($this->module_name, false) . '/resources/install.sql';
-        if (!file_exists($path))
-        {
+        if (!file_exists($path)) {
             return false;
         }
         $this->db->query(file_get_contents($path));
@@ -89,8 +87,7 @@ class {module_class_name}Descriptor extends ModuleDescriptor {
     public function onUninstall()
     {
         $path = $this->load->resolveModuleDirectory($this->module_name, false) . '/resources/uninstall.sql';
-        if (!file_exists($path))
-        {
+        if (!file_exists($path)) {
             return false;
         }
         $this->db->query(file_get_contents($path));
