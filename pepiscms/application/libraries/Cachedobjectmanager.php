@@ -48,13 +48,17 @@ class Cachedobjectmanager extends ContainerAware
 
         // Attempt to create missing directory
         if (!file_exists($this->cache_path)) {
-            @mkdir($this->cache_path);
+            if (!@mkdir($this->cache_path)) {
+                Logger::error('Unable to create cache directory at ' . $this->cache_path, 'SYSTEM');
+            }
         }
 
         $this->cache_path .= 'cached_objects/';
         // Attempt to create missing subdirectory
         if (!file_exists($this->cache_path)) {
-            @mkdir($this->cache_path);
+            if (!@mkdir($this->cache_path)) {
+                Logger::error('Unable to create cache directory at ' . $this->cache_path, 'SYSTEM');
+            }
         }
     }
 
@@ -120,6 +124,7 @@ class Cachedobjectmanager extends ContainerAware
      * @param bool $store_on_destruct
      *
      * @return bool
+     * @throws Exception
      */
     public function setObject($name, $object, $collection = '', $store_on_destruct = false)
     {
@@ -159,7 +164,7 @@ class Cachedobjectmanager extends ContainerAware
 
         // Serializing and saving - method #1
         $contents = '<?php // ' . $name . ' - Written at ' . date('Y-m-d, H:i:s') . "\n" . ' $object = unserialize(\'' . str_replace('\'', '\\\'', serialize($object_to_write)) . '\');';
-        if (!file_put_contents($file_path, $contents, LOCK_EX)) {
+        if (!@file_put_contents($file_path, $contents, LOCK_EX)) {
             $error = true;
         }
 
