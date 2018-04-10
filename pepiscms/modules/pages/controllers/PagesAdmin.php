@@ -21,6 +21,7 @@ class PagesAdmin extends ModuleAdminController
 {
     // TODO Change installer
 
+    // TODO Drop support for feature_is_enabled_menu
     // TODO Move models
     // TODO Move translations
     // TODO Find a generic way to display pages
@@ -80,9 +81,9 @@ class PagesAdmin extends ModuleAdminController
     public function setviewtype()
     {
         $view = $this->input->getParam('view');
-        $language_code = $this->input->getParam('language_code');
         $this->auth->setSessionVariable('pages_view', $view);
-        redirect(module_url() . 'index/language_code-' . $language_code . '/view-' . $view);
+
+        $this->redirectBack($view);
     }
 
     public function edit()
@@ -269,8 +270,6 @@ class PagesAdmin extends ModuleAdminController
         }
 
         $page_id = $this->input->getParam('page_id');
-        $site_language = $this->getAttribute('site_language');
-        $view = $this->input->getParam('view');
 
         LOGGER::info('Deleting page', 'PAGES', $page_id);
 
@@ -289,7 +288,7 @@ class PagesAdmin extends ModuleAdminController
             }
         }
 
-        $this->redirectBack($site_language, $view);
+        $this->redirectBack();
     }
 
     public function deletemenuelement()
@@ -298,9 +297,7 @@ class PagesAdmin extends ModuleAdminController
             show_error($this->lang->line('global_feature_not_enabled'));
         }
 
-        $site_language = $this->getAttribute('site_language');
         $item_id = $this->input->getParam('item_id');
-        $view = $this->input->getParam('view');
 
         $success = false;
 
@@ -337,7 +334,7 @@ class PagesAdmin extends ModuleAdminController
             $this->simplesessionmessage->setMessage('pages_dialog_menu_contains_submenu_error', $menuelement->item_name);
         }
 
-        $this->redirectBack($site_language, $view);
+        $this->redirectBack();
     }
 
     public function move()
@@ -348,7 +345,6 @@ class PagesAdmin extends ModuleAdminController
 
         $direction = $this->input->getParam('direction');
         $id = $this->input->getParam('item_id');
-        $view = $this->input->getParam('view');
 
         $this->Generic_model->move($id, $direction, $this->Menu_model->getTable(), 'parent_item_id', 'item_order', 'item_id');
         $this->_clear_cache();
@@ -357,18 +353,16 @@ class PagesAdmin extends ModuleAdminController
             $this->jsonResponse(true, 'OK');
         }
 
-        $site_language = $this->getAttribute('site_language');
-        $this->redirectBack($site_language, $view);
+        $this->redirectBack();
     }
 
     public function setdefault()
     {
         $site_language = $this->getAttribute('site_language');
-        $view = $this->input->getParam('view');
-
         $this->Page_model->setDefault($this->input->getParam('page_id'), $site_language->code);
         $this->_clear_cache();
-        $this->redirectBack($site_language, $view);
+
+        $this->redirectBack();
     }
 
     private function _clear_cache()
@@ -589,11 +583,17 @@ class PagesAdmin extends ModuleAdminController
     }
 
     /**
-     * @param $site_language
      * @param $view
      */
-    private function redirectBack($site_language, $view)
+    private function redirectBack($view = false)
     {
-        redirect(module_url() . 'index/language_code-' . $site_language->code . ($view ? '/view-' . $view : ''));
+        $site_language = $this->getAttribute('site_language');
+        $language_code = $site_language->code;
+
+        if (!$view) {
+            $view = $this->input->getParam('view');
+        }
+
+        redirect(module_url() . 'index/language_code-' . $language_code . ($view ? '/view-' . $view : ''));
     }
 }
