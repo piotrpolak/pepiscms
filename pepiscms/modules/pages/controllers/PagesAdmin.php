@@ -21,7 +21,6 @@ class PagesAdmin extends ModuleAdminController
 {
     // TODO Change installer
 
-    // TODO Drop support for feature_is_enabled_menu
     // TODO Move models
     // TODO Move translations
     // TODO Find a generic way to display pages
@@ -198,15 +197,13 @@ class PagesAdmin extends ModuleAdminController
         }
 
         // For OLD pages that were previously attached to menu and now they are not
-        if ($this->config->item('feature_is_enabled_menu')) {
-            if (!$is_new_page && !$is_page_attached_to_menu && $was_page_attached_to_menu) {
-                if ($this->Menu_model->hasChildren($current_menu_item->item_id)) {
-                    $this->formbuilder->setValidationErrorMessage(sprintf($this->lang->line('has_children'), $data['item_name']));
-                    return false;
-                } else {
-                    // Unpining
-                    $this->Menu_model->deleteById($current_menu_item->item_id);
-                }
+        if (!$is_new_page && !$is_page_attached_to_menu && $was_page_attached_to_menu) {
+            if ($this->Menu_model->hasChildren($current_menu_item->item_id)) {
+                $this->formbuilder->setValidationErrorMessage(sprintf($this->lang->line('has_children'), $data['item_name']));
+                return false;
+            } else {
+                // Unpining
+                $this->Menu_model->deleteById($current_menu_item->item_id);
             }
         }
 
@@ -230,16 +227,15 @@ class PagesAdmin extends ModuleAdminController
         // If it is a new page, then we need to get DB ID
         $page_id = $this->formbuilder->getId() ? $this->formbuilder->getId() : $this->db->insert_id();
 
-        if ($this->config->item('feature_is_enabled_menu')) {
-            if ($is_page_attached_to_menu) {
-                if ($was_page_attached_to_menu) {
-                    $item_id = $current_menu_item->item_id;
-                    $this->Menu_model->saveById($item_id, $data); // Updating
-                } else {
-                    $data['page_id'] = $page_id;
-                    $this->Menu_model->saveById(false, $data); // Inserting
-                    $item_id = $this->db->insert_id();
-                }
+
+        if ($is_page_attached_to_menu) {
+            if ($was_page_attached_to_menu) {
+                $item_id = $current_menu_item->item_id;
+                $this->Menu_model->saveById($item_id, $data); // Updating
+            } else {
+                $data['page_id'] = $page_id;
+                $this->Menu_model->saveById(false, $data); // Inserting
+                $item_id = $this->db->insert_id();
             }
         }
 
@@ -263,10 +259,6 @@ class PagesAdmin extends ModuleAdminController
 
     public function delete()
     {
-        if (!get_instance()->config->item('feature_is_enabled_menu')) {
-            show_error($this->lang->line('global_feature_not_enabled'));
-        }
-
         $page_id = $this->input->getParam('page_id');
 
         LOGGER::info('Deleting page', 'PAGES', $page_id);
@@ -291,10 +283,6 @@ class PagesAdmin extends ModuleAdminController
 
     public function deletemenuelement()
     {
-        if (!get_instance()->config->item('feature_is_enabled_menu')) {
-            show_error($this->lang->line('global_feature_not_enabled'));
-        }
-
         $item_id = $this->input->getParam('item_id');
 
         $success = false;
@@ -337,10 +325,6 @@ class PagesAdmin extends ModuleAdminController
 
     public function move()
     {
-        if (!get_instance()->config->item('feature_is_enabled_menu')) {
-            show_error($this->lang->line('global_feature_not_enabled'));
-        }
-
         $direction = $this->input->getParam('direction');
         $id = $this->input->getParam('item_id');
 
@@ -496,39 +480,37 @@ class PagesAdmin extends ModuleAdminController
         );
 
         $menu_item = false;
-        if ($this->config->item('feature_is_enabled_menu')) {
-            $menu_item = $page_id ? $this->Menu_model->getElementByPageId($page_id) : false;
+        $menu_item = $page_id ? $this->Menu_model->getElementByPageId($page_id) : false;
 
-            $menu = array('-1' => $this->lang->line('pages_dialog_hidden_menu'), '0' => $this->lang->line('pages_dialog_main_menu'));
+        $menu = array('-1' => $this->lang->line('pages_dialog_hidden_menu'), '0' => $this->lang->line('pages_dialog_main_menu'));
 
-            $menu_values = $this->Menu_model->getMenuFlat(0, $site_language->code, false, false, $menu);
-            if ($menu_item) {
-                foreach ($menu_values as $key => &$dontcare) {
-                    if ($key == $menu_item->item_id) {
-                        unset($menu_values[$key]);
-                        break;
-                    }
+        $menu_values = $this->Menu_model->getMenuFlat(0, $site_language->code, false, false, $menu);
+        if ($menu_item) {
+            foreach ($menu_values as $key => &$dontcare) {
+                if ($key == $menu_item->item_id) {
+                    unset($menu_values[$key]);
+                    break;
                 }
             }
+        }
 
-            $definition['parent_item_id'] = array(
-                'input_group' => $input_groups['document'],
-                'label' => $this->lang->line('pages_label_location_in_menu'),
-                'values' => $menu_values,
-                'input_type' => FormBuilder::SELECTBOX,
-                'input_default_value' => ($this->input->getParam('parent_item_id') ? $this->input->getParam('parent_item_id') : -1) // Default -1 but if there is a get param set, use the get param
-            );
-            $definition['item_name'] = array(
-                'input_group' => $input_groups['document'],
-                'label' => $this->lang->line('pages_label_menu_item_name'),
-                'input_type' => FormBuilder::TEXTFIELD,
-                'validation_rules' => '',
-            );
+        $definition['parent_item_id'] = array(
+            'input_group' => $input_groups['document'],
+            'label' => $this->lang->line('pages_label_location_in_menu'),
+            'values' => $menu_values,
+            'input_type' => FormBuilder::SELECTBOX,
+            'input_default_value' => ($this->input->getParam('parent_item_id') ? $this->input->getParam('parent_item_id') : -1) // Default -1 but if there is a get param set, use the get param
+        );
+        $definition['item_name'] = array(
+            'input_group' => $input_groups['document'],
+            'label' => $this->lang->line('pages_label_menu_item_name'),
+            'input_type' => FormBuilder::TEXTFIELD,
+            'validation_rules' => '',
+        );
 
-            // Only if the page is attached to menu
-            if ($this->input->post('parent_item_id') != '-1') {
-                $definition['item_name']['validation_rules'] = 'trim|required|min_length[1]';
-            }
+        // Only if the page is attached to menu
+        if ($this->input->post('parent_item_id') != '-1') {
+            $definition['item_name']['validation_rules'] = 'trim|required|min_length[1]';
         }
 
         if ($this->formbuilder->getId()) {

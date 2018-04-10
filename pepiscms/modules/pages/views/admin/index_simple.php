@@ -21,10 +21,8 @@ function formatCells($menu, $level = 1, &$lang, &$url_suffix, $site_language)
             '<span class="menu_element_uri"><a href="' . ($site_language->is_default == 1 ? '' : $site_language->code . '/') . $menu_element['page_uri'] . $url_suffix . '" class="pages_uri" title="' . $menu_element['page_uri'] . $url_suffix . '">' . shortname($menu_element['page_uri'] . $url_suffix) . ' <b class="binvisible">[' . $lang->line('pages_link_preview') . ']</b></a></span>' .
             $tabs . "\t" . '</td>' . "\n" .
             $tabs . "\t" . '<td class="link"><a href="' . module_url() . 'edit/page_id-' . $menu_element['page_id'] . '/language_code-' . $site_language->code . '/view-simple" title="' . $lang->line('pages_link_edit') . '"><img src="pepiscms/theme/img/pages/page_edit_22.png" alt="edit"></a></td>' . "\n";
-            if (get_instance()->config->item('feature_is_enabled_menu'))
-            {
-                echo $tabs . "\t" . '<td class="link"><a class="delete json" href="' . module_url() . 'deletemenuelement/item_id-' . $menu_element['item_id'] . '/language_code-' . $site_language->code . '/delete_contents-true/view-simple" title="' . $lang->line('pages_link_delete') . '"><img src="pepiscms/theme/img/pages/page_delete_22.png" alt=""></a></td>' . "\n";
-            }
+            echo $tabs . "\t" . '<td class="link"><a class="delete json" href="' . module_url() . 'deletemenuelement/item_id-' . $menu_element['item_id'] . '/language_code-' . $site_language->code . '/delete_contents-true/view-simple" title="' . $lang->line('pages_link_delete') . '"><img src="pepiscms/theme/img/pages/page_delete_22.png" alt=""></a></td>' . "\n";
+
         }
 
         formatCells($menu_element['submenu'], $level + 1, $lang, $url_suffix, $site_language);
@@ -73,15 +71,13 @@ function formatCells($menu, $level = 1, &$lang, &$url_suffix, $site_language)
         'link' => module_url() . 'edit/language_code-' . $site_language->code . '/view-' . $view,
         'icon' => 'pepiscms/theme/img/dialog/actions/add_16.png',
     );
-    if ($this->config->item('feature_is_enabled_menu'))
-    {
-        $actions[] = array(
-            'name' => $this->lang->line('pages_menuelement_add'),
-            'title' => $this->lang->line('pages_menuelement_add_desc'),
-            'link' => module_url() . 'menuedit/language_code-' . $site_language->code . '/view-' . $view,
-            'icon' => 'pepiscms/theme/img/dialog/actions/add_16.png',
-        );
-    }
+
+    $actions[] = array(
+        'name' => $this->lang->line('pages_menuelement_add'),
+        'title' => $this->lang->line('pages_menuelement_add_desc'),
+        'link' => module_url() . 'menuedit/language_code-' . $site_language->code . '/view-' . $view,
+        'icon' => 'pepiscms/theme/img/dialog/actions/add_16.png',
+    );
     ?>
     <?= display_action_bar($actions) ?>
 
@@ -103,10 +99,7 @@ function formatCells($menu, $level = 1, &$lang, &$url_suffix, $site_language)
                 <tr>
                     <th><?= $lang->line('pages_cl_document_uri') ?></th>
                     <th style="width: 40px;"></th>
-
-                    <?php if (get_instance()->config->item('feature_is_enabled_menu')): ?>
-                        <th style="width: 40px;"></th>
-    <?php endif; ?>
+                    <th style="width: 40px;"></th>
                 </tr>
                 <?= formatCells($menu, 1, $lang, $url_suffix, $site_language); ?>
                 <?php if (count($pages) > 0): ?>
@@ -116,9 +109,7 @@ function formatCells($menu, $level = 1, &$lang, &$url_suffix, $site_language)
                             <td class="first"><img src="pepiscms/theme/img/pages/<?= ($page->page_is_default > 0 ? 'page_home_22.png' : 'page_white_22.png') ?>" alt="preview"> <span class="menu_element_name"><a href="<?= module_url() ?>edit/page_id-<?= $page->page_id ?>/language_code-<?= $site_language->code ?>/view-simple"><?= $page->page_title ?> <b class="binvisible">[<?= $lang->line('pages_link_edit') ?>]</b></a></span> <?= ($page->page_is_default > 0 ? ' <strong>' . $lang->line('pages_dialog_default_document') . '</strong>' : '') ?>
                                 <span class="menu_element_uri"><a href="<?= ($site_language->is_default == 1 ? '' : $site_language->code . '/') . $page->page_uri . $url_suffix ?>" class="pages_uri"><?= shortname($page->page_uri . $url_suffix) ?> <b class="binvisible">[<?= $lang->line('pages_link_preview') ?>]</b></a></span></td>
                             <td class="link"><a href="<?= module_url() ?>edit/page_id-<?= $page->page_id ?>/language_code-<?= $site_language->code ?>/view-simple" title="<?= $lang->line('pages_link_edit') ?>"><img src="pepiscms/theme/img/pages/page_edit_22.png" alt="edit"></a></td>
-                            <?php if (get_instance()->config->item('feature_is_enabled_menu')): ?>
-                                <td class="link"><a class="delete json" href="<?= module_url() ?>delete/page_id-<?= $page->page_id ?>/language_code-<?= $site_language->code ?>/view-simple" title="<?= $lang->line('pages_link_delete') ?>"><img src="pepiscms/theme/img/pages/page_delete_22.png" alt=""></a></td>
-                            <?php endif; ?>
+                            <td class="link"><a class="delete json" href="<?= module_url() ?>delete/page_id-<?= $page->page_id ?>/language_code-<?= $site_language->code ?>/view-simple" title="<?= $lang->line('pages_link_delete') ?>"><img src="pepiscms/theme/img/pages/page_delete_22.png" alt=""></a></td>
                         </tr>
 
                     <?php endforeach; ?>

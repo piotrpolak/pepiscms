@@ -29,33 +29,24 @@ function formatCells($menu, $level = 1, &$lang, &$url_suffix, $site_language, $v
             echo '<span class="menu_element_uri"><a href="' . ($site_language->is_default == 1 ? '' : $site_language->code . '/') . $menu_element['page_uri'] . $url_suffix . '" class="pages_uri" title="' . $menu_element['page_uri'] . $url_suffix . '">' . shortname($menu_element['page_uri'] . $url_suffix) . ' <b class="binvisible">[' . $lang->line('pages_link_preview') . ']</b></a></span>';
             echo $tabs . "\t" . '</td>' . "\n";
 
-            if (get_instance()->config->item('feature_is_enabled_menu'))
-            {
-                echo $tabs . "\t" . '<td>';
-                echo '<a href="' . module_url() . 'move/direction-up/item_id-' . $menu_element['item_id'] . '/language_code-' . $site_language->code . '/view-' . $view . '" class="moveUp"><img src="pepiscms/theme/img/dialog/datagrid/up_16.png" alt="up"></a> <a href="' . module_url() . 'move/direction-down/item_id-' . $menu_element['item_id'] . '/language_code-' . $site_language->code . '" class="moveDown"><img src="pepiscms/theme/img/dialog/datagrid/down_16.png" alt="down"></a>';
-                echo '</td>' . "\n";
-            }
 
+            echo $tabs . "\t" . '<td>';
+            echo '<a href="' . module_url() . 'move/direction-up/item_id-' . $menu_element['item_id'] . '/language_code-' . $site_language->code . '/view-' . $view . '" class="moveUp"><img src="pepiscms/theme/img/dialog/datagrid/up_16.png" alt="up"></a> <a href="' . module_url() . 'move/direction-down/item_id-' . $menu_element['item_id'] . '/language_code-' . $site_language->code . '" class="moveDown"><img src="pepiscms/theme/img/dialog/datagrid/down_16.png" alt="down"></a>';
+            echo '</td>' . "\n";
 
-
-            if (get_instance()->config->item('feature_is_enabled_menu'))
-            {
-                echo $tabs . "\t" . '<td class="link">';
-                echo '<a href="' . module_url() . 'edit/parent_item_id-' . $menu_element['item_id'] . '/language_code-' . $site_language->code . '/view-' . $view . '" title="' . $lang->line('pages_link_add_child') . '"><img src="pepiscms/theme/img/dialog/actions/add_16.png" alt="add">';
-                echo '</a></td>' . "\n";
-            }
+            echo $tabs . "\t" . '<td class="link">';
+            echo '<a href="' . module_url() . 'edit/parent_item_id-' . $menu_element['item_id'] . '/language_code-' . $site_language->code . '/view-' . $view . '" title="' . $lang->line('pages_link_add_child') . '"><img src="pepiscms/theme/img/dialog/actions/add_16.png" alt="add">';
+            echo '</a></td>' . "\n";
 
             echo $tabs . "\t" . '<td class="link"><a href="' . module_url() . 'edit/page_id-' . $menu_element['page_id'] . '/language_code-' . $site_language->code . '/view-' . $view . '" title="' . $lang->line('pages_link_edit') . '"><img src="pepiscms/theme/img/pages/page_edit_22.png" alt="edit"></a></td>' . "\n";
 
-            if (get_instance()->config->item('feature_is_enabled_menu'))
+            echo $tabs . "\t" . '<td class="link">';
+            if (!$has_submenu)
             {
-                echo $tabs . "\t" . '<td class="link">';
-                if (!$has_submenu)
-                {
-                    echo $tabs . "\t" . '<a href="' . module_url() . 'deletemenuelement/item_id-' . $menu_element['item_id'] . '/language_code-' . $site_language->code . '/view-' . $view . '/delete_contents-true" title="' . $lang->line('pages_link_delete') . '" class="delete json"><img src="pepiscms/theme/img/pages/page_delete_22.png" alt=""></a>';
-                }
-                echo '</td>' . "\n";
+                echo $tabs . "\t" . '<a href="' . module_url() . 'deletemenuelement/item_id-' . $menu_element['item_id'] . '/language_code-' . $site_language->code . '/view-' . $view . '/delete_contents-true" title="' . $lang->line('pages_link_delete') . '" class="delete json"><img src="pepiscms/theme/img/pages/page_delete_22.png" alt=""></a>';
             }
+            echo '</td>' . "\n";
+
             echo $tabs . "\t" . '<td class="link">' .
             ($menu_element['page_is_default'] > 0 ? '<span class="table_text">' . $lang->line('pages_dialog_default_document') . '</span>' : '<a href="' . module_url() . 'setdefault/page_id-' . $menu_element['page_id'] . '/language_code-' . $site_language->code . '/view-' . $view . '" title="' . $lang->line('pages_link_set_default') . '"><img src="pepiscms/theme/img/pages/page_home_22.png" alt="set default"></a>') . '</td>' . "\n" .
             $tabs . '</tr>' . "\n\r";
@@ -66,44 +57,33 @@ function formatCells($menu, $level = 1, &$lang, &$url_suffix, $site_language, $v
             echo $tabs . '<tr>' . "\n";
             echo $tabs . "\t" . '<td class="first" style="padding-left:' . (($level - 1) * 40 + 10) . 'px;"><img src="pepiscms/theme/img/pages/page_white_link_22.png" alt="menu element">';
             echo '<span class="menu_element_name">';
-            if (get_instance()->config->item('feature_is_enabled_menu'))
-            {
-                echo '<a href="' . module_url() . 'menuedit/item_id-' . $menu_element['item_id'] . '/language_code-' . $site_language->code . '/view-' . $view . '">' . $menu_element['item_name'] . '  <b class="binvisible">[' . $lang->line('pages_link_edit') . ']</b></a>';
-            }
-            else
-            {
-                echo $menu_element['item_name'];
-            }
+
+            echo '<a href="' . module_url() . 'menuedit/item_id-' . $menu_element['item_id'] . '/language_code-' . $site_language->code . '/view-' . $view . '">' . $menu_element['item_name'] . '  <b class="binvisible">[' . $lang->line('pages_link_edit') . ']</b></a>';
+
             echo '</span>';
             echo '<span class="menu_element_uri"><a href="' . $menu_element['item_uri'] . '" class="pages_uri" title="' . $menu_element['item_uri'] . '">' . shortname($menu_element['item_uri']) . ' <b class="binvisible">[' . $lang->line('pages_link_preview') . ']</b></a></span>';
             echo '</td>' . "\n";
 
-            if (get_instance()->config->item('feature_is_enabled_menu'))
-            {
-                echo $tabs . "\t" . '<td>';
-                echo '<a href="' . module_url() . 'move/direction-up/item_id-' . $menu_element['item_id'] . '/language_code-' . $site_language->code . '/view-' . $view . '" class="moveUp"><img src="pepiscms/theme/img/dialog/datagrid/up_16.png" alt="up"></a> <a href="' . module_url() . 'move/direction-down/item_id-' . $menu_element['item_id'] . '/language_code-' . $site_language->code . '/view-' . $view . '" class="moveDown"><img src="pepiscms/theme/img/dialog/datagrid/down_16.png" alt="down"></a>';
-                echo '</td>' . "\n";
+            echo $tabs . "\t" . '<td>';
+            echo '<a href="' . module_url() . 'move/direction-up/item_id-' . $menu_element['item_id'] . '/language_code-' . $site_language->code . '/view-' . $view . '" class="moveUp"><img src="pepiscms/theme/img/dialog/datagrid/up_16.png" alt="up"></a> <a href="' . module_url() . 'move/direction-down/item_id-' . $menu_element['item_id'] . '/language_code-' . $site_language->code . '/view-' . $view . '" class="moveDown"><img src="pepiscms/theme/img/dialog/datagrid/down_16.png" alt="down"></a>';
+            echo '</td>' . "\n";
 
-                echo $tabs . "\t" . '<td class="link"></td>' . "\n";
-            }
-
+            echo $tabs . "\t" . '<td class="link"></td>' . "\n";
 
             echo $tabs . "\t" . '<td class="link">';
-            if (get_instance()->config->item('feature_is_enabled_menu'))
+
+            echo '<a href="' . module_url() . 'menuedit/item_id-' . $menu_element['item_id'] . '/language_code-' . $site_language->code . '/view-' . $view . '" title="' . $lang->line('pages_link_edit') . '"><img src="pepiscms/theme/img/pages/page_edit_22.png" alt="edit"></a>';
+
+            echo '</td>' . "\n";
+
+
+            echo $tabs . "\t" . '<td class="link">' . "\n";
+            if (!$has_submenu)
             {
-                echo '<a href="' . module_url() . 'menuedit/item_id-' . $menu_element['item_id'] . '/language_code-' . $site_language->code . '/view-' . $view . '" title="' . $lang->line('pages_link_edit') . '"><img src="pepiscms/theme/img/pages/page_edit_22.png" alt="edit"></a>';
+                echo $tabs . "\t" . '<a href="' . module_url() . 'deletemenuelement/item_id-' . $menu_element['item_id'] . '/language_code-' . $site_language->code . '/view-' . $view . '" title="' . $lang->line('pages_link_delete') . '" class="delete json"><img src="pepiscms/theme/img/pages/page_delete_22.png" alt=""></a>';
             }
             echo '</td>' . "\n";
 
-            if (get_instance()->config->item('feature_is_enabled_menu'))
-            {
-                echo $tabs . "\t" . '<td class="link">' . "\n";
-                if (!$has_submenu)
-                {
-                    echo $tabs . "\t" . '<a href="' . module_url() . 'deletemenuelement/item_id-' . $menu_element['item_id'] . '/language_code-' . $site_language->code . '/view-' . $view . '" title="' . $lang->line('pages_link_delete') . '" class="delete json"><img src="pepiscms/theme/img/pages/page_delete_22.png" alt=""></a>';
-                }
-                echo '</td>' . "\n";
-            }
 
             echo $tabs . "\t" . '<td class="link"><span class="table_text">' . $lang->line('pages_dialog_element_mapped') . '</span></td>' . "\n";
             echo $tabs . '</tr>' . "\n";
@@ -157,15 +137,14 @@ function formatCells($menu, $level = 1, &$lang, &$url_suffix, $site_language, $v
         'link' => module_url() . 'edit/language_code-' . $site_language->code . '/view-' . $view,
         'icon' => 'pepiscms/theme/img/dialog/actions/add_16.png',
     );
-    if ($this->config->item('feature_is_enabled_menu'))
-    {
-        $actions[] = array(
-            'name' => $this->lang->line('pages_menuelement_add'),
-            'title' => $this->lang->line('pages_menuelement_add_desc'),
-            'link' => module_url() . 'menuedit/language_code-' . $site_language->code . '/view-' . $view,
-            'icon' => 'pepiscms/theme/img/dialog/actions/add_16.png',
-        );
-    }
+
+    $actions[] = array(
+        'name' => $this->lang->line('pages_menuelement_add'),
+        'title' => $this->lang->line('pages_menuelement_add_desc'),
+        'link' => module_url() . 'menuedit/language_code-' . $site_language->code . '/view-' . $view,
+        'icon' => 'pepiscms/theme/img/dialog/actions/add_16.png',
+    );
+
     ?>
     <?= display_action_bar($actions) ?>
 
@@ -182,12 +161,11 @@ function formatCells($menu, $level = 1, &$lang, &$url_suffix, $site_language, $v
 
                 <tr>
                     <th><?= $lang->line('pages_cl_name_of_menu_element') ?></th>
-                    <?php if (get_instance()->config->item('feature_is_enabled_menu')): // Remove 2 of them ?>
-                        <th style="width: 10px;"></th>
-                        <th style="width: 40px;"></th>
 
-                        <th style="width: 40px;"></th>
-                    <?php endif; ?>
+                    <th style="width: 10px;"></th>
+                    <th style="width: 40px;"></th>
+
+                    <th style="width: 40px;"></th>
                     <th style="width: 40px;"></th>
                     <th style="width: 40px;"></th>
 
@@ -209,9 +187,7 @@ function formatCells($menu, $level = 1, &$lang, &$url_suffix, $site_language, $v
                 <tr>
                     <th><?= $lang->line('pages_cl_document_uri') ?></th>
                     <th style="width: 40px;"></th>
-                    <?php if (get_instance()->config->item('feature_is_enabled_menu')): ?>
-                        <th style="width: 40px;"></th>
-                    <?php endif; ?>
+                    <th style="width: 40px;"></th>
                     <th style="width: 40px;"></th>
                 </tr>
 
@@ -221,9 +197,7 @@ function formatCells($menu, $level = 1, &$lang, &$url_suffix, $site_language, $v
                         <td class="first"><img src="pepiscms/theme/img/pages/<?= ($page->page_is_default > 0 ? 'page_home_22.png' : 'page_white_22.png') ?>" alt="preview"> <span class="menu_element_name"><a href="<?= module_url() ?>edit/page_id-<?= $page->page_id ?>/language_code-<?= $site_language->code ?>"><?= $page->page_title ?> <b class="binvisible">[<?= $lang->line('pages_link_edit') ?>]</b></a></span> <?= ($page->page_is_default > 0 ? ' <strong>' . $lang->line('pages_dialog_default_document') . '</strong>' : '') ?>
                             <span class="menu_element_uri"><a href="<?= ($site_language->is_default == 1 ? '' : $site_language->code . '/') . $page->page_uri . $url_suffix ?>" class="pages_uri"><?= shortname($page->page_uri . $url_suffix) ?> <b class="binvisible">[<?= $lang->line('pages_link_preview') ?>]</b></a></span></td>
                         <td class="link"><a href="<?= module_url() ?>edit/page_id-<?= $page->page_id ?>/language_code-<?= $site_language->code ?>" title="<?= $lang->line('pages_link_edit') ?>"><img src="pepiscms/theme/img/pages/page_edit_22.png" alt="edit"></a></td>
-                        <?php if (get_instance()->config->item('feature_is_enabled_menu')): ?>
-                            <td class="link"><a href="<?= module_url() ?>delete/page_id-<?= $page->page_id ?>/language_code-<?= $site_language->code ?>" title="<?= $lang->line('pages_link_delete') ?>" class="delete json"><img src="pepiscms/theme/img/pages/page_delete_22.png" alt=""></a></td>
-                        <?php endif; ?>
+                        <td class="link"><a href="<?= module_url() ?>delete/page_id-<?= $page->page_id ?>/language_code-<?= $site_language->code ?>" title="<?= $lang->line('pages_link_delete') ?>" class="delete json"><img src="pepiscms/theme/img/pages/page_delete_22.png" alt=""></a></td>
                         <td class="link"><?= ($page->page_is_default > 0 ? '<span class="table_text">' . $lang->line('pages_dialog_default_document') . '</span>' : '<a href="' . module_url() . 'setdefault/page_id-' . $page->page_id . '/language_code-' . $site_language->code . '" title="' . $lang->line('pages_link_set_default') . '"><img src="pepiscms/theme/img/pages/page_home_22.png" alt="set default"></a>'); ?></td>
                     </tr>
 
