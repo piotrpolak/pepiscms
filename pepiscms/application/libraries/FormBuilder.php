@@ -1726,14 +1726,17 @@ class FormBuilder extends ContainerAware
     {
         $this->setValidationErrorMessage($this->lang->line('formbuilder_label_unable_to_save'));
 
-        $last_db_error = $this->db->error();
+        // Sometimes there is no DB configured at all
+        if (isset($this->db)) {
+            $last_db_error = $this->db->error();
 
-        $error_suffix = '';
-        if ($last_db_error && isset($last_db_error['code']) && $last_db_error['code']) {
-            $error_suffix = ' Last database error: ' . $last_db_error['code'] . ': ' . $last_db_error['message'];
+            $error_suffix = '';
+            if ($last_db_error && isset($last_db_error['code']) && $last_db_error['code']) {
+                $error_suffix = ' Last database error: ' . $last_db_error['code'] . ': ' . $last_db_error['message'];
+            }
+
+            $message = 'Unable to save the form. Model save method returned false.' . $error_suffix;
+            Logger::error($message, 'FORMBUILDER');
         }
-
-        $message = 'Unable to save the form. Model save method returned false.' . $error_suffix;
-        Logger::error($message, 'FORMBUILDER');
     }
 }
