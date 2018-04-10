@@ -592,7 +592,7 @@ class PagesAdmin extends ModuleAdminController
      * @param $site_language
      * @param $view
      */
-    private function redirectBack($site_language, $view): void
+    private function redirectBack($site_language, $view)
     {
         redirect(module_url() . 'index/language_code-' . $site_language->code . ($view ? '/view-' . $view : ''));
     }
