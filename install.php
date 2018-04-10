@@ -17,6 +17,8 @@ if (file_exists('pepiscms')) {
     die('Access blocked. Please copy this file into your project directory and configure the $vendor_path.');
 }
 
+define('BASEPATH', '.');
+
 /**
  * Path to composer vendor directory
  *
