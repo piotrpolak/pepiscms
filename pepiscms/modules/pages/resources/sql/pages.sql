@@ -4,6 +4,24 @@ DROP TABLE IF EXISTS pages;
 DROP TABLE IF EXISTS menu;
 
 
+CREATE TABLE IF NOT EXISTS `sitelanguages` (
+  `code` CHAR(2) NOT NULL ,
+  `label` VARCHAR(32) NOT NULL ,
+  `is_default` INT(1) NOT NULL ,
+  `ci_language` CHAR(10) NOT NULL DEFAULT 'english' ,
+  PRIMARY KEY (`code`) )
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `remote_applications` (
+  `code` CHAR(2) NOT NULL,
+  PRIMARY KEY (`code`) )
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci;
+
+
 CREATE  TABLE IF NOT EXISTS `pages` (
   `page_id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `page_uri` VARCHAR(196) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL COMMENT 'URL component without extension and base url',

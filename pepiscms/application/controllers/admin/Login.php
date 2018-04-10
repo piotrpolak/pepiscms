@@ -40,8 +40,6 @@ class Login extends EnhancedController
 
             if ($this->config->item('cms_customization_on_login_redirect_url')) {
                 redirect(base_url() . $this->config->item('cms_customization_on_login_redirect_url'));
-            } elseif (SecurityManager::hasAccess('pages') && $this->config->item('cms_enable_pages')) {
-                redirect(admin_url() . 'pages');
             } else {
                 redirect(admin_url() . 'about/dashboard');
             }
@@ -170,12 +168,10 @@ class Login extends EnhancedController
                         $this->load->library('SecurityManager');
                         if ($this->config->item('cms_customization_on_login_redirect_url')) {
                             redirect(base_url() . $this->config->item('cms_customization_on_login_redirect_url'));
-                        } elseif (SecurityManager::hasAccess('pages') && $this->config->item('cms_enable_pages')) {
-                            redirect(admin_url() . 'pages');
                         }
-
-                        // In any case
-                        redirect(admin_url() . 'about/dashboard');
+                        else {
+                            redirect(admin_url() . 'about/dashboard');
+                        }
                     } else {
                         // Need to be the basic method to be able to detect user ID
                         Logger::log('Unable to login ' . $user_email, Logger::MESSAGE_LEVEL_WARNING, 'LOGIN', $user_id, $user_id);

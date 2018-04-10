@@ -38,7 +38,6 @@ class Siteconfig_model extends PEPISCMS_Model implements EntitableInterface
         $booleans = array(
             'cms_enable_frontend',
             'cms_intranet',
-            'cms_enable_pages',
             'cms_enable_utilities',
             'cms_enable_filemanager',
             'debug_log_php_deprecated',

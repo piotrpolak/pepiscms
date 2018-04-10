@@ -97,7 +97,7 @@ class DisplayPage extends EnhancedController
             }
         }
 
-        if (!$this->config->item('cms_enable_pages')) {
+        if (!$this->modulerunner->isModuleInstalled('pages')) {
             show_404();
         }
 

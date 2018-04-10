@@ -303,11 +303,14 @@ class DefaultFormRenderer extends ContainerAware implements FormRenderableInterf
      *
      * @param string $prefix
      * @param string $suffix
+     * @return FormRenderableInterface
      */
     public function setErrorDelimiters($prefix, $suffix)
     {
         $this->validation_message_prefix = $prefix;
         $this->validation_message_suffix = $suffix;
+
+        return $this;
     }
 
     /**

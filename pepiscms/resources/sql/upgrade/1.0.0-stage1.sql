@@ -13,3 +13,6 @@ CREATE TABLE IF NOT EXISTS `cms_password_history` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
+
+DROP TABLE IF EXISTS remote_applications;
+DROP TABLE IF EXISTS cms_remote_applications;

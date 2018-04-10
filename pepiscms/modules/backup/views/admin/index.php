@@ -45,7 +45,7 @@ if( $is_utilities_only_module )
 
 <?= display_tip($this->lang->line('backup_index_tip')) ?>
 
-<?php if ($this->config->item('cms_enable_pages')): ?>
+<?php if ($this->modulerunner->isModuleInstalled('pages')): ?>
     <h1 class="contrasted"><?=$this->lang->line('backup_sql_backup')?></h1>
 <?php endif; ?>
 
@@ -55,7 +55,7 @@ if( $is_utilities_only_module )
     <?php endforeach ?>
 </ul>
 
-<?php if ($this->config->item('cms_enable_pages')): ?>
+<?php if ($this->modulerunner->isModuleInstalled('pages')): ?>
 <h1 class="contrasted"><?=$this->lang->line('backup_xml_backup')?></h1>
 
 <ul class="dashboard_actions clear">

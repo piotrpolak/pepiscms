@@ -36,7 +36,7 @@ interface FormRenderableInterface
      *
      * @param string $prefix
      * @param string $suffix
-     *
+     * @return FormRenderableInterface
      */
     public function setErrorDelimiters($prefix, $suffix);
 

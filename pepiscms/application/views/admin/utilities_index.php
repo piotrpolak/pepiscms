@@ -41,7 +41,7 @@
                 <?= dashboard_box($lang->line('utilities_label_flush_system_cache'), admin_url() . 'utilities/flush_system_cache', 'pepiscms/theme/img/utilities/flush_32.png', $lang->line('utilities_label_flush_system_cache_desc')) ?>
             <?php endif; ?>
 
-            <?php if (SecurityManager::hasAccess('utilities', 'flush_html_cache') && $this->config->item('cms_enable_pages')): ?>	
+            <?php if (SecurityManager::hasAccess('utilities', 'flush_html_cache') && $this->modulerunner->isModuleInstalled('pages')): ?>
                 <?= dashboard_box($lang->line('utilities_dialog_clear_pages_cache'), admin_url() . 'utilities/flush_html_cache', 'pepiscms/theme/img/utilities/flush_pages_32.png', $lang->line('utilities_label_flushes_all_pages_cache_html_output_cache')) ?>
             <?php endif; ?>
 
