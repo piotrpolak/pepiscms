@@ -66,8 +66,8 @@ function formatCells($menu, $level = 1, &$lang, &$url_suffix, $site_language)
     <?php
     $actions = array();
     $actions[] = array(
-        'name' => $this->lang->line('pages_write_new_page'),
-        'title' => $this->lang->line('pages_write_new_page_desc'),
+        'name' => $this->lang->line('pages_add'),
+        'title' => $this->lang->line('pages_add_description'),
         'link' => module_url() . 'edit/language_code-' . $site_language->code . '/view-' . $view,
         'icon' => 'pepiscms/theme/img/dialog/actions/add_16.png',
     );

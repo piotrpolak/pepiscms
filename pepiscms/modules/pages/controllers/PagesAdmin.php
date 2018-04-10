@@ -19,12 +19,12 @@ defined('BASEPATH') or exit('No direct script access allowed');
  */
 class PagesAdmin extends ModuleAdminController
 {
-    // TODO Change installer
-
-    // TODO Move models
     // TODO Move translations
-    // TODO Find a generic way to display pages
+    // TODO Make sitemap using module descriptor, add feature frontend enabled check
+    // TODO Find a generic way to display pages, then move models
     // TODO Module descriptor submenu labels
+    // TODO Move possible pages configuration
+    // TODO Move pages clear cache
 
     public function __construct()
     {
@@ -39,7 +39,7 @@ class PagesAdmin extends ModuleAdminController
         $this->load->model('Site_language_model');
         $this->load->model('User_model');
         $this->load->helper('date');
-        $this->load->language('pages');
+        $this->load->moduleLanguage('pages');
         $this->load->helper('string');
 
         if (!$this->db->table_exists($this->Page_model->getTable())) {
@@ -364,7 +364,7 @@ class PagesAdmin extends ModuleAdminController
         $menu = array('0' => $this->lang->line('pages_dialog_main_menu'));
 
         $this->formbuilder->setId($item_id)
-            ->setTitle($this->lang->line('menuelement_header_edit'))
+            ->setTitle($this->lang->line('pages_menuedit_header'))
             ->setBackLink(module_url() . 'index/language_code-' . $site_language->code . '/view-' . $this->getAttribute('view'))
             ->setFeedObject($this->Menu_model)
             ->setDefinition(

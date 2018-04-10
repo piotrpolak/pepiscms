@@ -1,5 +1,8 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if(!defined('BASEPATH')) exit('No direct script access allowed');
 
+
+$lang['pages_add']                                            = 'Dodaj nową stronę';
+$lang['pages_add_description']                                = 'Dodaj nową dokumen, która pojawi się na stronie.';
 $lang['pages_cl_document_uri']                                = 'URI dokumentu';
 $lang['pages_cl_name_of_menu_element']                        = 'Nazwa elementu menu (URI)';
 $lang['pages_dialog_default_document']                        = 'Stona domyślna';
@@ -55,5 +58,4 @@ $lang['pages_site_languages_are_not_defined']                 = 'Języki strony 
 $lang['pages_view']                                           = 'Widok';
 $lang['pages_view_simple']                                    = 'prosty';
 $lang['pages_view_tree']                                      = 'drzewo';
-$lang['pages_write_new_page']                                 = 'Dodaj nową stronę';
-$lang['pages_write_new_page_desc']                            = 'Dodaj nową dokumen, która pojawi się na stronie.';
+$lang['pages_menuedit_header']                                = 'Edycja elementu menu';
