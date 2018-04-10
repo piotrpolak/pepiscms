@@ -24,8 +24,7 @@ class PagesAdmin extends ModuleAdminController
     // TODO Move models
     // TODO Move translations
     // TODO Find a generic way to display pages
-    // TODO Ensure at least one site language is present
-    // TODO Submenu labels
+    // TODO Module descriptor submenu labels
     // TODO Security policy
 
 
@@ -284,14 +283,13 @@ class PagesAdmin extends ModuleAdminController
 
         if ($this->input->getParam('json') == 1) {
             if ($success) {
-                die('{ "status": "1", "message" : "OK" }'); // TODO Serialize
+                $this->jsonResponse(true, 'OK');
             } else {
-                die('{ "status": "0", "message" : "Unable to delete menu element, it might contain a submenu" }'); // TODO Serialize
+                $this->jsonResponse(false, 'Unable to page element, it might contain a submenu');
             }
         }
 
-
-        redirect(module_url() . 'index/language_code-' . $site_language->code . ($view ? '/view-' . $view : ''));
+        $this->redirectBack($site_language, $view);
     }
 
     public function deletemenuelement()
@@ -318,30 +316,28 @@ class PagesAdmin extends ModuleAdminController
 
             if ($this->input->getParam('json') == 1) {
                 if ($success) {
-                    die('{ "status": "1", "message" : "OK" }'); // TODO Serialize
+                    $this->jsonResponse(true, 'OK');
                 } else {
-                    die('{ "status": "0", "message" : "Unable to delete menu element, it might contain a submenu" }'); // TODO Serialize
+                    $this->jsonResponse(false, 'Unable to delete menu element, it might contain a submenu');
                 }
             }
         } else {
             $menuelement = $this->Menu_model->getById($item_id);
 
-
             if ($this->input->getParam('json') == 1) {
                 if ($success) {
-                    die('{ "status": "1", "message" : "OK" }'); // TODO Serialize
+                    $this->jsonResponse(true, 'OK');
                 } else {
-                    die('{ "status": "0", "message" : "' . str_replace('"', '\\"', sprintf($this->lang->line('pages_dialog_menu_contains_submenu_error'), $menuelement->item_name)) . '" }'); // TODO Serialize
+                    $this->jsonResponse(false, sprintf($this->lang->line('pages_dialog_menu_contains_submenu_error'), $menuelement->item_name));
                 }
             }
-
 
             // Setting the message and redirecting
             $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_ERROR);
             $this->simplesessionmessage->setMessage('pages_dialog_menu_contains_submenu_error', $menuelement->item_name);
         }
 
-        redirect(module_url() . 'index/language_code-' . $site_language->code . ($view ? '/view-' . $view : ''));
+        $this->redirectBack($site_language, $view);
     }
 
     public function move()
@@ -358,11 +354,11 @@ class PagesAdmin extends ModuleAdminController
         $this->_clear_cache();
 
         if ($this->input->getParam('json') == 1) {
-            die('{ "status": "1", "message" : "OK" }'); // TODO Serialize
+            $this->jsonResponse(true, 'OK');
         }
 
         $site_language = $this->getAttribute('site_language');
-        redirect(module_url() . 'index/language_code-' . $site_language->code . ($view ? '/view-' . $view : ''));
+        $this->redirectBack($site_language, $view);
     }
 
     public function setdefault()
@@ -372,7 +368,7 @@ class PagesAdmin extends ModuleAdminController
 
         $this->Page_model->setDefault($this->input->getParam('page_id'), $site_language->code);
         $this->_clear_cache();
-        redirect(module_url() . 'index/language_code-' . $site_language->code . ($view ? '/view-' . $view : ''));
+        $this->redirectBack($site_language, $view);
     }
 
     private function _clear_cache()
@@ -576,5 +572,28 @@ class PagesAdmin extends ModuleAdminController
             );
         }
         return array($definition, $menu_item);
+    }
+
+    /**
+     * @param $status
+     * @param $message
+     */
+    private function jsonResponse($status, $message)
+    {
+        $data = array();
+        $data['status'] = $status ? '1' : '0';
+        $data['message'] = $message;
+
+        $this->output->set_header('Content-Type: application/json');
+        die(json_encode($data));
+    }
+
+    /**
+     * @param $site_language
+     * @param $view
+     */
+    private function redirectBack($site_language, $view): void
+    {
+        redirect(module_url() . 'index/language_code-' . $site_language->code . ($view ? '/view-' . $view : ''));
     }
 }
