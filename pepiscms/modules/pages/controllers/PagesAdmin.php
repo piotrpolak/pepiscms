@@ -26,8 +26,6 @@ class PagesAdmin extends ModuleAdminController
     // TODO Move translations
     // TODO Find a generic way to display pages
     // TODO Module descriptor submenu labels
-    // TODO Security policy
-
 
     public function __construct()
     {

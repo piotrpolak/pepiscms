@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<security_policy generated_at="2018-04-10 22:53:25" version="1.1">
+  <policy module="pages">
+    <controller name="pages">
+      <method name="index">
+        <entity name="page" access="READ"/>
+      </method>
+    </controller>
+    <controller name="pages">
+      <method name="setviewtype">
+        <entity name="page" access="READ"/>
+      </method>
+    </controller>
+    <controller name="pages">
+      <method name="edit">
+        <entity name="page" access="WRITE"/>
+      </method>
+    </controller>
+    <controller name="pages">
+      <method name="delete">
+        <entity name="page" access="WRITE"/>
+      </method>
+    </controller>
+    <controller name="pages">
+      <method name="deletemenuelement">
+        <entity name="page" access="WRITE"/>
+      </method>
+    </controller>
+    <controller name="pages">
+      <method name="move">
+        <entity name="page" access="WRITE"/>
+      </method>
+    </controller>
+    <controller name="pages">
+      <method name="setdefault">
+        <entity name="page" access="WRITE"/>
+      </method>
+    </controller>
+    <controller name="pages">
+      <method name="menuedit">
+        <entity name="page" access="WRITE"/>
+      </method>
+    </controller>
+  </policy>
+</security_policy>
