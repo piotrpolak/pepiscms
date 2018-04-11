@@ -39,7 +39,7 @@ class Backup extends ContainerAware
      */
     public function __construct()
     {
-        $this->load->model('Page_model');
+        $this->load->moduleModel('pages', 'Page_model');
         $this->load->model('Menu_model');
         $this->load->model('Site_language_model');
     }

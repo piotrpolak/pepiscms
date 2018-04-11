@@ -19,7 +19,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
  */
 class PagesAdmin extends ModuleAdminController
 {
-    // TODO Find a generic way to display pages, then move models
+    // TODO NICE TO HAVE: reduce dependency on pages and menu model
+    // TODO NICE TO HAVE: DisplayPage should handle rendering modules in a uniform way
     // TODO Move possible pages configuration
     // TODO Move pages clear cache
     // TODO Make generic executeSqls

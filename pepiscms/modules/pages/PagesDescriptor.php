@@ -22,7 +22,8 @@ class PagesDescriptor extends ModuleDescriptor
     {
         parent::__construct();
         $this->module_name = strtolower(str_replace('Descriptor', '', __CLASS__));
-        $this->load->moduleLanguage($this->module_name);
+        $this->load->moduleModel($this->module_name, 'Page_model');
+        $this->load->model('Site_language_model');
     }
 
     /**
@@ -152,9 +153,6 @@ class PagesDescriptor extends ModuleDescriptor
      */
     public function getSitemapURLs()
     {
-        $this->load->model('Page_model');
-        $this->load->model('Site_language_model');
-
         $uris = $this->Page_model->getAllSitemapableUris();
         $url_suffix = $this->config->item('url_suffix');
 
@@ -167,5 +165,37 @@ class PagesDescriptor extends ModuleDescriptor
         }
 
         return $output;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function handleRequest($uri, $uri_component_one, $uri_component_two)
+    {
+        $this->output->cache($this->config->item('cache_expires'));
+        $url_suffix = $this->config->item('url_suffix');
+
+        $page = null;
+
+        if (strlen($uri) == 0) {  // For the default page (no item uri)
+            $page = $this->Page_model->getDefaultPageCached(Dispatcher::getSiteLanguage()->code);
+        } else {  // For any other document
+            $page = $this->Page_model->getPageByUriCached($uri, Dispatcher::getSiteLanguage()->code);
+        }
+
+        if ($page === null) {
+            return null;
+        }
+
+        $this->load->library('Document');
+        $this->document->setId($page->page_id)
+            ->setTitle($page->page_title)
+            ->setContents($page->page_contents)
+            ->setDescription($page->page_description)
+            ->setKeywords($page->page_keywords)
+            ->setRelativeUrl(Dispatcher::getUriPrefix() . $page->page_uri . $url_suffix)
+            ->setDefault($page->page_is_default);
+
+        return $this->document;
     }
 }

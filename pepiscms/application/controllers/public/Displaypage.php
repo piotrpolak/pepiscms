@@ -67,12 +67,17 @@ class DisplayPage extends EnhancedController
         $this->doIntranetCheck($uri);
 
         $this->load->model('Site_language_model');
+        $this->load->model('Module_model');
         Dispatcher::setSiteLanguage($this->Site_language_model->getLanguageByCodeCached($language_code));
 
         // unable to determine site language, show 404 error
         if (!Dispatcher::getSiteLanguage()) {
             show_error('Unable to determine site language', 404, 'Page not found');
         }
+
+        $uri_components = explode($this->config->item('module_uri_separator'), $uri);
+        $method = isset($uri_components[1]) ? $uri_components[1] : 'index';
+        $module_name = $uri_components[0];
 
         // Mainpage module handler
         if (!$uri) {
@@ -86,9 +91,6 @@ class DisplayPage extends EnhancedController
             }
         } // Attempt to run a module
         else {
-            $uri_components = explode($this->config->item('module_uri_separator'), $uri);
-            $method = isset($uri_components[1]) ? $uri_components[1] : 'index';
-            $module_name = $uri_components[0];
             if ($module_name) {
                 if ($this->modulerunner->runModule($module_name, $method)) {
                     return;
@@ -96,25 +98,24 @@ class DisplayPage extends EnhancedController
             }
         }
 
-        if (!$this->modulerunner->isModuleInstalled('pages')) {
-            show_404();
+        $document = null;
+        $modules = ModuleRunner::getAvailableModules();
+        foreach ($modules as $module_name) {
+            $descriptor = $this->Module_model->getModuleDescriptor($module_name);
+            if (!$descriptor) {
+                continue;
+            }
+
+            $document = $descriptor->handleRequest($uri, $module_name, $method);
+            if ($document) {
+                break;
+            }
         }
 
-
-        $this->output->cache($this->config->item('cache_expires'));
-        $this->load->model('Page_model');
-        $page = null;
-
-        if (strlen($uri) == 0) {  // For the default page (no item uri)
-            $page = $this->Page_model->getDefaultPageCached(Dispatcher::getSiteLanguage()->code);
-        } else {  // For any other document
-            $page = $this->Page_model->getPageByUriCached($uri, Dispatcher::getSiteLanguage()->code);
-        }
-
-        if ($page == null) {
+        if ($document === null) {
             show_404();
         } else {
-            $this->doDisplayPage($page);
+            $this->doDisplayDocument($document);
         }
     }
 
@@ -160,20 +161,13 @@ class DisplayPage extends EnhancedController
     }
 
     /**
-     * @param $page
+     * @param Document $document
      */
-    private function doDisplayPage($page)
+    private function doDisplayDocument(Document $document)
     {
         $data = array();
-        $this->load->library('Document');
-        $this->document->setId($page->page_id)
-            ->setTitle($page->page_title)
-            ->setContents($page->page_contents)
-            ->setDescription($page->page_description)
-            ->setKeywords($page->page_keywords)
-            ->setRelativeUrl(Dispatcher::getUriPrefix() . $page->page_uri . '.html')
-            ->setDefault($page->page_is_default);
-        $data['document'] = $this->document;
+
+        $data['document'] = $document;
 
         // Loading theme
 

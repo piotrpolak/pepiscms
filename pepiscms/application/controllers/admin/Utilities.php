@@ -29,7 +29,7 @@ class Utilities extends AdminController
         $this->load->language('setup');
 
         $this->load->model('Module_model');
-        $this->load->model('Page_model');
+        $this->load->moduleModel('pages', 'Page_model');
         $this->load->library('SimpleSessionMessage');
         $this->load->helper('number');
         $this->load->library('Cachedobjectmanager');
