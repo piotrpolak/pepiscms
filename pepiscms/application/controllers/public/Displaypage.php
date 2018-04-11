@@ -72,7 +72,6 @@ class DisplayPage extends EnhancedController
         // unable to determine site language, show 404 error
         if (!Dispatcher::getSiteLanguage()) {
             show_error('Unable to determine site language', 404, 'Page not found');
-            // show_404();
         }
 
         // Mainpage module handler

@@ -19,12 +19,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
  */
 class PagesAdmin extends ModuleAdminController
 {
-    // TODO Move translations
-    // TODO Make sitemap using module descriptor, add feature frontend enabled check
     // TODO Find a generic way to display pages, then move models
-    // TODO Module descriptor submenu labels
     // TODO Move possible pages configuration
     // TODO Move pages clear cache
+    // TODO Make generic executeSqls
 
     public function __construct()
     {

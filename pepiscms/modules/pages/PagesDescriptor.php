@@ -98,11 +98,11 @@ class PagesDescriptor extends ModuleDescriptor
     {
         return SubmenuBuilder::create()
             ->addItem()
-                ->withController($this->module_name)
-                ->withMethod('edit')
-                ->withLabel($this->lang->line($this->module_name . '_add'))
-                ->withDescription($this->lang->line($this->module_name . '_add_description'))
-                ->withIconUrl(module_resources_url($this->module_name) . 'icon_16.png')
+            ->withController($this->module_name)
+            ->withMethod('edit')
+            ->withLabel($this->lang->line($this->module_name . '_add'))
+            ->withDescription($this->lang->line($this->module_name . '_add_description'))
+            ->withIconUrl(module_resources_url($this->module_name) . 'icon_16.png')
             ->end()
             ->build();
     }
@@ -114,11 +114,11 @@ class PagesDescriptor extends ModuleDescriptor
     {
         return SubmenuBuilder::create()
             ->addItem()
-                ->withController($this->module_name)
-                ->withMethod('edit')
-                ->withLabel($this->lang->line($this->module_name . '_add'))
-                ->withDescription($this->lang->line($this->module_name . '_add_description'))
-                ->withIconUrl(module_resources_url($this->module_name) . 'icon_32.png')
+            ->withController($this->module_name)
+            ->withMethod('edit')
+            ->withLabel($this->lang->line($this->module_name . '_add'))
+            ->withDescription($this->lang->line($this->module_name . '_add_description'))
+            ->withIconUrl(module_resources_url($this->module_name) . 'icon_32.png')
             ->end()
             ->build();
     }
@@ -147,4 +147,25 @@ class PagesDescriptor extends ModuleDescriptor
         return $this->db->trans_complete();
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getSitemapURLs()
+    {
+        $this->load->model('Page_model');
+        $this->load->model('Site_language_model');
+
+        $uris = $this->Page_model->getAllSitemapableUris();
+        $url_suffix = $this->config->item('url_suffix');
+
+        $sl = $this->Site_language_model->getLanguageByCode('');
+        $default_language_code = $sl->code;
+
+        $output = array();
+        foreach ($uris as $uri) {
+            $output[] = ($default_language_code != $uri->language_code ? $uri->language_code . '/' : '') . $uri->page_uri . $url_suffix;
+        }
+
+        return $output;
+    }
 }

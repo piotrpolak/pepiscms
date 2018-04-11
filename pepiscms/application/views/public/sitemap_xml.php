@@ -9,14 +9,7 @@
         <priority>0.5</priority>
         <changefreq>daily</changefreq>
     </url>
-    <?php foreach ($uris as $uri): ?>
-        <url>
-            <loc><?= $base_url . ( $defaul_language != $uri->language_code ? $uri->language_code . '/' : '') . $uri->page_uri . $url_suffix ?></loc>
-            <priority>0.5</priority>
-            <changefreq>daily</changefreq>
-        </url>
-    <?php endforeach ?>
-    <?php foreach ($static as $uri): ?>
+    <?php foreach ($urls as $uri): ?>
         <url>
             <loc><?= $base_url . $uri ?></loc>
             <priority>0.5</priority>
