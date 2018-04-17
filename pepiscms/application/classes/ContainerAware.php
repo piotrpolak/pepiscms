@@ -91,6 +91,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  * @property CI_Benchmark $benchmark
  * @property CI_Security $security
  * @property CI_URI $uri
+ * @property Query_helper $query_helper
  */
 class ContainerAware
 {
