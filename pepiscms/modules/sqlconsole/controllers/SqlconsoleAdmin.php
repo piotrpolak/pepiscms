@@ -19,6 +19,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
  */
 class SqlconsoleAdmin extends ModuleAdminController
 {
+    // TODO Use query helper
+    // TODO Fix insert template
+
     private $cache_ttl = 600; // 10mins
     private $maximum_query_length_for_history = 1024;
 

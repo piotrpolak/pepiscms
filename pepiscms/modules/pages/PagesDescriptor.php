@@ -71,15 +71,16 @@ class PagesDescriptor extends ModuleDescriptor
      */
     public function onInstall()
     {
+        $basepath = $this->load->resolveModuleDirectory($this->module_name, false) . '/resources/sql/';
+
         $paths = array(
-            'pages.sql',
-            'upgrade/0.2.3.0.sql',
-            'upgrade/1.0.0.sql',
+            $basepath . 'pages.sql',
+            $basepath . 'upgrade/0.2.3.0.sql',
+            $basepath . 'upgrade/1.0.0.sql',
         );
 
-        $sql_basepath = $this->load->resolveModuleDirectory($this->module_name, false) . '/resources/sql/';
-
-        return $this->executeSqls($paths, $sql_basepath);
+        $this->load->library('Query_helper');
+        return $this->query_helper->runMultipleSqlQueriesFromPaths($paths);
     }
 
     /**
@@ -87,9 +88,14 @@ class PagesDescriptor extends ModuleDescriptor
      */
     public function onUninstall()
     {
-        $sql_basepath = $this->load->resolveModuleDirectory($this->module_name, false) . '/resources/sql/';
+        $basepath = $this->load->resolveModuleDirectory($this->module_name, false) . '/resources/sql/';
 
-        return $this->executeSqls(array('uninstall.sql'), $sql_basepath);
+        $paths = array(
+            $basepath . 'uninstall.sql',
+        );
+
+        $this->load->library('Query_helper');
+        return $this->query_helper->runMultipleSqlQueriesFromPaths($paths);
     }
 
     /**
@@ -122,30 +128,6 @@ class PagesDescriptor extends ModuleDescriptor
             ->withIconUrl(module_resources_url($this->module_name) . 'icon_32.png')
             ->end()
             ->build();
-    }
-
-    /**
-     * @param $paths
-     * @param $sql_basepath
-     * @return bool
-     */
-    private function executeSqls($paths, $sql_basepath)
-    {
-        $this->db->trans_start();
-        foreach ($paths as $path) {
-            $contents = file_get_contents($sql_basepath . $path);
-            $queries = explode(';', $contents);
-
-
-            foreach ($queries as $query) {
-                if (!trim($query)) {
-                    continue;
-                }
-
-                $this->db->query($query);
-            }
-        }
-        return $this->db->trans_complete();
     }
 
     /**

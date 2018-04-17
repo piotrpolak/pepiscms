@@ -23,7 +23,6 @@ class PagesAdmin extends ModuleAdminController
     // TODO NICE TO HAVE: DisplayPage should handle rendering modules in a uniform way
     // TODO Move possible pages configuration
     // TODO Move pages clear cache
-    // TODO Make generic executeSqls
 
     public function __construct()
     {
