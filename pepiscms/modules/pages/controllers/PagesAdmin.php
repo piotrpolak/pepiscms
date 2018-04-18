@@ -19,11 +19,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
  */
 class PagesAdmin extends ModuleAdminController
 {
-    // TODO NICE TO HAVE: reduce dependency on pages and menu model
-    // TODO NICE TO HAVE: DisplayPage should handle rendering modules in a uniform way
-    // TODO Move possible pages configuration
-    // TODO Move pages clear cache
-
     public function __construct()
     {
         parent::__construct();
@@ -392,6 +387,36 @@ class PagesAdmin extends ModuleAdminController
             ->display();
     }
 
+    public function flush_html_cache()
+    {
+        $this->load->helper('number');
+        $this->load->language('utilities');
+        $this->auth->refreshSession();
+        try {
+            $stats = $this->Page_model->clean_pages_cache();
+
+            $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS)
+                ->setMessage('utilities_cache_successfully_cleaned', $stats['count'], byte_format($stats['size']));
+        } catch (Exception $e) {
+            $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_ERROR)
+                ->setMessage('utilities_label_cache_unable_to_open_directory_might_be_empty');
+        }
+
+        // Smart redirect
+        $this->load->library('User_agent');
+        if ($this->agent->referrer()) {
+            redirect($this->agent->referrer());
+        } else {
+            redirect(module_url());
+        }
+    }
+
+    /**
+     * Callback
+     *
+     * @param $str
+     * @return bool
+     */
     public function _menu_item_name_check($str)
     {
         if ($this->formbuilder->getId()) {
