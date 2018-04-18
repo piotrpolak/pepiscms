@@ -78,7 +78,6 @@ abstract class ModuleDescriptor extends ContainerAware implements ModuleDescript
      */
     public function getAdminUtilitiesElements($language)
     {
-        // NOT IMPLEMENTED YET
         return false;
     }
 

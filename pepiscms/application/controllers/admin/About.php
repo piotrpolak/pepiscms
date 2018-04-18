@@ -17,7 +17,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 /**
  * CMS about page controller
  */
-class About extends AdminController
+class About extends AbstractDashboardController
 {
     public function __construct()
     {
@@ -41,27 +41,7 @@ class About extends AdminController
 
         $default_dashboard_element_group = 'dashboard_group_default';
 
-        $module_names = $this->modulerunner->getInstalledModulesNamesCached();
-        $dashboard_elements = array();
-        foreach ($module_names as $module_name) {
-            $descriptior = $this->Module_model->getModuleDescriptor($module_name);
-            if (!$descriptior) {
-                continue;
-            }
-
-            $module_dashboard_elements = $descriptior->getAdminDashboardElements($this->lang->getCurrentLanguage());
-            if (!is_array($module_dashboard_elements)) {
-                continue;
-            }
-
-            foreach ($module_dashboard_elements as $module_dashboard_element) {
-                if (isset($module_dashboard_element['controller'])) {
-                    $module_dashboard_element['module'] = $module_dashboard_element['controller'];
-                }
-
-                $dashboard_elements[] = $module_dashboard_element;
-            }
-        }
+        $dashboard_elements = $this->getDashboardElements();
 
         $dashboard_elements_builder = SubmenuBuilder::create();
         if ($user_manual_path) {
@@ -87,24 +67,7 @@ class About extends AdminController
 
         $dashboard_elements = array_merge($dashboard_elements, $dashboard_elements_builder->build());
 
-        // Actions grouping
-        $dashboard_elements_grouped = array();
-        foreach ($dashboard_elements as $dashboard_element) {
-            if ($this->auth->isUserRoot() || !isset($dashboard_element['controller']) || SecurityManager::hasAccess($dashboard_element['controller'], $dashboard_element['method'], isset($dashboard_element['module']) ? $dashboard_element['module'] : false)) {
-                if (isset($dashboard_element['group']) && $dashboard_element['group']) {
-                    $group = $dashboard_element['group'];
-                } else {
-                    $group = $default_dashboard_element_group;
-                }
-
-                if (!isset($dashboard_elements_grouped[$group])) {
-                    $dashboard_elements_grouped[$group] = array();
-                }
-
-                $dashboard_elements_grouped[$group][] = $dashboard_element;
-            }
-        }
-
+        $dashboard_elements_grouped = $this->getDashboardElementsGrouped($dashboard_elements, $default_dashboard_element_group);
 
         // Doing system tests
         $failed_configuration_tests = array();
@@ -249,5 +212,13 @@ class About extends AdminController
     public function theme_error()
     {
         show_error("Don't worry, it is just a dummy error page");
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getElements(ModuleDescriptableInterface $descriptior)
+    {
+        return $descriptior->getAdminDashboardElements($this->lang->getCurrentLanguage());
     }
 }
