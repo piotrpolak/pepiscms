@@ -28,7 +28,7 @@
         "behat/mink-extension": "2.1.*",
         "behat/behat": "3.2.*",
         "behat/mink": "1.7.*",
-        "phpunit/phpunit": "4.8.*"
+        "phpunit/phpunit": "~4.8|~5.7"
     },
     "autoload": {
         "classmap": [

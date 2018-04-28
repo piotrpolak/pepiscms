@@ -2,6 +2,8 @@ language: php
 before_install: composer config -g github-oauth.github.com "$GITHUB_TOKEN"
 install: composer install --prefer-dist
 script:
+  - php -v
+  - phpunit -v
   - ./check-code.sh
   - composer require phpoffice/phpexcel 1.8.1 && phpunit
 php:
