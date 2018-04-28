@@ -1,11 +1,11 @@
 language: php
 before_install: composer config -g github-oauth.github.com "$GITHUB_TOKEN"
-install: composer install --prefer-dist
+install: composer install --prefer-dist && composer require phpoffice/phpexcel 1.8.1
 script:
   - php -v
   - php vendor/bin/phpunit -v
   - ./check-code.sh
-  - composer require phpoffice/phpexcel 1.8.1 && php vendor/bin/phpunit
+  - php vendor/bin/phpunit
 php:
   - 5.5
   - 5.6
