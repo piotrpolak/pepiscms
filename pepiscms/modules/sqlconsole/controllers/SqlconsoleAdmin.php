@@ -19,7 +19,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
  */
 class SqlconsoleAdmin extends ModuleAdminController
 {
-    // TODO Use query helper
     // TODO Fix insert template
 
     private $cache_ttl = 600; // 10mins
@@ -59,8 +58,8 @@ class SqlconsoleAdmin extends ModuleAdminController
             if (!$this->_is_query_dangerous($sql_input)) {
                 $this->db->db_debug = false;
 
-                $this->load->moduleModel('sqlconsole', 'Sqlconsole_helper_model');
-                $rs = $this->Sqlconsole_helper_model->runMultipleSqlQueries($sql_input, $query_separator);
+                $this->load->library('Query_helper');
+                $rs = $this->query_helper->runMultipleSqlQueries($sql_input, $query_separator);
 
                 if (count($query_history) && end($query_history) !== $sql_input && strlen($sql_input) < $this->maximum_query_length_for_history && $rs) {
                     $query_history[] = $sql_input;

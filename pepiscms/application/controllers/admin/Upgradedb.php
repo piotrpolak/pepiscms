@@ -28,7 +28,7 @@ class Upgradedb extends EnhancedController
 
         }
 
-        $this->load->moduleModel('sqlconsole', 'Sqlconsole_helper_model');
+        $this->load->library('Query_helper');
         $sql_basepath = APPPATH . '../resources/sql/upgrade/';
         $lock_filepath = INSTALLATIONPATH . 'application/cache/upgradedb.lock';
         $count = 0;
@@ -42,22 +42,22 @@ class Upgradedb extends EnhancedController
         // Update 0.2.2 to 0.2.3
         if (!$this->db->table_exists('cms_users') && $this->db->table_exists('users')) {
             $sql_input = file_get_contents($sql_basepath . '0.2.3.0-stage1.sql');
-            $this->Sqlconsole_helper_model->runMultipleSqlQueries($sql_input);
+            $this->query_helper->runMultipleSqlQueries($sql_input);
             $count++;
         }
         if (!$this->db->table_exists('cms_pages') && !$this->db->table_exists('cms_menu') && $this->db->table_exists('pages') && $this->db->table_exists('menu')) {
             $sql_input = file_get_contents($sql_basepath . '0.2.3.0-stage2.sql');
-            $this->Sqlconsole_helper_model->runMultipleSqlQueries($sql_input);
+            $this->query_helper->runMultipleSqlQueries($sql_input);
             $count++;
         }
         if (!$this->db->table_exists('cms_password_history')) {
             $sql_input = file_get_contents($sql_basepath . '1.0.0-stage1.sql');
-            $this->Sqlconsole_helper_model->runMultipleSqlQueries($sql_input);
+            $this->query_helper->runMultipleSqlQueries($sql_input);
             $count++;
 
             if ($this->db->table_exists('cms_menu')) {
                 $sql_input = file_get_contents($sql_basepath . '1.0.0-stage2.sql');
-                $this->Sqlconsole_helper_model->runMultipleSqlQueries($sql_input);
+                $this->query_helper->runMultipleSqlQueries($sql_input);
                 $count++;
             }
         }
