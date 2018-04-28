@@ -3,9 +3,9 @@ before_install: composer config -g github-oauth.github.com "$GITHUB_TOKEN"
 install: composer install --prefer-dist
 script:
   - php -v
-  - phpunit -v
+  - php vendor/bin/phpunit -v
   - ./check-code.sh
-  - composer require phpoffice/phpexcel 1.8.1 && phpunit
+  - composer require phpoffice/phpexcel 1.8.1 && php vendor/bin/phpunit
 php:
   - 5.5
   - 5.6
