@@ -40,7 +40,6 @@
             "pepiscms/modules/crud/libraries/",
             "pepiscms/modules/translator/libraries/",
             "pepiscms/modules/symfony2_bridge/models/",
-            "pepiscms/modules/sqlconsole/models/",
             "pepiscms/modules/html_customization/models/",
             "pepiscms/modules/backup/models/"
         ]
