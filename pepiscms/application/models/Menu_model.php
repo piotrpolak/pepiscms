@@ -207,10 +207,7 @@ class Menu_model extends Generic_model implements BackupableInterface
         }
 
         // item_uri is just for compatibility
-        return $this->db->select($this->config->item('database_table_menu') . '.*, ' . $this->config->item('database_table_pages') . '.page_uri, ' . $this->config->item('database_table_menu') . '.item_url AS item_uri, ' . $this->config->item('database_table_pages') . '.timestamp_modified, ' . $this->config->item('database_table_pages') . '.timestamp_created, ' . $this->config->item('database_table_pages') . '.page_id, ' . $this->config->item('database_table_pages') . '.page_is_default')
-            ->from($this->config->item('database_table_menu'))
-            ->join($this->config->item('database_table_pages'),
-                $this->config->item('database_table_pages') . '.page_id = ' . $this->config->item('database_table_menu') . '.page_id', 'left')
+        return $this->select()
             ->where('parent_item_id', $parent_item_id)
             ->where($this->config->item('database_table_menu') . '.language_code', $language_code)
             ->order_by('item_order')
@@ -230,10 +227,7 @@ class Menu_model extends Generic_model implements BackupableInterface
             return null;
         }
 
-        $row = $this->db->select($this->config->item('database_table_menu') . '.*, ' . $this->config->item('database_table_pages') . '.page_uri, ' . $this->config->item('database_table_menu') . '.item_url AS item_uri, ' . $this->config->item('database_table_pages') . '.timestamp_modified, ' . $this->config->item('database_table_pages') . '.timestamp_created, ' . $this->config->item('database_table_pages') . '.page_id, ' . $this->config->item('database_table_pages') . '.page_is_default')
-            ->from($this->config->item('database_table_menu'))
-            ->join($this->config->item('database_table_pages'),
-                $this->config->item('database_table_pages') . '.page_id = ' . $this->config->item('database_table_menu') . '.page_id', 'left')
+        $row = $this->select()
             ->where($this->config->item('database_table_menu') . '.item_id', $item_id)
             ->limit(1)
             ->get()
@@ -405,5 +399,16 @@ class Menu_model extends Generic_model implements BackupableInterface
 
         // Trunkates table
         $this->db->truncate($this->config->item('database_table_menu'));
+    }
+
+    /**
+     * @return CI_DB_query_builder
+     */
+    private function select()
+    {
+        return $this->db->select($this->config->item('database_table_menu') . '.*, ' . $this->config->item('database_table_pages') . '.page_uri, ' . $this->config->item('database_table_menu') . '.item_url AS item_uri, ' . $this->config->item('database_table_pages') . '.timestamp_modified, ' . $this->config->item('database_table_pages') . '.timestamp_created, ' . $this->config->item('database_table_pages') . '.page_id, ' . $this->config->item('database_table_pages') . '.page_is_default')
+            ->from($this->config->item('database_table_menu'))
+            ->join($this->config->item('database_table_pages'),
+                $this->config->item('database_table_pages') . '.page_id = ' . $this->config->item('database_table_menu') . '.page_id', 'left');
     }
 }
