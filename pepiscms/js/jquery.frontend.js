@@ -395,36 +395,29 @@ var ppLib = {
         $('#font_resize_bar a').removeClass('active');
         var fSizeCookie = readCookie('fSize');
 
+        let $body = $('body');
         switch (fSizeCookie) {
             case 'small':
-                $('body').addClass('hasSmallFonts');
+                $body.addClass('hasSmallFonts');
                 $('#font_resize_bar li:first-child a').addClass('active');
                 break;
-
-            case 'normal':
-                $('body').removeClass('hasSmallFonts');
-                $('body').removeClass('hasBigFonts');
-                $('#font_resize_bar li:nth-child(2) a').addClass('active');
-                break;
-
+                
             case 'big':
-                $('body').addClass('hasBigFonts');
+                $body.addClass('hasBigFonts');
                 $('header .box_content > div').css('margin-top', '0.75%');
                 $('#font_resize_bar li:last-child a').addClass('active');
                 break;
 
-            default:
-                $('body').removeClass('hasSmallFonts');
-                $('body').removeClass('hasBigFonts');
+            default: // AKA normal
+                $body.removeClass('hasSmallFonts');
+                $body.removeClass('hasBigFonts');
                 $('#font_resize_bar li:nth-child(2) a').addClass('active');
                 break;
         }
 
         $(trigger).click(function (e) {
             e.preventDefault();
-
-
-            $('body').removeClass();
+            $body.removeClass();
             $('header .box_content > div').css('margin-top', '0.9%');
             $(trigger).removeClass();
             $(this).addClass('active');
@@ -432,15 +425,15 @@ var ppLib = {
             var fSize = $(this).attr('data-fontsize');
             switch (fSize) {
                 case 'small':
-                    $('body').addClass('hasSmallFonts');
+                    $body.addClass('hasSmallFonts');
                     break;
 
                 case 'normal':
-                    $('body').removeClass();
+                    $body.removeClass();
                     break;
 
                 case 'big':
-                    $('body').addClass('hasBigFonts');
+                    $body.addClass('hasBigFonts');
                     $('header .box_content > div').css('margin-top', '0.75%');
                     break;
             }
