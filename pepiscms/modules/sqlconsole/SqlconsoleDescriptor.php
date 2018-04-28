@@ -57,7 +57,7 @@ class SqlconsoleDescriptor extends ModuleDescriptor
      */
     public function getVersion()
     {
-        return '1.0.1';
+        return '1.1.0';
     }
 
     /**

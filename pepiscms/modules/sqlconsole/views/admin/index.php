@@ -117,10 +117,11 @@ if( $is_utilities_only_module )
                 <div class="table_queries" id="table_queries_<?=$table?>">
                     <h4><?=$this->lang->line('sqlconsole_query')?> <b><?=$table?></b></h4>
                     <ul>
-                        <?php $values = '('.implode(', ', array_keys($fields)).')'; ?>
+                        <?php $keys = '('.implode(', ', array_keys($fields)).')'; ?>
+                        <?php $values = '('.implode(', ', array_fill(0, count($keys), "'?'")).')'; ?>
 
                         <li><a href="#" title="SELECT * FROM <?=$table?>" class="sql replace focus">SELECT * FROM <?=$table?></a></li>
-                        <li><a href="#" title="INSERT INTO <?=$table?> VALUES <?=$values?> ()" class="sql replace focus">INSERT INTO <?=$table?></a></li>
+                        <li><a href="#" title="INSERT INTO <?=$table?> <?=$keys?> VALUES <?=$values?>" class="sql replace focus">INSERT INTO <?=$table?></a></li>
                         <li><a href="#" title="DELETE FROM <?=$table?>" class="sql replace focus">DELETE FROM <?=$table?></a></li>
                         <li><a href="#" title=" <?=$table?> " class="sql"><?=$table?></a></li>
                         <li><a href="#" title="WHERE " class="sql nl">WHERE</a></li>
