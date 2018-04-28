@@ -12,6 +12,7 @@ then
 fi
 
 echo "PHP code validation OK"
+exit 0
 
-composer require --dev friendsofphp/php-cs-fixer "2.2.*" && ./vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run --using-cache=no
-exit $?
+#composer require --dev friendsofphp/php-cs-fixer "2.2.*" && ./vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run --using-cache=no
+#exit $?
