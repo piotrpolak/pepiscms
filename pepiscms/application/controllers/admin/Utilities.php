@@ -17,7 +17,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 /**
  * CMS Utilities controller
  */
-class Utilities extends AdminController
+class Utilities extends AbstractDashboardController
 {
     public function __construct()
     {
@@ -28,8 +28,7 @@ class Utilities extends AdminController
         $this->load->language('acl');
         $this->load->language('setup');
 
-        $this->load->model('Module_model');
-        $this->load->model('Page_model');
+        $this->load->model('Module_model');;
         $this->load->library('SimpleSessionMessage');
         $this->load->helper('number');
         $this->load->library('Cachedobjectmanager');
@@ -39,23 +38,19 @@ class Utilities extends AdminController
 
     public function index()
     {
-        $this->display();
+        // TODO Grouping not implemented by view
+        $dashboard_elements = $this->getDashboardElements();
+        $dashboard_elements_grouped = $this->getDashboardElementsGrouped($dashboard_elements, 'common_utilities');
+
+        $this->assign('dashboard_elements_grouped', $dashboard_elements_grouped)->display();
     }
 
-    public function flush_html_cache()
+    /**
+     * @inheritdoc
+     */
+    protected function getElements(ModuleDescriptableInterface $descriptior)
     {
-        $this->auth->refreshSession();
-        try {
-            $stats = $this->Page_model->clean_pages_cache();
-
-            $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS)
-                ->setMessage('utilities_cache_successfully_cleaned', $stats['count'], byte_format($stats['size']));
-        } catch (Exception $e) {
-            $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_ERROR)
-                ->setMessage('utilities_label_cache_unable_to_open_directory_might_be_empty');
-        }
-
-        redirect(admin_url() . 'utilities');
+        return $descriptior->getAdminUtilitiesElements($this->lang->getCurrentLanguage());
     }
 
     public function flush_security_policy_cache()

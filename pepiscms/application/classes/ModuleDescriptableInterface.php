@@ -105,4 +105,9 @@ interface ModuleDescriptableInterface
      * Executed on uninstall
      */
     public function onUninstall();
+
+    /**
+     * @return Document|null
+     */
+    public function handleRequest($uri, $uri_component_one, $uri_component_two);
 }

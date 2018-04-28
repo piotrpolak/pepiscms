@@ -108,7 +108,7 @@ class BackupAdmin extends ModuleAdminController
 
     public function xml_do()
     {
-        if (!$this->config->item('cms_enable_pages')) {
+        if (!$this->modulerunner->isModuleInstalled('pages')) {
             show_404();
         }
 
@@ -128,7 +128,7 @@ class BackupAdmin extends ModuleAdminController
 
     public function xml_restore()
     {
-        if (!$this->config->item('cms_enable_pages')) {
+        if (!$this->modulerunner->isModuleInstalled('pages')) {
             show_404();
         }
 

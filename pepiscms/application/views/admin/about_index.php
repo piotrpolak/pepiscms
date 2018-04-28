@@ -55,6 +55,8 @@ $actions = array(
             <li>Implemented lazy image load for DataGrid, File Manager and CRUD modules to improve performance</li>
             <li>Added password history (and check) for improved password security</li>
             <li>Reviewed application translations</li>
+            <li>Added new utility library Query_helper</li>
+            <li>Extracted pages as a separate module</li>
         </ul>
         <h2>0.2.4.4 (04.01.2017)</h2>
         <ul>

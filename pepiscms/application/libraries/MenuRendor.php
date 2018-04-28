@@ -97,11 +97,10 @@ class MenuRendor extends ContainerAware
             if (!SecurityManager::hasAccess($item['controller'], isset($item['method']) ? $item['method'] : 'index')) {
                 continue;
             }
-            if ($item['controller'] == 'pages' && !$this->config->item('cms_enable_pages')) {
+            if ($item['controller'] == 'utilities' && !$this->config->item('cms_enable_utilities')) {
                 continue;
-            } elseif ($item['controller'] == 'utilities' && !$this->config->item('cms_enable_utilities')) {
-                continue;
-            } elseif ($item['controller'] == 'ajaxfilemanager' && (!$this->config->item('cms_enable_filemanager') || !$this->config->item('feature_is_enabled_filemanager'))) {
+            }
+            if ($item['controller'] == 'ajaxfilemanager' && (!$this->config->item('cms_enable_filemanager') || !$this->config->item('feature_is_enabled_filemanager'))) {
                 continue;
             }
 

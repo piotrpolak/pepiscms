@@ -29,8 +29,6 @@ class Welcome extends CI_Controller
         } else {
             if ($this->config->item('cms_customization_on_login_redirect_url')) {
                 redirect(base_url() . $this->config->item('cms_customization_on_login_redirect_url'));
-            } elseif (SecurityManager::hasAccess('pages') && $this->config->item('cms_enable_pages')) {
-                redirect(admin_url() . 'pages');
             } else {
                 redirect(admin_url() . 'about/dashboard');
             }

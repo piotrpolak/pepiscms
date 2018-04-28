@@ -111,7 +111,6 @@ class Installer_helper extends ContainerAware
             'TEMPLATE_CMS_LOGIN_PAGE_DESCRIPTION' => '',
             'TEMPLATE_CMS_INTRANET' => ($data['cms_instance_type'] == self::INTRANET_APPLICATION_WITH_FRONTEND_SUPPORT ? 'TRUE' : 'FALSE'),
             'TEMPLATE_CMS_ENABLE_FRONTEND' => ($data['cms_instance_type'] != self::DEFAULT_INTRANET_APPLICATION_NO_FRONTEND ? 'TRUE' : 'FALSE'),
-            'TEMPLATE_CMS_ENABLE_PAGES' => ($data['cms_instance_type'] == self::FULL_FEATURED_WEB_CMS ? 'TRUE' : 'FALSE'),
             'TEMPLATE_CMS_ENABLE_UTILITIES' => 'TRUE',
             'TEMPLATE_CMS_ENABLE_FILEMANAGER' => 'TRUE',
             'TEMPLATE_EMAIL_USE_SMTP' => 'FALSE',
@@ -150,7 +149,7 @@ class Installer_helper extends ContainerAware
         $config_path = $base_path . 'application/config/';
 
 
-        // TEMPLATE_CMS_ENABLE_FRONTEND TEMPLATE_CMS_ENABLE_PAGES
+        // TEMPLATE_CMS_ENABLE_FRONTEND
 
         $config_files = array(
             'database.php' => 'database.php',

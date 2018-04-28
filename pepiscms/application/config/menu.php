@@ -11,14 +11,6 @@ $config['menu'] = array(
             'show_label' => false,
         ),
         array(
-            'controller' => 'pages',
-            'method' => 'index',
-            'label' => 'menu_pages',
-            'append_language_code' => true,
-            'append_parameters' => array('language_code', 'view'),
-            'icon_path' => 'pepiscms/theme/img/pages/page_16.png',
-        ),
-        array(
             'controller' => 'ajaxfilemanager',
             'method' => 'browse',
             'label' => 'menu_filemanager',

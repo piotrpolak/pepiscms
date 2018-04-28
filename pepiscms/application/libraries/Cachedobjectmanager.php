@@ -124,7 +124,6 @@ class Cachedobjectmanager extends ContainerAware
      * @param bool $store_on_destruct
      *
      * @return bool
-     * @throws Exception
      */
     public function setObject($name, $object, $collection = '', $store_on_destruct = false)
     {

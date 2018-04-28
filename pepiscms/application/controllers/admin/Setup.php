@@ -85,14 +85,6 @@ class Setup extends AdminController
             'input_type' => FormBuilder::SELECTBOX,
             'input_default_value' => date_default_timezone_get(),
         );
-
-        $definition['cms_enable_pages'] = array(
-            'label' => $this->lang->line('setup_cms_enable_pages'),
-            'description' => $this->lang->line('setup_cms_enable_pages_desc'),
-            'validation_rules' => '',
-            'input_group' => 'setup_input_group_features',
-            'input_type' => FormBuilder::CHECKBOX,
-        );
         $definition['cms_enable_frontend'] = array(
             'label' => $this->lang->line('setup_cms_enable_frontend'),
             'description' => $this->lang->line('setup_cms_enable_frontend_desc'),

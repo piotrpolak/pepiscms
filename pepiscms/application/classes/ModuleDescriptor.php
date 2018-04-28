@@ -78,7 +78,6 @@ abstract class ModuleDescriptor extends ContainerAware implements ModuleDescript
      */
     public function getAdminUtilitiesElements($language)
     {
-        // NOT IMPLEMENTED YET
         return false;
     }
 
@@ -120,5 +119,13 @@ abstract class ModuleDescriptor extends ContainerAware implements ModuleDescript
     public function getConfigVariables()
     {
         return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function handleRequest($uri, $uri_component_one, $uri_component_two)
+    {
+        return null;
     }
 }

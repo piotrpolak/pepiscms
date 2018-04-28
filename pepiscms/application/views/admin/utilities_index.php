@@ -26,7 +26,21 @@
                     <?= dashboard_box($this->Module_model->getModuleLabel($module_in_utilities, $this->lang->getCurrentLanguage()), admin_url() . 'module/run/' . $module_in_utilities, module_icon_url($module_in_utilities), $this->Module_model->getModuleDescription($module_in_utilities, $this->lang->getCurrentLanguage())) ?>
                 <?php endif; ?>
             <?php endforeach; ?>
-<?php endif; ?>
+        <?php endif; ?>
+
+
+        <?php foreach ($dashboard_elements_grouped['common_utilities'] as $dashboard_element): ?>
+            <?=dashboard_box(
+                $dashboard_element['label'],
+                (isset($dashboard_element['url']) && $dashboard_element['url'] ? $dashboard_element['url'] :
+                    ((isset($dashboard_element['module']) && $dashboard_element['module']) ? module_url($dashboard_element['controller']).$dashboard_element['method'] :
+                        admin_url().$dashboard_element['controller'].'/'.$dashboard_element['method'])),
+                isset($dashboard_element['icon_url']) && $dashboard_element['icon_url'] ? $dashboard_element['icon_url'] : (isset($dashboard_element['controller']) ? module_icon_url($dashboard_element['controller']) : FALSE),
+                isset($dashboard_element['description']) ? $dashboard_element['description'] : FALSE,
+                isset($dashboard_element['is_popup']) ? $dashboard_element['is_popup'] : FALSE,
+                isset($dashboard_element['target']) ? $dashboard_element['target'] : FALSE
+            )?>
+        <?php endforeach; ?>
 
     </ul>
 <?php endif; ?>
@@ -39,10 +53,6 @@
 
             <?php if (SecurityManager::hasAccess('utilities', 'flush_system_cache')): ?>
                 <?= dashboard_box($lang->line('utilities_label_flush_system_cache'), admin_url() . 'utilities/flush_system_cache', 'pepiscms/theme/img/utilities/flush_32.png', $lang->line('utilities_label_flush_system_cache_desc')) ?>
-            <?php endif; ?>
-
-            <?php if (SecurityManager::hasAccess('utilities', 'flush_html_cache') && $this->config->item('cms_enable_pages')): ?>	
-                <?= dashboard_box($lang->line('utilities_dialog_clear_pages_cache'), admin_url() . 'utilities/flush_html_cache', 'pepiscms/theme/img/utilities/flush_pages_32.png', $lang->line('utilities_label_flushes_all_pages_cache_html_output_cache')) ?>
             <?php endif; ?>
 
             <?php if (SecurityManager::hasAccess('utilities', 'flush_security_policy_cache')): ?>	

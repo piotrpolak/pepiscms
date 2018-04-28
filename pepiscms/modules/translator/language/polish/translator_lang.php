@@ -1,4 +1,5 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if(!defined('BASEPATH')) exit('No direct script access allowed');
+
 
 $lang['translator_available_languages']     = 'Dostępne języki';
 $lang['translator_core_modules']            = 'Moduły wbudowane';

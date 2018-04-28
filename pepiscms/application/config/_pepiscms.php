@@ -6,7 +6,6 @@
  */
 $config['cms_enable_frontend'] = true;
 $config['cms_intranet'] = false;
-$config['cms_enable_pages'] = true;
 $config['cms_customization_logo'] = false;
 $config['cms_customization_login_view_path'] = false;
 $config['cms_customization_on_login_redirect_url'] = false;

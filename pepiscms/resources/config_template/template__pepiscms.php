@@ -105,18 +105,6 @@ $config['cms_intranet'] = TEMPLATE_CMS_INTRANET;
 */
 $config['cms_enable_frontend'] = TEMPLATE_CMS_ENABLE_FRONTEND;
 
-
-/*
-|--------------------------------------------------------------------------
-| Enable pages
-|--------------------------------------------------------------------------
-|
-| Use this option when you use PepisCMS as intranet framework
-| with no pages support
-|
-*/
-$config['cms_enable_pages'] = TEMPLATE_CMS_ENABLE_PAGES;
-
 /*
 |--------------------------------------------------------------------------
 | Enable utilities
