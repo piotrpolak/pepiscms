@@ -168,8 +168,7 @@ class Login extends EnhancedController
                         $this->load->library('SecurityManager');
                         if ($this->config->item('cms_customization_on_login_redirect_url')) {
                             redirect(base_url() . $this->config->item('cms_customization_on_login_redirect_url'));
-                        }
-                        else {
+                        } else {
                             redirect(admin_url() . 'about/dashboard');
                         }
                     } else {

@@ -106,11 +106,11 @@ class PagesDescriptor extends ModuleDescriptor
         $this->load->moduleLanguage($this->module_name);
         return SubmenuBuilder::create()
             ->addItem()
-            ->withController($this->module_name)
-            ->withMethod('edit')
-            ->withLabel($this->lang->line($this->module_name . '_add'))
-            ->withDescription($this->lang->line($this->module_name . '_add_description'))
-            ->withIconUrl(module_resources_url($this->module_name) . 'icon_16.png')
+                ->withController($this->module_name)
+                ->withMethod('edit')
+                ->withLabel($this->lang->line($this->module_name . '_add'))
+                ->withDescription($this->lang->line($this->module_name . '_add_description'))
+                ->withIconUrl(module_resources_url($this->module_name) . 'icon_16.png')
             ->end()
             ->build();
     }
@@ -123,11 +123,11 @@ class PagesDescriptor extends ModuleDescriptor
         $this->load->moduleLanguage($this->module_name);
         return SubmenuBuilder::create()
             ->addItem()
-            ->withController($this->module_name)
-            ->withMethod('edit')
-            ->withLabel($this->lang->line($this->module_name . '_add'))
-            ->withDescription($this->lang->line($this->module_name . '_add_description'))
-            ->withIconUrl(module_resources_url($this->module_name) . 'icon_32.png')
+                ->withController($this->module_name)
+                ->withMethod('edit')
+                ->withLabel($this->lang->line($this->module_name . '_add'))
+                ->withDescription($this->lang->line($this->module_name . '_add_description'))
+                ->withIconUrl(module_resources_url($this->module_name) . 'icon_32.png')
             ->end()
             ->build();
     }
@@ -140,11 +140,11 @@ class PagesDescriptor extends ModuleDescriptor
         $this->load->moduleLanguage($this->module_name);
         return SubmenuBuilder::create()
             ->addItem()
-            ->withController($this->module_name)
-            ->withMethod('flush_html_cache')
-            ->withLabel($this->lang->line($this->module_name . '_clear_cache'))
-            ->withDescription($this->lang->line($this->module_name . '_clear_cache_description'))
-            ->withIconUrl(module_resources_url($this->module_name) . 'icon_flush_pages_32.png')
+                ->withController($this->module_name)
+                ->withMethod('flush_html_cache')
+                ->withLabel($this->lang->line($this->module_name . '_clear_cache'))
+                ->withDescription($this->lang->line($this->module_name . '_clear_cache_description'))
+                ->withIconUrl(module_resources_url($this->module_name) . 'icon_flush_pages_32.png')
             ->end()
             ->build();
     }
