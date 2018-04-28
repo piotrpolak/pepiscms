@@ -25,6 +25,8 @@ class LanguageHelper extends ContainerAware
      * @param string $path
      * @return array
      */
+    const SYSTEM = 'system';
+
     public function getLanguageByPath($path)
     {
         if (!file_exists($path)) {
@@ -48,24 +50,9 @@ class LanguageHelper extends ContainerAware
      */
     public function isLangFileWritableByModule($module, $lang_name, $language_file = false)
     {
-        if (!$language_file) {
-            $language_file = $module . '_lang.php';
-        }
+        $language_file = $this->ensureLanguageFileIsSet($module, $language_file);
 
-        if ($module == 'system') {
-            // pepiscms translation
-            $path = APPPATH . 'language/';
-
-            // codeigniter translation
-            if (!file_exists($path . $lang_name . '/' . $language_file)) {
-                $path = APPPATH . '../../codeigniter/language/';
-            }
-        } else {
-            $path = $this->load->resolveModuleDirectory($module) . 'language/';
-        }
-
-
-        $path = $path . $lang_name . '/' . $language_file;
+        $path = $this->getModuleLanguagePath($module, $lang_name, $language_file) . $lang_name . '/' . $language_file;
         if (!file_exists($path)) {
             return true;
         }
@@ -83,24 +70,9 @@ class LanguageHelper extends ContainerAware
      */
     public function getLanguageByModuleName($module, $lang_name, $language_file = false)
     {
-        if (!$language_file) {
-            $language_file = $module . '_lang.php';
-        }
+        $language_file = $this->ensureLanguageFileIsSet($module, $language_file);
 
-        if ($module == 'system') {
-            // pepiscms translation
-            $path = APPPATH . 'language/';
-
-            // codeigniter translation
-            if (!file_exists($path . $lang_name . '/' . $language_file)) {
-                $path = APPPATH . '../../codeigniter/language/';
-            }
-        } else {
-            $path = $this->load->resolveModuleDirectory($module) . 'language/';
-        }
-
-
-        $path = $path . $lang_name . '/' . $language_file;
+        $path = $this->getModuleLanguagePath($module, $lang_name, $language_file) . $lang_name . '/' . $language_file;
 
         return $this->getLanguageByPath($path);
     }
@@ -158,25 +130,12 @@ class LanguageHelper extends ContainerAware
      */
     public function setModuleLanguageField($module, $lang_name, $key, $value, $language_file = false)
     {
-        if (!$language_file) {
-            $language_file = $module . '_lang.php';
-        }
-        if ($module == 'system') {
-            // pepiscms translation
-            $path = APPPATH . 'language/';
-
-            // codeigniter translation
-            if (!file_exists($path . $lang_name . '/' . $language_file)) {
-                $path = APPPATH . '../../codeigniter/language/';
-            }
-        } else {
-            $path = $this->load->resolveModuleDirectory($module) . 'language/';
-        }
+        $language_file = $this->ensureLanguageFileIsSet($module, $language_file);
 
         $lang = $this->getLanguageByModuleName($module, $lang_name, $language_file);
         $lang[$key] = $value;
 
-        $path = $path . $lang_name . '/' . $language_file;
+        $path = $this->getModuleLanguagePath($module, $lang_name, $language_file) . $lang_name . '/' . $language_file;
         return $this->dumpFile($path, $lang);
     }
 
@@ -211,7 +170,6 @@ class LanguageHelper extends ContainerAware
             $contents .= "\n" . '$' . $arrayName . '[] = \'\'; // Protection against empty translations';
         } else {
             ksort($array);
-
 
             // Computing the max lengths
             $max_length = 5;
@@ -249,7 +207,7 @@ class LanguageHelper extends ContainerAware
 
         if ($strlen > $length) {
             $value = $value;
-        //$value = substr( $value, 0, $length );
+            //$value = substr( $value, 0, $length );
         } else {
             $diff = $length - $strlen;
 
@@ -281,21 +239,19 @@ class LanguageHelper extends ContainerAware
      */
     public function getModuleTranslationKeys($module, $languages = false, $language_file = false)
     {
-        if (!$language_file) {
-            $language_file = $module . '_lang.php';
-        }
+        $language_file = $this->ensureLanguageFileIsSet($module, $language_file);
 
         if (!$languages) {
             $languages = $this->getModuleLanguages($module);
         }
 
-        if ($module != 'system') {
+        if ($module != self::SYSTEM) {
             $path = $this->load->resolveModuleDirectory($module) . 'language/';
         }
 
         $keys = array();
         foreach ($languages as $lang_name) {
-            if ($module == 'system') {
+            if ($module == self::SYSTEM) {
                 // pepiscms translation
                 $path = APPPATH . 'language/';
 
@@ -320,7 +276,7 @@ class LanguageHelper extends ContainerAware
      */
     public function getModuleLanguages($module, $return_dirs = false)
     {
-        if ($module == 'system') {
+        if ($module == self::SYSTEM) {
             $path = APPPATH . 'language/';
         } else {
             $path = $this->load->resolveModuleDirectory($module) . 'language/';
@@ -349,7 +305,7 @@ class LanguageHelper extends ContainerAware
      */
     public function getModuleLanguageFiles($module, $return_dirs = false)
     {
-        if ($module == 'system') {
+        if ($module == self::SYSTEM) {
             $path = APPPATH . 'language/';
         } else {
             $path = $this->load->resolveModuleDirectory($module) . 'language/';
@@ -366,5 +322,41 @@ class LanguageHelper extends ContainerAware
         }
 
         return array_unique($languages);
+    }
+
+    /**
+     * @param $module
+     * @param $lang_name
+     * @param $language_file
+     * @return string
+     */
+    private function getModuleLanguagePath($module, $lang_name, $language_file)
+    {
+        $path = false;
+        if ($module == self::SYSTEM) {
+            // pepiscms translation
+            $path = APPPATH . 'language/';
+
+            // codeigniter translation
+            if (!file_exists($path . $lang_name . '/' . $language_file)) {
+                $path = APPPATH . '../../codeigniter/language/';
+            }
+        } else {
+            $path = $this->load->resolveModuleDirectory($module) . 'language/';
+        }
+        return $path;
+    }
+
+    /**
+     * @param $module
+     * @param $language_file
+     * @return string
+     */
+    private function ensureLanguageFileIsSet($module, $language_file)
+    {
+        if (!$language_file) {
+            $language_file = $module . '_lang.php';
+        }
+        return $language_file;
     }
 }
