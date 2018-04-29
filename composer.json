@@ -18,7 +18,7 @@
     ],
     "require": {
         "php": ">=5.5.0",
-        "piotrpolak/pepiscms-3rdparty": "1.0.1",
+        "piotrpolak/pepiscms-3rdparty": "1.0.2",
         "codeigniter/framework": "3.1.8",
         "ckeditor/ckeditor": "4.9.0"
     },

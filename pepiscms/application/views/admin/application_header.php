@@ -35,7 +35,7 @@
         <![endif]-->
 
         <!--[if lt IE 9]>
-                <script tyle="text/javascript" src="pepiscms/js/html5.js"></script>
+                <script src="pepiscms/3rdparty/html5shiv/html5shiv.min.js?v=<?= PEPISCMS_VERSION ?>"></script>
         <![endif]-->
 
         <title><?php if (isset($title)): ?><?= $title ?> - <?php endif; ?><?= $site_name ?> - PepisCMS</title> 
