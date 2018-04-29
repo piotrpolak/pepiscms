@@ -28,20 +28,20 @@
             <?php endforeach; ?>
         <?php endif; ?>
 
-
-        <?php foreach ($dashboard_elements_grouped['common_utilities'] as $dashboard_element): ?>
-            <?=dashboard_box(
-                $dashboard_element['label'],
-                (isset($dashboard_element['url']) && $dashboard_element['url'] ? $dashboard_element['url'] :
-                    ((isset($dashboard_element['module']) && $dashboard_element['module']) ? module_url($dashboard_element['controller']).$dashboard_element['method'] :
-                        admin_url().$dashboard_element['controller'].'/'.$dashboard_element['method'])),
-                isset($dashboard_element['icon_url']) && $dashboard_element['icon_url'] ? $dashboard_element['icon_url'] : (isset($dashboard_element['controller']) ? module_icon_url($dashboard_element['controller']) : FALSE),
-                isset($dashboard_element['description']) ? $dashboard_element['description'] : FALSE,
-                isset($dashboard_element['is_popup']) ? $dashboard_element['is_popup'] : FALSE,
-                isset($dashboard_element['target']) ? $dashboard_element['target'] : FALSE
-            )?>
-        <?php endforeach; ?>
-
+        <?php if(isset($dashboard_elements_grouped['common_utilities'])): ?>
+            <?php foreach ($dashboard_elements_grouped['common_utilities'] as $dashboard_element): ?>
+                <?=dashboard_box(
+                    $dashboard_element['label'],
+                    (isset($dashboard_element['url']) && $dashboard_element['url'] ? $dashboard_element['url'] :
+                        ((isset($dashboard_element['module']) && $dashboard_element['module']) ? module_url($dashboard_element['controller']).$dashboard_element['method'] :
+                            admin_url().$dashboard_element['controller'].'/'.$dashboard_element['method'])),
+                    isset($dashboard_element['icon_url']) && $dashboard_element['icon_url'] ? $dashboard_element['icon_url'] : (isset($dashboard_element['controller']) ? module_icon_url($dashboard_element['controller']) : FALSE),
+                    isset($dashboard_element['description']) ? $dashboard_element['description'] : FALSE,
+                    isset($dashboard_element['is_popup']) ? $dashboard_element['is_popup'] : FALSE,
+                    isset($dashboard_element['target']) ? $dashboard_element['target'] : FALSE
+                )?>
+            <?php endforeach; ?>
+        <?php endif; ?>
     </ul>
 <?php endif; ?>
 
