@@ -31,6 +31,8 @@ are if you don't care about presentation details).
 * [Enabling library and models autocomplete predictions](docs/ENABLING_LIBRARY_AND_MODELS_AUTOCOMPLETE_PREDICTION.md)
 * [Useful commands](docs/USEFUL_COMMANDS.md)
 
+![System logs](docs/screens/MODULES_SYSTEM_LOGS.png)
+
 ## Demo
 
 A demo application is automatically deployed to Heroku and can be reached at:
