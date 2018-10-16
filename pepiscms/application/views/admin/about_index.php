@@ -50,7 +50,7 @@ $actions = array(
             <li>Improved backup utility now works even without mysqldump command available</li>
             <li>Implemented fluent API for most used libraries</li>
             <li>Dropped support for deprecated features</li>
-            <li>CodeIgniter upgraded to version 3.1.8</li>
+            <li>CodeIgniter upgraded to version 3.1.9</li>
             <li>CKE Editor updated to 4.9.0</li>
             <li>Implemented lazy image load for DataGrid, File Manager and CRUD modules to improve performance</li>
             <li>Added password history (and check) for improved password security</li>
