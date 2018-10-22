@@ -35,7 +35,7 @@ define('INSTALLATIONPATH', realpath('./') . '/');
 
 //define('ENVIRONMENT', 'development');
 
-if (!define('ENVIRONMENT')) {
+if (!defined('ENVIRONMENT')) {
     $SYSTEM_VARIABLE_ENV = getenv('CI_ENV');
 
     if (isset($_SERVER['CI_ENV'])) {
