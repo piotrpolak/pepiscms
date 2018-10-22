@@ -13,6 +13,11 @@
  */
 
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet as ExcelSpreadsheet;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Style\Style;
 
 defined('BASEPATH') or exit('No direct script access allowed');
 
@@ -68,10 +73,14 @@ class Spreadsheet extends ContainerAware
      */
     public function parseExcel($path, $first_row_as_keys = true, $normalize_keys = true)
     {
+        if (!$this->isFullyEnabled()) {
+            throw new \RuntimeException("PhpSpreadsheet is not enabled. Please refer to README.md");
+        }
+
         $data = array();
         $keys = array();
 
-        $objPHPExcel = \PhpOffice\PhpSpreadsheet\IOFactory::load($path);
+        $objPHPExcel = IOFactory::load($path);
 
         $worksheet = $objPHPExcel->getActiveSheet();
 
@@ -219,8 +228,12 @@ class Spreadsheet extends ContainerAware
      */
     public function generateExcel($feed, $headers = false, $file_name = false, $send = true, $print_headers = true, $excel_type = Spreadsheet::EXCEL_XLS)
     {
+        if (!$this->isFullyEnabled()) {
+            throw new \RuntimeException("PhpSpreadsheet is not enabled. Please refer to README.md");
+        }
+
         // Create new PHPExcel object
-        $excel = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+        $excel = new ExcelSpreadsheet();
         $excel->getProperties()->setCreator("PepisCMS")
             ->setLastModifiedBy("PepisCMS")
             ->setTitle("")
@@ -233,7 +246,7 @@ class Spreadsheet extends ContainerAware
         $excel->getDefaultStyle()->getFont()->setName('Arial')->setSize(11);
 
         // Setting styles for header
-        $style_for_header = new \PhpOffice\PhpSpreadsheet\Style\Style();
+        $style_for_header = new Style();
         $style_for_header->applyFromArray(
             array(
                 'font' => array(
@@ -243,22 +256,22 @@ class Spreadsheet extends ContainerAware
                     )
                 ),
                 'fill' => array(
-                    'type' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                    'type' => Fill::FILL_SOLID,
                     'color' => array('argb' => 'FFCCFFCC')
                 ),
                 'borders' => array(
-                    'bottom' => array('style' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM),
-                    'right' => array('style' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN)
+                    'bottom' => array('style' => Border::BORDER_MEDIUM),
+                    'right' => array('style' => Border::BORDER_THIN)
                 )
             ));
 
         // Setting styles for data
-        $style_for_data = new \PhpOffice\PhpSpreadsheet\Style\Style();
+        $style_for_data = new Style();
         $style_for_data->applyFromArray(
             array(
                 'borders' => array(
-                    'bottom' => array('style' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN),
-                    'right' => array('style' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN)
+                    'bottom' => array('style' => Border::BORDER_THIN),
+                    'right' => array('style' => Border::BORDER_THIN)
                 )
             ));
 
@@ -342,10 +355,10 @@ class Spreadsheet extends ContainerAware
         // Determining file type and needed parser
         if ($excel_type == Spreadsheet::EXCEL_XLSX) {
             $extension = 'xlsx';
-            $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($excel, 'Xlsx');
+            $writer = IOFactory::createWriter($excel, 'Xlsx');
         } else {
             $extension = 'xls';
-            $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($excel, 'Xls');
+            $writer = IOFactory::createWriter($excel, 'Xls');
         }
 
         // Generating filename if not specified
