@@ -106,7 +106,7 @@ class Spreadsheet_test extends PepisCMS_TestCase
         $this->spreadsheet->generateCSV(array(), FALSE, $path, FALSE);
         $this->assertTrue(file_exists($path));
 
-        $parsedData = $this->spreadsheet->parseExcel($path, TRUE, FALSE);
+        $parsedData = $this->spreadsheet->parseCSV($path, TRUE, FALSE);
         $this->assertEquals(count($parsedData), 0);
     }
 

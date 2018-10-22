@@ -20,6 +20,12 @@ docker exec -it pepiscms_web_1 ./vendor/bin/phpunit -c ./vendor/piotrpolak/pepis
 docker exec -it pepiscms_web_1 vendor/bin/behat
 ```
 
+**Entering bash shell**
+
+```bash
+docker exec -it pepiscms_web_1 bash
+```
+
 ## Docker cleanup
 
 ```bash

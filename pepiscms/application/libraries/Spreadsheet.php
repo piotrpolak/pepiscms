@@ -12,6 +12,8 @@
  * @link                http://www.polak.ro/
  */
 
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
+
 defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
@@ -30,7 +32,7 @@ class Spreadsheet extends ContainerAware
      */
     public function isFullyEnabled()
     {
-        return class_exists('PHPExcel_IOFactory');
+        return class_exists('\PhpOffice\PhpSpreadsheet\IOFactory');
     }
 
     /**
@@ -61,20 +63,20 @@ class Spreadsheet extends ContainerAware
      * @param bool $first_row_as_keys
      * @param bool $normalize_keys
      * @return array
-     * @throws PHPExcel_Exception
-     * @throws PHPExcel_Reader_Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      */
     public function parseExcel($path, $first_row_as_keys = true, $normalize_keys = true)
     {
         $data = array();
         $keys = array();
 
-        $objPHPExcel = PHPExcel_IOFactory::load($path);
+        $objPHPExcel = \PhpOffice\PhpSpreadsheet\IOFactory::load($path);
 
         $worksheet = $objPHPExcel->getActiveSheet();
 
         $rows_count = 0 + $worksheet->getHighestRow();
-        $columns_count = 0 + PHPExcel_Cell::columnIndexFromString($worksheet->getHighestColumn());
+        $columns_count = 0 + Coordinate::columnIndexFromString($worksheet->getHighestColumn());
 
         $i = 1;// Row index
         if ($first_row_as_keys) {
@@ -94,7 +96,6 @@ class Spreadsheet extends ContainerAware
                 $keys[] = $k;
             }
         }
-
 
         for ($row = $i; $row <= $rows_count; $row++) {
             $row_array = array();
@@ -213,14 +214,13 @@ class Spreadsheet extends ContainerAware
      * @param bool $print_headers
      * @param string $excel_type
      * @return mixed
-     * @throws PHPExcel_Exception
-     * @throws PHPExcel_Reader_Exception
-     * @throws PHPExcel_Writer_Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
     public function generateExcel($feed, $headers = false, $file_name = false, $send = true, $print_headers = true, $excel_type = Spreadsheet::EXCEL_XLS)
     {
         // Create new PHPExcel object
-        $excel = new PHPExcel();
+        $excel = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
         $excel->getProperties()->setCreator("PepisCMS")
             ->setLastModifiedBy("PepisCMS")
             ->setTitle("")
@@ -233,7 +233,7 @@ class Spreadsheet extends ContainerAware
         $excel->getDefaultStyle()->getFont()->setName('Arial')->setSize(11);
 
         // Setting styles for header
-        $style_for_header = new PHPExcel_Style();
+        $style_for_header = new \PhpOffice\PhpSpreadsheet\Style\Style();
         $style_for_header->applyFromArray(
             array(
                 'font' => array(
@@ -243,22 +243,22 @@ class Spreadsheet extends ContainerAware
                     )
                 ),
                 'fill' => array(
-                    'type' => PHPExcel_Style_Fill::FILL_SOLID,
+                    'type' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
                     'color' => array('argb' => 'FFCCFFCC')
                 ),
                 'borders' => array(
-                    'bottom' => array('style' => PHPExcel_Style_Border::BORDER_MEDIUM),
-                    'right' => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+                    'bottom' => array('style' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM),
+                    'right' => array('style' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN)
                 )
             ));
 
         // Setting styles for data
-        $style_for_data = new PHPExcel_Style();
+        $style_for_data = new \PhpOffice\PhpSpreadsheet\Style\Style();
         $style_for_data->applyFromArray(
             array(
                 'borders' => array(
-                    'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                    'right' => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+                    'bottom' => array('style' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN),
+                    'right' => array('style' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN)
                 )
             ));
 
@@ -302,13 +302,13 @@ class Spreadsheet extends ContainerAware
                     $col++;
                 }
 
-                $excel->getActiveSheet()->duplicateStyle($style_for_header, PHPExcel_Cell::stringFromColumnIndex(0) . '1:' . PHPExcel_Cell::stringFromColumnIndex($col - 1) . '1');
+                $excel->getActiveSheet()->duplicateStyle($style_for_header, Coordinate::stringFromColumnIndex(0) . '1:' . Coordinate::stringFromColumnIndex($col - 1) . '1');
                 $row++;
             }
 
             // Setting column width
             for ($i = 0; $i < count($headers); $i++) {
-                $excel->getActiveSheet()->getColumnDimension(PHPExcel_Cell::stringFromColumnIndex($i))->setWidth(20);
+                $excel->getActiveSheet()->getColumnDimension(Coordinate::stringFromColumnIndex($i))->setWidth(20);
             }
 
             // Printing for each line
@@ -326,7 +326,7 @@ class Spreadsheet extends ContainerAware
                     }
 
                     // Applying styles
-                    $excel->getActiveSheet()->duplicateStyle($style_for_data, PHPExcel_Cell::stringFromColumnIndex(0) . $row . ':' . PHPExcel_Cell::stringFromColumnIndex($col - 1) . $row);
+                    $excel->getActiveSheet()->duplicateStyle($style_for_data, Coordinate::stringFromColumnIndex(0) . $row . ':' . Coordinate::stringFromColumnIndex($col - 1) . $row);
 
                     $row++;
                     // Saving memory
@@ -342,10 +342,10 @@ class Spreadsheet extends ContainerAware
         // Determining file type and needed parser
         if ($excel_type == Spreadsheet::EXCEL_XLSX) {
             $extension = 'xlsx';
-            $writer = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+            $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($excel, 'Xlsx');
         } else {
             $extension = 'xls';
-            $writer = PHPExcel_IOFactory::createWriter($excel, 'Excel5');
+            $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($excel, 'Xls');
         }
 
         // Generating filename if not specified
