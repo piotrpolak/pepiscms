@@ -35,7 +35,7 @@ if [ $IS_FIRST_INSTALL == "TRUE" ];
 then
     echo
     echo "Installing composer dependencies. This might take a while."
-    composer install --prefer-dist || exit 2
+    composer install --prefer-dist --no-dev || exit 2
 fi
 
 if [ ! -e ./index.php ] ;
