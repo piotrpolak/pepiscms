@@ -72,7 +72,7 @@ class AuthenticationContext extends Behat\MinkExtension\Context\RawMinkContext
      */
     public function iShouldSeeASuccessfulLogoutMessage()
     {
-        $this->assertSession()->pageTextContains('You have successfully logged out.');
+        $this->assertSession()->pageTextContains('successfully logged out');
     }
 
     /**
@@ -105,6 +105,6 @@ class AuthenticationContext extends Behat\MinkExtension\Context\RawMinkContext
      */
     public function sessionExpiredMessageShouldBeDisplayed()
     {
-        $this->assertSession()->pageTextContains('Session expired');
+        $this->assertSession()->pageTextContains('Your session has expired');
     }
 }
