@@ -11,7 +11,7 @@ and then
 **Unit tests**
 
 ```bash
-docker exec -it pepiscms_web_1 sh -c "composer install && ./vendor/bin/phpunit -c ./vendor/piotrpolak/pepiscms/"
+docker exec -it pepiscms_web_1 sh -c "composer install && ./vendor/bin/phpunit -c ./vendor/piotrpolak/pepiscms/phpunit.xml.dist"
 ```
 
 **Smoke tests (behat)**
@@ -60,4 +60,12 @@ docker exec -it pepiscms_web_1 bash -c "composer require --dev friendsofphp/php-
 
 ```bash
 optipng *.png
+```
+
+## Validating build locally (it deletes the local app working directory!)
+
+```bash
+sudo rm -rf app/ && docker-compose rm --stop && docker-compose up --build && \
+docker exec -it pepiscms_web_1 sh -c \
+"composer install && composer require --no-update phpoffice/phpspreadsheet 1.5.* && ./vendor/bin/phpunit -c ./vendor/piotrpolak/pepiscms/phpunit.xml.dist && vendor/bin/behat"
 ```

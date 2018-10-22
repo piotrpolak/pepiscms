@@ -25,7 +25,7 @@ services:
       - ./behat.yml:/var/www/html/behat.yml
       - ./composer.json:/var/www/html/vendor/piotrpolak/pepiscms/composer.json
       - ./tests:/var/www/html/vendor/piotrpolak/pepiscms/tests
-      - ./phpunit.xml:/var/www/html/vendor/piotrpolak/pepiscms/phpunit.xml
+      - ./phpunit.xml.dist:/var/www/html/vendor/piotrpolak/pepiscms/phpunit.xml.dist
       - ./composer.json:/var/www/html/composer.json
       - ./.php_cs.dist:/var/www/html/.php_cs.dist
     build: ./web/

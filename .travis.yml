@@ -5,7 +5,7 @@ script:
   - php -v
   - php vendor/bin/phpunit -v
   - ./check-code.sh
-  - php vendor/bin/phpunit
+  - php vendor/bin/phpunit -c phpunit.xml.dist
 php:
   - 5.6
   - 7.0
