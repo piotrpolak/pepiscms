@@ -11,13 +11,13 @@ and then
 **Unit tests**
 
 ```bash
-docker exec -it pepiscms_web_1 ./vendor/bin/phpunit -c ./vendor/piotrpolak/pepiscms/
+docker exec -it pepiscms_web_1 sh -c "composer install && ./vendor/bin/phpunit -c ./vendor/piotrpolak/pepiscms/"
 ```
 
 **Smoke tests (behat)**
 
 ```bash
-docker exec -it pepiscms_web_1 vendor/bin/behat
+docker exec -it pepiscms_web_1 sh -c "composer install && vendor/bin/behat"
 ```
 
 **Entering bash shell**
