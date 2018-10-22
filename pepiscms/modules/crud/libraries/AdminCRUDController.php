@@ -1609,8 +1609,12 @@ abstract class AdminCRUDController extends ModuleAdminController
         // Adding export links for exportable CRUD
         if ($this->isExportable()) {
             $this->addActionForIndex(array('link' => $this->getModuleBaseUrl() . 'export/format-csv', 'name' => $this->lang->line('crud_label_export') . ' (CSV)', 'icon' => module_resources_url('crud') . 'export_12.png'));
-            $this->addActionForIndex(array('link' => $this->getModuleBaseUrl() . 'export/format-xls', 'name' => $this->lang->line('crud_label_export') . ' (XLS - Excel 97)', 'icon' => module_resources_url('crud') . 'export_12.png'));
-            $this->addActionForIndex(array('link' => $this->getModuleBaseUrl() . 'export/format-xlsx', 'name' => $this->lang->line('crud_label_export') . ' (XLSX - Excel 2007)', 'icon' => module_resources_url('crud') . 'export_12.png'));
+
+            $this->load->library('Spreadsheet');
+            if ($this->spreadsheet->isFullyEnabled()) {
+                $this->addActionForIndex(array('link' => $this->getModuleBaseUrl() . 'export/format-xls', 'name' => $this->lang->line('crud_label_export') . ' (XLS - Excel 97)', 'icon' => module_resources_url('crud') . 'export_12.png'));
+                $this->addActionForIndex(array('link' => $this->getModuleBaseUrl() . 'export/format-xlsx', 'name' => $this->lang->line('crud_label_export') . ' (XLSX - Excel 2007)', 'icon' => module_resources_url('crud') . 'export_12.png'));
+            }
         }
 
 
@@ -1911,11 +1915,15 @@ abstract class AdminCRUDController extends ModuleAdminController
         }
 
         $format = $this->input->getParam('format');
-        if (!in_array($format, array('csv', 'xls', 'xlsx'))) {
+        if (!in_array($format, array('csv', Spreadsheet::EXCEL_XLS, Spreadsheet::EXCEL_XLSX))) {
             show_404();
         }
 
         $this->load->library('Spreadsheet');
+
+        if (!$this->spreadsheet->isFullyEnabled() && in_array($format, array(Spreadsheet::EXCEL_XLS, Spreadsheet::EXCEL_XLSX))) {
+            show_error('Spreadsheet::EXCEL_XLS and Spreadsheet::EXCEL_XLSX spreadsheets are not supported.');
+        }
 
         // getting data
         $result = $this->getModel()->getAdvancedFeed('*', 0, 999999, $this->getModel()->getIdFieldName(), 'ASC', array(), false);
@@ -1945,9 +1953,9 @@ abstract class AdminCRUDController extends ModuleAdminController
 
         if ($format == 'csv') {
             $this->spreadsheet->generateCSV($export_result, false, $file_name . '.csv');
-        } elseif ($format == 'xls') {
+        } elseif ($format == Spreadsheet::EXCEL_XLS) {
             $this->spreadsheet->generateExcel($export_result, false, $file_name . '.xls', true, true, Spreadsheet::EXCEL_XLS);
-        } elseif ($format == 'xlsx') {
+        } elseif ($format == Spreadsheet::EXCEL_XLSX) {
             $this->spreadsheet->generateExcel($export_result, false, $file_name . '.xlsx', true, true, Spreadsheet::EXCEL_XLSX);
         }
     }
