@@ -14,7 +14,7 @@
         "php": ">=5.6.0",
         "piotrpolak/pepiscms-3rdparty": "1.0.2",
         "codeigniter/framework": "3.1.9",
-        "ckeditor/ckeditor": "4.9.0",
+        "ckeditor/ckeditor": "4.9.*",
         "phpoffice/phpspreadsheet": "1.5.*"
     },
     "require-dev": {
