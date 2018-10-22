@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install -yq git zip unzip libpng-dev && \
     docker-php-ext-install mysqli && \
     docker-php-ext-install gd && \
     docker-php-ext-install zip && \
+    echo "date.timezone = Europe/Warsaw" > /usr/local/etc/php/php.ini && \
     rm -rf /var/lib/apt/lists/* && \
     php -r "copy('https://getcomposer.org/installer', '/tmp/composer-setup.php');" && \
     php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer && \
