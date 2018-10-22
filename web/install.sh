@@ -27,7 +27,7 @@ fi
 # Just to make classmap scan work
 if [ ! -e pepiscms ] ;
 then
-    ln -s /app/vendor/piotrpolak/pepiscms/pepiscms pepiscms || exit 9
+    ln -s /var/www/html/vendor/piotrpolak/pepiscms/pepiscms pepiscms || exit 9
 fi
 
 # Must be executed after linking PepisCMS
@@ -53,6 +53,8 @@ if [ $IS_FIRST_INSTALL == "TRUE" ];
 then
     php index.php tools install
     php index.php tools register_admin $PEPIS_CMS_AUTH_EMAIL $PEPIS_CMS_AUTH_PASSWORD
+
+    chmod 0777 -R application/cache/ application/logs/
 fi
 
-/run.sh
+apache2-foreground

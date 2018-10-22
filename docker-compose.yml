@@ -17,17 +17,17 @@ services:
     links:
       - db
     volumes:
-      - ./app:/app # Uncomment if you want to preview/edit files
+      - ./app:/var/www/html # Uncomment if you want to preview/edit files
 #      - /home/${USER}/.ssh/id_rsa:/root/.ssh/id_rsa # Uncomment if you need to pull any custom composer packages
-      - ./pepiscms:/app/vendor/piotrpolak/pepiscms/pepiscms
-      - ./features:/app/features
-      - ./docs:/app/docs
-      - ./behat.yml:/app/behat.yml
-      - ./composer.json:/app/vendor/piotrpolak/pepiscms/composer.json
-      - ./tests:/app/vendor/piotrpolak/pepiscms/tests
-      - ./phpunit.xml:/app/vendor/piotrpolak/pepiscms/phpunit.xml
-      - ./composer.json:/app/composer.json
-      - ./.php_cs.dist:/app/.php_cs.dist
+      - ./pepiscms:/var/www/html/vendor/piotrpolak/pepiscms/pepiscms
+      - ./features:/var/www/html/features
+      - ./docs:/var/www/html/docs
+      - ./behat.yml:/var/www/html/behat.yml
+      - ./composer.json:/var/www/html/vendor/piotrpolak/pepiscms/composer.json
+      - ./tests:/var/www/html/vendor/piotrpolak/pepiscms/tests
+      - ./phpunit.xml:/var/www/html/vendor/piotrpolak/pepiscms/phpunit.xml
+      - ./composer.json:/var/www/html/composer.json
+      - ./.php_cs.dist:/var/www/html/.php_cs.dist
     build: ./web/
     command: /install.sh
 
