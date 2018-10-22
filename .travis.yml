@@ -1,6 +1,6 @@
 language: php
 before_install: composer config -g github-oauth.github.com "$GITHUB_TOKEN"
-install: composer install --prefer-dist && composer require phpoffice/phpspreadsheet 1.5.0
+install: composer install --prefer-dist && composer require phpoffice/phpspreadsheet 1.5.*
 script:
   - php -v
   - php vendor/bin/phpunit -v

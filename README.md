@@ -75,7 +75,7 @@ product.
 #### PHPExcel for Excel spreadsheet import/export
 
 ```bash
-composer require phpoffice/phpspreadsheet 1.5.0
+composer require phpoffice/phpspreadsheet 1.5.*
 ```
 
 #### PHPCas for CAS authentication
