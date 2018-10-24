@@ -46,10 +46,10 @@ class Siteconfig_model extends PEPISCMS_Model implements EntitableInterface
             'email_use_smtp'
         );
 
-        if (isset($data['cms_customization_logo_predefined'])) {
+        if (isset($data['cms_customization_logo_predefined']) && !empty($data['cms_customization_logo_predefined'])) {
             $customization_logo_path = APPPATH . '/../theme/img/customization_icons/' . $data['cms_customization_logo_predefined'];
 
-            if (file_exists($customization_logo_path)) {
+            if (file_exists($customization_logo_path) || is_file($customization_logo_path)) {
                 $customization_logo_path_new_name = 'customization_' . time() . '.png';
 
                 $customization_logo_path_new_location = INSTALLATIONPATH . $this->config->item('theme_path') . $customization_logo_path_new_name;
