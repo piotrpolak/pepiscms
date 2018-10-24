@@ -83,3 +83,9 @@ composer require phpoffice/phpspreadsheet 1.5.*
 ```bash
 composer require jasig/phpcas 1.3.5
 ```
+
+#### Symfony bridge
+
+```bash
+composer require piotrpolak/codeigniter-symfony2-bridge dev-master
+```

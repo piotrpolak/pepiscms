@@ -47,6 +47,8 @@ class Symfony2_bridgeAdmin extends ModuleAdminController
     {
         try {
             $this->assign('kernel', $this->symfony2_bridge->getKernel());
+        } catch (RuntimeException $e) {
+            show_error($e->getMessage());
         } catch (Exception $e) {
             $this->assign('kernel', false);
         }
