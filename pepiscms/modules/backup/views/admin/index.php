@@ -49,11 +49,7 @@ if( $is_utilities_only_module )
     <h1 class="contrasted"><?=$this->lang->line('backup_sql_backup')?></h1>
 <?php endif; ?>
 
-<ul class="dashboard_actions clear">
-    <?php foreach($this->Module_model->getModuleAdminSubmenuElements($this->modulerunner->getRunningModuleName(), 'dontcare') as $descriptor): ?>
-        <?= dashboard_box($descriptor['label'], module_url($descriptor['controller']) . $descriptor['method'], str_replace('_16.', '_32.', $descriptor['icon_url']), $descriptor['description']) ?>
-    <?php endforeach ?>
-</ul>
+<?php require APPPATH . 'views/admin/_partials/module_dashboard_from_submenu.php' ?>
 
 <?php if ($this->modulerunner->isModuleInstalled('pages')): ?>
 <h1 class="contrasted"><?=$this->lang->line('backup_xml_backup')?></h1>
