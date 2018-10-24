@@ -52,14 +52,14 @@ class LogsAdmin extends ModuleAdminController
         $this->load->library('SimpleSessionMessage');
         $this->load->helper('text');
 
-        $this->datagrid->setTitle($this->lang->line('logs_module_name'));
-        $this->datagrid->setTable($this->config->item('database_table_logs'));
-        $this->datagrid->setItemsPerPage(400);
-        $this->datagrid->setDefaultOrder('timestamp', 'desc');
-        $this->datagrid->setBaseUrl(module_url('logs') . 'index');
-        $this->datagrid->setRowCssClassFormattingFunction(array($this, '_datagrid_row_callback'));
-        $this->datagrid->addFilter(array('field' => 'timestamp', 'label' => 'Date from', 'filter_type' => DataGrid::FILTER_DATE, 'filter_condition' => 'ge'));
-        $this->datagrid->addFilter(array('field' => 'timestamp', 'label' => 'Date to', 'filter_type' => DataGrid::FILTER_DATE, 'filter_condition' => 'le'));
+        $this->datagrid->setTitle($this->lang->line('logs_module_name'))
+            ->setTable($this->config->item('database_table_logs'))
+            ->setItemsPerPage(400)
+            ->setDefaultOrder('timestamp', 'desc')
+            ->setBaseUrl(module_url('logs') . 'index')
+            ->setRowCssClassFormattingFunction(array($this, '_datagrid_row_callback'))
+            ->addFilter(array('field' => 'timestamp', 'label' => 'Date from', 'filter_type' => DataGrid::FILTER_DATE, 'filter_condition' => 'ge'))
+            ->addFilter(array('field' => 'timestamp', 'label' => 'Date to', 'filter_type' => DataGrid::FILTER_DATE, 'filter_condition' => 'le'));
 
         $module_name = 'logs';
         $definition = array(
@@ -109,8 +109,8 @@ class LogsAdmin extends ModuleAdminController
         }
         $this->datagrid->setDefinition($definition);
 
-        $this->assign('datagrid', $this->datagrid->generate());
-        $this->assign('simple_session_message', $this->simplesessionmessage->getLocalizedMessage());
+        $this->assign('datagrid', $this->datagrid->generate())
+            ->assign('simple_session_message', $this->simplesessionmessage->getLocalizedMessage());
         $this->display();
     }
 
@@ -145,12 +145,12 @@ class LogsAdmin extends ModuleAdminController
 
     public function mylogin()
     {
-        $this->load->library('DataGrid');
-        $this->datagrid->setTable($this->config->item('database_table_logs'), array('user_id' => $this->auth->getUserId(), 'collection' => 'LOGIN'));
-        $this->datagrid->setItemsPerPage(400);
-        $this->datagrid->setDefaultOrder('timestamp', 'desc');
-        $this->datagrid->setBaseUrl(module_url('logs') . '/mylogin');
-        $this->datagrid->setRowCssClassFormattingFunction(array($this, '_datagrid_row_callback'));
+        $this->load->library('DataGrid')
+            ->setTable($this->config->item('database_table_logs'), array('user_id' => $this->auth->getUserId(), 'collection' => 'LOGIN'))
+            ->setItemsPerPage(400)
+            ->setDefaultOrder('timestamp', 'desc')
+            ->setBaseUrl(module_url('logs') . '/mylogin')
+            ->setRowCssClassFormattingFunction(array($this, '_datagrid_row_callback'));
 
         $module_name = 'logs';
         $definition = array(
@@ -173,8 +173,8 @@ class LogsAdmin extends ModuleAdminController
         $this->datagrid->setDefinition($definition);
 
 
-        $this->assign('title', $this->lang->line('global_logs_view_own_login_history'));
-        $this->assign('datagrid', $this->datagrid->generate());
+        $this->assign('title', $this->lang->line('global_logs_view_own_login_history'))
+            ->assign('datagrid', $this->datagrid->generate());
         $this->display();
     }
 
@@ -190,11 +190,11 @@ class LogsAdmin extends ModuleAdminController
             show_404();
         }
 
-        $this->assign('level_labels', $this->level_labels);
-        $this->assign('item', $item);
-        $this->assign('id', $id);
-        $this->assign('title', $this->lang->line('logs_log_details') . ' - ' . $id);
-        $this->assign('users', $this->users);
+        $this->assign('level_labels', $this->level_labels)
+            ->assign('item', $item)
+            ->assign('id', $id)
+            ->assign('title', $this->lang->line('logs_log_details') . ' - ' . $id)
+            ->assign('users', $this->users);
         $this->display();
     }
 
@@ -210,10 +210,10 @@ class LogsAdmin extends ModuleAdminController
             show_404();
         }
 
-        $this->assign('ip', $ip);
-        $this->assign('title', $this->lang->line('logs_ip') . ' ' . $ip);
-        $this->assign('ip_users', $ip_users);
-        $this->assign('ip_info', $this->Log_model->ip_info($ip));
+        $this->assign('ip', $ip)
+            ->assign('title', $this->lang->line('logs_ip') . ' ' . $ip)
+            ->assign('ip_users', $ip_users)
+            ->assign('ip_info', $this->Log_model->ip_info($ip));
         $this->display();
     }
 
@@ -228,11 +228,11 @@ class LogsAdmin extends ModuleAdminController
             show_404();
         }
 
-        $this->assign('title', $this->lang->line('logs_user_details') . ' ' . $user->user_email);
-        $this->assign('user_data', $user);
-        $this->assign('related_users', $this->Log_model->getRelatedUsersByUserId($id));
-        $this->assign('user_activity', $this->Log_model->getUserActivitySummaryByUserId($id));
-        $this->assign('user_ips_activity', $this->Log_model->getIpActivitySummaryUserId($id));
+        $this->assign('title', $this->lang->line('logs_user_details') . ' ' . $user->user_email)
+            ->assign('user_data', $user)
+            ->assign('related_users', $this->Log_model->getRelatedUsersByUserId($id))
+            ->assign('user_activity', $this->Log_model->getUserActivitySummaryByUserId($id))
+            ->assign('user_ips_activity', $this->Log_model->getIpActivitySummaryUserId($id));
         $this->display();
     }
 

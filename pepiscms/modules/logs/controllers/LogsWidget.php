@@ -19,8 +19,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
  */
 class LogsWidget extends Widget
 {
-    //private $levels = array(Logger::MESSAGE_LEVEL_INFO => 'INFO', Logger::MESSAGE_LEVEL_NOTICE => 'NOTICE', Logger::MESSAGE_LEVEL_WARNING => 'WARNING', Logger::MESSAGE_LEVEL_ERROR => 'ERROR');
-
     public function logs($collection, $resource_id = null, $title = false)
     {
         $where_conditions = array('collection' => $collection);
@@ -38,13 +36,12 @@ class LogsWidget extends Widget
         }
 
         $this->load->library('DataGrid');
-        $this->datagrid->setTitle($title);
-        $this->datagrid->setTable($this->Log_model->getTable(), $where_conditions);
-        $this->datagrid->setItemsPerPage(400);
-        $this->datagrid->setDefaultOrder('timestamp', 'desc');
-        $this->datagrid->setOrderable(false);
-        $this->datagrid->setBaseUrl(admin_url() . 'logs/mylogin');
-        $this->datagrid->setRowCssClassFormattingFunction(array($this, '_datagrid_row_callback'));
+        $this->datagrid->setTitle($title)->setTable($this->Log_model->getTable(), $where_conditions)
+            ->setItemsPerPage(400)
+            ->setDefaultOrder('timestamp', 'desc')
+            ->setOrderable(false)
+            ->setBaseUrl(admin_url() . 'logs/mylogin')
+            ->setRowCssClassFormattingFunction(array($this, '_datagrid_row_callback'));
 
         $module_name = 'logs';
 
