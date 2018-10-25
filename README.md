@@ -555,8 +555,8 @@ Security policy is serialized onto XML file that is platform independent and can
 In order to reduce time needed for parsing XML file with each request,the security policy is storied in a processed and
 serialized cached format on the permanent storage or directly in the memory.
 
-See [security policy file for the core](./tree/master/pepiscms/application/security_policy.xml) and a sample module policy
-[user accounts](./tree/master/pepiscms/modules/cms_users/security_policy.xml).
+See [security policy file for the core](./pepiscms/application/security_policy.xml) and a sample module policy
+[user accounts](./pepiscms/modules/cms_users/security_policy.xml).
 
 ### Types of security policy
 
@@ -622,16 +622,16 @@ The core takes advantage of [CodeIgniter framework](https://codeigniter.com/) th
 input security and database ActiveRecord access method.
 
 Specifically for the core of PepisCMS some of the classes were overloaded or rewritten
-(see [overwritten core libraries](./tree/master/pepiscms/application/core/).
+(see [overwritten core libraries](./pepiscms/application/core/).
 
 PepisCMS distinguishes between 4 types of controllers:
 
 * **Basic controller** (same as for CodeIgniter)
-* **[ModuleController](./tree/master/pepiscms/application/classes/ModuleController.php)** - public module
+* **[ModuleController](./pepiscms/application/classes/ModuleController.php)** - public module
     controller
-* **[AdminController](./tree/master/pepiscms/application/classes/AdminController.php)** - for core administration
+* **[AdminController](./pepiscms/application/classes/AdminController.php)** - for core administration
     panel, handles security check transparently
-* **[ModuleAdminController](./tree/master/pepiscms/application/classes/ModuleAdminController.php)** - module
+* **[ModuleAdminController](./pepiscms/application/classes/ModuleAdminController.php)** - module
     administration panel controller that supports "hotplug" and a kind of visualization where the original
     AdminController acts as a host and maps all accessible resources (translates) to ModuleAdminController instance
     without duplicating them in memory
@@ -676,9 +676,9 @@ PepisCMS provides some base models that can be extended in order make developmen
 
 | Name                                                                            | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 |---------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [Generic_model](#generic-model)                                                 | Generic model is the improved version od CodeIgniter model. It implements methods specified by both [EntitableInterface](./tree/master/pepiscms/application/classes/EntitableInterface.php) and [AdvancedDataFeedableInterface](./tree/master/pepiscms/application/classes/AdvancedDataFeedableInterface.php) interfaces. In most cases this class should be extended and parametrized in the constructor but it is left as a non-abstract for DataGrid and FormBuilder components that initialize and parametrize Generic_model "on-the-fly" using prototype design pattern. |
-| [Array_model](./tree/master/pepiscms/application/models/Array_model.php) | Provides Generic_model capabilities that can be applied to data sources other than database.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| [Ssh_model](./tree/master/pepiscms/application/models/Ssh_model.php)     | Provides Generic_model and Array_model capabilities for data parsed over SSH                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| [Generic_model](#generic-model)                                                 | Generic model is the improved version od CodeIgniter model. It implements methods specified by both [EntitableInterface](./pepiscms/application/classes/EntitableInterface.php) and [AdvancedDataFeedableInterface](./pepiscms/application/classes/AdvancedDataFeedableInterface.php) interfaces. In most cases this class should be extended and parametrized in the constructor but it is left as a non-abstract for DataGrid and FormBuilder components that initialize and parametrize Generic_model "on-the-fly" using prototype design pattern. |
+| [Array_model](./pepiscms/application/models/Array_model.php) | Provides Generic_model capabilities that can be applied to data sources other than database.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| [Ssh_model](./pepiscms/application/models/Ssh_model.php)     | Provides Generic_model and Array_model capabilities for data parsed over SSH                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 
 #### View 
 
@@ -704,10 +704,10 @@ PepisCMS distinguishes 4 types of controllers:
 
 | Name                                                                                                                          | Description                                                                                                         |
 |-------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
-| [EnhancedController](./tree/master/pepiscms/application/classes/EnhancedController.php) extends Controller (abstract)  | Implements handy methods like assign($name, $variable) that are used in any other type of controllers.              |
-| [AdminController](./tree/master/pepiscms/application/classes/AdminController.php) extends EnhancedController           | Used for administration panel only. Authorization and authentication is implemented in the constructor.             |
-| [ModuleAdminController](./tree/master/pepiscms/application/classes/ModuleAdminController.php) extends AdminController  | Similar to the AdminController, used for back-end controllers of modules.                                           |
-| [ModuleController](./tree/master/pepiscms/application/classes/ModuleController.php) extends EnhancedController         | Used for front-end controllers of modules. Use document library to set page titles and to interact with the system  |
+| [EnhancedController](./pepiscms/application/classes/EnhancedController.php) extends Controller (abstract)  | Implements handy methods like assign($name, $variable) that are used in any other type of controllers.              |
+| [AdminController](./pepiscms/application/classes/AdminController.php) extends EnhancedController           | Used for administration panel only. Authorization and authentication is implemented in the constructor.             |
+| [ModuleAdminController](./pepiscms/application/classes/ModuleAdminController.php) extends AdminController  | Similar to the AdminController, used for back-end controllers of modules.                                           |
+| [ModuleController](./pepiscms/application/classes/ModuleController.php) extends EnhancedController         | Used for front-end controllers of modules. Use document library to set page titles and to interact with the system  |
 
 
 
@@ -715,16 +715,16 @@ PepisCMS distinguishes 4 types of controllers:
 
 ## Generic model
 
-[Generic_model](./tree/master/pepiscms/application/models/Generic_model.php) is an extended Model that implements
-[EntitableInterface](./tree/master/pepiscms/application/classes/EntitableInterface.php) required by
-[FormBuilder](./tree/master/pepiscms/application/libraries/FormBuilder.php).
+[Generic_model](./pepiscms/application/models/Generic_model.php) is an extended Model that implements
+[EntitableInterface](./pepiscms/application/classes/EntitableInterface.php) required by
+[FormBuilder](./pepiscms/application/libraries/FormBuilder.php).
 
 The `EntitableInterface` interface specifies the 3 basic methods: `saveById()`, `deleteById()` and `getById()`.
 You can implement the `EntitableInterface` class by default but for most of the cases Generic_model with its helper
 methods is more than enough – in most situations Generic_model should only be extended. 
 
-Generic_model also implements [AdvancedDataFeedableInterface](./tree/master/pepiscms/application/classes/AdvancedDataFeedableInterface.php)
-interface that is needed by [DataGrid](./tree/master/pepiscms/application/libraries/DataGrid.php) component.
+Generic_model also implements [AdvancedDataFeedableInterface](./pepiscms/application/classes/AdvancedDataFeedableInterface.php)
+interface that is needed by [DataGrid](./pepiscms/application/libraries/DataGrid.php) component.
 
 Methods of the generic model are worth to mention because they are present in all the models used by PepisCMS.
 
@@ -746,7 +746,7 @@ Methods of the generic model are worth to mention because they are present in al
 | `setDatabase($database_group)`                                                                                                | Sets the database connection to be used by the model, database group must be defined in database config. Since 0.2.2                                                                                                                                                                                                                                                                                                                        |
 
 Sometimes it is not desired to use the default Generic_model methods, for example when you need to obtain minimalistic
-data set. [Generic_model](./tree/master/pepiscms/application/models/Generic_model.php) by default selects all
+data set. [Generic_model](./pepiscms/application/models/Generic_model.php) by default selects all
 from your database using the "*" sign.
 
 
@@ -768,7 +768,7 @@ The main features of form builder are:
 * Handles database read/update/insert 
 * Can be customized using templates 
 * Can be extended using callbacks and custom feed objects that implement the
-    [EntitableInterface](./tree/master/pepiscms/application/classes/EntitableInterface.php)
+    [EntitableInterface](./pepiscms/application/classes/EntitableInterface.php)
 * Can handle database foreign keys 
 * When using FormBuilder you can specify the fields of the form and their attributes in two manners: by API methods or
     by definition. The API methods were first that were developed but they are not recommended to use in new projects.
@@ -779,10 +779,10 @@ The main features of form builder are:
 * The definition used for generating FormBuilder is compatible with the definition used by DataGrid so that one
     definition can be written and reused both for the Form and for the Grid. 
 * Form builder is closely coupled with
-    [EntitableInterface](./tree/master/pepiscms/application/classes/EntitableInterface.php) - it uses its
+    [EntitableInterface](./pepiscms/application/classes/EntitableInterface.php) - it uses its
     `saveById()` and `getById()` methods.
 
-See complete [FormBuilder API](./tree/master/pepiscms/application/libraries/FormBuilder.php)
+See complete [FormBuilder API](./pepiscms/application/libraries/FormBuilder.php)
 
 ### Generating a form 
 
@@ -1059,7 +1059,7 @@ echo $this->datagrid->setBaseUrl(admin_url() . 'somepage/edit')
     ->generate();
 ```
 
-See complete [DataGrid API](./tree/master/pepiscms/application/libraries/DataGrid.php)
+See complete [DataGrid API](./pepiscms/application/libraries/DataGrid.php)
 
 ### DataGrid cell value formatting callbacks
 
@@ -1081,10 +1081,10 @@ public function _datagrid_format_order_value( $cell_value, &$line ) {
 
 ## CrudDefinitionBuilder
 
-[CrudDefinitionBuilder](./tree/master/pepiscms/application/classes/CrudDefinitionBuilder.php) makes it easier and
+[CrudDefinitionBuilder](./pepiscms/application/classes/CrudDefinitionBuilder.php) makes it easier and
 safer (typesafe) to generate DataGrid and [FormBuilder](#formbuilder-library) definitions.
 
-Below some sample code (see [CrudDefinitionBuilder code](./tree/master/pepiscms/application/classes/CrudDefinitionBuilder.php)
+Below some sample code (see [CrudDefinitionBuilder code](./pepiscms/application/classes/CrudDefinitionBuilder.php)
 for complete reference):
 
 ```php
@@ -1142,7 +1142,7 @@ $definition = CrudDefinitionBuilder::create()
 
 ## ContainerAware
 
-[ContainerAware](./tree/master/pepiscms/application/classes/ContainerAware.php) is a way to access CodeIgniter
+[ContainerAware](./pepiscms/application/classes/ContainerAware.php) is a way to access CodeIgniter
 container services in a seamless way from your libraries and custom classes.
 
 All you need to do is to make your class extend ContainerAware and you can then immediately access all services just
@@ -1165,7 +1165,7 @@ class YourLibrary extends ContainerAware
 ```
 
 If you can't (or don't want) to extend the ContainerAware class then you can implement your own *magic method* `__get()'
-and to reuse a static helper provided by [ContainerAware](./tree/master/pepiscms/application/classes/ContainerAware.php):
+and to reuse a static helper provided by [ContainerAware](./pepiscms/application/classes/ContainerAware.php):
 
 ```php
 class YourAlternativeLibrary
@@ -1221,29 +1221,29 @@ class YourOldScoolLibrary
 
 ## Helpers
 
-* [dialog_message](./tree/master/pepiscms/application/helpers/dialog_message_helper.php)
+* [dialog_message](./pepiscms/application/helpers/dialog_message_helper.php)
     dialog / UI related functions.
-* [email_html](./tree/master/pepiscms/application/helpers/email_html_helper.php)
+* [email_html](./pepiscms/application/helpers/email_html_helper.php)
     functions that ease building HTML system emails.
-* [google_maps](./tree/master/pepiscms/application/helpers/google_maps_helper.php)
+* [google_maps](./pepiscms/application/helpers/google_maps_helper.php)
     functions for getting coordinates for a given address.
-* [mysqldump](./tree/master/pepiscms/application/helpers/mysqldump_helper.php)
+* [mysqldump](./pepiscms/application/helpers/mysqldump_helper.php)
     functions for creating backups from MYSQL database.
-* [os](./tree/master/pepiscms/application/helpers/os_helper.php)
+* [os](./pepiscms/application/helpers/os_helper.php)
     functions for detecting Windows systems.
-* [path](./tree/master/pepiscms/application/helpers/path_helper.php)
+* [path](./pepiscms/application/helpers/path_helper.php)
     path helper functions.
-* [PEPISCMS_date](./tree/master/pepiscms/application/helpers/PEPISCMS_date_helper.php)
+* [PEPISCMS_date](./pepiscms/application/helpers/PEPISCMS_date_helper.php)
     extension to CodeIgniter date helper.
-* [PEPISCMS_string](./tree/master/pepiscms/application/helpers/PEPISCMS_string_helper.php)
+* [PEPISCMS_string](./pepiscms/application/helpers/PEPISCMS_string_helper.php)
     extension to CodeIgniter string helper.
-* [PEPISCMS_url](./tree/master/pepiscms/application/helpers/PEPISCMS_url_helper.php)
+* [PEPISCMS_url](./pepiscms/application/helpers/PEPISCMS_url_helper.php)
     extension to CodeIgniter url helper.
-* [PEPISCMS_xml](./tree/master/pepiscms/application/helpers/PEPISCMS_xml_helper.php)
+* [PEPISCMS_xml](./pepiscms/application/helpers/PEPISCMS_xml_helper.php)
     extension to CodeIgniter xml helper.
-* [popup](./tree/master/pepiscms/application/helpers/popup_helper.php)
+* [popup](./pepiscms/application/helpers/popup_helper.php)
     popup / UI related functions.
-* [youtube](./tree/master/pepiscms/application/helpers/youtube_helper.php)
+* [youtube](./pepiscms/application/helpers/youtube_helper.php)
     YouTube URL parsing functions.
 
 
@@ -1291,9 +1291,9 @@ You might observe that for concurrent requests access check and menu rendering i
 ## Enabling library and models autocomplete prediction
 
 Autocomplete and method prediction works out of the box for classes that extend either
-[EnhancedController](./tree/master/pepiscms/application/classes/EnhancedController.php)
-(all PepisCMS controller types), [Generic_model](./tree/master/pepiscms/application/models/Generic_model.php)
-and [ContainerAware](./tree/master/pepiscms/application/classes/ContainerAware.php).
+[EnhancedController](./pepiscms/application/classes/EnhancedController.php)
+(all PepisCMS controller types), [Generic_model](./pepiscms/application/models/Generic_model.php)
+and [ContainerAware](./pepiscms/application/classes/ContainerAware.php).
 
 This is obtained by adding `@property` annotations to the above mentioned classes.
 
