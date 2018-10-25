@@ -5,7 +5,7 @@
 
 PepisCMS is a content management system. Its main feature is the [CRUD module generator](#generating-a-crud-module)
 which makes it easy to set up an entire administration panel based on the database schema definition within minutes.
-The generated administration panel consists of [modules](#modules) that can be customized (or just left as they
+The generated administration panel consists of [modules](#modules) that can be further customized (or just left as they
 are if you don't care about presentation details).
 
 * [Features](#features)
@@ -35,29 +35,43 @@ are if you don't care about presentation details).
 
 ![System logs](docs/screens/MODULES_SYSTEM_LOGS.png)
 
+
+
+
 ## Demo
 
 A demo application is automatically deployed to Heroku and can be reached at:
 
 * [https://pepiscms-demo.herokuapp.com/](https://pepiscms-demo.herokuapp.com/)
 
-Please note the demo application contents are automatically cleared up each time a new version is deployed.
+Demo application sources can be found at [https://github.com/piotrpolak/pepiscms-demo](https://github.com/piotrpolak/pepiscms-demo).
+
+*Please note that the contents of the demo deployment are automatically cleaned up each time a new version is deployed.*
+
+
+
 
 ## Some history
 
-PepisCMS was started in 2007 as an experimental academic project.
-The system is written on top of the [CodeIgniter framework](https://codeigniter.com/) and during its lifespan
-it has been fluently ported from CodeIgniter version 1.5.4 to 3.1.* (and counting).
+PepisCMS was started in 2007 as an experimental academic project. Since the very beginning the system was designed
+on top of the [CodeIgniter framework](https://codeigniter.com/) and during its lifespan it has been fluently ported
+from CodeIgniter version 1.5.4 to 3.1+. Back in 2007 [CodeIgniter framework](https://codeigniter.com/) was a reasonable
+choice for a PHP framework.
 
-As 2018, the project is **fully functional** (and really fast) but you should be aware that its source code is quite far
-away from php latest architectural styles and by some it might be considered a **legacy** (and that would not be
-offensive, see its [maintainability score](https://codeclimate.com/github/piotrpolak/pepiscms) at Code Climate).
+As 2018, the project is **fully functional** (and really fast) but one should be aware that its source code is quite far
+away from php latest architectural styles.
+
+As 1.0.0 a support for composer dependency management has been added, additionally some of the code has been rewritten
+in the PSR style and benefits from PSR class autoloading.
+
+
+
 
 ## Development philosophy
 
-During all those years the project has been developed using a very conservative approach and manually tested on multiple
-deployments prior to releasing a stable version. This made it possible to keep regression to minimum but in time of
-TDD and automatic builds this approach is obsolete. 
+The project has been developed using a very conservative approach and manually tested on multiple deployments prior
+to releasing a stable version. This made it possible to keep regression to minimum but in time of TDD and automatic
+builds this approach is obsolete. 
 
 ### Becoming open source
 
@@ -72,6 +86,9 @@ simplified to incrementing composer versions.
 All of the above makes it easy to provide hot fixes and components' updates thus it extends the expected lifespan of the
 product.
 
+
+
+
 ## Features
 
 
@@ -81,14 +98,14 @@ product.
     System core can be upgraded without any modification in the current application at any time.
   
     There are two kinds of modules - builtin (available in all projects) and user-space modules.
-    Modules can be enabled or disabled from the administration panel.
-    A typical module consists from both admin and public controllers and support code.
+    Modules can be enabled or disabled from the administration console.
+    A typical module consists from both admin and public controllers + the support code.
     
     Read more about [modules](#modules).
   
 * **Advanced user and user right management**
 
-    The user is granted a certain right above an entity.
+    The user is granted a certain right above a business entity.
     Every single controller method has associated a minimal right above a certain entity.
     
     All violations of security policy are reported in system audit logs.
@@ -111,13 +128,13 @@ product.
   
 * **Web based file manager**
 
-    The user can manage files on the server using a lightweight AJAX file manager.
-    You can restrict the allowed upload extension list.
+    The user can manage files on the server using an AJAX file manager.
+    You can restrict the allowed upload extension list from configuration.
   
 * **Enhanced SMTP Email sender**
   
     An utility for sending emails in a reliable way reliable.
-    When the system is unable to connect to the remote SMTP server, an alternative gateway is used
+    When the system is unable to connect to the remote SMTP server, an alternative `mail` gateway is used
     and the fallback action is reported in audit logs.
   
 * **Multi language native support** 
@@ -127,7 +144,7 @@ product.
   
 * **Rich Text Editor**
 
-    Makes you you feel you are using MS Word while editing web site contents.
+    [CKEditor](https://ckeditor.com/) makes you you feel you are using MS Word while editing web site contents.
     You can change text formatting and attach pictures.
 
 * **Configuration tests on startup**
@@ -173,13 +190,19 @@ product.
 
     Generate database CRUD admin panel in minutes.
     
+    Read more about [CRUD module generator](#generating-a-crud-module).
+    
 * **Builtin UI translator**
 
     Localize your application with no effort.
+    
+    Read more about [Translator module](#translator).
   
 * **Builtin SQL console**
   
     Makes maintenance and upgrade tasks a piece of cake.
+    
+    Read more about [SQL Console module](#sql-console).
 
 * **Seamless Symfony2 integration**
  
@@ -210,12 +233,17 @@ product.
 
 * **phpCAS/native authentication drivers**
 
+    *phpCAS authentication driver is disabled by default.*
+
+
+
 
 ## Installation
 
 PepisCMS is installed as a composer dependency and then instantiated in the user directory.
 
-Once composer dependency has been configured and downloaded (see below) there are two ways of bootstrapping PepisCMS instance:
+Once the composer dependency has been configured and downloaded (see below) there are two ways of bootstrapping
+PepisCMS instance:
 * [attended](#attended-user-installation) (user)
 * [unattended](#unattended-installation) (manual)
 
@@ -230,10 +258,6 @@ Once composer dependency has been configured and downloaded (see below) there ar
             "type": "vcs",
             "url": "https://github.com/piotrpolak/pepiscms.git"
         },
-        {
-            "type": "vcs",
-            "url": "https://github.com/piotrpolak/pepiscms-3rdparty.git"
-        }
     ],
     "require": {
         "piotrpolak/pepiscms": "dev-master"
@@ -258,7 +282,7 @@ Once composer dependency has been configured and downloaded (see below) there ar
      
 3. Open `install.php` in your browser [http://localhost/install.php](http://localhost/install.php)
 
-    This will create basic framework structure. Please follow the installation guide.
+    This will create a basic framework structure. Please follow the installation guide.
 
     * Directory view
         ![Directory view](docs/screens/INSTALLATION_1.png)
@@ -278,8 +302,8 @@ Once composer dependency has been configured and downloaded (see below) there ar
    
     * Selecting authorization driver. You can choose from **native** (users are managed locally) or **CAS**
     
-        When selecting **CAS** then user passwords will not be managed by PepisCMS. The local users having minimal 
-        access rights will be created upon the first authentication (use of the system).
+        When selecting **CAS** then user passwords **will not be managed by PepisCMS**. The local users having minimal 
+        access rights will be created upon the first user authentication (use of the system).
         
         ![Authorization driver](docs/screens/INSTALLATION_4.png)
    
@@ -303,7 +327,7 @@ Once composer dependency has been configured and downloaded (see below) there ar
     
 ### Unattended installation
 
-PepisCMS can be configured in an unattended way.
+PepisCMS can be installed and configured in an unattended way.
 
 The following BASH variables can be used to control the installation parameters:
 
@@ -336,16 +360,24 @@ See [demo application setup scripts](https://github.com/piotrpolak/pepiscms-demo
 installation in action.
 
 
+
+
 ## Modules
 
-There are two types of modules:
+PepisCMS distinguishes between two types of modules, based on where the modules code is placed:
 
-* system modules - those modules are bundled within the system and are upgraded when PepisCMS version is upgraded
-* user modules - user space modules, those are specific to instance of your application
+* **system modules** - these modules are bundled in the system and are upgraded each time PepisCMS is upgraded,
+    those modules are available for all PepisCMS applications
+* **user modules** - user space modules, those are specific to instance of your application
 
-By default all modules are disabled and must be manually installed (during PepisCMS installation or at any later point).
+By default all modules are disabled and must be manually enabled (installed) (during PepisCMS installation or at any later point).
 
 ### Module installation
+
+Module installation consists in enabling the module and configuring its parameters (if available). Modules that do have
+administration interface can be attached to an admin panel menu and/or utilities dashboard. Most modules come with
+predefined configuration and presentation defaults. Configuration options and presentation details are defined in a
+module descriptor (a class that implements [ModuleDescriptableInterface](./pepiscms/application/classes/ModuleDescriptableInterface.php)).
 
 An SQL code can be executed upon module installation/uninstallation. A file containing SQL code can be optionally
 specified in module descriptor.
@@ -377,7 +409,7 @@ to access public controllers. This can be enabled from `Start > Utilities > Site
 
 ### Module structure
 
-* Module descriptor
+* Module descriptor (optional, when specified must implement [ModuleDescriptableInterface](./pepiscms/application/classes/ModuleDescriptableInterface.php))
 * Admin controller (optional)
 * Public controller (optional)
 * Admin views (optional)
@@ -473,11 +505,13 @@ Allows to inject HTML snippets to admin panel header and footer.
 
 ## Generating a CRUD module
 
-CRUD stands for Create Read Update and Delete. PepisCMS aims to ease creating typical CRUD modules for managing data
-saved in a database dable.
+CRUD stands for *Create Read Update and Delete*. PepisCMS aims to ease creating typical CRUD modules for managing data
+saved in a database table.
 
-1. Execute SQL DDL against the database. You can use a bundled [SQL console](#sql-console) module.
-2. Make sure [development tools](#development-tools) module is installed.
+To generate a CRUD module for a given database table:
+
+1. Execute SQL DDL against the database. You can use the bundled [SQL console module](#sql-console).
+2. Make sure [development tools module](#development-tools) is installed.
 2. Navigate to `Start > Utilities > Development tools > Build a new module`.
 3. Provide mandatory `database table name` and optional module details:
 
@@ -499,29 +533,40 @@ You can find a sample SQL file to play with at [sql/sample.sql](sql/sample.sql).
 
 
 
+
 ## Built-in utilities
 
 * Site's configuration
-* Modules
-* Flush system cache
-* Flush security policy cache
+* Modules management
+* Cache management/flush
 * Reload (own) privileges
 * Security policy builder
-* Check own access rights
+* Check own access rights utility
 * Configuration tests
+
 
 
 
 ## Security policy
 
-Security policy is a set of required user rights above certain entities required to access a controller's method.
-The user is granted one of the four access rights above above the defined entities
+A security policy is a set of required user rights above certain entities required to access a controller's method.
+The user is granted one of the four access rights above above the defined entities.
 
-### Entities
-
-An entity is just a string representing the core business object. When a security policy is created,
-the administrator first defines desired entities (such as `page`, `user`, `group`, `configuration` etc.)
+When a security policy is created, the administrator first defines desired entities (such as `page`, `user`, `group`, `configuration` etc.)
 and assigns the entities to methods of controllers.
+
+How access check works:
+1. User accesses a controller method
+2. If the user is marked as root, the access is immediately granted
+3. SecurityManager parses appropriate `security_policy.xml` and reads the entity and minimum access level for a given
+    controller method
+4. SecurityManager checks groups for the authenticated user and computes associated entity-granted access map
+5. SecurityManager checks if the computed user entity-granted access map contains an entry related to the entity
+6. SecurityManager checks the user access level against the minimum required access level, if it is satisfied or if
+    the required access level is `NONE` the user is granted access to the controller method.
+    Otherwise the user is denied access.
+    
+**All violations of security policy are reported using system logs.**
 
 ### Possible access levels
 
@@ -532,16 +577,65 @@ There are four access levels:
 * `WRITE`
 * `ALL`
 
+### Entities
+
+An entity is just a string representing the core business object.
+
+**Example**: Managing, rearranging, managing, and running modules is realised by different method of the
+`module` controller. Each method has different minimal access levels for `module` entity:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<security_policy generated_at="2018-04-18 23:18:56" version="1.1">
+  <policy module="system">
+    <!-- ... -->
+    <controller name="module">
+      <method name="index">
+        <entity name="module" access="READ"/>
+      </method>
+    </controller>
+    <controller name="module">
+      <method name="move">
+        <entity name="module" access="WRITE"/>
+      </method>
+    </controller>
+    <controller name="module">
+      <method name="setup">
+        <entity name="module" access="FULL_CONTROL"/>
+      </method>
+    </controller>
+    <controller name="module">
+      <method name="do_setup">
+        <entity name="module" access="FULL_CONTROL"/>
+      </method>
+    </controller>
+    <controller name="module">
+      <method name="uninstall">
+        <entity name="module" access="FULL_CONTROL"/>
+      </method>
+    </controller>
+    <controller name="module">
+      <method name="run">
+        <entity name="module" access="READ"/>
+      </method>
+    </controller>
+    
+    <!-- ... -->
+  </policy>
+</security_policy>
+```
+
+Security policy management console view:
 ![Security policy](docs/screens/SECURITY_POLICY.png)
 
-Also see [groups module](#groups)
+Also see [groups module](#groups).
 
 ### Controllers, methods and reflection
 
 Every controller method for which a security policy is defined has associated a minimal required access right above an
 entity.
 
-A reflection mechanism is used to scan for the controller methods.
+The reflection mechanism is used to scan for the controller methods.
 
 ### Changing security policy at runtime
 
@@ -551,21 +645,16 @@ system.
 
 ### Marshaling a security policy and caching
 
-Security policy is serialized onto XML file that is platform independent and can be manually edited.
-In order to reduce time needed for parsing XML file with each request,the security policy is storied in a processed and
+Security policy is serialized onto XML file (`security_policy.xml`) that is platform independent and can be manually edited.
+In order to reduce time needed for parsing XML file with each request, the security policy is storied in a processed and
 serialized cached format on the permanent storage or directly in the memory.
 
-See [security policy file for the core](./pepiscms/application/security_policy.xml) and a sample module policy
-[user accounts](./pepiscms/modules/cms_users/security_policy.xml).
-
-### Types of security policy
+### Types of security policies
 
 There are two types of security policy:
 
-* System security policy
-* Module security policy
-
-All violations of security policy are reported using system logs.
+* System core security policy ([core security_policy.xml](./pepiscms/application/security_policy.xml))
+* Module security policy (example, [user accounts module security_policy.xml](./pepiscms/modules/cms_users/security_policy.xml).)
 
 ### User groups 
 
@@ -579,11 +668,9 @@ separately.
 
 
 
-
-
 ## Deployment configurations
 
-The project can be deployed in several configurations. The following options will be presented in the small-to-enerprise
+A project can be deployed in several configurations. The following options will be presented in the small-to-enerprise
 order. 
 
 ### Small website (Content Management System, Web)
@@ -612,6 +699,9 @@ All of the components including business logic are placed on the same machine.
 *Disadvantages*: any failure can be deadly, can have scalability issues 
 
 *Example*: blog, online shop 
+
+
+
 
 ## Architecture overview
 
@@ -753,8 +843,6 @@ from your database using the "*" sign.
 
 
 
-
-
 ## FormBuilder library
 
 A library that can build and handle HTML forms based on the provided definition.
@@ -796,7 +884,6 @@ looks as follows:
 5. Specify the back link `$this->formbuilder->setBackLink($link)` - URL that is used for the "Cancel" button and for
     redirecting the user once the form is saved 
 6. Trigger form populate/save actions and generate the resulting HTML 
-
 
 ### Lifecycle callbacks 
 
@@ -959,9 +1046,6 @@ public function _fb_callback_make_filename_seo_friendly(&$filename, $base_path, 
     return FALSE;
 }
 ```
-
-
-
 
 
 
@@ -1139,7 +1223,6 @@ $definition = CrudDefinitionBuilder::create()
 
 
 
-
 ## ContainerAware
 
 [ContainerAware](./pepiscms/application/classes/ContainerAware.php) is a way to access CodeIgniter
@@ -1207,8 +1290,6 @@ class YourOldScoolLibrary
     }
 }
 ```
-
-
 
 
 
@@ -1286,8 +1367,6 @@ You might observe that for concurrent requests access check and menu rendering i
 
 
 
-
-
 ## Enabling library and models autocomplete prediction
 
 Autocomplete and method prediction works out of the box for classes that extend either
@@ -1313,7 +1392,6 @@ To regenerate libraries and models definition and enable autocomplete prediction
     
 5. Benefit from autocomplete predictions and code suggestions :)
     ![Autocomplete](docs/screens/ENABLING_LIBRARY_AND_MODELS_AUTOCOMPLETE_PREDICTION_3.png)
-
 
 
 
