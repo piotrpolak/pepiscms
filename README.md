@@ -421,9 +421,17 @@ to access public controllers. This can be enabled from `Start > Utilities > Site
 * Security policy (`security_policy.xml`)
 * Additional resources (like default icons: `<module_name>/resources/icon_16.png` and `<module_name>/resources/icon_32.png`)
 
-### Below the structure of sample `labels` module:
+#### Sample module structure
 
-![Module structure](docs/screens/MODULE_STRUCTURE.png)
+Below the structure of sample `labels` module:
+
+![Module structure - new](docs/screens/MODULE_STRUCTURE_NEW.png)
+
+There is also a legacy module structure layout. The legacy layout is no longer supported by default, however it can be
+enabled from configuration in case you already have modules generated with a past version of PepisCMS and do not want
+to upgrade:
+
+![Module structure - legacy](docs/screens/MODULE_STRUCTURE_LEGACY.png)
 
 ### Built-in modules
 
