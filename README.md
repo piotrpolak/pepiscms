@@ -24,7 +24,7 @@ are if you don't care about presentation details).
     * [DataGrid](#datagrid-library)
     * [CrudDefinitionBuilder](#cruddefinitionbuilder)
     * [ContainerAware](#containeraware)
-* [Helpers](#helpers)
+* [Application helpers](#application-helpers)
 * [Breaking API changes and upgrade instructions](CHANGES.md)
 * [Benchmarking](#benchmarking)
 * [Naming convention inconsistency](docs/NAMING_CONVENTION_INCONSISTENCY.md)
@@ -356,7 +356,7 @@ composer install --prefer-dist && \
     php index.php tools register_admin $PEPIS_CMS_AUTH_EMAIL $PEPIS_CMS_AUTH_PASSWORD
 ```
 
-See [demo application setup scripts](https://github.com/piotrpolak/pepiscms-demo) to see PepisCMS unattended
+See [demo application setup scripts](https://github.com/piotrpolak/pepiscms-demo/blob/master/bin/setup.sh) to see PepisCMS unattended
 installation in action.
 
 
@@ -367,8 +367,9 @@ installation in action.
 PepisCMS distinguishes between two types of modules, based on where the modules code is placed:
 
 * **system modules** - these modules are bundled in the system and are upgraded each time PepisCMS is upgraded,
-    those modules are available for all PepisCMS applications
-* **user modules** - user space modules, those are specific to instance of your application
+    those modules are available for all PepisCMS applications. See the list of [built-in modules](#built-in-modules) or
+    check the [modules source](./pepiscms/modules).
+* **user modules** - user space modules, those are specific to instance of your application.
 
 By default all modules are disabled and must be manually enabled (installed) (during PepisCMS installation or at any later point).
 
@@ -386,13 +387,13 @@ To view installed modules please navigate to `Start > Utilities > Installed modu
 
 ### Accessing modules in the browser
 
-#### Admin modules
+#### Admin module actions
 
 ```bash
 http://localhost/admin/<modulename>/<action>
 ```
 
-#### Public modules
+#### Public module actions
 
 ```bash
 http://localhost/<modulename>/<action>
@@ -481,6 +482,9 @@ An utility for translating user interface.
 #### Symfony2 bridge
 
 Allows to invalidate Symfony cache and to view Symfony logs.
+
+Symfony2 bridge must be first enabled by [adding an piotrpolak/codeigniter-symfony2-bridge library](#enabling-symfony-bridge).
+See the [codeigniter-symfony2-bridge project](https://github.com/piotrpolak/codeigniter-symfony2-bridge).
 
 #### Backup
 
@@ -698,7 +702,7 @@ All of the components including business logic are placed on the same machine.
 
 *Disadvantages*: any failure can be deadly, can have scalability issues 
 
-*Example*: blog, online shop 
+*Example*: blog, online shop.
 
 
 
@@ -809,7 +813,7 @@ PepisCMS distinguishes 4 types of controllers:
 [EntitableInterface](./pepiscms/application/classes/EntitableInterface.php) required by
 [FormBuilder](./pepiscms/application/libraries/FormBuilder.php).
 
-The `EntitableInterface` interface specifies the 3 basic methods: `saveById()`, `deleteById()` and `getById()`.
+The `EntitableInterface` interface specifies the 3 basic methods: `saveById($id, $data)`, `deleteById($id)` and `getById($id)`.
 You can implement the `EntitableInterface` class by default but for most of the cases Generic_model with its helper
 methods is more than enough – in most situations Generic_model should only be extended. 
 
@@ -837,7 +841,7 @@ Methods of the generic model are worth to mention because they are present in al
 
 Sometimes it is not desired to use the default Generic_model methods, for example when you need to obtain minimalistic
 data set. [Generic_model](./pepiscms/application/models/Generic_model.php) by default selects all
-from your database using the "*" sign.
+from your database using the `*` wildcard sign.
 
 
 
@@ -847,6 +851,9 @@ from your database using the "*" sign.
 
 A library that can build and handle HTML forms based on the provided definition.
 Form builder can render the form using the default layout or you can register an additional renderer.
+FormBuilder can either use an instance of [EntitableInterface](./pepiscms/application/classes/EntitableInterface.php) or
+a anonymous instance of the [Generic_model](./pepiscms/application/models/Generic_model.php) that binds to an arbitrary
+database table.
 
 The main features of form builder are:
 
@@ -1053,16 +1060,18 @@ public function _fb_callback_make_filename_seo_friendly(&$filename, $base_path, 
 
 ## DataGrid library
 
-A library for generating rich data grid views.
+A library that feature rich data view grids, including pagination, sorting and filtering.
 
 ### Features
 
-* Generate HTML views with minimum effort using grid definition
-* Cell value formatting callback
-* Data filtering
-* Pagination
-* Sorting by columns
-* Handles OneToMany and ManyToMany foreign keys
+* Generates HTML views with minimum effort using grid definition
+* Makes it possible to apply callback formatting functions to individual cells.
+* Can define and apply filters
+* Supports dataset pagination
+* Enables dataset sorting by specified colums
+* Resolves OneToMany and ManyToMany foreign keys
+* Supports row actions (links)
+* Supports row icons (thumbails) and additional row styling based on the tuple data
 
 ### DataGrid filters
 
@@ -1231,8 +1240,33 @@ container services in a seamless way from your libraries and custom classes.
 All you need to do is to make your class extend ContainerAware and you can then immediately access all services just
 like you access them from within the controllers or models.
 
+Makes it possible to transform the code from:
+
 ```php
-class YourLibrary extends ContainerAware
+// The oldschool CodeIgniter way
+
+class YourOldSchoolNastyLibrary
+{
+    public function myServiceMethod() {
+        $CI = CI_Controller::getInstance(); // THAT IS NASTY
+        $CI->load->library('email');
+
+        // Autocomplete and method prediction does not work or requires additional hacks :(
+        return $this->email->from('noreply@example.com')
+                ->to('recipient@example.com')
+                ->subject('Hello')
+                ->body('Hello World!')
+                ->sent();
+    }
+}
+```
+
+into code having no static calls in your method bodies:
+
+```php
+// The PepisCMS way
+
+class YourNewNiceLibrary extends ContainerAware
 {
     public function myServiceMethod() {
         $this->load->library('email');
@@ -1251,7 +1285,7 @@ If you can't (or don't want) to extend the ContainerAware class then you can imp
 and to reuse a static helper provided by [ContainerAware](./pepiscms/application/classes/ContainerAware.php):
 
 ```php
-class YourAlternativeLibrary
+class YourNewNiceAlternativeLibrary
 {
     public function __get($var)
     {
@@ -1271,36 +1305,15 @@ class YourAlternativeLibrary
 }
 ```
 
-### The old school way (CodeIgniter default)
-
-The below code is for demonstration only:
-
-```php
-class YourOldScoolLibrary
-{
-    public function myServiceMethod() {
-        CI_Controller::get_instance()->load->library('email');
-
-        // Autocomplete and method prediction does not work out of the box :(
-        return CI_Controller::get_instance()->email->from('noreply@example.com')
-                ->to('recipient@example.com')
-                ->subject('Hello')
-                ->body('Hello World!')
-                ->sent();
-    }
-}
-```
-
-
-
-
 
 ## Simplified domain model
 
 ![Simplified domain model](docs/screens/SIMPLIFIED_DOMAIN_MODEL.png)
 
 
-## Helpers
+## Application helpers
+
+Below the list of the PepisCMS helpers:
 
 * [dialog_message](./pepiscms/application/helpers/dialog_message_helper.php)
     dialog / UI related functions.
@@ -1314,6 +1327,13 @@ class YourOldScoolLibrary
     functions for detecting Windows systems.
 * [path](./pepiscms/application/helpers/path_helper.php)
     path helper functions.
+* [popup](./pepiscms/application/helpers/popup_helper.php)
+    popup / UI related functions.
+* [youtube](./pepiscms/application/helpers/youtube_helper.php)
+    YouTube URL parsing functions.
+
+CodeIgniter helpers customization or extension:
+
 * [PEPISCMS_date](./pepiscms/application/helpers/PEPISCMS_date_helper.php)
     extension to CodeIgniter date helper.
 * [PEPISCMS_string](./pepiscms/application/helpers/PEPISCMS_string_helper.php)
@@ -1322,10 +1342,6 @@ class YourOldScoolLibrary
     extension to CodeIgniter url helper.
 * [PEPISCMS_xml](./pepiscms/application/helpers/PEPISCMS_xml_helper.php)
     extension to CodeIgniter xml helper.
-* [popup](./pepiscms/application/helpers/popup_helper.php)
-    popup / UI related functions.
-* [youtube](./pepiscms/application/helpers/youtube_helper.php)
-    YouTube URL parsing functions.
 
 
 
@@ -1367,6 +1383,7 @@ You might observe that for concurrent requests access check and menu rendering i
 
 
 
+
 ## Enabling library and models autocomplete prediction
 
 Autocomplete and method prediction works out of the box for classes that extend either
@@ -1400,18 +1417,27 @@ To regenerate libraries and models definition and enable autocomplete prediction
 
 ### PHPExcel for Excel spreadsheet import/export
 
+PHPSpreadsheet bridge library is not provided by default. To enable support for Excel file import/export please add
+the missing dependency. Once the library is present in the classmap, the Excel support capabilities will automatically
+be enabled. Excel support can be enabled at any point.
+
 ```bash
 composer require phpoffice/phpspreadsheet 1.5.*
 ```
 
 ### PHPCas for CAS authentication
 
+PHPCas bridge library is not provided by default. To enable CAS support, please install PHPCas library
+**prior to PepisCMS setup configuration**.
+
 ```bash
 composer require jasig/phpcas 1.3.5
 ```
 
-### Symfony bridge
+### Enabling Symfony bridge
+
+Symfony bridge library is not provided by default. Symfony bridge can be enabled at any point.
 
 ```bash
-composer require piotrpolak/codeigniter-symfony2-bridge dev-master
+composer require piotrpolak/codeigniter-symfony2-bridge
 ```
