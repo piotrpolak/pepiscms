@@ -133,7 +133,7 @@ product.
   
 * **Enhanced SMTP Email sender**
   
-    An utility for sending emails in a reliable way reliable.
+    A utility for sending emails in a reliable way reliable.
     When the system is unable to connect to the remote SMTP server, an alternative `mail` gateway is used
     and the fallback action is reported in audit logs.
   
@@ -429,7 +429,7 @@ to access public controllers. This can be enabled from `Start > Utilities > Site
 
 #### Groups
 
-An utility for managing user groups and groups access rights.
+A utility for managing user groups and groups access rights.
 
 Read more about [security policy](#security-policy).
 
@@ -437,7 +437,7 @@ Read more about [security policy](#security-policy).
 
 #### User accounts
 
-An utility for managing and registering new users.
+A utility for managing and registering new users.
 
 ![User accounts](docs/screens/MODULES_USER_ACCOUNTS.png)
 
@@ -475,7 +475,7 @@ Displays system information, paths, versions, storage occupied.
 
 #### Translator
 
-An utility for translating user interface.
+A utility for translating user interface.
 
 ![Translator](docs/screens/MODULES_TRANSLATOR.png)
 
@@ -592,7 +592,9 @@ An entity is just a string representing the core business object.
 <?xml version="1.0" encoding="UTF-8"?>
 <security_policy generated_at="2018-04-18 23:18:56" version="1.1">
   <policy module="system">
+  
     <!-- ... -->
+    
     <controller name="module">
       <method name="index">
         <entity name="module" access="READ"/>
@@ -625,6 +627,7 @@ An entity is just a string representing the core business object.
     </controller>
     
     <!-- ... -->
+    
   </policy>
 </security_policy>
 ```
