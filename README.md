@@ -10,6 +10,7 @@ are if you don't care about presentation details).
 
 * [Features](#features)
 * [Demo](#demo)
+* [Requirements](#requirements)
 * [Installation](#installation)
 * [Modules](#modules)
 * [Generating a CRUD module](#generating-a-crud-module)
@@ -234,6 +235,16 @@ product.
 * **phpCAS/native authentication drivers**
 
     *phpCAS authentication driver is disabled by default.*
+
+
+
+
+# Requirements
+
+* PHP 5.6+ with mysqli, gd (recommended), mbstring (recommended)
+* Apache 2 with mod_rewrite
+* MySQL or MariaDB database
+* composer
 
 
 
