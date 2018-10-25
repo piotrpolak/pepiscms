@@ -37,10 +37,10 @@ class RTFEditor extends ContainerAware
         if (isset($this->available_editors[$this->type])) {
             $driver_name = $this->available_editors[$this->type];
 
-            $clazz = "\\Piotrpolak\\Pepiscms\\Editor\\$driver_name";
+            $clazz = "\\PiotrPolak\\PepisCMS\\Editor\\$driver_name";
             $this->driver = new $clazz();
         } else {
-            $this->driver = new \Piotrpolak\Pepiscms\Editor\CKEditorDriver(); // DEFAULT ONE
+            $this->driver = new \PiotrPolak\PepisCMS\Editor\CKEditorDriver(); // DEFAULT ONE
         }
     }
 

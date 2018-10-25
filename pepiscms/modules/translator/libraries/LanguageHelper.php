@@ -189,7 +189,7 @@ class LanguageHelper extends ContainerAware
         }
 
         $success = file_put_contents($path, $contents);
-        \Piotrpolak\Pepiscms\Modulerunner\OpCacheUtil::safeInvalidate($path);
+        \PiotrPolak\PepisCMS\Modulerunner\OpCacheUtil::safeInvalidate($path);
 
         return $success;
     }

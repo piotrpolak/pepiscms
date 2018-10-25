@@ -19,10 +19,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
  *
  * @since 1.0.0
  */
-class ModulePathResolver extends ContainerAware implements \Piotrpolak\Pepiscms\Modulerunner\ModuleLocatorInterface
+class ModulePathResolver extends ContainerAware implements \PiotrPolak\PepisCMS\Modulerunner\ModuleLocatorInterface
 {
     /**
-     * @var \Piotrpolak\Pepiscms\Modulerunner\ModuleLocatorInterface[]
+     * @var \PiotrPolak\PepisCMS\Modulerunner\ModuleLocatorInterface[]
      */
     private $moduleLocators = array();
 
@@ -31,8 +31,8 @@ class ModulePathResolver extends ContainerAware implements \Piotrpolak\Pepiscms\
      */
     public function __construct()
     {
-        $this->moduleLocators[] = new \Piotrpolak\Pepiscms\Modulerunner\ModuleLocator();
-        $this->moduleLocators[] = new \Piotrpolak\Pepiscms\Modulerunner\LegacyModuleLocator();
+        $this->moduleLocators[] = new \PiotrPolak\PepisCMS\Modulerunner\ModuleLocator();
+        $this->moduleLocators[] = new \PiotrPolak\PepisCMS\Modulerunner\LegacyModuleLocator();
     }
 
     /**

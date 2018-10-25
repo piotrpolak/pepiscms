@@ -22,7 +22,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class ModuleGenerator extends ContainerAware
 {
     /**
-     * @var \Piotrpolak\Pepiscms\Modulerunner\ModuleLocatorInterface
+     * @var \PiotrPolak\PepisCMS\Modulerunner\ModuleLocatorInterface
      */
     private $moduleLocator;
 
@@ -32,7 +32,7 @@ class ModuleGenerator extends ContainerAware
      */
     public function __construct($params = null)
     {
-        $this->moduleLocator = new \Piotrpolak\Pepiscms\Modulerunner\ModuleLocator();
+        $this->moduleLocator = new \PiotrPolak\PepisCMS\Modulerunner\ModuleLocator();
     }
 
     /**

@@ -42,7 +42,7 @@ class ConfigBuilder
         }
 
         $success = file_put_contents($config_path, $contents);
-        \Piotrpolak\Pepiscms\Modulerunner\OpCacheUtil::safeInvalidate($config_path);
+        \PiotrPolak\PepisCMS\Modulerunner\OpCacheUtil::safeInvalidate($config_path);
         return $success;
     }
 
@@ -84,7 +84,7 @@ class ConfigBuilder
         }
 
         $success = file_put_contents($config_path, $contents);
-        \Piotrpolak\Pepiscms\Modulerunner\OpCacheUtil::safeInvalidate($config_path);
+        \PiotrPolak\PepisCMS\Modulerunner\OpCacheUtil::safeInvalidate($config_path);
         return $success;
     }
 

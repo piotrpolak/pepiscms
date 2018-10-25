@@ -70,7 +70,7 @@ class Utilities extends AbstractDashboardController
     {
         $this->auth->refreshSession();
         $this->db->cache_delete_all();
-        \Piotrpolak\Pepiscms\Modulerunner\OpCacheUtil::safeReset();
+        \PiotrPolak\PepisCMS\Modulerunner\OpCacheUtil::safeReset();
         $stats = $this->cachedobjectmanager->cleanup();
         if ($stats) {
             $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS)

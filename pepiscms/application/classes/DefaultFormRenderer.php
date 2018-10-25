@@ -340,7 +340,7 @@ class DefaultFormRenderer extends ContainerAware implements FormRenderableInterf
      * @return string
      */
     private function renderInput($field, $value, &$object,
-                                 \Piotrpolak\Pepiscms\Formbuilder\Component\ComponentInterface $component, $readOnly)
+                                 \PiotrPolak\PepisCMS\Formbuilder\Component\ComponentInterface $component, $readOnly)
     {
         $extra_css_classes = $this->computeExtraCssClasses($field);
 
@@ -371,32 +371,32 @@ class DefaultFormRenderer extends ContainerAware implements FormRenderableInterf
 
     /**
      * @param $componentId
-     * @return null|\Piotrpolak\Pepiscms\Formbuilder\Component\ComponentInterface
+     * @return null|\PiotrPolak\PepisCMS\Formbuilder\Component\ComponentInterface
      */
     private function resolveComponent($componentId)
     {
         /**
-         * @var $registeredComponents \Piotrpolak\Pepiscms\Formbuilder\Component\ComponentInterface[]
+         * @var $registeredComponents \PiotrPolak\PepisCMS\Formbuilder\Component\ComponentInterface[]
          */
         $registeredComponents = array(
-            new \Piotrpolak\Pepiscms\Formbuilder\Component\Textfield(),
-            new \Piotrpolak\Pepiscms\Formbuilder\Component\Password(),
-            new \Piotrpolak\Pepiscms\Formbuilder\Component\Checkbox(),
-            new \Piotrpolak\Pepiscms\Formbuilder\Component\Selectbox(),
-            new \Piotrpolak\Pepiscms\Formbuilder\Component\MultipleSelect(),
-            new \Piotrpolak\Pepiscms\Formbuilder\Component\Radio(),
-            new \Piotrpolak\Pepiscms\Formbuilder\Component\Textarea(),
-            new \Piotrpolak\Pepiscms\Formbuilder\Component\Image(),
-            new \Piotrpolak\Pepiscms\Formbuilder\Component\File(),
-            new \Piotrpolak\Pepiscms\Formbuilder\Component\Hidden(),
-            new \Piotrpolak\Pepiscms\Formbuilder\Component\Rtf(false),
-            new \Piotrpolak\Pepiscms\Formbuilder\Component\Rtf(true),
-            new \Piotrpolak\Pepiscms\Formbuilder\Component\MultipleCheckbox(),
-            new \Piotrpolak\Pepiscms\Formbuilder\Component\Date(),
-            new \Piotrpolak\Pepiscms\Formbuilder\Component\Timestamp(),
-            new \Piotrpolak\Pepiscms\Formbuilder\Component\Colorpicker(),
-            new \Piotrpolak\Pepiscms\Formbuilder\Component\TextfieldAutocomplete(),
-            new \Piotrpolak\Pepiscms\Formbuilder\Component\SelectboxAutocomplete(),
+            new \PiotrPolak\PepisCMS\Formbuilder\Component\Textfield(),
+            new \PiotrPolak\PepisCMS\Formbuilder\Component\Password(),
+            new \PiotrPolak\PepisCMS\Formbuilder\Component\Checkbox(),
+            new \PiotrPolak\PepisCMS\Formbuilder\Component\Selectbox(),
+            new \PiotrPolak\PepisCMS\Formbuilder\Component\MultipleSelect(),
+            new \PiotrPolak\PepisCMS\Formbuilder\Component\Radio(),
+            new \PiotrPolak\PepisCMS\Formbuilder\Component\Textarea(),
+            new \PiotrPolak\PepisCMS\Formbuilder\Component\Image(),
+            new \PiotrPolak\PepisCMS\Formbuilder\Component\File(),
+            new \PiotrPolak\PepisCMS\Formbuilder\Component\Hidden(),
+            new \PiotrPolak\PepisCMS\Formbuilder\Component\Rtf(false),
+            new \PiotrPolak\PepisCMS\Formbuilder\Component\Rtf(true),
+            new \PiotrPolak\PepisCMS\Formbuilder\Component\MultipleCheckbox(),
+            new \PiotrPolak\PepisCMS\Formbuilder\Component\Date(),
+            new \PiotrPolak\PepisCMS\Formbuilder\Component\Timestamp(),
+            new \PiotrPolak\PepisCMS\Formbuilder\Component\Colorpicker(),
+            new \PiotrPolak\PepisCMS\Formbuilder\Component\TextfieldAutocomplete(),
+            new \PiotrPolak\PepisCMS\Formbuilder\Component\SelectboxAutocomplete(),
         );
 
         foreach ($registeredComponents as $registeredComponent) {
@@ -451,7 +451,7 @@ class DefaultFormRenderer extends ContainerAware implements FormRenderableInterf
      * @return array
      */
     private function computeReadOnlyComponentHtml($field, $valueEscaped, $object,
-          \Piotrpolak\Pepiscms\Formbuilder\Component\ComponentInterface $component, $formatting_function_for_uneditable)
+          \PiotrPolak\PepisCMS\Formbuilder\Component\ComponentInterface $component, $formatting_function_for_uneditable)
     {
         if (is_callable($formatting_function_for_uneditable)) {
             return call_user_func_array($formatting_function_for_uneditable, array($valueEscaped));
@@ -460,7 +460,7 @@ class DefaultFormRenderer extends ContainerAware implements FormRenderableInterf
 
             if ($component->shouldRenderHiddenForReadOnly()) {
                 $output .= $this->renderInput($field, $valueEscaped, $object,
-                    new \Piotrpolak\Pepiscms\Formbuilder\Component\Hidden(), false);
+                    new \PiotrPolak\PepisCMS\Formbuilder\Component\Hidden(), false);
             }
 
             return $output;
@@ -493,7 +493,7 @@ class DefaultFormRenderer extends ContainerAware implements FormRenderableInterf
      */
     private function computeExtraCssClasses($field)
     {
-        $translator = new Piotrpolak\Pepiscms\Formbuilder\Component\ValidationRulesTranslator();
+        $translator = new PiotrPolak\PepisCMS\Formbuilder\Component\ValidationRulesTranslator();
         $extra_css_classes = $translator->translateCIValidationRulesToJSValidationEngineRules($field['validation_rules']);
 
         if ($field['input_css_class']) {

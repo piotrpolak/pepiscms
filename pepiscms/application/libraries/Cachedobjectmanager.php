@@ -180,7 +180,7 @@ class Cachedobjectmanager extends ContainerAware
                 if (!file_put_contents($file_path, $contents, LOCK_EX)) {
                     $error = true;
                 } else {
-                    \Piotrpolak\Pepiscms\Modulerunner\OpCacheUtil::safeInvalidate($file_path);
+                    \PiotrPolak\PepisCMS\Modulerunner\OpCacheUtil::safeInvalidate($file_path);
                 }
                 $this->benchmark->mark('cached_object_manager_failsafe_store_object_' . $collection . '_' . $hash . '_end');
             }
@@ -233,7 +233,7 @@ class Cachedobjectmanager extends ContainerAware
                 Logger::error('Unable to delete system cache file ' . $file_path, 'SYSTEM');
             }
 
-            \Piotrpolak\Pepiscms\Modulerunner\OpCacheUtil::safeInvalidate($file_path);
+            \PiotrPolak\PepisCMS\Modulerunner\OpCacheUtil::safeInvalidate($file_path);
         }
 
         return $return;

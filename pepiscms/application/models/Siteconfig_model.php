@@ -88,7 +88,7 @@ class Siteconfig_model extends PEPISCMS_Model implements EntitableInterface
                 if (!file_put_contents($config_path, str_replace($config_search, $config_replace, $content_config))) {
                     $error = 'Unable to write ' . $config_file;
                 }
-                \Piotrpolak\Pepiscms\Modulerunner\OpCacheUtil::safeInvalidate($config_path);
+                \PiotrPolak\PepisCMS\Modulerunner\OpCacheUtil::safeInvalidate($config_path);
             }
         }
 
