@@ -507,7 +507,7 @@ Every single log consists of the following entry:
 * **Timestamp** of the event
 * **User ID/email** generating the event
 * **IP address** of the user creating the entry
-* **Modul ename** (if case)
+* **Module name** (if case)
 * **Collection name** – abstract label used for grouping the events and drawing statistics
 * **Debug message**
 * **URL** where the event occurred
@@ -1359,6 +1359,8 @@ class YourNewNiceAlternativeLibrary
     }
 }
 ```
+
+
 
 
 ## Simplified domain model
