@@ -17,7 +17,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 /**
  * Feedable interface used by DataGrid
  *
- * Any model that is used by DataGrid should implement this inferface.
+ * Any model that is used by DataGrid should implement this interface.
  * It is not required that the implementation is database one.
  *
  * @since 0.1.4
