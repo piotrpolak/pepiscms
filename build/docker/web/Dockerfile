@@ -1,6 +1,6 @@
 FROM php:5.6.38-apache-jessie
 
-ADD ./install.sh /install.sh
+ADD install.sh /install.sh
 
 RUN apt-get update && apt-get install -yq git zip unzip libpng-dev && \
     a2enmod rewrite && \
