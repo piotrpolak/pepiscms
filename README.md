@@ -259,7 +259,16 @@ PepisCMS instance:
 * [unattended](#unattended-installation) (manual)
 
 ### Configuring composer
-                                                                      
+
+# Configuring composer from command line  (using dev-master)
+
+```bash
+composer init --type "project" --stability "dev" --repository '{"type": "vcs", "url": "https://github.com/piotrpolak/pepiscms.git"}' && \                                                }
+composer require piotrpolak/pepiscms dev-master
+```
+
+# Creating composer.json by hand (using dev-master)
+                                                                 
 ```json
 {
     "name": "yourvendorname/yourprojectname",
@@ -268,7 +277,7 @@ PepisCMS instance:
         {
             "type": "vcs",
             "url": "https://github.com/piotrpolak/pepiscms.git"
-        },
+        }
     ],
     "require": {
         "piotrpolak/pepiscms": "dev-master"
