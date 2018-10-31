@@ -20,6 +20,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  */
 abstract class AdminController extends EnhancedController
 {
+    const ADMINMENU_VARIABLE_NAME = 'adminmenu';
 
     /**
      * Default constructor
@@ -84,17 +85,17 @@ abstract class AdminController extends EnhancedController
         $popup_layout = ($this->input->getParam('layout') == 'popup');
 
         // Assigning core variables
-        $this->assign('body_id', strtolower('controller-' . $controller));
-        $this->assign('popup_layout', $popup_layout);
-        $this->assign('user', $this->auth->getUser());
-        $this->assign('lang', $this->lang);
-        $this->assign('application_languages', $this->lang->getEnabledAdminLanguages());
-        $this->assign('current_language', $language);
-        $this->assign('site_name', $this->config->item('site_name'));
+        $this->assign('body_id', strtolower('controller-' . $controller))
+            ->assign('popup_layout', $popup_layout)
+            ->setConfig('user', $this->auth->getUser())
+            ->setConfig('lang', $this->lang)
+            ->setConfig('application_languages', $this->lang->getEnabledAdminLanguages())
+            ->setConfig('current_language', $language)
+            ->setConfig('site_name', $this->config->item('site_name'));
 
         // Rendering the menu if specified
         if ($render_menu) {
-            $this->assign('adminmenu', ''); // Just in case
+            $this->assign(self::ADMINMENU_VARIABLE_NAME, ''); // Just in case
 
             // Rendering menu only if the layout is different from popup
             if (!$popup_layout) {
@@ -104,14 +105,15 @@ abstract class AdminController extends EnhancedController
                 // Checking whether the hook method exists
                 if (method_exists($this, 'renderMenu')) {
                     $rendered_menu = $this->renderMenu();
-                    $this->assign('adminmenu', $rendered_menu);
                 }
 
                 // Only if the menu was not rendered before
                 if (!$rendered_menu) {
                     $this->load->library('MenuRendor');
-                    $this->assign('adminmenu', $this->menurendor->render($controller, $method, $this->input->getParam('language_code')));
+                    $rendered_menu = $this->menurendor->render($controller, $method, $this->input->getParam('language_code'));
                 }
+
+                $this->assign(self::ADMINMENU_VARIABLE_NAME, $rendered_menu);
                 $this->benchmark->mark('menu_render_end');
             }
         }
@@ -122,8 +124,8 @@ abstract class AdminController extends EnhancedController
             Logger::warning('Security policy violation ' . $controller . '/' . $method, 'SECURITY');
 
             ob_start();
-            $this->assign('security_policy_violaton', true);
-            $this->display('admin/no_sufficient_priviliges', true, true);
+            $this->assign('security_policy_violaton', true)
+                ->display('admin/no_sufficient_priviliges', true, true);
             $out = ob_get_contents();
             ob_end_clean();
             die($out);
