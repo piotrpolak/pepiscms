@@ -1372,31 +1372,105 @@ Below the list of the PepisCMS helpers:
 
 * [dialog_message](./pepiscms/application/helpers/dialog_message_helper.php)
     dialog / UI related functions.
+    
+    * `display_error($message)`
+    * `display_warning($message)`
+    * `display_notification($message)`
+    * `display_success($message)`
+    * `display_tip($message)`
+    * `display_breadcrumb($breadcrumb_array, $icon = false)`
+    * `display_session_message()` - Renders and prints session flash message.
+    * `get_warning_begin()`
+    * `get_warning_end()`
+    * `display_steps($steps, $type)`
+    * `display_steps_circle($steps)`
+    * `display_steps_dot($steps)`
+    * `display_action_bar($actions)`
+    * `button_generic($label, $url, $icon_path, $extra_classes = '', $id = false)`
+    * `button_cancel($url = '#', $extra_classes = '', $id = false, $label = false)`
+    * `button_back($url = '#', $extra_classes = '', $id = false, $label = false)`
+    * `button_next($url = '#', $extra_classes = '', $id = false, $label = false)`
+    * `button_previous($url = '#', $extra_classes = '', $id = false, $label = false)`
+    * `button_apply($extra_classes = '', $id = false, $label = false)`
+    * `button_save($extra_classes = '', $id = false, $label = false)`
+    * `dashboard_box($name, $url, $icon_path = false, $description = false, $is_popup = false, $target = false)`
+    * `display_confirmation_box($message, $explanation = '')`
+    * `display_error_box($message, $explanation = '')`
+    
 * [email_html](./pepiscms/application/helpers/email_html_helper.php)
     functions that ease building HTML system emails.
+    
+    * `email_html_open($padding = 20)`
+    * `email_html_close()`
+    * `email_h1_open()`
+    * `email_h1_close()`
+    * `email_h2_open()`
+    * `email_h2_close()`
+    * `email_p_open()`
+    * `email_p_close()`
+    * `email_a_open($url)`
+    * `email_a_close()`
+    * `email_html_footer_open($padding=0, $margin_top=40)`
+    * `email_html_footer_close()`
+    
 * [google_maps](./pepiscms/application/helpers/google_maps_helper.php)
     functions for getting coordinates for a given address.
+    
+    * `google_maps_locate($address)` - Returns an array (lat, lng) representing coordinates of a given address.
+    
 * [mysqldump](./pepiscms/application/helpers/mysqldump_helper.php)
     functions for creating backups from MYSQL database.
+    
+    * ` mysqldump($db_host, $database, $db_user, $db_password, $tables = false, $dump_to_filename = false, $dump_structure = true)` - Dumps MySQL database to file.
+    
 * [os](./pepiscms/application/helpers/os_helper.php)
     functions for detecting Windows systems.
+    
+    * `is_windows()`
+    
 * [path](./pepiscms/application/helpers/path_helper.php)
     path helper functions.
+    
+    * `module_path($module_name = false)`
+    
 * [popup](./pepiscms/application/helpers/popup_helper.php)
     popup / UI related functions.
+    
+    * `popup_close_html()` - Returns string used to close popup window.
+    
 * [youtube](./pepiscms/application/helpers/youtube_helper.php)
     YouTube URL parsing functions.
+    
+    * `youtube_get_id_by_url($url)` - Extracts YouTube ID from YouTube video URL.
 
 CodeIgniter helpers customization or extension:
 
 * [PEPISCMS_date](./pepiscms/application/helpers/PEPISCMS_date_helper.php)
     extension to CodeIgniter date helper.
+    
+     * `utc_timestamp()` - Generates a timestamp value compatible with MySQL UTC_TIMESTAMP function.
+     
 * [PEPISCMS_string](./pepiscms/application/helpers/PEPISCMS_string_helper.php)
     extension to CodeIgniter string helper.
+    
+    * `niceuri($name)` - Generates a URL friendly string that can be used as URL slug (URL id). Supports Cyrillic as well.
+    * `shortname($name, $maxlength = 60, $separator = '...')` - Generates a shortened string, inserts ... in the middle of the shortened value.
+    * `remove_separators($str)' - Returns string with all word separators removed (space, dash, minus, plus).
+    
 * [PEPISCMS_url](./pepiscms/application/helpers/PEPISCMS_url_helper.php)
     extension to CodeIgniter url helper.
+    
+    * `admin_url($is_absolute = true)` - Returns base URL for admin.
+    * `module_url($module_name = false)` - Returns relative admin module base URL. If no module is specified, the currently running module is used.
+    * `module_resources_url($module_name = false)` - Returns relative module public resources URL for the specified module. If no module is specified, the currently running module is used.
+    * `site_theme_url($theme_name = false)` - Returns relative theme path. If no theme is specified then the system configured theme is used.
+    * `module_icon_small_url($module_name = false)` - Returns admin module icon URL. If no module is specified, the currently running module is used.
+    * `current_url()` - Returns absolute URL for the current request.
+    
 * [PEPISCMS_xml](./pepiscms/application/helpers/PEPISCMS_xml_helper.php)
     extension to CodeIgniter xml helper.
+    
+    * `reflect2xml($object, &$properties_array, $pre_string = '')` - Serializes object properties into XML, used to generate backup.
 
 
 

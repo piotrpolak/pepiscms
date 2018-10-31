@@ -17,7 +17,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 if (!function_exists('youtube_get_id_by_url')) {
 
     /**
-     * Extracts YouTube ID from film URL
+     * Extracts YouTube ID from YouTube video URL.
+     *
      * @param string $url
      * @return string|boolean
      * @author https://stackoverflow.com/questions/5830387/how-do-i-find-all-youtube-video-ids-in-a-string-using-a-regex/5831191#5831191

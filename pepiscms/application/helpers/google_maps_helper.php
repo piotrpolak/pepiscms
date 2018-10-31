@@ -17,7 +17,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 if (!function_exists('google_maps_locate')) {
 
     /**
-     * Returns array containing coordinates of a given address
+     * Returns an array (lat, lng) representing coordinates of a given address.
      *
      * @param string $address
      * @return array

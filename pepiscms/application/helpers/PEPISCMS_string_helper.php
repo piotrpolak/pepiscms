@@ -17,7 +17,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 if (!function_exists('niceuri')) {
 
     /**
-     * Cleans all "ugly characters from the URI", supports chirilic (russian) characters as well
+     * Generates a URL friendly string that can be used as URL slug (URL id). Supports Cyrillic as well.
      *
      * @param string $name
      * @return string
@@ -94,7 +94,7 @@ if (!function_exists('niceuri')) {
 if (!function_exists('shortname')) {
 
     /**
-     * Shorts string by inserting dots in the middle
+     * Generates a shortened string, inserts ... in the middle of the shortened value.
      *
      * @param string $name
      * @param int $maxlength
@@ -115,7 +115,7 @@ if (!function_exists('shortname')) {
 if (!function_exists('remove_separators')) {
 
     /**
-     * Removes all separators from a string
+     * Returns string with all word separators removed (space, dash, minus, plus).
      *
      * @param string $str
      * @return string

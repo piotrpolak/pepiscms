@@ -71,32 +71,6 @@ if (!function_exists('display_notification')) {
     }
 }
 
-if (!function_exists('get_warning_begin')) {
-
-    /**
-     * Returns warning begin html code
-     *
-     * @return string
-     */
-    function get_warning_begin()
-    {
-        return '<div class="dialog_box warning"><img src="pepiscms/theme/img/dialog/messages/warning_32.png" alt="" />' . "\n" . '<p>';
-    }
-}
-
-if (!function_exists('get_warning_end')) {
-
-    /**
-     * Returns warning end html code
-     *
-     * @return string
-     */
-    function get_warning_end()
-    {
-        return '</p>' . "\n" . '</div>' . "\n" . '<div style="clear: both"></div>';
-    }
-}
-
 if (!function_exists('display_success')) {
 
     /**
@@ -182,7 +156,7 @@ if (!function_exists('display_breadcrumb')) {
 if (!function_exists('display_session_message')) {
 
     /**
-     * Renders and prints session flash message
+     * Renders and prints session flash message.
      *
      * @return string
      */
@@ -197,6 +171,32 @@ if (!function_exists('display_session_message')) {
         }
 
         return '';
+    }
+}
+
+if (!function_exists('get_warning_begin')) {
+
+    /**
+     * Returns warning begin html code
+     *
+     * @return string
+     */
+    function get_warning_begin()
+    {
+        return '<div class="dialog_box warning"><img src="pepiscms/theme/img/dialog/messages/warning_32.png" alt="" />' . "\n" . '<p>';
+    }
+}
+
+if (!function_exists('get_warning_end')) {
+
+    /**
+     * Returns warning end html code
+     *
+     * @return string
+     */
+    function get_warning_end()
+    {
+        return '</p>' . "\n" . '</div>' . "\n" . '<div style="clear: both"></div>';
     }
 }
 

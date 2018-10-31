@@ -17,7 +17,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 if (!function_exists('utc_timestamp')) {
 
     /**
-     * Generates timestamp, equivalent of MySQL UTC_TIMESTAMP function
+     * Generates a timestamp value compatible with MySQL UTC_TIMESTAMP function.
      *
      * @return string
      */

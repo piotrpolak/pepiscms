@@ -17,7 +17,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 if (!function_exists('reflect2xml')) {
 
     /**
-     * Serializes object properties into XML, used by backu only
+     * Serializes object properties into XML, used to generate backup.
      *
      * @param object $object
      * @param array $properties_array

@@ -17,7 +17,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 if (!function_exists('admin_url')) {
 
     /**
-     * Returns module base URL for admin
+     * Returns base URL for admin.
      *
      * @param bool $is_absolute
      * @return string
@@ -35,7 +35,7 @@ if (!function_exists('admin_url')) {
 if (!function_exists('module_url')) {
 
     /**
-     * Returns module base URL for admin
+     * Returns relative admin module base URL for the specified module. If no module is specified, the currently running module is used.
      *
      * @param string|bool $module_name if set to false, the current module is read and used
      * @return string
@@ -55,7 +55,7 @@ if (!function_exists('module_url')) {
 if (!function_exists('module_resources_url')) {
 
     /**
-     * Returns module resources' URL for
+     * Returns relative module public resources URL for the specified module. If no module is specified, the currently running module is used.
      *
      * @param string|bool $module_name if set to false, the current module is read and used
      * @return string
@@ -83,7 +83,7 @@ if (!function_exists('module_resources_url')) {
 if (!function_exists('site_theme_url')) {
 
     /**
-     * Returns theme path
+     * Returns relative theme path. If no theme is specified then the system configured theme is used.
      *
      * @param string|bool $theme_name if set to false, the current theme is read and used
      * @return string
@@ -127,7 +127,7 @@ if (!function_exists('module_icon_url')) {
 if (!function_exists('module_icon_small_url')) {
 
     /**
-     * Returns module icon (small) URL for admin
+     * Returns admin module icon URL. If no module is specified, the currently running module is used.
      *
      * @param string|bool $module_name if set to false, the current module is read and used
      * @return string
@@ -154,7 +154,7 @@ if (!function_exists('module_icon_small_url')) {
 if (!function_exists('current_url')) {
 
     /**
-     * Current URL
+     * Returns absolute URL for the current request.
      *
      * Returns the full URL (including segments) of the page where this
      * function is placed

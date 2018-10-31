@@ -17,7 +17,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 if (!function_exists('popup_close_html')) {
 
     /**
-     * Returns string used to close popup window
+     * Returns string used to close popup window.
      *
      * @return string
      */

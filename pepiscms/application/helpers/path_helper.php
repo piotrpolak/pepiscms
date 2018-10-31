@@ -17,7 +17,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 if (!function_exists('module_path')) {
 
     /**
-     * Returns module base path
+     * Returns module base path.
      *
      * @param bool|string $module_name if set to false, the current module is read and used
      * @return string

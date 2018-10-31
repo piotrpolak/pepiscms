@@ -17,7 +17,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 if (!function_exists('mysqldump')) {
 
     /**
-     * Dumps database to file
+     * Dumps MySQL database to file.
      *
      * @param string $db_host
      * @param string $database
