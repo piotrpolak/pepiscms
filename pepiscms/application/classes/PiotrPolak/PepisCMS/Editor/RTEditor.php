@@ -47,7 +47,7 @@ interface RTEditor
      *
      * @param $field_name
      * @param $value
-     * @return mixed
+     * @return RTEditor
      */
     public function setConfig($field_name, $value);
 

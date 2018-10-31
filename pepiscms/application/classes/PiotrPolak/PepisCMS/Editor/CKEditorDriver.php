@@ -32,31 +32,29 @@ class CKEditorDriver extends DefaultRTEditorDriver
     {
         // Refer to http://docs.cksource.com/ckeditor_api/symbols/CKEDITOR.config.html
 
-        $this->setConfig('contentsCss', $descriptor['editor_css_file']);
-        $this->setConfig('baseHref', base_url());
-        $this->setConfig('height', 400);
-
-        $this->setConfig('filebrowserBrowseUrl', base_url() . 'admin/ajaxfilemanager/editorbrowse/');
-        $this->setConfig('filebrowserImageBrowseUrl', base_url() . 'admin/ajaxfilemanager/editorbrowse/');
-        $this->setConfig('filebrowserFlashBrowseUrl', base_url() . 'admin/ajaxfilemanager/editorbrowse/');
-        $this->setConfig('bodyId', $descriptor['editor_css_body_id']);
-        $this->setConfig('bodyClass', $descriptor['editor_css_body_class']);
-
         if ($this->isFull()) {
-            $this->setConfig('customConfig', base_url() . 'pepiscms/js/cke_full_config.js');
+            $custom_config = base_url() . 'pepiscms/js/cke_full_config.js';
         } else {
-            $this->setConfig('customConfig', base_url() . 'pepiscms/js/cke_config.js');
+            $custom_config = base_url() . 'pepiscms/js/cke_config.js';
         }
 
-        $this->setConfig('forcePasteAsPlainText', 'true');
-        $this->setConfig('pasteFromWordRemoveStyle', 'true');
-
-
+        $style_set = '[]';
         if ($descriptor['editor_styles_set_file']) {
-            $this->setConfig('stylesSet', 'my_styles:' . $descriptor['editor_styles_set_file']);
-        } else {
-            $this->setConfig('stylesSet', '[]');
+            $style_set = 'my_styles:' . $descriptor['editor_styles_set_file'];
         }
+
+        $this->setConfig('contentsCss', $descriptor['editor_css_file'])
+            ->setConfig('baseHref', base_url())
+            ->setConfig('height', 400)
+            ->setConfig('filebrowserBrowseUrl', base_url() . 'admin/ajaxfilemanager/editorbrowse/')
+            ->setConfig('filebrowserImageBrowseUrl', base_url() . 'admin/ajaxfilemanager/editorbrowse/')
+            ->setConfig('filebrowserFlashBrowseUrl', base_url() . 'admin/ajaxfilemanager/editorbrowse/')
+            ->setConfig('bodyId', $descriptor['editor_css_body_id'])
+            ->setConfig('bodyClass', $descriptor['editor_css_body_class'])
+            ->setConfig('customConfig', $custom_config)
+            ->setConfig('forcePasteAsPlainText', 'true')
+            ->setConfig('pasteFromWordRemoveStyle', 'true')
+            ->setConfig('stylesSet', $style_set);
     }
 
     /**
@@ -65,10 +63,13 @@ class CKEditorDriver extends DefaultRTEditorDriver
     public function setFull($is_full = true)
     {
         if ($is_full) {
-            $this->setConfig('customConfig', base_url() . 'pepiscms/js/cke_full_config.js');
+            $custom_config = base_url() . 'pepiscms/js/cke_full_config.js';
         } else {
-            $this->setConfig('customConfig', base_url() . 'pepiscms/js/cke_config.js');
+            $custom_config = base_url() . 'pepiscms/js/cke_config.js';
         }
+
+        $this->setConfig('customConfig', $custom_config);
+
         parent::setFull($is_full);
     }
 

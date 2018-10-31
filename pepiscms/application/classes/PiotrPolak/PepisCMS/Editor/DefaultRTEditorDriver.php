@@ -32,6 +32,7 @@ abstract class DefaultRTEditorDriver implements RTEditor
     public function setConfig($field_name, $value)
     {
         $this->config[$field_name] = $value;
+        return $this;
     }
 
     /**
