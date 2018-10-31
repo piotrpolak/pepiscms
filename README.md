@@ -6,10 +6,13 @@
 PepisCMS is a content management system. Its main feature is the [CRUD module generator](#generating-a-crud-module)
 which makes it easy to set up an entire administration panel based on the database schema definition within minutes.
 The generated administration panel consists of [modules](#modules) that can be further customized (or just left as they
-are if you don't care about presentation details).
+are if you don't care about the presentation details).
+
+The application is designed as a core library on top of the [CodeIgniter framework](https://codeigniter.com/) and it
+allows to be swapped/upgraded with no or minimal changes in the project code.
 
 * [Features](#features)
-* [Demo](#demo)
+* [Live-demo](#live-demo)
 * [Requirements](#requirements)
 * [Installation](#installation)
 * [Modules](#modules)
@@ -39,13 +42,13 @@ are if you don't care about presentation details).
 
 
 
-## Demo
+## Live demo
 
-A demo application is automatically deployed to Heroku and can be reached at:
+The demo application is automatically deployed to Heroku and can be reached at:
 
 * [https://pepiscms-demo.herokuapp.com/](https://pepiscms-demo.herokuapp.com/)
 
-Demo application sources can be found at [https://github.com/piotrpolak/pepiscms-demo](https://github.com/piotrpolak/pepiscms-demo).
+The sources for the demo application can be found at [https://github.com/piotrpolak/pepiscms-demo](https://github.com/piotrpolak/pepiscms-demo).
 
 *Please note that the contents of the demo deployment are automatically cleaned up each time a new version is deployed.*
 
@@ -54,16 +57,26 @@ Demo application sources can be found at [https://github.com/piotrpolak/pepiscms
 
 ## Some history
 
-PepisCMS was started in 2007 as an experimental academic project. Since the very beginning the system was designed
-on top of the [CodeIgniter framework](https://codeigniter.com/) and during its lifespan it has been fluently ported
-from CodeIgniter version 1.5.4 to 3.1+. Back in 2007 [CodeIgniter framework](https://codeigniter.com/) was a reasonable
-choice for a PHP framework.
+PepisCMS was started in 2007 as a coursework project. Shortly after the first release the system was serving several
+production websites and CRM systems.
 
-As 2018, the project is **fully functional** (and really fast) but one should be aware that its source code is quite far
-away from php latest architectural styles.
+[CodeIgniter](https://codeigniter.com/) was picked as the application framework, back then there were few serious
+PHP frameworks available and CodeIgniter was a reasonable choice.
 
-As 1.0.0 a support for composer dependency management has been added, additionally some of the code has been rewritten
-in the PSR style and benefits from PSR class autoloading.
+During its lifespan, PepisCMS has been fluently ported from version CI 1.5.4 to 3.1+. One should be aware that using
+a *pre-PSR* framework implies that all the implementation is tightly coupled to the framework libraries.
+
+As 2018, the project is **fully functional** and **well tested**. Some automatic tests were added as well (PHPUnit for
+core components and Behat for smoke tests). Due to the minimal footprint and literally no overhead of the framework,
+project built on top of PepisCMS are really fast.
+
+As PepisCMS 1.0.0 the support for composer dependency management has been implemented.
+Additionally some of the code has been rewritten in the PSR style and benefits from PSR class autoloading.
+Version 1.0.0 plays well both with PHP5 and PHP7.
+
+*There are no plans to migrate PepisCMS to CodeIgniter 4 - it is not about the efforts - CI4 is rather a new
+framework than just an upgrade.*
+
 
 
 
@@ -71,10 +84,13 @@ in the PSR style and benefits from PSR class autoloading.
 ## Development philosophy
 
 The project has been developed using a very conservative approach and manually tested on multiple deployments prior
-to releasing a stable version. This made it possible to keep regression to minimum but in time of TDD and automatic
-builds this approach is obsolete. 
+to releasing a stable version. This made it possible to keep regression to minimum but in time.
 
-### Becoming open source
+
+
+
+
+### Becoming an open source project
 
 On the "10th birthday" the project was released as open source under the [MIT license](LICENSE.txt).
 
@@ -86,6 +102,7 @@ simplified to incrementing composer versions.
 
 All of the above makes it easy to provide hot fixes and components' updates thus it extends the expected lifespan of the
 product.
+
 
 
 
