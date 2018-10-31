@@ -19,6 +19,40 @@
  */
 class CrudFieldDefinitionBuilder
 {
+    const LABEL_KEY = 'label';
+    const DESCRIPTION_KEY = 'description';
+    const INPUT_TYPE_KEY = 'input_type';
+    const SHOW_IN_FORM_KEY = 'show_in_form';
+    const SHOW_IN_GRID_KEY = 'show_in_grid';
+    const FOREIGN_KEY_TABLE_KEY = 'foreign_key_table';
+    const FOREIGN_KEY_FIELD_KEY = 'foreign_key_field';
+    const FOREIGN_KEY_LABEL_FIELD_KEY = 'foreign_key_label_field';
+    const FOREIGN_KEY_ACCEPT_NULL_KEY = 'foreign_key_accept_null';
+    const FOREIGN_KEY_WHERE_CONDITIONS_KEY = 'foreign_key_where_conditions';
+    const FOREIGN_KEY_RELATIONSHIP_TYPE_KEY = 'foreign_key_relationship_type';
+    const FOREIGN_KEY_JUNCTION_ID_FIELD_LEFT_KEY = 'foreign_key_junction_id_field_left';
+    const FOREIGN_KEY_JUNCTION_ID_FIELD_RIGHT_KEY = 'foreign_key_junction_id_field_right';
+    const FOREIGN_KEY_JUNCTION_TABLE_KEY = 'foreign_key_junction_table';
+    const VALUES_KEY = 'values';
+    const VALIDATION_RULES_KEY = 'validation_rules';
+    const INPUT_IS_EDITABLE_KEY = 'input_is_editable';
+    const INPUT_GROUP_KEY = 'input_group';
+    const INPUT_CSS_CLASS_KEY = 'input_css_class';
+    const OPTIONS_KEY = 'options';
+    const UPLOAD_COMPLETE_CALLBACK_KEY = 'upload_complete_callback';
+    const UPLOAD_PATH_KEY = 'upload_path';
+    const UPLOAD_DISPLAY_PATH_KEY = 'upload_display_path';
+    const UPLOAD_ALLOWED_TYPES_KEY = 'upload_allowed_types';
+    const UPLOAD_ENCRYPT_NAME_KEY = 'upload_encrypt_name';
+    const GRID_FORMATING_CALLBACK_KEY = 'grid_formating_callback';
+    const GRID_IS_ORDERABLE_KEY = 'grid_is_orderable';
+    const GRID_CSS_CLASS_KEY = 'grid_css_class';
+    const FILTER_TYPE_KEY = 'filter_type';
+    const INPUT_DEFAULT_VALUE_KEY = 'input_default_value';
+    const FILTER_VALUES_KEY = 'filter_values';
+    const FILTER_CONDITION_KEY = 'filter_condition';
+    const AUTOCOMPLETE_SOURCE_KEY = 'autocomplete_source';
+
     /**
      * @var CrudDefinitionBuilder
      */
@@ -69,7 +103,7 @@ class CrudFieldDefinitionBuilder
      */
     public function withLabel($label)
     {
-        $this->definition['label'] = $label;
+        $this->definition[self::LABEL_KEY] = $label;
         return $this;
     }
 
@@ -81,7 +115,7 @@ class CrudFieldDefinitionBuilder
      */
     public function withDescription($description)
     {
-        $this->definition['description'] = $description;
+        $this->definition[self::DESCRIPTION_KEY] = $description;
         return $this;
     }
 
@@ -91,7 +125,7 @@ class CrudFieldDefinitionBuilder
      */
     public function withInputType($inputType)
     {
-        $this->definition['input_type'] = $inputType;
+        $this->definition[self::INPUT_TYPE_KEY] = $inputType;
         return $this;
     }
 
@@ -103,7 +137,7 @@ class CrudFieldDefinitionBuilder
      */
     public function withShowInForm($showInForm)
     {
-        $this->definition['show_in_form'] = $showInForm;
+        $this->definition[self::SHOW_IN_FORM_KEY] = $showInForm;
         return $this;
     }
 
@@ -115,7 +149,7 @@ class CrudFieldDefinitionBuilder
      */
     public function withShowInGrid($showInGrid)
     {
-        $this->definition['show_in_grid'] = $showInGrid;
+        $this->definition[self::SHOW_IN_GRID_KEY] = $showInGrid;
         return $this;
     }
 
@@ -127,7 +161,7 @@ class CrudFieldDefinitionBuilder
      */
     public function withForeignKeyTable($foreignKeyTable)
     {
-        $this->definition['foreign_key_table'] = $foreignKeyTable;
+        $this->definition[self::FOREIGN_KEY_TABLE_KEY] = $foreignKeyTable;
         return $this;
     }
 
@@ -139,7 +173,7 @@ class CrudFieldDefinitionBuilder
      */
     public function withForeignKeyIdField($foreignKeyIdField)
     {
-        $this->definition['foreign_key_field'] = $foreignKeyIdField;
+        $this->definition[self::FOREIGN_KEY_FIELD_KEY] = $foreignKeyIdField;
         return $this;
     }
 
@@ -151,7 +185,7 @@ class CrudFieldDefinitionBuilder
      */
     public function withForeignKeyLabelField($foreignKeyLabelField)
     {
-        $this->definition['foreign_key_label_field'] = $foreignKeyLabelField;
+        $this->definition[self::FOREIGN_KEY_LABEL_FIELD_KEY] = $foreignKeyLabelField;
         return $this;
     }
 
@@ -163,7 +197,7 @@ class CrudFieldDefinitionBuilder
      */
     public function withForeignKeyAcceptNull($foreignKeyAcceptNull)
     {
-        $this->definition['foreign_key_accept_null'] = $foreignKeyAcceptNull;
+        $this->definition[self::FOREIGN_KEY_ACCEPT_NULL_KEY] = $foreignKeyAcceptNull;
         return $this;
     }
 
@@ -181,7 +215,7 @@ class CrudFieldDefinitionBuilder
      */
     public function withForeignKeyWhereConditions($foreignKeyWhereConditions)
     {
-        $this->definition['foreign_key_where_conditions'] = $foreignKeyWhereConditions;
+        $this->definition[self::FOREIGN_KEY_WHERE_CONDITIONS_KEY] = $foreignKeyWhereConditions;
         return $this;
     }
 
@@ -197,7 +231,7 @@ class CrudFieldDefinitionBuilder
      */
     public function withForeignKeyRelationshipType($relationshipType)
     {
-        $this->definition['foreign_key_relationship_type'] = $relationshipType;
+        $this->definition[self::FOREIGN_KEY_RELATIONSHIP_TYPE_KEY] = $relationshipType;
         return $this;
     }
 
@@ -210,7 +244,7 @@ class CrudFieldDefinitionBuilder
      */
     public function withForeignKeyJunctionIdFieldLeft($foreignKeyJunctionIdFieldLeft)
     {
-        $this->definition['foreign_key_junction_id_field_left'] = $foreignKeyJunctionIdFieldLeft;
+        $this->definition[self::FOREIGN_KEY_JUNCTION_ID_FIELD_LEFT_KEY] = $foreignKeyJunctionIdFieldLeft;
         return $this;
     }
 
@@ -222,7 +256,7 @@ class CrudFieldDefinitionBuilder
      */
     public function withForeignKeyJunctionIdFieldRight($foreignKeyJunctionIdFieldRight)
     {
-        $this->definition['foreign_key_junction_id_field_right'] = $foreignKeyJunctionIdFieldRight;
+        $this->definition[self::FOREIGN_KEY_JUNCTION_ID_FIELD_RIGHT_KEY] = $foreignKeyJunctionIdFieldRight;
         return $this;
     }
 
@@ -235,7 +269,7 @@ class CrudFieldDefinitionBuilder
      */
     public function withForeignKeyJunctionTable($foreignKeyJunctionTable)
     {
-        $this->definition['foreign_key_junction_table'] = $foreignKeyJunctionTable;
+        $this->definition[self::FOREIGN_KEY_JUNCTION_TABLE_KEY] = $foreignKeyJunctionTable;
         return $this;
     }
 
@@ -254,7 +288,7 @@ class CrudFieldDefinitionBuilder
      */
     public function withValues($values)
     {
-        $this->definition['values'] = $values;
+        $this->definition[self::VALUES_KEY] = $values;
         return $this;
     }
 
@@ -270,7 +304,7 @@ class CrudFieldDefinitionBuilder
         if (is_array($validationRules)) {
             $validationRules = implode('|', $validationRules);
         }
-        $this->definition['validation_rules'] = $validationRules;
+        $this->definition[self::VALIDATION_RULES_KEY] = $validationRules;
         return $this;
     }
 
@@ -281,7 +315,7 @@ class CrudFieldDefinitionBuilder
      */
     public function withNoValidationRules()
     {
-        $this->definition['validation_rules'] = '';
+        $this->definition[self::VALIDATION_RULES_KEY] = '';
         return $this;
     }
 
@@ -293,10 +327,10 @@ class CrudFieldDefinitionBuilder
      */
     public function addValidationRule($validationRule)
     {
-        if (isset($this->definition['validation_rules'])) {
-            $this->definition['validation_rules'] .= '|' . $validationRule;
+        if (isset($this->definition[self::VALIDATION_RULES_KEY])) {
+            $this->definition[self::VALIDATION_RULES_KEY] .= '|' . $validationRule;
         } else {
-            $this->definition['validation_rules'] = $validationRule;
+            $this->definition[self::VALIDATION_RULES_KEY] = $validationRule;
         }
 
         return $this;
@@ -310,7 +344,7 @@ class CrudFieldDefinitionBuilder
      */
     public function withInputIsEditable($inputIsEditable)
     {
-        $this->definition['input_is_editable'] = $inputIsEditable;
+        $this->definition[self::INPUT_IS_EDITABLE_KEY] = $inputIsEditable;
         return $this;
     }
 
@@ -322,7 +356,7 @@ class CrudFieldDefinitionBuilder
      */
     public function withInputGroup($inputGroup)
     {
-        $this->definition['input_group'] = $inputGroup;
+        $this->definition[self::INPUT_GROUP_KEY] = $inputGroup;
         return $this;
     }
 
@@ -334,7 +368,7 @@ class CrudFieldDefinitionBuilder
      */
     public function withInputCssClass($inputCssClass)
     {
-        $this->definition['input_css_class'] = $inputCssClass;
+        $this->definition[self::INPUT_CSS_CLASS_KEY] = $inputCssClass;
         return $this;
     }
 
@@ -352,7 +386,7 @@ class CrudFieldDefinitionBuilder
      */
     public function withCustomOptions($options)
     {
-        $this->definition['options'] = $options;
+        $this->definition[self::OPTIONS_KEY] = $options;
         return $this;
     }
 
@@ -371,7 +405,7 @@ class CrudFieldDefinitionBuilder
      */
     public function withUploadCompleteCallback($uploadCompleteCallback)
     {
-        $this->definition['upload_complete_callback'] = $uploadCompleteCallback;
+        $this->definition[self::UPLOAD_COMPLETE_CALLBACK_KEY] = $uploadCompleteCallback;
         return $this;
     }
 
@@ -383,7 +417,7 @@ class CrudFieldDefinitionBuilder
      */
     public function withUploadPath($uploadPath)
     {
-        $this->definition['upload_path'] = $uploadPath;
+        $this->definition[self::UPLOAD_PATH_KEY] = $uploadPath;
         return $this;
     }
 
@@ -395,7 +429,7 @@ class CrudFieldDefinitionBuilder
      */
     public function withUploadDisplayPath($uploadDisplayPath)
     {
-        $this->definition['upload_display_path'] = $uploadDisplayPath;
+        $this->definition[self::UPLOAD_DISPLAY_PATH_KEY] = $uploadDisplayPath;
         return $this;
     }
 
@@ -412,7 +446,7 @@ class CrudFieldDefinitionBuilder
         if (is_array($uploadAllowedTypes)) {
             $uploadAllowedTypes = implode('|', $uploadAllowedTypes);
         }
-        $this->definition['upload_allowed_types'] = $uploadAllowedTypes;
+        $this->definition[self::UPLOAD_ALLOWED_TYPES_KEY] = $uploadAllowedTypes;
         return $this;
     }
 
@@ -424,7 +458,7 @@ class CrudFieldDefinitionBuilder
      */
     public function withUploadEncryptName($uploadEncryptName)
     {
-        $this->definition['upload_encrypt_name'] = $uploadEncryptName;
+        $this->definition[self::UPLOAD_ENCRYPT_NAME_KEY] = $uploadEncryptName;
         return $this;
     }
 
@@ -443,7 +477,7 @@ class CrudFieldDefinitionBuilder
      */
     public function withGridFormattingCallback($gridFormattingCallback)
     {
-        $this->definition['grid_formating_callback'] = $gridFormattingCallback;
+        $this->definition[self::GRID_FORMATING_CALLBACK_KEY] = $gridFormattingCallback;
         return $this;
     }
 
@@ -455,7 +489,7 @@ class CrudFieldDefinitionBuilder
      */
     public function withGridIsOrderable($gridIsOrderable)
     {
-        $this->definition['grid_is_orderable'] = $gridIsOrderable;
+        $this->definition[self::GRID_IS_ORDERABLE_KEY] = $gridIsOrderable;
         return $this;
     }
 
@@ -467,7 +501,7 @@ class CrudFieldDefinitionBuilder
      */
     public function withGridCssClass($gridCssClass)
     {
-        $this->definition['grid_css_class'] = $gridCssClass;
+        $this->definition[self::GRID_CSS_CLASS_KEY] = $gridCssClass;
         return $this;
     }
 
@@ -487,7 +521,7 @@ class CrudFieldDefinitionBuilder
      */
     public function withFilterType($filterType)
     {
-        $this->definition['filter_type'] = $filterType;
+        $this->definition[self::FILTER_TYPE_KEY] = $filterType;
         return $this;
     }
 
@@ -499,7 +533,7 @@ class CrudFieldDefinitionBuilder
      */
     public function withInputDefaultValue($inputDefaultValue)
     {
-        $this->definition['input_default_value'] = $inputDefaultValue;
+        $this->definition[self::INPUT_DEFAULT_VALUE_KEY] = $inputDefaultValue;
         return $this;
     }
 
@@ -517,7 +551,7 @@ class CrudFieldDefinitionBuilder
      */
     public function withFilterValues($filterValues)
     {
-        $this->definition['filter_values'] = $filterValues;
+        $this->definition[self::FILTER_VALUES_KEY] = $filterValues;
         return $this;
     }
 
@@ -539,7 +573,7 @@ class CrudFieldDefinitionBuilder
      */
     public function withFilterCondition($filterCondition)
     {
-        $this->definition['filter_condition'] = $filterCondition;
+        $this->definition[self::FILTER_CONDITION_KEY] = $filterCondition;
         return $this;
     }
 
@@ -551,7 +585,7 @@ class CrudFieldDefinitionBuilder
      */
     public function withAutocompleteSource($autocompleteSource)
     {
-        $this->definition['autocomplete_source'] = $autocompleteSource;
+        $this->definition[self::AUTOCOMPLETE_SOURCE_KEY] = $autocompleteSource;
         return $this;
     }
 
@@ -586,25 +620,25 @@ class CrudFieldDefinitionBuilder
         $definition = $this->definition;
 
         // Getting label
-        if (!isset($definition['label'])) {
+        if (!isset($definition[self::LABEL_KEY])) {
             if ($this->lang !== null) {
-                $definition['label'] = $this->lang->line($this->moduleName . '_' . $this->fieldName);
+                $definition[self::LABEL_KEY] = $this->lang->line($this->moduleName . '_' . $this->fieldName);
             }
         }
 
         // Getting description
-        if (!isset($definition['description'])) {
+        if (!isset($definition[self::DESCRIPTION_KEY])) {
             if ($this->lang !== null) {
                 $description = $this->lang->line($this->moduleName . '_' . $this->fieldName . '_description', false);
                 if ($description !== false) {
-                    $definition['description'] = $description;
+                    $definition[self::DESCRIPTION_KEY] = $description;
                 }
             }
         }
 
         // Setting default input group
-        if (!isset($definition['input_group']) || !$definition['input_group']) {
-            $definition['input_group'] = 'default';
+        if (!isset($definition[self::INPUT_GROUP_KEY]) || !$definition[self::INPUT_GROUP_KEY]) {
+            $definition[self::INPUT_GROUP_KEY] = 'default';
         }
 
         return $definition;
