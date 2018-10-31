@@ -277,14 +277,21 @@ PepisCMS instance:
 
 ### Configuring composer
 
-# Configuring composer from command line  (using dev-master)
+# Adding composer dependency from command line ()
 
 ```bash
-composer init --type "project" --stability "dev" --repository '{"type": "vcs", "url": "https://github.com/piotrpolak/pepiscms.git"}' && \                                                }
-composer require piotrpolak/pepiscms dev-master
+composer require piotrpolak/pepiscms --prefer-dist
 ```
 
-# Creating composer.json by hand (using dev-master)
+# Configuring composer from command line (using dev-master from Github repository)
+
+```bash
+composer init --type "project" --stability "dev" \
+    --repository '{"type": "vcs", "url": "https://github.com/piotrpolak/pepiscms.git"}' && \
+    composer require piotrpolak/pepiscms dev-master --prefer-dist
+```
+
+# Creating composer.json by hand (using dev-master from Github repository)
                                                                  
 ```json
 {
