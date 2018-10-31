@@ -87,11 +87,11 @@ abstract class AdminController extends EnhancedController
         // Assigning core variables
         $this->assign('body_id', strtolower('controller-' . $controller))
             ->assign('popup_layout', $popup_layout)
-            ->setConfig('user', $this->auth->getUser())
-            ->setConfig('lang', $this->lang)
-            ->setConfig('application_languages', $this->lang->getEnabledAdminLanguages())
-            ->setConfig('current_language', $language)
-            ->setConfig('site_name', $this->config->item('site_name'));
+            ->assign('user', $this->auth->getUser())
+            ->assign('lang', $this->lang)
+            ->assign('application_languages', $this->lang->getEnabledAdminLanguages())
+            ->assign('current_language', $language)
+            ->assign('site_name', $this->config->item('site_name'));
 
         // Rendering the menu if specified
         if ($render_menu) {
