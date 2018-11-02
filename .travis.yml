@@ -14,17 +14,17 @@ before_install: composer config -g github-oauth.github.com "$GITHUB_TOKEN"
 install: composer --no-suggest require phpoffice/phpspreadsheet 1.5.* twig/twig # It is like an install + require, composer install --prefer-dist
 
 before_script:
-- if [[ ${TRAVIS_PHP_VERSION:0:3} == "5.6" ]]; then chmod +x build/travis/before_script.sh && build/travis/before_script.sh; fi
+- chmod +x build/travis/before_script.sh && build/travis/before_script.sh
 
 script:
 - echo `pwd`
 - php -v
 - php vendor/bin/phpunit -v
 - php vendor/bin/phpunit -c phpunit.xml.dist
-- if [[ ${TRAVIS_PHP_VERSION:0:3} == "5.6" ]]; then cd app && ./vendor/bin/behat --config ./vendor/piotrpolak/pepiscms/behat.yml; cd .. ; fi
+- cd app && ./vendor/bin/behat --config ./vendor/piotrpolak/pepiscms/behat.yml; cd ..
 - ./check-code.sh
 php:
 - 5.6
-- 7.0 # Please note there is no php-fpm.conf for PHP 7.0
-- 7.1 # Please note there is no php-fpm.conf for PHP 7.1
-- 7.2 # Please note there is no php-fpm.conf for PHP 7.2
+- 7.0
+- 7.1
+- 7.2
