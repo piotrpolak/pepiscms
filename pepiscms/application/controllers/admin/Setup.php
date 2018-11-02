@@ -249,15 +249,15 @@ class Setup extends AdminController
         );
 
 
-        $this->formbuilder->setId('1');
-        $this->formbuilder->setBackLink(admin_url() . 'utilities');
-        $this->formbuilder->setApplyButtonEnabled();
-        $this->formbuilder->setFeedObject($this->Siteconfig_model);
-        $this->formbuilder->setDefinition($definition);
-        $this->formbuilder->setCallback(array($this, '_fb_callback_after_save'), FormBuilder::CALLBACK_AFTER_SAVE);
+        $this->formbuilder->setId('1')
+            ->setBackLink(admin_url() . 'utilities')
+            ->setApplyButtonEnabled()
+            ->setFeedObject($this->Siteconfig_model)
+            ->setDefinition($definition)
+            ->setCallback(array($this, '_fb_callback_after_save'), FormBuilder::CALLBACK_AFTER_SAVE);
 
-        $this->assign('form', $this->formbuilder->generate());
-        $this->display();
+        $this->assign('form', $this->formbuilder->generate())
+            ->display();
     }
 
     /**
