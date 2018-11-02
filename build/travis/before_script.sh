@@ -32,6 +32,7 @@ mysql -e 'create database pepiscms;' && \
     # Replace PepisCMS core and composer.json
     rm -rf vendor/piotrpolak/pepiscms/pepiscms/ && cp -a ../pepiscms ./vendor/piotrpolak/pepiscms/pepiscms && \
     rm -rf vendor/piotrpolak/pepiscms/composer.json && cp -a ../composer.json ./vendor/piotrpolak/pepiscms/ && \
+    rm -rf vendor/piotrpolak/pepiscms/behat.yml && cp -a ../behat.yml ./vendor/piotrpolak/pepiscms/ && \
 
     composer dump-autoload && \
     php index.php tools install && \
