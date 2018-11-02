@@ -84,3 +84,9 @@ docker exec -it pepiscms_web_1 bash -c "apt-get update && apt-get install -y rub
 ```bash
 docker exec -it pepiscms_web_1 bash -c "cd pepiscms/theme && compass watch"
 ```
+
+## Restarting everything
+
+```bash
+sudo docker-compose rm --stop -f && sudo rm -rf tmp/html/ && sudo docker-compose up
+```
