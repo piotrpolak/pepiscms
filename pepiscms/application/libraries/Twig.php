@@ -73,10 +73,12 @@ class Twig extends ContainerAware
             ));
 
             // This might be heavy
-            $is_legacy_twig = Twig_Environment::VERSION[0] === 1;
+            $is_legacy_twig = Twig_Environment::VERSION[0] === '1';
+
             foreach (get_defined_functions() as $functions) {
                 foreach ($functions as $function) {
                     if ($is_legacy_twig) {
+                        // https://github.com/twigphp/Twig/blob/1.x/lib/Twig/Function.php
                         self::$twig_instance->addFunction($function, new Twig_Function_Function($function));
                     } else {
                         // https://github.com/twigphp/Twig/blob/2.x/lib/Twig/Function.php
