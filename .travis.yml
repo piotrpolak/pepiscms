@@ -21,7 +21,7 @@ script:
 - php -v
 - php vendor/bin/phpunit -v
 - php vendor/bin/phpunit -c phpunit.xml.dist
-- if [[ ${TRAVIS_PHP_VERSION:0:3} == "5.6" ]]; then cd app && ./vendor/bin/behat --config ./vendor/piotrpolak/pepiscms/behat.yml; fi
+- if [[ ${TRAVIS_PHP_VERSION:0:3} == "5.6" ]]; then cd app && ./vendor/bin/behat --config ./vendor/piotrpolak/pepiscms/behat.yml; cd .. ; fi
 - ./check-code.sh
 php:
 - 5.6
