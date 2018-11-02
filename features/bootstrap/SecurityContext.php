@@ -37,6 +37,14 @@ class SecurityContext extends \Behat\MinkExtension\Context\RawMinkContext
     }
 
     /**
+     * @When Local file :arg1 exists
+     */
+    public function localFileExists($arg1)
+    {
+        assert(file_exists($arg1));
+    }
+
+    /**
      * @When I copy buildin pages module to user space
      */
     public function iCopyBuildinPagesModuleToUserSpace()

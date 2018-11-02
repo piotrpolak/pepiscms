@@ -28,7 +28,7 @@ Feature: Module management
 
   Scenario: Accessing user modules public resources
     When I copy buildin pages module to user space
-    And PepisCMS file "modules/pages/resources/icon_16.png" exists
+    And Local file "modules/pages/resources/icon_16.png" exists
     And I navigate to a protected file "/modules/pages/resources/icon_16.png"
     Then I should get a 200 status code
     And It should be "image/png" content type
@@ -36,7 +36,7 @@ Feature: Module management
 
   Scenario: Accessing user modules restricted resources
     When I copy buildin pages module to user space
-    And PepisCMS file "modules/pages/resources/sql/pages.sql" exists
+    And Local file "modules/pages/resources/sql/pages.sql" exists
     And I navigate to a protected file "/modules/pages/resources/sql/pages.sql"
     Then I should get a 404 status code
     And I should clean up user space modules from page module
