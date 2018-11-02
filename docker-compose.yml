@@ -26,6 +26,7 @@ services:
       - ./composer.json:/var/www/html/vendor/piotrpolak/pepiscms/composer.json
       - ./tests:/var/www/html/vendor/piotrpolak/pepiscms/tests
       - ./phpunit.xml.dist:/var/www/html/vendor/piotrpolak/pepiscms/phpunit.xml.dist
+      - ./CHANGELOG.md:/var/www/html/vendor/piotrpolak/pepiscms/CHANGELOG.md
       - ./composer.json:/var/www/html/composer.json
       - ./.php_cs.dist:/var/www/html/.php_cs.dist
     build: ./build/docker/web/

@@ -70,3 +70,17 @@ sudo rm -rf app/ && docker-compose rm --stop && docker-compose up --build && \
 docker exec -it pepiscms_web_1 sh -c \
 "composer install && composer require --no-update phpoffice/phpspreadsheet 1.5.* && ./vendor/bin/phpunit -c ./vendor/piotrpolak/pepiscms/phpunit.xml.dist && vendor/bin/behat"
 ```
+
+## Rebuilding assets
+
+### Installing compass utility
+
+```bash
+docker exec -it pepiscms_web_1 bash -c "apt-get update && apt-get install -y ruby-compass"
+```
+
+### Running compass watch
+
+```bash
+docker exec -it pepiscms_web_1 bash -c "cd pepiscms/theme && compass watch"
+```

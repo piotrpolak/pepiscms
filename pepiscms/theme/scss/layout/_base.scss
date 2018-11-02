@@ -90,3 +90,18 @@ header .box_content > div, #logout_link, header li {
 .sep {
     margin: 0 0.25em;
 }
+
+
+
+code, pre {
+    background-color: #eaeaea;
+    padding: 4px;
+    font-family: monospace;
+}
+
+pre {
+    padding: 20px;
+    code {
+        background-color: transparent;
+    }
+}

@@ -29,7 +29,7 @@ allows to be swapped/upgraded with no or minimal changes in the project code.
     * [CrudDefinitionBuilder](#cruddefinitionbuilder)
     * [ContainerAware](#containeraware)
 * [Application helpers](#application-helpers)
-* [Breaking API changes and upgrade instructions](CHANGES.md)
+* [Changelog](CHANGELOG.md)
 * [Benchmarking](#benchmarking)
 * [Naming convention inconsistency](docs/NAMING_CONVENTION_INCONSISTENCY.md)
 * [Changes comparing to CodeIgniter](#changes-comparing-to-codeigniter)
@@ -1553,7 +1553,7 @@ the missing dependency. Once the library is present in the classmap, the Excel s
 be enabled. Excel support can be enabled at any point.
 
 ```bash
-composer require phpoffice/phpspreadsheet 1.5.*
+composer require phpoffice/phpspreadsheet 1.5.* --update-no-dev
 ```
 
 ### PHPCas for CAS authentication
@@ -1562,7 +1562,7 @@ PHPCas bridge library is not provided by default. To enable CAS support, please 
 **prior to PepisCMS setup configuration**.
 
 ```bash
-composer require jasig/phpcas 1.3.5
+composer require jasig/phpcas 1.3.5 --update-no-dev
 ```
 
 ### Enabling Symfony bridge
@@ -1570,5 +1570,5 @@ composer require jasig/phpcas 1.3.5
 Symfony bridge library is not provided by default. Symfony bridge can be enabled at any point.
 
 ```bash
-composer require piotrpolak/codeigniter-symfony2-bridge
+composer require piotrpolak/codeigniter-symfony2-bridge --update-no-dev
 ```

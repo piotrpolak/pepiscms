@@ -29,7 +29,9 @@ class About extends AbstractDashboardController
 
     public function index()
     {
-        $this->display();
+        $parsedown = new Parsedown();
+        $changelog = $parsedown->text(file_get_contents(APPPATH.'../../CHANGELOG.md'));
+        $this->assign('changelog', $changelog)->display();
     }
 
     public function dashboard()
