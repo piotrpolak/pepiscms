@@ -15,8 +15,7 @@ class Twig_test extends PepisCMS_TestCase
     {
         $twig = new Twig();
         $twig->setSiteThemeBasepath(__DIR__ . '/twig_templates/');
-
-        $variables = array('name' => 'World');
-        $this->assertEquals('Hello WORLD!', $twig->render('index.twig', $variables));
+        
+        $this->assertEquals('Hello WORLD!', $twig->render('index.twig', array('name' => 'World')));
     }
 }

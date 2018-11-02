@@ -103,7 +103,7 @@ class Twig extends ContainerAware
      * @throws Twig_Error_Runtime
      * @throws Twig_Error_Syntax
      */
-    public function render($path, &$variables)
+    public function render($path, array $variables = array())
     {
         $this->benchmark->mark('twig_render_start');
 
