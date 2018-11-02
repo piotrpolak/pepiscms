@@ -11,10 +11,7 @@
 	stopOnSkipped="false">
 	<testsuites>
 		<testsuite name="PepisCMS Core Test Suite">
-            <directory suffix="test.php">./tests/pepiscms/application/classes/</directory>
-            <directory suffix="test.php">./tests/pepiscms/application/helpers/</directory>
-            <directory suffix="test.php">./tests/pepiscms/application/libraries/</directory>
-            <directory suffix="test.php">./tests/pepiscms/application/models/</directory>
+            <directory suffix="Test.php">./tests/</directory>
 		</testsuite>
 	</testsuites>
 	<filter>

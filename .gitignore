@@ -2,6 +2,6 @@
 .idea/
 composer.lock
 /vendor/
-/app/
+/tmp/
 /tests/application/
 phpunit.xml
