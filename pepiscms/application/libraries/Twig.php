@@ -63,17 +63,6 @@ class Twig extends ContainerAware
     {
         if (!self::$twig_instance) {
             $this->benchmark->mark('twig_initialization_start');
-            $this->load->config('Twig');
-
-            // Testing paths and including Twig autoloader
-            $twig_autoloader_path = $this->config->item('twig_loader_basepath') . 'Autoloader.php';
-            if (!file_exists($twig_autoloader_path)) {
-                show_error('Twig autoloader could not be found. Path: ' . $twig_autoloader_path);
-            }
-            require_once($twig_autoloader_path);
-
-            Twig_Autoloader::register();
-
             $loader = new Twig_Loader_Filesystem();
 
             // Setting auto reload and debug modes based on current environment
@@ -86,7 +75,7 @@ class Twig extends ContainerAware
             // This might be heavy
             foreach (get_defined_functions() as $functions) {
                 foreach ($functions as $function) {
-                    self::$twig_instance->addFunction($function, new Twig_Function_Function($function));
+                    self::$twig_instance->addFunction($function, new Twig_SimpleFunction($function, $function));
                 }
             }
 
@@ -102,6 +91,9 @@ class Twig extends ContainerAware
      * @param $path
      * @param $variables
      * @return mixed
+     * @throws Twig_Error_Loader
+     * @throws Twig_Error_Runtime
+     * @throws Twig_Error_Syntax
      */
     public function render($path, &$variables)
     {

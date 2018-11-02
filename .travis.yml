@@ -11,7 +11,7 @@ env:
 - PEPIS_CMS_DATABASE_CONFIG_TYPE=native PEPIS_CMS_DATABASE_HOSTNAME=localhost PEPIS_CMS_DATABASE_USERNAME=root PEPIS_CMS_DATABASE_PASSWORD='' PEPIS_CMS_DATABASE_DATABASE=pepiscms PEPIS_CMS_AUTH_DRIVER=native PEPIS_CMS_AUTH_EMAIL=piotr@polak.ro PEPIS_CMS_AUTH_PASSWORD=demodemo PEPIS_CMS_SITE_EMAIL=piotr@polak.ro PEPIS_CMS_SITE_NAME=Demonstration
 
 before_install: composer config -g github-oauth.github.com "$GITHUB_TOKEN"
-install: composer --no-suggest require phpoffice/phpspreadsheet 1.5.* # It is like an install + require, composer install --prefer-dist
+install: composer --no-suggest require phpoffice/phpspreadsheet 1.5.* twig/twig # It is like an install + require, composer install --prefer-dist
 
 before_script:
 - if [[ ${TRAVIS_PHP_VERSION:0:3} == "5.6" ]]; then chmod +x build/travis/before_script.sh && build/travis/before_script.sh; fi

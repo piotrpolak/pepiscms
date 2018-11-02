@@ -3,4 +3,5 @@
 composer.lock
 /vendor/
 /app/
+/tests/application/
 phpunit.xml

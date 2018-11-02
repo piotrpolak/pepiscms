@@ -34,7 +34,7 @@ allows to be swapped/upgraded with no or minimal changes in the project code.
 * [Naming convention inconsistency](docs/NAMING_CONVENTION_INCONSISTENCY.md)
 * [Changes comparing to CodeIgniter](#changes-comparing-to-codeigniter)
 * [Enabling library and models autocomplete predictions](#enabling-library-and-models-autocomplete-prediction)
-* [Useful commands](docs/USEFUL_COMMANDS.md)
+* [Useful development commands](docs/USEFUL_DEVELOPMENT_COMMANDS.md)
 * [Optional Libraries](#optional-libraries)
 
 ![System logs](docs/screens/MODULES_SYSTEM_LOGS.png)
@@ -1571,4 +1571,10 @@ Symfony bridge library is not provided by default. Symfony bridge can be enabled
 
 ```bash
 composer require piotrpolak/codeigniter-symfony2-bridge --update-no-dev
+```
+
+### Enabling Twig support
+
+```bash
+composer require twig/twig --update-no-dev
 ```

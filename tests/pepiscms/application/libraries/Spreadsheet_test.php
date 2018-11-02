@@ -12,14 +12,6 @@
  * @link                http://www.polak.ro/
  */
 
-class FakeLoader
-{
-    public function helper($name)
-    {
-
-    }
-}
-
 function convert_accented_characters($input)
 {
     return $input;
@@ -44,6 +36,7 @@ class Spreadsheet_test extends PepisCMS_TestCase
      */
     public static function setUpBeforeClass()
     {
+        parent::setUpBeforeClass();
         require_once(PROJECT_BASE . 'pepiscms/application/libraries/Spreadsheet.php');
     }
 
@@ -54,8 +47,6 @@ class Spreadsheet_test extends PepisCMS_TestCase
     {
         $this->spreadsheet = new Spreadsheet();
         $this->workingDirectory = '/var/tmp/pepiscmstest-' . rand(1000, 99999) . '-' . time() . '/';
-
-        CI_Controller::registerTestService('load', new FakeLoader());
 
         mkdir($this->workingDirectory);
 

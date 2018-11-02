@@ -19,6 +19,7 @@ class Youtube_helper_test extends PepisCMS_TestCase
      */
     public static function setUpBeforeClass()
     {
+        parent::setUpBeforeClass();
         require_once(PROJECT_BASE . 'pepiscms/application/helpers/youtube_helper.php');
     }
 

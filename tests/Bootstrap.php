@@ -18,6 +18,8 @@ defined('VENDOR_PATH') OR define('VENDOR_PATH', $vendor_path);
 defined('SYSTEM_PATH') OR define('SYSTEM_PATH', PROJECT_BASE . 'codeigniter/');
 defined('APPPATH') OR define('APPPATH', PROJECT_BASE . 'pepiscms/application/');
 defined('BASEPATH') OR define('BASEPATH', PROJECT_BASE . 'pepiscms/');
+defined('INSTALLATIONPATH') OR define('INSTALLATIONPATH', $dir);
+defined('ENVIRONMENT') OR define('ENVIRONMENT', 'development');
 
 class CI_Controller
 {
@@ -43,15 +45,55 @@ class CI_Controller
     public function __get($name)
     {
         if (!isset($this->services[$name])) {
-            throw new LogicException("Service '$name' was not registered.");
+            throw new LogicException("Service '$name' was not registered in the test context.");
         }
         return $this->services[$name];
+    }
+}
+
+class FakeLoader
+{
+    public function helper($name)
+    {
+
+    }
+
+    public function config($name)
+    {
+
+    }
+}
+
+class FakeConfig
+{
+    public function load($name)
+    {
+
+    }
+}
+
+class FakeBenchmark
+{
+    public function mark($name)
+    {
+
     }
 }
 
 
 class PepisCMS_TestCase extends PHPUnit_Framework_TestCase
 {
+
+    /**
+     * @inheritdoc
+     */
+    public static function setUpBeforeClass()
+    {
+        CI_Controller::registerTestService('load', new FakeLoader());
+        CI_Controller::registerTestService('config', new FakeConfig());
+        CI_Controller::registerTestService('benchmark', new FakeBenchmark());
+    }
+
     /**
      * @inheritdoc
      */
