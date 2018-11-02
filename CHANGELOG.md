@@ -29,6 +29,7 @@
 ### API Changes in 1.0.0.x branch
 
  * Extended database schema (see upgrade scripts [pepiscms/resources/sql/upgrade/1.0.0-stage1.sql](pepiscms/resources/sql/upgrade/1.0.0-stage1.sql))
+ * **New `index.php` and `.htaccess` files!**
  * 3rd party backend components are now initialized using Composer, 3rd party frontend components are now moved out of this repository.
  * Removed methods:
     * `Generic_model::generateTextId()`,
