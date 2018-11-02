@@ -55,4 +55,24 @@ class SecurityContext extends \Behat\MinkExtension\Context\RawMinkContext
         assert(!file_exists('./modules/pages'), './modules/pages should not be cleaned up');
     }
 
+
+    /**
+     * @When I create user file
+     */
+    public function iCreateUserFile()
+    {
+        assert(!file_exists('application/users/user.png'));
+        system('mkdir -p application/users/ && touch application/users/user.png');
+        assert(file_exists('application/users/user.png'));
+    }
+
+    /**
+     * @Then I should clean up user file
+     */
+    public function iShouldCleanUpUserFile()
+    {
+        system('rm application/users/user.png');
+        assert(!file_exists('application/users/user.png'));
+    }
+
 }
