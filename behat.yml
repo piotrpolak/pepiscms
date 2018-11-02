@@ -6,5 +6,6 @@ default:
   suites:
     defaults:
       contexts:
+        - SecurityContext
         - AuthenticationContext
         - ModuleContext

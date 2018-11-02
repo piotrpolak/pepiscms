@@ -44,7 +44,6 @@ Feature: Module management
     And I run module "SQL Console"
     Then I should see "items" table in the database table list
 
-
   Scenario: Cleaning up SQL in SQL Console
     When I run module "SQL Console"
     Then I should see "items" table in the database table list
