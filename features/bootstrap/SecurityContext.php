@@ -42,7 +42,7 @@ class SecurityContext extends \Behat\MinkExtension\Context\RawMinkContext
     public function iCopyBuildinPagesModuleToUserSpace()
     {
         assert(!file_exists('./modules/pages'), './modules/pages should not exist when starting the test');
-        system('cp -a ./pepiscms/modules/pages ./modules');
+        system('cp -a ./vendor/piotrpolak/pepisms/pepiscms/modules/pages ./modules');
         assert(file_exists('./modules/pages'), './modules/pages should correctly copied');
     }
 
