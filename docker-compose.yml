@@ -20,9 +20,9 @@ services:
       - ./tmp/html:/var/www/html # Uncomment this line if you want to preview/edit files
 #      - /home/${USER}/.ssh/id_rsa:/root/.ssh/id_rsa # Uncomment if you need to pull any custom composer packages
       - ./pepiscms:/var/www/html/vendor/piotrpolak/pepiscms/pepiscms
-      - ./features:/var/www/html/features
-      - ./docs:/var/www/html/docs
-      - ./behat.yml:/var/www/html/behat.yml
+      - ./features:/var/www/html/vendor/piotrpolak/pepiscms/features
+      - ./docs:/var/www/html/vendor/piotrpolak/pepiscms/docs
+      - ./behat.yml:/var/www/html/vendor/piotrpolak/pepiscms/behat.yml
       - ./composer.json:/var/www/html/vendor/piotrpolak/pepiscms/composer.json
       - ./tests:/var/www/html/vendor/piotrpolak/pepiscms/tests
       - ./phpunit.xml.dist:/var/www/html/vendor/piotrpolak/pepiscms/phpunit.xml.dist
