@@ -80,10 +80,10 @@ RewriteRule ^sitemap\.xml$ index.php?/public/sitemap/index/xml [L]
 # ------------------------------------------------------------------------------
 
 RewriteRule ^cache/$ index.php?/404error [L]
-RewriteRule ^application/users(.*)\.(jpg||jpeg|png)$ - [PT]
+RewriteRule ^application/users(.*)\.(jpg|jpeg|png)$ - [PT]
 RewriteRule ^application/(.*)$ index.php?/404error [L]
 RewriteRule ^vendor/(.*)$ index.php?/404error [L]
-RewriteRule ^modules/(.*)\.(jpg||jpeg|png|css)$ - [PT]
+RewriteRule ^modules/(.*)\.(jpg|jpeg|png|css)$ - [PT]
 RewriteRule ^modules/(.*)$ index.php?/404error [L]
 
 
