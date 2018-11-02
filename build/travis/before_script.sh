@@ -33,6 +33,7 @@ mysql -e 'create database pepiscms;' && \
     rm -rf vendor/piotrpolak/pepiscms/pepiscms/ && cp -a ../pepiscms ./vendor/piotrpolak/pepiscms/pepiscms && \
     rm -rf vendor/piotrpolak/pepiscms/composer.json && cp -a ../composer.json ./vendor/piotrpolak/pepiscms/ && \
     rm -rf vendor/piotrpolak/pepiscms/behat.yml && cp -a ../behat.yml ./vendor/piotrpolak/pepiscms/ && \
+    rm -rf vendor/piotrpolak/pepiscms/docs && cp -a ../docs ./vendor/piotrpolak/pepiscms/ && \
 
     composer dump-autoload && \
     php index.php tools install && \

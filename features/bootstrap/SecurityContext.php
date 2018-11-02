@@ -33,7 +33,7 @@ class SecurityContext extends \Behat\MinkExtension\Context\RawMinkContext
      */
     public function pepiscmsFileExists($arg1)
     {
-        assert(file_exists($arg1));
+        assert(file_exists('./vendor/piotrpolak/pepiscms/' . $arg1));
     }
 
     /**
