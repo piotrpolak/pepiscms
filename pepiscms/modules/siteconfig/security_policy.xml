@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<security_policy generated_at="2018-11-05 14:12:08" version="1.1">
+  <policy module="siteconfig">
+    <controller name="siteconfig">
+      <method name="index">
+        <entity name="configuration" access="READ"/>
+      </method>
+    </controller>
+    <controller name="siteconfig">
+      <method name="revisionrestorefield">
+        <entity name="configuration" access="FULL_CONTROL"/>
+      </method>
+    </controller>
+    <controller name="siteconfig">
+      <method name="revision">
+        <entity name="configuration" access="READ"/>
+      </method>
+    </controller>
+    <controller name="siteconfig">
+      <method name="revisions">
+        <entity name="configuration" access="READ"/>
+      </method>
+    </controller>
+    <controller name="siteconfig">
+      <method name="edit">
+        <entity name="configuration" access="WRITE"/>
+      </method>
+    </controller>
+    <controller name="siteconfig">
+      <method name="export">
+        <entity name="configuration" access="FULL_CONTROL"/>
+      </method>
+    </controller>
+    <controller name="siteconfig">
+      <method name="import">
+        <entity name="configuration" access="FULL_CONTROL"/>
+      </method>
+    </controller>
+    <controller name="siteconfig">
+      <method name="preview">
+        <entity name="configuration" access="READ"/>
+      </method>
+    </controller>
+    <controller name="siteconfig">
+      <method name="move">
+        <entity name="configuration" access="WRITE"/>
+      </method>
+    </controller>
+    <controller name="siteconfig">
+      <method name="delete">
+        <entity name="configuration" access="WRITE"/>
+      </method>
+    </controller>
+    <controller name="siteconfig">
+      <method name="star">
+        <entity name="configuration" access="WRITE"/>
+      </method>
+    </controller>
+  </policy>
+</security_policy>

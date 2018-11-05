@@ -556,6 +556,10 @@ Displays system dmesg.
 
 Allows to inject HTML snippets to admin panel header and footer.
 
+#### Configuration values
+
+Allows editing database stored configuration values.
+
 
 
 
