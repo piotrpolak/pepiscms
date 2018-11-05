@@ -52,8 +52,8 @@ fi
 
 if [ $IS_FIRST_INSTALL == "TRUE" ];
 then
-    php index.php tools install
-    php index.php tools register_admin $PEPIS_CMS_AUTH_EMAIL $PEPIS_CMS_AUTH_PASSWORD
+    CI_ENV=development php index.php tools install
+    CI_ENV=development php index.php tools register_admin $PEPIS_CMS_AUTH_EMAIL $PEPIS_CMS_AUTH_PASSWORD
 
     chmod 0777 -R application/cache/ application/logs/
 fi

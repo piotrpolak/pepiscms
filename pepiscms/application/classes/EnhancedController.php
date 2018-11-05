@@ -114,7 +114,7 @@ abstract class EnhancedController extends CI_Controller
         if (!get_instance()) { // Very important for modules!!
             parent::__construct();
         }
-        $this->output->enable_profiler($this->config->item('enable_profiler'));
+        $this->output->enable_profiler($this->config->raw_item('enable_profiler'));
     }
 
     /**

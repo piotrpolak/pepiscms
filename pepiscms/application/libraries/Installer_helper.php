@@ -206,7 +206,7 @@ class Installer_helper extends ContainerAware
             'database' => getenv(self::ENV_PEPIS_CMS_DATABASE_DATABASE) ?: '',
             'authentification_driver' => getenv(self::ENV_PEPIS_CMS_AUTH_DRIVER) ?: 'native',
             'cas_server' => '',
-            'cas_post' => '',
+            'cas_port' => '',
             'cas_path' => '',
             'admin_email' => getenv(self::ENV_PEPIS_CMS_AUTH_EMAIL) ?: '',
             'admin_password' => getenv(self::ENV_PEPIS_CMS_AUTH_PASSWORD) ?: '',
@@ -228,18 +228,13 @@ class Installer_helper extends ContainerAware
             $error = sprintf($this->line('installer_unable_to_establish_connection_to_database'), 'wrong configuration');
         } else {
             $db->trans_begin();
-            $scripts = array('core.sql', 'pages.sql');
+            $scripts = array('core.sql');
 
             $sql_basepath = APPPATH . '../resources/sql/';
 
             $upgradeScripts = array_filter(glob($sql_basepath . '/upgrade/*.sql'), 'is_file');
             foreach ($upgradeScripts as $upgradeScript) {
                 $scripts[] = 'upgrade/' . basename($upgradeScript);
-            }
-
-            // The last step
-            if ($data['cms_instance_type'] == self::DEFAULT_INTRANET_APPLICATION_NO_FRONTEND) {
-                $scripts[] = '_strip.sql';
             }
 
             $queries = array();

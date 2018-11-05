@@ -122,6 +122,10 @@ class PEPISCMS_Config extends CI_Config
     private function _overwrite_value_from_database($item)
     {
         if (class_exists('CI_Controller')) {
+            if (!isset(CI_Controller::get_instance()->db)) {
+                return;
+            }
+
             if (!isset(CI_Controller::get_instance()->Siteconfig_model)) {
                 CI_Controller::get_instance()->load->model('Siteconfig_model');
             }
