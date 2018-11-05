@@ -126,7 +126,11 @@ class Generic_model extends PEPISCMS_Model implements EntitableInterface, Moveab
      */
     public function setDatabase($database_group)
     {
-        require INSTALLATIONPATH . 'application/config/database.php';
+        $database_path = INSTALLATIONPATH . 'application/config/database.php';
+        if (!file_exists($database_path)) {
+            return false;
+        }
+        require $database_path;
 
         if (!isset($db[$database_group])) {
             return false;
