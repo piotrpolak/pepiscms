@@ -99,7 +99,7 @@ class DisplayPage extends EnhancedController
         }
 
         $document = null;
-        $modules = ModuleRunner::getAvailableModules();
+        $modules = ModuleRunner::getInstalledModulesNamesCached();
         foreach ($modules as $module_name) {
             $descriptor = $this->Module_model->getModuleDescriptor($module_name);
             if (!$descriptor) {
