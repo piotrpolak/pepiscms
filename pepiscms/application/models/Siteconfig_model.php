@@ -199,6 +199,10 @@ class Siteconfig_model extends Generic_model
         $output = $this->cachedobjectmanager->getObject($this->cache_variable_name, $this->cache_ttl, $this->cache_collection);
 
         if (!$output) {
+            if (!$this->db->table_exists($this->getTable())) {
+                return null; // This protection is required for cases when installer is run to clean up database
+            }
+
             $output = $this->getPairsForAll();
             $this->cachedobjectmanager->setObject($this->cache_variable_name, $output, $this->cache_collection);
         }
