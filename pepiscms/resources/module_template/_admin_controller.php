@@ -8,14 +8,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  * @author {author}
  * @date {date}
  * @see AdminCRUDController for the list of the methods you can use in your constructor
- * @classTemplateVersion 20180206
- *
- * @property FormBuilder $formbuilder
- * @property DataGrid $datagrid
- * @property PEPISCMS_Loader $load
- * @property PEPISCMS_Config $config
- * @property PEPISCMS_Lang $lang
- * @property PEPISCMS_Input $input
+ * @classTemplateVersion 20181105
  *
  * @property {model_class_name} ${model_class_name}
  */
