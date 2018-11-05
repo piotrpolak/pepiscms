@@ -1,4 +1,4 @@
-CREATE  TABLE IF NOT EXISTS `groups` (
+CREATE TABLE IF NOT EXISTS `groups` (
   `group_id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `group_name` VARCHAR(32) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL ,
   PRIMARY KEY (`group_id`) ,
@@ -8,7 +8,7 @@ DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
 
-CREATE  TABLE IF NOT EXISTS `group2entity` (
+CREATE TABLE IF NOT EXISTS `group2entity` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `group_id` INT NOT NULL REFERENCES `groups` (`group_id` ) ,
   `entity` VARCHAR(64) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL COMMENT 'Entity name, use lowercase and now spaces to define entities' ,
@@ -21,7 +21,7 @@ DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
 
-CREATE  TABLE IF NOT EXISTS `users` (
+CREATE TABLE IF NOT EXISTS `users` (
   `user_id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `user_email` VARCHAR(128) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL ,
   `display_name` VARCHAR(128) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL ,
@@ -45,7 +45,7 @@ DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
 
-CREATE  TABLE IF NOT EXISTS `user2group` (
+CREATE TABLE IF NOT EXISTS `user2group` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `user_id` INT NOT NULL REFERENCES `users` (`user_id` ),
   `group_id` INT NOT NULL REFERENCES `groups` (`group_id` ),
@@ -59,7 +59,7 @@ DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
 
-CREATE  TABLE IF NOT EXISTS `sitelanguages` (
+CREATE TABLE IF NOT EXISTS `sitelanguages` (
   `code` CHAR(2) NOT NULL ,
   `label` VARCHAR(32) NOT NULL ,
   `is_default` INT(1) NOT NULL ,
@@ -70,7 +70,7 @@ DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
 
-CREATE  TABLE IF NOT EXISTS `modules` (
+CREATE TABLE IF NOT EXISTS `modules` (
   `module_id` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(32) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL ,
   `label` VARCHAR(32) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL ,
