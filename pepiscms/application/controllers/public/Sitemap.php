@@ -43,14 +43,14 @@ class Sitemap extends CI_Controller
         $data['urls'] = array();
 
         $static_path = 'static/';
-        if (!file_exists($static_path)) {
+        if (file_exists($static_path)) {
             $data['urls'] = $this->cacheddirectoryreader->readDirectory($static_path);
         }
 
 
         $this->load->library('ModuleRunner');
         $this->load->model('Module_model');
-        $modules = ModuleRunner::getAvailableModules();
+        $modules = ModuleRunner::getInstalledModulesNamesCached();
         foreach ($modules as $module_name) {
             $module_links = $this->Module_model->getModuleSitemapURLs($module_name);
             if (is_array($module_links)) {
