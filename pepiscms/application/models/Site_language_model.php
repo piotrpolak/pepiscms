@@ -53,6 +53,7 @@ class Site_language_model extends Generic_model implements BackupableInterface
             $obj->is_default = 1;
             $obj->label = 'English';
             $obj->code = 'en';
+            $obj->ci_language = 'english';
             return $obj;
         }
 
