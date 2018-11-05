@@ -22,7 +22,7 @@
     }
     ?>
 
-    <?= display_breadcrumb($breadcrumb_array, module_icon_url($module_name)) ?>
+    <?= display_breadcrumb($breadcrumb_array, module_icon_url()) ?>
 <?php endif; ?>
 
 <?php
