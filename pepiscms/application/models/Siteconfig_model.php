@@ -255,9 +255,7 @@ class Siteconfig_model extends Generic_model
     }
 
     /**
-     * @param mixed $id
-     * @param array $data
-     * @return bool
+     * @inheritdoc
      */
     public function saveById($id, $data)
     {
@@ -265,6 +263,17 @@ class Siteconfig_model extends Generic_model
         $this->cachedobjectmanager->cleanup($this->cache_collection);
 
         return parent::saveById($id, $data);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function deleteById($id)
+    {
+        $this->load->library('Cachedobjectmanager');
+        $this->cachedobjectmanager->cleanup($this->cache_collection);
+
+        return parent::deleteById($id);
     }
 
     /**
