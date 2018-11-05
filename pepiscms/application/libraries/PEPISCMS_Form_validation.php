@@ -31,7 +31,7 @@ class PEPISCMS_Form_validation extends CI_Form_validation
     {
         parent::__construct($rules);
 
-        // The follwing code is needed for module callbacks to work
+        // The following code is needed for module callbacks to work
         $module_instance = ModuleRunner::get_instance();
         if ($module_instance) {
             unset($this->CI);

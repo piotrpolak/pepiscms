@@ -10,6 +10,7 @@ mysql -e 'create database pepiscms;' && \
     echo "" && \
 
     sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf && \
+    if [[ ${TRAVIS_PHP_VERSION:0:1} == "7" ]]; then sudo cp build/travis/www.conf ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/; fi
     sudo a2enmod rewrite actions fastcgi alias && \
     echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini && \
     sudo sed -i -e "s,www-data,travis,g" /etc/apache2/envvars && \
@@ -32,6 +33,8 @@ mysql -e 'create database pepiscms;' && \
     # Replace PepisCMS core and composer.json
     rm -rf vendor/piotrpolak/pepiscms/pepiscms/ && cp -a ../pepiscms ./vendor/piotrpolak/pepiscms/pepiscms && \
     rm -rf vendor/piotrpolak/pepiscms/composer.json && cp -a ../composer.json ./vendor/piotrpolak/pepiscms/ && \
+    rm -rf vendor/piotrpolak/pepiscms/behat.yml && cp -a ../behat.yml ./vendor/piotrpolak/pepiscms/ && \
+    rm -rf vendor/piotrpolak/pepiscms/docs && cp -a ../docs ./vendor/piotrpolak/pepiscms/ && \
 
     composer dump-autoload && \
     php index.php tools install && \

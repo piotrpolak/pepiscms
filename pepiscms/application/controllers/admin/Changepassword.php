@@ -86,8 +86,8 @@ class Changepassword extends AdminController
                 LOGGER::info('Changing own password', 'USER');
 
                 $that->load->library('SimpleSessionMessage');
-                $that->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS);
-                $that->simplesessionmessage->setMessage('changepassword_dialog_pasword_changed');
+                $that->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS)
+                    ->setMessage('changepassword_dialog_pasword_changed');
 
                 redirect(admin_url());
             } else {
@@ -96,9 +96,9 @@ class Changepassword extends AdminController
             }
         }, FormBuilder::CALLBACK_ON_SAVE);
 
-        $this->formbuilder->setTitle($this->lang->line('changepassword_change_password'));
-        $this->formbuilder->setDefinition($builder->build());
-        $this->assign('form', $this->formbuilder->generate());
-        $this->display();
+        $this->formbuilder->setTitle($this->lang->line('changepassword_change_password'))
+            ->setDefinition($builder->build());
+        $this->assign('form', $this->formbuilder->generate())
+            ->display();
     }
 }

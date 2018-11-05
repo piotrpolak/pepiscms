@@ -34,6 +34,7 @@ class Installer_helper extends ContainerAware
     const ENV_PEPIS_CMS_DATABASE_USERNAME = 'PEPIS_CMS_DATABASE_USERNAME';
     const ENV_PEPIS_CMS_DATABASE_HOSTNAME = 'PEPIS_CMS_DATABASE_HOSTNAME';
     const ENV_PEPIS_CMS_DATABASE_CONFIG_TYPE = 'PEPIS_CMS_DATABASE_CONFIG_TYPE';
+    const ENV_PEPIS_CMS_OBJECT_CACHE_OBJECT_IS_ENABLED = 'PEPIS_CMS_OBJECT_CACHE_OBJECT_IS_ENABLED';
 
     /**
      * @param $base_path
@@ -136,6 +137,7 @@ class Installer_helper extends ContainerAware
             'TEMPLATE_CAS_PORT' => $data['cas_port'],
             'TEMPLATE_CAS_PATH' => $data['cas_path'],
             'TEMPLATE_CMS_CUSTOMIZATION_SITE_PUBLIC_URL' => '',
+            'TEMPLATE_OBJECT_CACHE_OBJECT_IS_ENABLED' => $data['cache_object_is_enabled'],
         );
 
         $config_search = array_keys($config_map);
@@ -208,6 +210,7 @@ class Installer_helper extends ContainerAware
             'cas_path' => '',
             'admin_email' => getenv(self::ENV_PEPIS_CMS_AUTH_EMAIL) ?: '',
             'admin_password' => getenv(self::ENV_PEPIS_CMS_AUTH_PASSWORD) ?: '',
+            'cache_object_is_enabled' => getenv(self::ENV_PEPIS_CMS_OBJECT_CACHE_OBJECT_IS_ENABLED) ?: 'true',
         );
     }
 

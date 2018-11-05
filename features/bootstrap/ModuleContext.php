@@ -167,7 +167,7 @@ class ModuleContext extends \Behat\MinkExtension\Context\RawMinkContext
     public function iFillTheFieldWithContentsOf($textareaId, $relativePath)
     {
         $this->assertSession()->pageTextContains('SQL Console v1.');
-        $path = './docs/sql/' . $relativePath;
+        $path = './vendor/piotrpolak/pepiscms/docs/sql/' . $relativePath;
 
         if (!file_exists($path)) {
             throw new RuntimeException('File ' . $path . ' does not exist on page ' . $this->getSession()->getCurrentUrl());
