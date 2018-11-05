@@ -89,4 +89,49 @@ class PEPISCMS_Config extends CI_Config
         log_message('debug', 'Config file loaded: ' . $file);
         return true;
     }
+
+    /**
+     * Returns config value from file, skipping Siteconfig_model.
+     */
+    public function raw_item($item, $index = '')
+    {
+        return parent::item($item, $index);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function item($item, $index = '')
+    {
+        $this->_overwrite_value_from_database($item);
+        return parent::item($item, $index);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function slash_item($item)
+    {
+        $this->_overwrite_value_from_database($item);
+        return parent::slash_item($item);
+    }
+
+    /**
+     * @param $item
+     */
+    private function _overwrite_value_from_database($item)
+    {
+        if (class_exists('CI_Controller')) {
+            if (!isset(CI_Controller::get_instance()->Siteconfig_model)) {
+                CI_Controller::get_instance()->load->model('Siteconfig_model');
+            }
+
+            $value = CI_Controller::get_instance()->Siteconfig_model->getValueByNameCached($item);
+            if ($value != null) {
+                $this->set_item($item, $value);
+            }
+        }
+    }
+
+
 }

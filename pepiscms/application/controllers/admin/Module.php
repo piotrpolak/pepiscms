@@ -251,7 +251,11 @@ class Module extends AdminController
         if (!isset($object->label) || !$object->label) {
             $object->label = str_replace('_', ' ', ucfirst($this->formbuilder->getId()));
         }
-        $config_variables = $this->configbuilder->readConfig($this->getConfigPath($this->formbuilder->getId()));
+        $config_variables_fs = $this->configbuilder->readConfig($this->getConfigPath($this->formbuilder->getId()));
+        $config_variables_db = $this->Siteconfig_model->getPairsForModule($object->module);
+
+        $config_variables = array_merge($config_variables_fs, $config_variables_db);
+
         if ($config_variables) {
             foreach ($config_variables as $key => $value) {
                 $key = 'config_' . $key;
@@ -326,12 +330,13 @@ class Module extends AdminController
      * @param $module_name
      * @return mixed
      */
-    private function saveModuleConfig(&$array, $module_name)
+    private function saveModuleConfig($array, $module_name)
     {
-        $config_path = $this->getConfigPath($module_name);
+        foreach ($array as $key => $value) {
+            $this->Siteconfig_model->saveConfigByName($key, $value, $module_name);
+        }
 
         Logger::info('Configuring module ' . $module_name, 'MODULE');
-        return $this->configbuilder->writeConfig($config_path, $array);
     }
 
     private function removeAllCache()

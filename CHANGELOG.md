@@ -6,6 +6,7 @@
  * PepisCMS is now Composer compatible and supports Composer autoload!
  * Dropped support for PHP5.5 and lower. The code is now PHP5.6 to PHP7.2 compatible.
  * Codebase cleaned up from any proprietary code
+ * Site and module configuration is now stored in database with a fallback to files!
  * Improved installer and migration scripts, implemented command line unattended installer
  * Installation script now reads default values from ENV variables
  * Implemented automatic loading of module models upon first use

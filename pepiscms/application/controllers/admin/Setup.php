@@ -255,6 +255,8 @@ class Setup extends AdminController
         $this->formbuilder->setFeedObject($this->Siteconfig_model);
         $this->formbuilder->setDefinition($definition);
         $this->formbuilder->setCallback(array($this, '_fb_callback_after_save'), FormBuilder::CALLBACK_AFTER_SAVE);
+        $this->formbuilder->setCallback(array($this, '_fb_callback_on_save'), FormBuilder::CALLBACK_ON_SAVE);
+        $this->formbuilder->setCallback(array($this, '_fb_callback_on_read'), FormBuilder::CALLBACK_ON_READ);
 
         $this->assign('form', $this->formbuilder->generate());
         $this->display();
@@ -346,5 +348,26 @@ class Setup extends AdminController
         $this->cachedobjectmanager->cleanup();
         $this->db->cache_delete_all();
         ModuleRunner::flushCache();
+    }
+
+    /**
+     * Must overwrite the save procedure and return true or false
+     * @param array $data_array associative array made of filtered POST variables
+     * @return bool
+     */
+    public function _fb_callback_on_save(&$data_array)
+    {
+        return $this->Siteconfig_model->saveAllConfigurationVariables($data_array);
+    }
+
+
+    /**
+     * Must populate object
+     *
+     * @param object $object
+     */
+    public function _fb_callback_on_read(&$object)
+    {
+        $object = $this->Siteconfig_model->getAllConfigurationVariables();
     }
 }

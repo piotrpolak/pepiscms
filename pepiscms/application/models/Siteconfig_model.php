@@ -19,22 +19,58 @@ defined('BASEPATH') or exit('No direct script access allowed');
  *
  * @since 0.1.5
  */
-class Siteconfig_model extends PEPISCMS_Model implements EntitableInterface
+class Siteconfig_model extends Generic_model
 {
+    const MODULE_FIELD_NAME = 'module';
+    const IS_BOOLEAN_FIELD_NAME = 'is_boolean';
+    const NAME_FIELD_NAME = 'name';
+    const UPDATED_DATETIME_FIELD_NAME = 'updated_datetime';
+    const CREATED_DATETIME_FIELD_NAME = 'created_datetime';
+    const VALUE_FIELD_NAME = 'value';
+    const IS_SERIALIZED_FIELD_NAME = 'is_serialized';
+
+    private $cache_ttl;
+    private $cache_collection = 'siteconfig';
+    private $cache_variable_name = 'all_pairs';
+
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->setTable('cms_siteconfig');
+        $this->setIdFieldName('id');
+//        $this->enableJournaling();
+
+        $this->cache_ttl = 600;
+        $this->cache_collection = 'siteconfig';
+        $this->cache_variable_name = 'all_pairs';
+
+        // Required by saveById method
+        $this->setAcceptedPostFields(array(
+                self::MODULE_FIELD_NAME,
+                self::IS_BOOLEAN_FIELD_NAME,
+                self::NAME_FIELD_NAME,
+                self::UPDATED_DATETIME_FIELD_NAME,
+                self::CREATED_DATETIME_FIELD_NAME,
+                self::VALUE_FIELD_NAME,
+                self::IS_SERIALIZED_FIELD_NAME
+            )
+        );
+
+        // Clone database to avoid query clash
+        $this->setDatabase('default');
+    }
 
     /**
      * Saves by id, $data must be an associative array
      *
-     * @param mixed $id
      * @param array $data
      * @return bool
      * @local
      */
-    public function saveById($id, $data)
+    public function saveAllConfigurationVariables($data)
     {
-        array_merge($data, (array)$this->getById(false));
-
-        $config_files = array('_pepiscms.php', 'debug.php', 'email.php');
+        $data = array_merge((array)$this->getAllConfigurationVariables(), $data);
         $booleans = array(
             'cms_enable_frontend',
             'cms_intranet',
@@ -66,43 +102,17 @@ class Siteconfig_model extends PEPISCMS_Model implements EntitableInterface
             $data['cms_customization_logo'] = false;
         }
 
-        $config_search = $config_replace = array();
         foreach ($data as $key => $value) {
-            if (in_array($key, $booleans)) {
-                $value = $value > 0 ? 'TRUE' : 'FALSE';
-            }
-
-            $config_search[] = 'TEMPLATE_' . strtoupper($key);
-            $config_replace[] = $value;
+            $this->saveConfigByName($key, $value, in_array($key, $booleans));
         }
 
-        foreach ($config_files as $config_file) {
-            $content_config = file_get_contents(APPPATH . '../resources/config_template/template_' . $config_file);
-
-            if (!$content_config) {
-                $error = 'Unable to read template_' . $config_file;
-            }
-
-            if (!isset($error)) {
-                $config_path = INSTALLATIONPATH . 'application/config/' . $config_file;
-                if (!file_put_contents($config_path, str_replace($config_search, $config_replace, $content_config))) {
-                    $error = 'Unable to write ' . $config_file;
-                }
-                \PiotrPolak\PepisCMS\Modulerunner\OpCacheUtil::safeInvalidate($config_path);
-            }
-        }
-
-        return !isset($error);
+        return true;
     }
 
     /**
-     * Returns object by ID
-     *
-     * @param mixed $id
-     * @return stdClass
-     * @local
+     * @return object
      */
-    public function getById($id)
+    public function getAllConfigurationVariables()
     {
         @include(APPPATH . 'config/_pepiscms.php');
         @include(APPPATH . 'config/debug.php');
@@ -114,6 +124,10 @@ class Siteconfig_model extends PEPISCMS_Model implements EntitableInterface
         if (isset($config['cms_customization_logo'])) {
             $config['cms_customization_logo'] = str_replace($this->config->item('theme_path'), '', $config['cms_customization_logo']);
         }
+
+        $all = $this->getPairsForAll();
+
+        $config = array_merge($config, $all);
 
         return (object)$config;
     }
@@ -128,6 +142,138 @@ class Siteconfig_model extends PEPISCMS_Model implements EntitableInterface
     public function deleteById($id)
     {
         return true;
+    }
+
+    /**
+     * Returns a raw entry by name.
+     *
+     * @param $name
+     * @return mixed
+     */
+    public function getByName($name)
+    {
+        return $this->db->select('*')->from($this->getTable())->where('name', $name)->get()->row();
+    }
+
+    /**
+     * Returns config pairs for all all entries.
+     *
+     * @return array
+     */
+    public function getPairsForAll()
+    {
+        $output = array();
+        $result = $this->getAll();
+        foreach ($result as $line) {
+            $output[$line->name] = $this->toValue($line);
+        }
+
+        return $output;
+    }
+
+    /**
+     * Returns config pairs for all all entries.
+     *
+     * @return array
+     */
+    public function getPairsForModule($module_name)
+    {
+        $output = array();
+        $result = $this->getAll(array('module' => $module_name));
+        foreach ($result as $line) {
+            $output[$line->name] = $this->toValue($line);
+        }
+
+        return $output;
+    }
+
+    /**
+     * Returns config value. The method is cached for extra performance.
+     *
+     * @param $name
+     * @return mixed|null
+     */
+    public function getValueByNameCached($name)
+    {
+        $this->load->library('Cachedobjectmanager');
+        $output = $this->cachedobjectmanager->getObject($this->cache_variable_name, $this->cache_ttl, $this->cache_collection);
+
+        if (!$output) {
+            $output = $this->getPairsForAll();
+            $this->cachedobjectmanager->setObject($this->cache_variable_name, $output, $this->cache_collection);
+        }
+
+        if (isset($output[$name])) {
+            return $output[$name];
+        }
+
+        return null;
+    }
+
+    /**
+     * Saves config entry by name.
+     *
+     * @param $name
+     * @param $value
+     * @param null $module
+     * @return bool
+     */
+    public function saveConfigByName($name, $value, $module = null)
+    {
+        $entry = $this->getByName($name);
+
+        $id = false;
+        $updated_datetime = utc_timestamp();
+        if ($entry) {
+            $id = $entry->id;
+        } else {
+            $created_datetime = $updated_datetime;
+        }
+
+        $is_boolean = is_bool($value);
+
+        if ($is_boolean) {
+            $value_mapped = $value ? 'true' : 'false';
+        } else {
+            $value_mapped = $value;
+        }
+
+
+        if (is_array($value) || is_object($value)) {
+            $is_serialized = true;
+            $value_mapped = json_encode($value);
+        }
+
+
+        $updated_datetime = utc_timestamp();
+
+        $data = array(
+            self::MODULE_FIELD_NAME => $module,
+            self::IS_BOOLEAN_FIELD_NAME => $is_boolean,
+            self::NAME_FIELD_NAME => $name,
+            self::UPDATED_DATETIME_FIELD_NAME => $updated_datetime,
+            self::VALUE_FIELD_NAME => $value_mapped,
+            self::IS_SERIALIZED_FIELD_NAME => $is_serialized,
+        );
+
+        if (isset($created_datetime)) {
+            $data[self::CREATED_DATETIME_FIELD_NAME] = $created_datetime;
+        }
+
+        return $this->saveById($id, $data);
+    }
+
+    /**
+     * @param mixed $id
+     * @param array $data
+     * @return bool
+     */
+    public function saveById($id, $data)
+    {
+        $this->load->library('Cachedobjectmanager');
+        $this->cachedobjectmanager->cleanup($this->cache_collection);
+
+        return parent::saveById($id, $data);
     }
 
     /**
@@ -272,7 +418,13 @@ class Siteconfig_model extends PEPISCMS_Model implements EntitableInterface
      */
     public function getDefaultAdminLanguage()
     {
+        $obj = $this->getByName('language');
+        if ($obj) {
+            return $obj->value;
+        }
+
         include(INSTALLATIONPATH . 'application/config/_pepiscms.php');
+
         return $config['language'];
     }
 
@@ -371,4 +523,63 @@ class Siteconfig_model extends PEPISCMS_Model implements EntitableInterface
 
         return $failed_tests;
     }
+
+    /**
+     * @param $obj
+     * @return mixed
+     */
+    private function toValue($obj)
+    {
+        if ($obj->is_serialized) {
+            return json_decode($obj->value);
+        } elseif ($obj->is_boolean) {
+            if (strtolower($obj->value) === 'true') {
+                return true;
+            }
+
+            return false;
+        } else {
+            return $obj->value;
+        }
+    }
+
+    //    /**
+//     * @param $data
+//     * @param $booleans
+//     * @param $config_files
+//     * @return string
+//     * @deprecated
+//     */
+//    private function writeToDisk($data, $booleans, $config_files)
+//    {
+//        $config_files = array('_pepiscms.php', 'debug.php', 'email.php');
+//
+//        $error = false;
+//        $config_search = $config_replace = array();
+//        foreach ($data as $key => $value) {
+//            if (in_array($key, $booleans)) {
+//                $value = $value > 0 ? 'TRUE' : 'FALSE';
+//            }
+//
+//            $config_search[] = 'TEMPLATE_' . strtoupper($key);
+//            $config_replace[] = $value;
+//        }
+//
+//        foreach ($config_files as $config_file) {
+//            $content_config = file_get_contents(APPPATH . '../resources/config_template/template_' . $config_file);
+//
+//            if (!$content_config) {
+//                $error = 'Unable to read template_' . $config_file;
+//            }
+//
+//            if (!isset($error)) {
+//                $config_path = INSTALLATIONPATH . 'application/config/' . $config_file;
+//                if (!file_put_contents($config_path, str_replace($config_search, $config_replace, $content_config))) {
+//                    $error = 'Unable to write ' . $config_file;
+//                }
+//                \PiotrPolak\PepisCMS\Modulerunner\OpCacheUtil::safeInvalidate($config_path);
+//            }
+//        }
+//        return $error;
+//    }
 }

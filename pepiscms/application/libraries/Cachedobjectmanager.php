@@ -31,8 +31,8 @@ class Cachedobjectmanager extends ContainerAware
     public function __construct()
     {
         // Getting cache path from configuration
-        $path = $this->config->item('cache_path');
-        $this->is_enabled = $this->config->item('cache_object_is_enabled');
+        $path = $this->config->raw_item('cache_path');
+        $this->is_enabled = $this->config->raw_item('cache_object_is_enabled');
 
         if ($this->is_enabled !== true) {
             return;
