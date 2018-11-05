@@ -33,6 +33,14 @@ class SecurityContext extends \Behat\MinkExtension\Context\RawMinkContext
      */
     public function pepiscmsFileExists($arg1)
     {
+        assert(file_exists('./vendor/piotrpolak/pepiscms/' . $arg1));
+    }
+
+    /**
+     * @When Local file :arg1 exists
+     */
+    public function localFileExists($arg1)
+    {
         assert(file_exists($arg1));
     }
 
@@ -42,7 +50,7 @@ class SecurityContext extends \Behat\MinkExtension\Context\RawMinkContext
     public function iCopyBuildinPagesModuleToUserSpace()
     {
         assert(!file_exists('./modules/pages'), './modules/pages should not exist when starting the test');
-        system('cp -a ./pepiscms/modules/pages ./modules');
+        system('cp -a ./vendor/piotrpolak/pepiscms/pepiscms/modules/pages/ ./modules');
         assert(file_exists('./modules/pages'), './modules/pages should correctly copied');
     }
 

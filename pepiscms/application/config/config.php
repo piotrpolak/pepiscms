@@ -167,7 +167,8 @@ $config['mainpage_module_method'] = false;
 | Enables / disables object cache
 |--------------------------------------------------------------------------
 |
-| Object cache significantly improves system performance
+| Object cache significantly improves system performance but might cause
+| problem in cloud environments.
 |
 */
 $config['cache_object_is_enabled'] = true;

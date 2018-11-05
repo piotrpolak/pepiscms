@@ -79,7 +79,7 @@ class Module extends AdminController
         $this->removeAllCache();
 
         if ($this->input->getParam('json') == 1) {
-            die('{ "status": "1", "message" : "OK" }'); // TODO Serialize
+            die(json_encode(array('status' => 1, 'message' => 'OK')));
         }
 
         // Smart redirect

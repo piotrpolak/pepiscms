@@ -60,15 +60,14 @@ class Login extends EnhancedController
         $this->lang->load('core', $language);
         $this->lang->load('login', $language);
 
-        $this->assign('body_id', 'controller-login');
-        $this->assign('lang', $this->lang);
-        $this->assign('current_language', $language);
-        $this->assign('application_languages', $this->lang->getEnabledAdminLanguages());
-        $this->assign('site_name', $this->config->item('site_name'));
-        $this->assign('popup_layout', false);
-
-        $this->assign('auth_error', false);
-        $this->assign('account_is_locked', false);
+        $this->assign('body_id', 'controller-login')
+            ->assign('lang', $this->lang)
+            ->assign('current_language', $language)
+            ->assign('application_languages', $this->lang->getEnabledAdminLanguages())
+            ->assign('site_name', $this->config->item('site_name'))
+            ->assign('popup_layout', false)
+            ->assign('auth_error', false)
+            ->assign('account_is_locked', false);
     }
 
     private function _do_post_login_redirect_if_case()
@@ -113,16 +112,15 @@ class Login extends EnhancedController
     public function index()
     {
         $this->_oninit();
-        $this->assign('user_email', '');
-        $this->display('admin/login_index');
+        $this->assign('user_email', '')
+            ->display('admin/login_index');
     }
 
     public function logout()
     {
-        // TODO CHeck what happens when the user enters the link directly
         $this->_init_variables();
-        $this->assign('logoutsuccess', true);
-        $this->display('admin/login_logout');
+        $this->assign('logoutsuccess', true)
+            ->display('admin/login_logout');
     }
 
     public function dologin()
@@ -184,10 +182,10 @@ class Login extends EnhancedController
             }
         }
 
-        $this->assign('user_email', $this->input->post('user_email'));
-        $this->assign('auth_error', $auth_error);
-        $this->assign('account_is_locked', $account_is_locked);
-        $this->display('admin/login_index');
+        $this->assign('user_email', $this->input->post('user_email'))
+            ->assign('auth_error', $auth_error)
+            ->assign('account_is_locked', $account_is_locked)
+            ->display('admin/login_index');
     }
 
     public function sessionexpired()
