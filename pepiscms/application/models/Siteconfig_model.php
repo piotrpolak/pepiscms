@@ -70,17 +70,9 @@ class Siteconfig_model extends Generic_model
      */
     public function saveAllConfigurationVariables($data)
     {
-        $data = array_merge((array)$this->getAllConfigurationVariables(), $data);
-        $booleans = array(
-            'cms_enable_frontend',
-            'cms_intranet',
-            'cms_enable_utilities',
-            'cms_enable_filemanager',
-            'debug_log_php_deprecated',
-            'debug_log_php_warning',
-            'debug_log_php_error',
-            'email_use_smtp'
-        );
+        $known_config_data = (array)$this->getAllConfigurationVariables();
+
+        $data = array_merge($known_config_data, $data);
 
         if (isset($data['cms_customization_logo_predefined']) && !empty($data['cms_customization_logo_predefined'])) {
             $customization_logo_path = APPPATH . '/../theme/img/customization_icons/' . $data['cms_customization_logo_predefined'];
@@ -94,16 +86,22 @@ class Siteconfig_model extends Generic_model
                     $data['cms_customization_logo'] = $customization_logo_path_new_name;
                 }
             }
+        } else {
+            unset($data['cms_customization_logo_predefined']);
         }
 
         if (isset($data['cms_customization_logo']) && $data['cms_customization_logo']) {
             $data['cms_customization_logo'] = $this->config->item('theme_path') . $data['cms_customization_logo'];
         } else {
-            $data['cms_customization_logo'] = false;
+            unset($data['cms_customization_logo_predefined']);
         }
 
         foreach ($data as $key => $value) {
-            $this->saveConfigByName($key, $value, in_array($key, $booleans));
+            if (isset($known_config_data[$key]) && $this->is_equal($known_config_data[$key], $value)) {
+                continue;
+            }
+
+            $this->saveConfigByName($key, $value);
         }
 
         return true;
@@ -130,18 +128,6 @@ class Siteconfig_model extends Generic_model
         $config = array_merge($config, $all);
 
         return (object)$config;
-    }
-
-    /**
-     * Deletes by id, dummy
-     *
-     * @param mixed $id
-     * @return bool
-     * @local
-     */
-    public function deleteById($id)
-    {
-        return true;
     }
 
     /**
@@ -242,15 +228,15 @@ class Siteconfig_model extends Generic_model
             $value_mapped = $value;
         }
 
-
         $is_serialized = false;
         if (is_array($value) || is_object($value)) {
             $is_serialized = true;
             $value_mapped = json_encode($value);
         }
 
-
-        $updated_datetime = utc_timestamp();
+        if ($entry && $entry->value == $value_mapped) {
+            return true;
+        }
 
         $data = array(
             self::MODULE_FIELD_NAME => $module,
@@ -543,9 +529,25 @@ class Siteconfig_model extends Generic_model
             }
 
             return false;
+        } elseif (is_numeric($obj->value)) {
+            return 0 + $obj->value;
         } else {
             return $obj->value;
         }
+    }
+
+    /**
+     * @param $value1
+     * @param $value2
+     * @return bool
+     */
+    private function is_equal($value1, $value2)
+    {
+        if (is_numeric($value1) && is_numeric($value2)) {
+            return 0 + $value1 === 0 + $value2;
+        }
+
+        return $value1 === $value2;
     }
 
     //    /**

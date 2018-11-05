@@ -58,7 +58,7 @@ class Setup extends AdminController
             'input_group' => 'setup_input_group_pepiscms',
             'input_type' => FormBuilder::TEXTFIELD,
         );
-        $definition['default_language'] = array(
+        $definition['language'] = array(
             'label' => $this->lang->line('setup_default_language'),
             'description' => $this->lang->line('setup_default_language_desc'),
             'validation_rules' => 'required',

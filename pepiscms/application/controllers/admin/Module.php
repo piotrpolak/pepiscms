@@ -251,16 +251,17 @@ class Module extends AdminController
         if (!isset($object->label) || !$object->label) {
             $object->label = str_replace('_', ' ', ucfirst($this->formbuilder->getId()));
         }
+
+        $config_variables = $this->Siteconfig_model->getPairsForModule($object->module);
         $config_variables_fs = $this->configbuilder->readConfig($this->getConfigPath($this->formbuilder->getId()));
-        $config_variables_db = $this->Siteconfig_model->getPairsForModule($object->module);
 
-        $config_variables = array_merge($config_variables_fs, $config_variables_db);
+        if(is_array($config_variables_fs)) {
+            $config_variables = array_merge($config_variables_fs, $config_variables);
+        }
 
-        if ($config_variables) {
-            foreach ($config_variables as $key => $value) {
-                $key = 'config_' . $key;
-                $object->{$key} = $value;
-            }
+        foreach ($config_variables as $key => $value) {
+            $key = 'config_' . $key;
+            $object->{$key} = $value;
         }
     }
 
