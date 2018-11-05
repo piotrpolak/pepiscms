@@ -239,6 +239,7 @@ class Siteconfig_model extends Generic_model
         }
 
 
+        $is_serialized = false;
         if (is_array($value) || is_object($value)) {
             $is_serialized = true;
             $value_mapped = json_encode($value);
