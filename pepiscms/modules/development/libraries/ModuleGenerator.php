@@ -108,7 +108,7 @@ class ModuleGenerator extends ContainerAware
         // Used for builder, contains only valid table fields
         $list_of_fields = array();
         // Raw Datagrid & Formbuilder definition output
-        $definition_output = 'CrudDefinitionBuilder::create()' . "\n";
+        $definition_output = 'CrudDefinitionBuilder::create()';
         // Raw Language definition output
         $language_pairs = array();
 
@@ -136,6 +136,8 @@ class ModuleGenerator extends ContainerAware
                 $updated_at_field_name = $this->getUpdatedAtFieldName($available_field_names, $definition);
 
                 $was_last_field_of_upload_type = false;
+
+                $definition_output .= "\n";
 
                 $tabs = "            ";
                 foreach ($definition as $key => $value) {
@@ -207,6 +209,8 @@ class ModuleGenerator extends ContainerAware
             $definition_output .= $tabs . '->build();' . "\n";
 
             //die( $definition_output );
+        } else {
+            $definition_output .= ';';
         }
 
         // Variables passed to pattern compiler
@@ -460,6 +464,7 @@ class ModuleGenerator extends ContainerAware
      * @param $module_name
      * @param $module_name_singular
      * @param $policy_save_path
+     * @throws ReflectionException
      */
     private function generateSecurityPolicy($module_name, $module_name_singular, $policy_save_path)
     {
@@ -534,7 +539,7 @@ class ModuleGenerator extends ContainerAware
     private function generatePublicController($directory, $module_name_lower_case, $template_base_path, $data)
     {
         @mkdir($directory . 'views/public');
-        $file_controller = $directory . $this->moduleLocator->getPublicControllerRelativePath($module_name_lower_case);
+        $file_controller = $directory . $this->moduleLocator->getPublicControllerPath($module_name_lower_case);
         if (!file_exists($file_controller)) {
             file_put_contents($file_controller,
                 PatternCompiler::compile(file_get_contents($template_base_path . '_controller.php'), $data));
