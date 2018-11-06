@@ -208,6 +208,29 @@ class Log_model extends Generic_model
     }
 
     /**
+     * @param $days_before
+     * @return array
+     */
+    public function getWarningStatistics($days_before)
+    {
+        $result = $this->db->select('DATE(timestamp) as date, count(id) as count')
+            ->from($this->getTable())
+            ->where('level', Logger::MESSAGE_LEVEL_WARNING)
+            ->where('timestamp > "' . date('Y-m-d h:i:s', time() - ($days_before * 24 * 3600)) . '"')
+            ->group_by('date')
+            ->order_by('timestamp')
+            ->get()
+            ->result();
+
+        $output = array();
+        foreach ($result as $line) {
+            $output[$line->date] = $line->count;
+        }
+
+        return $output;
+    }
+
+    /**
      * Imports CodeIgniter logs
      *
      * @return bool

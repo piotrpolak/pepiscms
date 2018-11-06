@@ -149,7 +149,7 @@ google.load("visualization", "1", {packages: ["corechart"]});
      * @param string $column2_datatype
      * @return string
      */
-    public function drawSimpleLineChart($data_feed, $collumn1_desc = '', $collumn2_desc = '', $width = 1200, $height = 200, $max_value = 10, $column1_data_type = "string", $column2_datatype = "number")
+    public function drawSimpleLineChart($data_feed, $collumn1_desc = '', $collumn2_desc = '', $width = 1200, $height = 200, $max_value = 10, $column1_data_type = "string", $column2_datatype = "number", $colors = array(), $type = 'number')
     {
         $id = $this->generateId('line_chart');
 
@@ -184,13 +184,30 @@ google.load("visualization", "1", {packages: ["corechart"]});
             if (is_array($value)) {
                 $value = implode(', ', $value);
             }
-            $out .= '	data.addRow(["' . $name . '", ' . $value . ']);' . "\n";
+
+            $name_item = '"' . $name . '"';
+            if ($column1_data_type == 'date') {
+                $name_item = 'new Date("' . $name . '")';
+            }
+
+            $out .= '	data.addRow([' . $name_item . ', ' . $value . ']);' . "\n";
         }
 
         $out .= 'new google.visualization.LineChart(document.getElementById("' . $id . '")).draw(data, {curveType: "function",
 					width: "' . $width . '",
-					height: "' . $height . '",
-					curveType: "none",
+					height: "' . $height . '",' . "\n";
+
+        if (count($colors) > 0) {
+
+            array_walk($colors, function (&$item) {
+                $item = '"' . $item . '"';
+            });
+            $colors = implode(', ', $colors);
+            $out .= 'colors: [' . $colors . '],' . "\n";
+        }
+
+
+        $out .= 'curveType: "none",
 					vAxis: {maxValue: ' . $max_value . '}}
 			);
 		}' . "\n";

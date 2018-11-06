@@ -30,7 +30,7 @@ class About extends AbstractDashboardController
     public function index()
     {
         $parsedown = new Parsedown();
-        $changelog = $parsedown->text(file_get_contents(APPPATH.'../../CHANGELOG.md'));
+        $changelog = $parsedown->text(file_get_contents(APPPATH . '../../CHANGELOG.md'));
         $this->assign('changelog', $changelog)->display();
     }
 
@@ -55,16 +55,16 @@ class About extends AbstractDashboardController
         }
 
         $dashboard_elements_builder->addItem()
-                ->withLabel($this->lang->line('global_reload_privileges'))
-                ->withController('login')
-                ->withMethod('refresh_session')
-                ->withIconUrl('pepiscms/theme/img/utilities/flush_privileges_32.png')
+            ->withLabel($this->lang->line('global_reload_privileges'))
+            ->withController('login')
+            ->withMethod('refresh_session')
+            ->withIconUrl('pepiscms/theme/img/utilities/flush_privileges_32.png')
             ->end()
-                ->addItem()
-                ->withLabel($this->lang->line('global_logout'))
-                ->withController('logout')
-                ->withMethod('')
-                ->withIconUrl('pepiscms/theme/img/about/logout_32.png')
+            ->addItem()
+            ->withLabel($this->lang->line('global_logout'))
+            ->withController('logout')
+            ->withMethod('')
+            ->withIconUrl('pepiscms/theme/img/about/logout_32.png')
             ->end();
 
         $dashboard_elements = array_merge($dashboard_elements, $dashboard_elements_builder->build());
@@ -80,7 +80,32 @@ class About extends AbstractDashboardController
         $this->assign('failed_configuration_tests', $failed_configuration_tests)
             ->assign('dashboard_elements_grouped', $dashboard_elements_grouped)
             ->assign('user_manual_path', $user_manual_path)
+            ->assign('widgets', $this->getDashboardWidgetMap())
             ->display();
+    }
+
+    /**
+     * @return array
+     */
+    private function getDashboardWidgetMap()
+    {
+        $module_names = $this->modulerunner->getInstalledModulesNamesCached();
+
+        $dashboard_widgets = array();
+        foreach ($module_names as $module_name) {
+            $descriptor = $this->Module_model->getModuleDescriptor($module_name);
+            if (!$descriptor) {
+                continue;
+            }
+
+            $module_dashboard_widgets = $descriptor->getAdminDashboardWidgetsMap($this->lang->getCurrentLanguage());
+            if (!is_array($module_dashboard_widgets)) {
+                continue;
+            }
+
+            $dashboard_widgets = array_merge($dashboard_widgets, $module_dashboard_widgets);
+        }
+        return $dashboard_widgets;
     }
 
     public function configuration_tests()

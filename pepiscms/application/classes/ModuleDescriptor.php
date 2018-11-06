@@ -92,6 +92,14 @@ abstract class ModuleDescriptor extends ContainerAware implements ModuleDescript
     /**
      * {@inheritdoc}
      */
+    public function getAdminDashboardWidgetsMap($language)
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function onInstall()
     {
         return true;

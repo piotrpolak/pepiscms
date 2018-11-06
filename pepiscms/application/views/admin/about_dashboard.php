@@ -32,4 +32,12 @@
         <?= display_warning($lang->line('dashboard_test_'.$test_name)) ?>
     <?php endforeach ?>
     <?php endif; ?>
+
+    <?php if(count($widgets)): ?>
+    <div class="clear"></div>
+    <?php foreach($widgets as $widget): ?>
+        <h1 class="contrasted"><?= $widget['label'] ?></h1>
+        <?=$widget['widget_html']?>
+    <?php endforeach ?>
+    <?php endif; ?>
 </div>
