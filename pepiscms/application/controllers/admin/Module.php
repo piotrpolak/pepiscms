@@ -139,41 +139,49 @@ class Module extends AdminController
             $modules_with_no_parent[$module_with_no_parent->module_id] = $this->Module_model->getModuleLabel($module_with_no_parent->name, $this->lang->getCurrentLanguage());
         }
 
+        $is_module_admin_controller_runnable = $this->Module_model->isAdminControllerRunnable($module);
+
         $is_displayed_in_menu = false;
         $is_displayed_in_utilities = false;
-        $moduleDescriptor = $this->Module_model->getModuleDescriptor($module);
-        if ($moduleDescriptor) {
-            $is_displayed_in_menu = $moduleDescriptor->isDisplayedInMenu();
-            $is_displayed_in_utilities = $moduleDescriptor->isDisplayedInUtilities();
+
+
+        if ($is_module_admin_controller_runnable) {
+            $moduleDescriptor = $this->Module_model->getModuleDescriptor($module);
+            if ($moduleDescriptor) {
+                $is_displayed_in_menu = $moduleDescriptor->isDisplayedInMenu();
+                $is_displayed_in_utilities = $moduleDescriptor->isDisplayedInUtilities();
+            }
         }
 
-        $definition = array(
-            'module' => array(
-                'label' => $this->lang->line('label_module'),
-                'validation_rules' => 'required',
-                'input_is_editable' => false,
-            ),
-            'is_displayed_in_menu' => array(
-                'input_type' => FormBuilder::CHECKBOX,
-                'validation_rules' => '',
-                'label' => $this->lang->line('label_display_in_main_menu'),
-                'input_default_value' => $is_displayed_in_menu,
-            ),
-            'parent_module_id' => array(
-                'input_type' => FormBuilder::SELECTBOX,
-                'validation_rules' => '',
-                'input_is_editable' => true,
-                'values' => $modules_with_no_parent,
-                'foreign_key_accept_null' => true,
-                'label' => $this->lang->line('label_module_parent_module_id'),
-            ),
-            'is_displayed_in_utilities' => array(
-                'input_type' => FormBuilder::CHECKBOX,
-                'validation_rules' => '',
-                'label' => $this->lang->line('label_display_in_utilities'),
-                'input_default_value' => $is_displayed_in_utilities,
-            ),
-        );
+        $definition = CrudDefinitionBuilder::create()
+            ->withField('module')
+                ->withLabel( $this->lang->line('label_module'))
+                ->withInputIsEditable(false)
+            ->end()
+            ->withField('is_displayed_in_menu')
+                ->withInputType(FormBuilder::CHECKBOX)
+                ->withNoValidationRules()
+                ->withLabel( $this->lang->line('label_display_in_main_menu'))
+                ->withInputDefaultValue($is_displayed_in_menu)
+                ->withInputIsEditable($is_module_admin_controller_runnable)
+            ->end()
+            ->withField('parent_module_id')
+                ->withInputType(FormBuilder::SELECTBOX)
+                ->withNoValidationRules()
+                ->withValues($modules_with_no_parent)
+                ->withForeignKeyAcceptNull(true)
+                ->withLabel( $this->lang->line('label_module_parent_module_id'))
+                ->withInputDefaultValue($is_displayed_in_menu)
+                ->withInputIsEditable($is_module_admin_controller_runnable)
+            ->end()
+            ->withField('is_displayed_in_utilities')
+                ->withInputType(FormBuilder::CHECKBOX)
+                ->withNoValidationRules()
+                ->withLabel( $this->lang->line('label_display_in_utilities'))
+                ->withInputDefaultValue($is_displayed_in_utilities)
+                ->withInputIsEditable($is_module_admin_controller_runnable)
+            ->end()
+            ->build();
 
         $config_definition = $this->Module_model->getModuleConfigVariables($module);
 
@@ -193,7 +201,9 @@ class Module extends AdminController
             ->setDefinition($definition);
 
         $this->assign('view', $view)
-            ->assign('title', $this->lang->line('label_module_setup'))->assign('module_label', $this->Module_model->getModuleLabel($module,
+            ->assign('is_module_admin_controller_runnable', $is_module_admin_controller_runnable)
+            ->assign('title', $this->lang->line('label_module_setup'))
+            ->assign('module_label', $this->Module_model->getModuleLabel($module,
                 $this->lang->getCurrentLanguage()))
             ->assign('module', $module)
             ->assign('form', $this->formbuilder->generate())
