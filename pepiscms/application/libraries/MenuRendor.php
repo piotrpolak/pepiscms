@@ -71,7 +71,7 @@ class MenuRendor extends ContainerAware
         }
 
         // Get currently running module
-        $current_module = isset($this->modulerunner) ? $this->modulerunner->getRunningModuleName() : false;
+        $current_module = is_object($this->modulerunner) ? $this->modulerunner->getRunningModuleName() : false;
 
         $cache_var_name = 'menu_c:' . $controller . '_m:' . $method . '_lc:' . $language_code . '_psfc:' . $pull_submenu_from_controller . '_cm:' . $current_module . '_lng:' . $this->lang->getCurrentLanguage();
 
