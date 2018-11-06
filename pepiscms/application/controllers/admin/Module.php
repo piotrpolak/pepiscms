@@ -21,7 +21,7 @@ class Module extends AdminController
 {
     public function __construct()
     {
-        parent::__construct();
+        parent::__construct(false);
         $this->load->model('Module_model');
         $this->load->library('SimpleSessionMessage');
         $this->load->library('FormBuilder');
