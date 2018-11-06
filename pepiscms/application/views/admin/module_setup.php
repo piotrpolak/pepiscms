@@ -1,9 +1,9 @@
-<?= display_breadcrumb(array(admin_url() . 'utilities' => $this->lang->line('label_utilities_and_settings'), admin_url() . 'module' => $this->lang->line('label_installed_modules'), admin_url() . 'module/setup' => $this->lang->line('label_installed_modules')), 'pepiscms/theme/img/module/module_32.png') ?>
+<?= display_breadcrumb(array(admin_url() . 'utilities' => $this->lang->line('label_utilities_and_settings'), admin_url() . 'module' => $this->lang->line('modules_installed_modules'), admin_url() . 'module/setup' => $this->lang->line('modules_installed_modules')), 'pepiscms/theme/img/module/module_32.png') ?>
 
 <?php
 $actions = array();
 $actions[] = array(
-    'name' => $this->lang->line('label_show_installed_modules'),
+    'name' => $this->lang->line('modules_show_installed_modules'),
     'link' => admin_url() . 'module/index/view-'.$view,
     'icon' => 'pepiscms/theme/img/dialog/actions/back_16.png',
 );
@@ -14,7 +14,7 @@ $actions[] = array(
 
 <?php if (count($modules) > 0): ?>
     <div class="table_wrapper">
-        <h4><?= $this->lang->line('label_installed_modules') ?></h4>
+        <h4><?= $this->lang->line('modules_installed_modules') ?></h4>
         <table class="datagrid">
 
             <?php foreach ($modules as $module): ?>
@@ -26,5 +26,5 @@ $actions[] = array(
         </table>
     </div>
 <?php else: ?>
-    <p><?= $lang->line('label_there_are_no_modules_that_are_not_installed') ?></p>
+    <p><?= $lang->line('modules_there_are_no_modules_that_are_not_installed') ?></p>
 <?php endif; ?>

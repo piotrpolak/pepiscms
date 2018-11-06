@@ -1,4 +1,4 @@
-<?= display_breadcrumb(array(admin_url() . 'utilities' => $this->lang->line('label_utilities_and_settings'), admin_url() . 'module' => $this->lang->line('label_installed_modules'), admin_url() . 'module/do_setup/module-' . $module => $this->lang->line('label_module_setup') . ' ' . $module_label), module_icon_url($module)) ?>
+<?= display_breadcrumb(array(admin_url() . 'utilities' => $this->lang->line('label_utilities_and_settings'), admin_url() . 'module' => $this->lang->line('modules_installed_modules'), admin_url() . 'module/do_setup/module-' . $module => $this->lang->line('modules_module_setup') . ' ' . $module_label), module_icon_url($module)) ?>
 
 <?= display_action_bar(array(array(
     'name' => $this->lang->line('global_button_back'),
