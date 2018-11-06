@@ -22,3 +22,4 @@ $lang['module_not_configurable']                           = 'Module does not de
 $lang['modules_go_to_module']                              = 'Go to module %s';
 $lang['modules_install']                                   = 'Install';
 $lang['modules_install_a_new_module']                      = 'Install a new module';
+$lang['modules_there_is_no_admin_controller']              = 'There is no admin controller for the module. It won\'t be displayed in the admin panel.';

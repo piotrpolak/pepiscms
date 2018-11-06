@@ -8,6 +8,10 @@
 
 <?= display_session_message() ?>
 
+<?php if(!$is_module_admin_controller_runnable): ?>
+    <?= display_tip($this->lang->line('modules_there_is_no_admin_controller')); ?>
+<?php endif; ?>
+
 <?= $form ?>
 
 <script>
