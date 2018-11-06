@@ -208,6 +208,32 @@ class ModuleContext extends \Behat\MinkExtension\Context\RawMinkContext
     }
 
     /**
+     * @When Click :arg1 item from module dashboard
+     */
+    public function clickItemFromModuleDashboard($moduleName)
+    {
+        $element = $this->getSession()->getPage()->find('xpath', $this->getUtilitiesModuleSelector($moduleName));
+        $element->click();
+    }
+
+    /**
+     * @When Specify :name field value to :value
+     */
+    public function specifyFieldValueTo($name, $value)
+    {
+        $this->getSession()->getPage()->fillField($name, $value);
+    }
+
+    /**
+     * @When I physically delete :ignored module from the filesystem
+     */
+    public function iPhysicallyDeleteModuleFromTheFilesystem($ignored)
+    {
+        system('rm -rf ./modules/items');
+        assert(!file_exists('./modules/items'), './modules/items should not be cleaned up');
+    }
+
+    /**
      * @param $moduleName
      * @return string
      */
