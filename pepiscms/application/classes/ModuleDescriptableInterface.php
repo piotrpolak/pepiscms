@@ -82,6 +82,15 @@ interface ModuleDescriptableInterface
      */
     public function getAdminDashboardElements($language);
 
+
+    /**
+     * Returns the list of module landing dashboard widgets.
+     *
+     * @param $language
+     * @return array
+     */
+    public function getAdminDashboardWidgetsMap($language);
+
     /**
      * Returns the array of URLs to be displayed in sitemap
      *

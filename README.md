@@ -1476,6 +1476,8 @@ CodeIgniter helpers customization or extension:
     extension to CodeIgniter date helper.
     
      * `utc_timestamp()` - Generates a timestamp value compatible with MySQL UTC_TIMESTAMP function.
+     * `date_spectrum($today_time, $days_before = 30)` - Generates a date spectrum from days before to now.
+     * `fill_date_spectrum_values($values, $today_time, $days_before = 30, $default_value = 0)` - Takes values map and makes sure there are no date gaps.
      
 * [PEPISCMS_string](./pepiscms/application/helpers/PEPISCMS_string_helper.php)
     extension to CodeIgniter string helper.

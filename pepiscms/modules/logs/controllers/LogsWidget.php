@@ -19,6 +19,19 @@ defined('BASEPATH') or exit('No direct script access allowed');
  */
 class LogsWidget extends Widget
 {
+    public function warnings($days_before)
+    {
+        $this->load->model('Log_model');
+        $this->load->helper('date');
+
+        $values = fill_date_spectrum_values($this->Log_model->getWarningStatistics($days_before), time(), $days_before);
+
+        $this->load->library('Google_chart_helper');
+        return $this->google_chart_helper->drawSimpleLineChart($values, 'Date', 'Warnings',
+            '100%', 200, 50, 'date', 'number', array('red'));
+    }
+
+
     public function logs($collection, $resource_id = null, $title = false)
     {
         $where_conditions = array('collection' => $collection);

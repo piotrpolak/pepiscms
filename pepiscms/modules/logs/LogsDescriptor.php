@@ -109,4 +109,20 @@ class LogsDescriptor extends ModuleDescriptor
     {
         return true;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAdminDashboardWidgetsMap($language)
+    {
+        $this->load->library('Widget');
+        return array(
+            array(
+                'label' => 'Warnings in the last 30 days',
+                'widget_html' => $this->widget->create('logs', 'warnings')->render(30)
+            )
+        );
+    }
+
+
 }
