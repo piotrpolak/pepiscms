@@ -29,7 +29,7 @@ class Module extends AdminController
         $this->load->library('ModuleRunner');
         $this->load->library('Cachedobjectmanager');
         $this->load->library('User_agent');;
-        $this->assign('title', $this->lang->line('label_installed_modules'));
+        $this->assign('title', $this->lang->line('modules_installed_modules'));
     }
 
     /** Callback * */
@@ -107,7 +107,7 @@ class Module extends AdminController
         }
 
         $this->assign('view', $view)
-            ->assign('title', $this->lang->line('label_module_setup'))
+            ->assign('title', $this->lang->line('modules_module_setup'))
             ->assign('modules', $notinstalled_modules)
             ->display();
     }
@@ -155,13 +155,11 @@ class Module extends AdminController
 
         $definition = CrudDefinitionBuilder::create()
             ->withField('module')
-                ->withLabel( $this->lang->line('label_module'))
                 ->withInputIsEditable(false)
             ->end()
             ->withField('is_displayed_in_menu')
                 ->withInputType(FormBuilder::CHECKBOX)
                 ->withNoValidationRules()
-                ->withLabel( $this->lang->line('label_display_in_main_menu'))
                 ->withInputDefaultValue($is_displayed_in_menu)
                 ->withInputIsEditable($is_module_admin_controller_runnable)
             ->end()
@@ -170,17 +168,16 @@ class Module extends AdminController
                 ->withNoValidationRules()
                 ->withValues($modules_with_no_parent)
                 ->withForeignKeyAcceptNull(true)
-                ->withLabel( $this->lang->line('label_module_parent_module_id'))
                 ->withInputDefaultValue($is_displayed_in_menu)
                 ->withInputIsEditable($is_module_admin_controller_runnable)
             ->end()
             ->withField('is_displayed_in_utilities')
                 ->withInputType(FormBuilder::CHECKBOX)
                 ->withNoValidationRules()
-                ->withLabel( $this->lang->line('label_display_in_utilities'))
                 ->withInputDefaultValue($is_displayed_in_utilities)
                 ->withInputIsEditable($is_module_admin_controller_runnable)
             ->end()
+            ->withImplicitTranslations('modules', $this->lang)
             ->build();
 
         $config_definition = $this->Module_model->getModuleConfigVariables($module);
@@ -195,14 +192,14 @@ class Module extends AdminController
 
         $this->formbuilder->setId($module)
             ->setBackLink($back_url)
-            ->setTitle($this->lang->line('label_module_setup'))
+            ->setTitle($this->lang->line('modules_module_setup'))
             ->setCallback(array($this, '_fb_callback_setup_on_save'), FormBuilder::CALLBACK_ON_SAVE)
             ->setCallback(array($this, '_fb_callback_setup_on_read'), FormBuilder::CALLBACK_ON_READ)
             ->setDefinition($definition);
 
         $this->assign('view', $view)
             ->assign('is_module_admin_controller_runnable', $is_module_admin_controller_runnable)
-            ->assign('title', $this->lang->line('label_module_setup'))
+            ->assign('title', $this->lang->line('modules_module_setup'))
             ->assign('module_label', $this->Module_model->getModuleLabel($module,
                 $this->lang->getCurrentLanguage()))
             ->assign('module', $module)

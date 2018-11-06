@@ -17,7 +17,7 @@
         <?php endif; ?>
 
         <?php if (SecurityManager::hasAccess('module')): ?>
-            <?= dashboard_box($lang->line('label_modules'), admin_url() . 'module', 'pepiscms/theme/img/module/module_32.png', $lang->line('utilities_label_modules')) ?>
+            <?= dashboard_box($lang->line('modules_modules'), admin_url() . 'module', 'pepiscms/theme/img/module/module_32.png', $lang->line('utilities_modules_modules')) ?>
         <?php endif; ?>
 
         <?php if (SecurityManager::hasAccess('module')): ?>

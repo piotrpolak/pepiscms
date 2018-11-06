@@ -15,6 +15,6 @@ $lang['utilities_label_flush_security_policy_cache']                    = 'Wyczy
 $lang['utilities_label_flush_security_policy_cache_desc']               = 'Przeładuj pamięć podręczną polityki bezpieczeństwa';
 $lang['utilities_label_flush_system_cache']                             = 'Wyczyść systemową pamięć podręczną ';
 $lang['utilities_label_flush_system_cache_desc']                        = 'Czyści pamięć tymczasową aplikacji, cache zapytań SQL oraz OPCache.';
-$lang['utilities_label_modules']                                        = 'Zainstaluj lub konfiguruj moduły';
+$lang['utilities_modules_modules']                                        = 'Zainstaluj lub konfiguruj moduły';
 $lang['utilities_label_siteconfig']                                     = 'Konfiguracja strony i panelu administracyjnego';
 $lang['utilities_opcache_and_db_cache_successfully_cleaned']            = 'OPCache i pamięć tymczasowa zapytań SQL została wyczyszczona!';

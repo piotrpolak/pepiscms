@@ -1,4 +1,4 @@
-<?= display_breadcrumb(array(admin_url() . 'utilities' => $this->lang->line('label_utilities_and_settings'), admin_url() . 'module' => $this->lang->line('label_installed_modules')), 'pepiscms/theme/img/module/module_32.png') ?>
+<?= display_breadcrumb(array(admin_url() . 'utilities' => $this->lang->line('label_utilities_and_settings'), admin_url() . 'module' => $this->lang->line('modules_installed_modules')), 'pepiscms/theme/img/module/module_32.png') ?>
 
 <?= display_session_message() ?>
 
@@ -23,16 +23,16 @@
 
 <?= display_action_bar($actions) ?>
 
-<div class="rFloated view_selector utilities_view_selector"><?= $lang->line('label_modules_view') ?>
-    <a href="<?=admin_url()?>module/index/view-menu"<?=($view=='menu'?' class="active"':'')?>><?= $lang->line('label_modules_view_by_menu') ?></a>
-    <a href="<?=admin_url()?>module/index/view-utilities"<?=($view=='utilities'?' class="active"':'')?>><?= $lang->line('label_modules_view_by_utilities') ?></a>
+<div class="rFloated view_selector utilities_view_selector"><?= $lang->line('modules_view') ?>
+    <a href="<?=admin_url()?>module/index/view-menu"<?=($view=='menu'?' class="active"':'')?>><?= $lang->line('modules_view_by_menu') ?></a>
+    <a href="<?=admin_url()?>module/index/view-utilities"<?=($view=='utilities'?' class="active"':'')?>><?= $lang->line('modules_view_by_utilities') ?></a>
 </div>
 <div class="clear"></div>
 
 <?php if( $view == 'utilities' ): ?>
     <?php if (count($installed_modules_in_utilities)): ?>
         <div class="table_wrapper">
-            <h4><?= $this->lang->line('label_installed_modules') ?></h4>
+            <h4><?= $this->lang->line('modules_installed_modules') ?></h4>
             <table class="datagrid">
                 <?php foreach ($installed_modules_in_utilities as $module): ?>
                     <tr>
@@ -52,11 +52,11 @@
                         <?php endif; ?>
 
                         <?php if (SecurityManager::hasAccess('module', 'do_setup')): ?>
-                            <td class="narrow"><a href="<?= admin_url() ?>module/do_setup/module-<?= $module->name ?>/view-<?=$view?>" title="<?= $lang->line('label_setup_module') ?>"><img src="pepiscms/theme/img/module/module_setup_16.png" alt="icon"></a></td>
+                            <td class="narrow"><a href="<?= admin_url() ?>module/do_setup/module-<?= $module->name ?>/view-<?=$view?>" title="<?= $lang->line('modules_setup_module') ?>"><img src="pepiscms/theme/img/module/module_setup_16.png" alt="icon"></a></td>
                         <?php endif; ?>
 
                         <?php if (SecurityManager::hasAccess('module', 'uninstall')): ?>
-                            <td class="narrow"><a href="<?= admin_url() ?>module/uninstall/<?= $module->name ?>/view-<?=$view?>" class="ask_for_confirmation" title="<?= $lang->line('label_uninstall_module') ?>"><img src="pepiscms/theme/img/module/uninstall_16.png" alt="icon"></a></td>
+                            <td class="narrow"><a href="<?= admin_url() ?>module/uninstall/<?= $module->name ?>/view-<?=$view?>" class="ask_for_confirmation" title="<?= $lang->line('modules_uninstall_module') ?>"><img src="pepiscms/theme/img/module/uninstall_16.png" alt="icon"></a></td>
                         <?php endif; ?>
                     </tr>
 
@@ -64,12 +64,12 @@
             </table>
         </div>
     <?php else: ?>
-        <?= display_notification($lang->line('label_there_are_no_installed_modules')) ?>
+        <?= display_notification($lang->line('modules_there_are_no_installed_modules')) ?>
     <?php endif; ?>
 <?php elseif( $view == 'menu' ): ?>
     <?php if (count($installed_modules_with_no_parent)): ?>
         <div class="table_wrapper">
-            <h4><?= $this->lang->line('label_installed_modules') ?></h4>
+            <h4><?= $this->lang->line('modules_installed_modules') ?></h4>
             <table class="datagrid">
                 <?php foreach ($installed_modules_with_no_parent as $module): ?>
                     <tr>
@@ -89,11 +89,11 @@
                         <?php endif; ?>
 
                         <?php if (SecurityManager::hasAccess('module', 'do_setup')): ?>
-                            <td class="narrow"><a href="<?= admin_url() ?>module/do_setup/module-<?= $module->name ?>/view-<?=$view?>" title="<?= $lang->line('label_setup_module') ?>"><img src="pepiscms/theme/img/module/module_setup_16.png" alt="icon"></a></td>
+                            <td class="narrow"><a href="<?= admin_url() ?>module/do_setup/module-<?= $module->name ?>/view-<?=$view?>" title="<?= $lang->line('modules_setup_module') ?>"><img src="pepiscms/theme/img/module/module_setup_16.png" alt="icon"></a></td>
                         <?php endif; ?>
 
                         <?php if (SecurityManager::hasAccess('module', 'uninstall')): ?>
-                            <td class="narrow"><a href="<?= admin_url() ?>module/uninstall/<?= $module->name ?>/view-<?=$view?>" class="ask_for_confirmation" title="<?= $lang->line('label_uninstall_module') ?>"><img src="pepiscms/theme/img/module/uninstall_16.png" alt="icon"></a></td>
+                            <td class="narrow"><a href="<?= admin_url() ?>module/uninstall/<?= $module->name ?>/view-<?=$view?>" class="ask_for_confirmation" title="<?= $lang->line('modules_uninstall_module') ?>"><img src="pepiscms/theme/img/module/uninstall_16.png" alt="icon"></a></td>
                         <?php endif; ?>
                     </tr>
 
@@ -118,12 +118,12 @@
 
                             <?php if (SecurityManager::hasAccess('module', 'do_setup')): ?>
                                 <td class="narrow">
-                                    <a href="<?= admin_url() ?>module/do_setup/module-<?= $sub_module->name ?>/view-<?=$view?>" title="<?= $lang->line('label_setup_module') ?>"><img src="pepiscms/theme/img/module/module_setup_16.png" alt="icon"></a>
+                                    <a href="<?= admin_url() ?>module/do_setup/module-<?= $sub_module->name ?>/view-<?=$view?>" title="<?= $lang->line('modules_setup_module') ?>"><img src="pepiscms/theme/img/module/module_setup_16.png" alt="icon"></a>
                                 </td>
                             <?php endif; ?>
 
                             <?php if (SecurityManager::hasAccess('module', 'uninstall')): ?>
-                                <td class="narrow"><a href="<?= admin_url() ?>module/uninstall/<?= $sub_module->name ?>/view-<?=$view?>" class="ask_for_confirmation" title="<?= $lang->line('label_uninstall_module') ?>"><img src="pepiscms/theme/img/module/uninstall_16.png" alt="icon"></a></td>
+                                <td class="narrow"><a href="<?= admin_url() ?>module/uninstall/<?= $sub_module->name ?>/view-<?=$view?>" class="ask_for_confirmation" title="<?= $lang->line('modules_uninstall_module') ?>"><img src="pepiscms/theme/img/module/uninstall_16.png" alt="icon"></a></td>
                             <?php endif; ?>
                         </tr>
                         <?php endforeach; ?>
@@ -133,6 +133,6 @@
             </table>
         </div>
     <?php else: ?>
-        <?= display_notification($lang->line('label_there_are_no_installed_modules')) ?>
+        <?= display_notification($lang->line('modules_there_are_no_installed_modules')) ?>
     <?php endif; ?>
 <?php endif; ?>
