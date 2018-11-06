@@ -88,7 +88,6 @@ class ModuleContext extends \Behat\MinkExtension\Context\RawMinkContext
     public function iRunModule($moduleName)
     {
         $this->flushCache();
-        sleep(3); // Wait for the cache to be invalidated
         $path = $this->getModuleMenuSelector($moduleName);
         $this->getSession()->getPage()->getHtml();
         $element = $this->getSession()->getPage()->find('xpath', $path);
@@ -108,7 +107,6 @@ class ModuleContext extends \Behat\MinkExtension\Context\RawMinkContext
     public function iHitModulesRunUrl($moduleName)
     {
         $this->flushCache();
-        sleep(3); // Wait for the cache to be invalidated
         $this->visitPath('admin/module/run/' . $this->toModuleUrlPath($moduleName));
     }
 
@@ -119,7 +117,6 @@ class ModuleContext extends \Behat\MinkExtension\Context\RawMinkContext
     public function theModuleShouldBeRunnable($moduleName)
     {
         $this->flushCache();
-        sleep(3); // Wait for the cache to be invalidated
         $this->assertSession()->pageTextContains($moduleName);
         $this->assertSession()->statusCodeEquals(200);
     }
