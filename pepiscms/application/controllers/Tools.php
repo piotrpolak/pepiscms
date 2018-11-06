@@ -19,14 +19,22 @@ defined('BASEPATH') or exit('No direct script access allowed');
  */
 class Tools extends EnhancedController
 {
+
+    private $ignored_methods = array(
+        'get_instance',
+        'getAttribute',
+        'getAttributes',
+        'setAttributes',
+        'display',
+        'assign'
+    );
+
     public function __construct()
     {
         parent::__construct();
         if (!is_cli()) {
             show_404();
         }
-
-        echo PHP_EOL;
 
 
         $this->load->model('User_model');
@@ -35,6 +43,11 @@ class Tools extends EnhancedController
         global $argv;
         $number_of_arguments = count($argv) - 3;
         $method_name = $this->router->method;
+
+        if ($this->isMethodNameNotAllowed($method_name)) {
+            show_404();
+        }
+
         $method = new ReflectionMethod($this, $method_name);
 
         if ($number_of_arguments < $method->getNumberOfRequiredParameters()) {
@@ -51,12 +64,14 @@ class Tools extends EnhancedController
 
     private function _throw_exception($code, $message)
     {
+        echo PHP_EOL;
         echo $message . PHP_EOL;
         exit($code);
     }
 
     private function _exit_with_success($message)
     {
+        echo PHP_EOL;
         echo $message . PHP_EOL;
         exit(0);
     }
@@ -73,10 +88,11 @@ class Tools extends EnhancedController
         $reflection = new ReflectionClass($this);
         $methods = $reflection->getMethods(ReflectionMethod::IS_PUBLIC);
 
+        echo PHP_EOL;
         echo "PepisCMS CLI tools" . PHP_EOL . PHP_EOL;
         foreach ($methods as $method) {
             $method_name = $method->getName();
-            if ($method_name{0} == '_' || $method_name == 'get_instance') {
+            if ($this->isMethodNameNotAllowed($method_name)) {
                 continue;
             }
 
@@ -160,6 +176,8 @@ class Tools extends EnhancedController
      * Installs PepisCMS
      *
      * @usage php index.php tools install
+     * @param bool $clean_database
+     * @throws Exception
      */
     public function install($clean_database = false)
     {
@@ -198,6 +216,38 @@ class Tools extends EnhancedController
     }
 
     /**
+     * Sets a config value.
+     *
+     * @usage php index.php tools set_config <name> <value>
+     * @param $name
+     * @param $value
+     */
+    public function set_config($name, $value)
+    {
+        $value_mapped = $value;
+        if (in_array(trim(strtolower($value)), array('true', 'false'))) {
+            settype($value_mapped, 'boolean');
+        }
+
+        if ($this->Siteconfig_model->saveConfigByName($name, $value_mapped)) {
+            $this->_exit_with_success("{$name} set to {$value}");
+        } else {
+            $this->_throw_exception(1, "Unable to set {$name}");
+        }
+    }
+
+    /**
+     * Returns a config value
+     * @usage php index.php tools get_config <name>
+     * @param $name
+     */
+    public function get_config($name)
+    {
+        echo $this->config->item($name) . PHP_EOL;
+        exit(0);
+    }
+
+    /**
      * Removes all tables from database.
      */
     private function clean_database()
@@ -214,5 +264,14 @@ class Tools extends EnhancedController
         $tables_count = count($tables);
 
         echo "Successfully removed {$tables_count} tables!" . PHP_EOL;
+    }
+
+    /**
+     * @param $method_name
+     * @return bool
+     */
+    private function isMethodNameNotAllowed($method_name)
+    {
+        return $method_name{0} == '_' || in_array($method_name, $this->ignored_methods);
     }
 }

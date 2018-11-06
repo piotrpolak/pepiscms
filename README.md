@@ -15,6 +15,7 @@ allows to be swapped/upgraded with no or minimal changes in the project code.
 * [Live-demo](#live-demo)
 * [Requirements](#requirements)
 * [Installation](#installation)
+* [Command line interface](#command-line-interface)
 * [Modules](#modules)
 * [Generating a CRUD module](#generating-a-crud-module)
 * [Built-in utilities](#built-in-utilities)
@@ -307,7 +308,6 @@ composer init --type "project" --stability "dev" \
         "piotrpolak/pepiscms": "dev-master"
     }
 }
-
 ```
 
 ### Attended (user) installation
@@ -403,6 +403,26 @@ composer install --prefer-dist && \
 
 See [demo application setup scripts](https://github.com/piotrpolak/pepiscms-demo/blob/master/bin/setup.sh) to see PepisCMS unattended
 installation in action.
+
+
+
+
+
+
+
+## Command line interface
+
+Available command line utilities:
+
+* `php index.php tools install [<clean_database>]`
+* `php index.php tools register_admin <email> <password>`
+* `php index.php tools passwd <email> <password>`
+* `php index.php tools inactivate <email>`
+* `php index.php tools activate <email>`
+* `php index.php tools set_config <name> <value>`
+* `php index.php tools get_config <name>`
+* `php index.php tools index` - lists all the commands
+
 
 
 
