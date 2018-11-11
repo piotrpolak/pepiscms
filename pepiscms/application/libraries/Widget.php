@@ -26,6 +26,20 @@ defined('BASEPATH') or exit('No direct script access allowed');
  */
 class Widget extends ContainerAware
 {
+    public function __construct()
+    {
+       // For compatibility reasons - PHP 7.1 throws the below message
+
+        /**
+        An uncaught Exception was encountered
+        Type: Error
+
+        Message: Cannot call constructor
+
+        Filename: /var/www/html/modules/events/events_widget.php
+         */
+    }
+
     /**
      * Array containing context
      *
