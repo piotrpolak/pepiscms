@@ -30,3 +30,11 @@ CREATE TABLE IF NOT EXISTS `cms_siteconfig` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
+
+
+alter table cms_modules
+  drop column label;
+
+alter table cms_modules
+  drop column description;
+
