@@ -131,7 +131,7 @@ class Module extends AdminController
 
         $modules_with_no_parent = array();
         $modules_with_no_parent_tmp = $this->Module_model->getInstalledModulesDisplayedInMenuHavingNoParent();
-        $modules_with_no_parent[null] = '--';
+        $modules_with_no_parent['-1'] = '--';
         foreach ($modules_with_no_parent_tmp as $module_with_no_parent) {
             if ($module_with_no_parent->name == $module) {
                 continue;
@@ -167,6 +167,7 @@ class Module extends AdminController
                 ->withInputType(FormBuilder::SELECTBOX)
                 ->withNoValidationRules()
                 ->withValues($modules_with_no_parent)
+                ->withInputDefaultValue('-1')
                 ->withForeignKeyAcceptNull(true)
                 ->withInputDefaultValue($is_displayed_in_menu)
                 ->withInputIsEditable($is_module_admin_controller_runnable)
@@ -283,7 +284,7 @@ class Module extends AdminController
         $is_install = $this->input->getParam('install') == 1;
         $module_name = $this->formbuilder->getId();
 
-        if (!$data['is_displayed_in_menu']) {
+        if (empty($data['is_displayed_in_menu']) || $data['is_displayed_in_menu'] < 1) {
             $data['parent_module_id'] = null;
         }
 
