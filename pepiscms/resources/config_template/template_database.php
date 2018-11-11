@@ -61,12 +61,25 @@
 $active_group = 'default';
 $query_builder = TRUE;
 
+
+if (!function_exists('__pepiscms_database_safefallback')) {
+    function __pepiscms_database_safefallback($env_variable_name, $default = "")
+    {
+        $env_value = getenv($env_variable_name);
+        if (!empty($env_value)) {
+            return $env_value;
+        }
+
+        return $default;
+    }
+}
+
 $db['default'] = array(
     'dsn'           => '',
-    'hostname'      => 'TEMPLATE_DB_HOST',
-    'username'      => 'TEMPLATE_DB_USERNAME',
-    'password'      => 'TEMPLATE_DB_PASSWORD',
-    'database'      => 'TEMPLATE_DB_DATABASE',
+    'hostname'      => __pepiscms_database_safefallback('PEPIS_CMS_DATABASE_HOSTNAME', 'TEMPLATE_DB_HOST'),
+    'username'      => __pepiscms_database_safefallback('PEPIS_CMS_DATABASE_USERNAME', 'TEMPLATE_DB_USERNAME'),
+    'password'      => __pepiscms_database_safefallback('PEPIS_CMS_DATABASE_PASSWORD', 'TEMPLATE_DB_PASSWORD'),
+    'database'      => __pepiscms_database_safefallback('PEPIS_CMS_DATABASE_DATABASE', 'TEMPLATE_DB_DATABASE'),
     'dbdriver'      => 'TEMPLATE_DB_DRIVER',
     'port'          => TEMPLATE_DB_PORT,
     'dbprefix'      => '',
