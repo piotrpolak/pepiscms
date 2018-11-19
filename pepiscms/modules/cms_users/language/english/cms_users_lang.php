@@ -3,6 +3,7 @@
 $lang['cms_users_access_denied']                           = 'Access denied';
 $lang['cms_users_activate']                                = 'Activate account';
 $lang['cms_users_add']                                     = 'Register a new user';
+$lang['cms_users_add_description']                         = 'Register a new system administrator';
 $lang['cms_users_alternative_email']                       = 'Alternative email address';
 $lang['cms_users_birth_date']                              = 'Birth date';
 $lang['cms_users_dialog_email_already_in_database']        = 'E-mail %s is already registered with another user.';

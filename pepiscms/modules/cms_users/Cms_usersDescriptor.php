@@ -67,4 +67,21 @@ class Cms_usersDescriptor extends ModuleDescriptor
     {
         return true;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAdminDashboardElements($language)
+    {
+        $this->load->moduleLanguage($this->module_name);
+        return SubmenuBuilder::create()
+            ->addItem()
+                ->withController($this->module_name)
+                ->withMethod('edit')
+                ->withLabel($this->lang->line($this->module_name . '_add'))
+                ->withDescription($this->lang->line($this->module_name . '_add_description'))
+                ->withIconUrl(module_resources_url($this->module_name) . 'icon_add_32.png')
+            ->end()
+            ->build();
+    }
 }
