@@ -24,6 +24,7 @@ class System_infoAdmin extends ModuleAdminController
         parent::__construct();
         $module_name = strtolower(str_replace('Admin', '', __CLASS__));
         $this->load->language($module_name);
+        $this->load->model('System_info_model');
         $this->assign('title', $this->lang->line('system_info_module_name'));
     }
 

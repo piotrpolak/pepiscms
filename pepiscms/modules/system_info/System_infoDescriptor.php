@@ -67,4 +67,19 @@ class System_infoDescriptor extends ModuleDescriptor
     {
         return true;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAdminDashboardWidgetsMap($language)
+    {
+        return ModuleWidgetMapBuilder::create()
+            ->addItem()
+                ->withLabel('Disk usage')
+                ->withModuleName('system_info')
+                ->withWidgetName('disk_usage')
+                ->withWidgetParameters()
+            ->end()
+            ->build();
+    }
 }
