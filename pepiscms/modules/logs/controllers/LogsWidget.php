@@ -40,7 +40,6 @@ class LogsWidget extends Widget
             $where_conditions['resource_id'] = $resource_id;
         }
 
-
         $this->load->model('Log_model');
         $this->load->language('logs');
 
