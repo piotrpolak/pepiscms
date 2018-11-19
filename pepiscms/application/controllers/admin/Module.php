@@ -39,11 +39,20 @@ class Module extends AdminController
 
         $controller = 'utilities';
         $method = 'index';
+        $module = false;
         if ($this->input->getMethodName() == 'run') {
             return false;
         }
 
-        return $this->menurendor->render($controller, $method, $this->input->getParam('language_code'));
+        if ($this->input->getMethodName() == 'configure') {
+            if ($this->input->getParam('render_as_module')) {
+                $module = $this->input->getParam('module');
+                $method = 'index';
+                $controller = $module;
+            }
+        }
+
+        return $this->menurendor->render($controller, $method, $this->input->getParam('language_code'), false, $module);
     }
 
     public function index()
@@ -208,6 +217,50 @@ class Module extends AdminController
             ->display();
     }
 
+    public function configure()
+    {
+        $module = $this->input->getParam('module');
+
+        $render_as_module = $this->input->getParam('render_as_module');
+
+        if (!$module || !$this->Module_model->isInstalled($module)) {
+            show_404();
+        }
+
+        $config_definition = $this->Module_model->getModuleConfigVariables($module);
+
+        if ($config_definition) {
+            foreach ($config_definition as $key => $config) {
+                $key = 'config_' . $key;
+                $definition[$key] = $config;
+            }
+        }
+
+        $back_url = false;
+        if (!$render_as_module) {
+            $back_url = admin_url() . 'utilities/';
+        }
+
+        $this->formbuilder->setId($module)
+            ->setBackLink($back_url)
+            ->setTitle($this->lang->line('modules_module_setup'))
+            ->setCallback(array($this, '_fb_callback_setup_on_save_config_only'), FormBuilder::CALLBACK_ON_SAVE)
+            ->setCallback(array($this, '_fb_callback_setup_on_read_config_only'), FormBuilder::CALLBACK_ON_READ)
+            ->setDefinition($definition)
+            ->setApplyButtonEnabled(true)
+            ->setSubmitButtonEnabled(!$render_as_module);
+
+
+        $this
+            ->assign('title', $this->lang->line('modules_module_setup'))
+            ->assign('module_label', $this->Module_model->getModuleLabel($module,
+                $this->lang->getCurrentLanguage()))
+            ->assign('module', $module)
+            ->assign('render_as_module', $render_as_module)
+            ->assign('form', $this->formbuilder->generate())
+            ->display();
+    }
+
     public function uninstall()
     {
         $view = $this->_get_view();
@@ -245,10 +298,6 @@ class Module extends AdminController
         }
     }
 
-    /**
-     * Must populate object
-     * @param object $object
-     */
     public function _fb_callback_setup_on_read(&$object)
     {
         $object = $this->Module_model->getInfoByName($this->formbuilder->getId());
@@ -260,10 +309,15 @@ class Module extends AdminController
             $object->label = str_replace('_', ' ', ucfirst($this->formbuilder->getId()));
         }
 
-        $config_variables = $this->Siteconfig_model->getPairsForModule($object->module);
+        $this->_fb_callback_setup_on_read_config_only($object);
+    }
+
+    public function _fb_callback_setup_on_read_config_only(&$object)
+    {
+        $config_variables = $this->Siteconfig_model->getPairsForModule($this->formbuilder->getId());
         $config_variables_fs = $this->configbuilder->readConfig($this->getConfigPath($this->formbuilder->getId()));
 
-        if(is_array($config_variables_fs)) {
+        if (is_array($config_variables_fs)) {
             $config_variables = array_merge($config_variables_fs, $config_variables);
         }
 
@@ -296,14 +350,24 @@ class Module extends AdminController
                 $data['is_displayed_in_utilities'], $data['parent_module_id']);
         }
 
+        $this->_fb_callback_setup_on_save_config_only($data);
+
+        return $success;
+    }
+
+
+    public function _fb_callback_setup_on_save_config_only(&$data)
+    {
+        $module_name = $this->formbuilder->getId();
+
         $config_variables = $this->filterConfigData($data);
 
         if (count($config_variables) > 0) {
-            $this->saveModuleConfig($this->filterConfigData($data), $module_name);
+            $this->saveModuleConfig($config_variables, $module_name);
         }
         $this->removeAllCache();
 
-        return $success;
+        return true;
     }
 
     /**

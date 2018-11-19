@@ -1399,13 +1399,15 @@ class FormBuilder extends ContainerAware
 
     private function generateDoReadObject()
     {
-        // CALLBACK
+        if (empty($this->object)) {
+            $this->object = new stdClass();
+        }
+
         if (isset($this->callbacks[self::CALLBACK_ON_READ])) {
             // There is on read callback, the object is retrieved using the callback function
             // The callback function must take the object (empty) by reference and must fill it
             call_user_func_array($this->callbacks[self::CALLBACK_ON_READ], array(&$this->object));
         } elseif ($this->feed_object && $this->id) {
-            // No callback, read the object from the feed
             $this->object = $this->feed_object->getById($this->id);
         }
     }
