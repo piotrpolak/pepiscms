@@ -120,17 +120,28 @@ if( $is_utilities_only_module )
         $this->load->helper(array('file', 'number'));
         $files = get_filenames(INSTALLATIONPATH, TRUE);
         $filesize_all = 0;
-        foreach ($files as $file)
-        {
-            if( is_file($file) )
-            {
+        foreach ($files as $file) {
+            if (is_file($file)) {
                 $filesize_all += filesize($file);
             }
         }
         ?>
-        <tr> 
+        <tr>
             <td class="optionsname"><?=$this->lang->line('system_info_total_occupied_space')?></td>
             <td><?= byte_format($filesize_all) ?> (<?= $filesize_all ?> bytes)</td>
+        </tr>
+
+        <?php
+        $free_space = disk_free_space(INSTALLATIONPATH);
+        ?>
+        <tr>
+            <td class="optionsname"><?=$this->lang->line('system_info_disk_free_space')?></td>
+            <td><?= byte_format($free_space) ?> (<?= $free_space ?> bytes)</td>
+        </tr>
+
+        <tr>
+            <td class="optionsname"><?=$this->lang->line('system_info_disk_usage')?></td>
+            <td><?= round($filesize_all/($filesize_all+$free_space)*100)?>%</td>
         </tr>
 
         <?php

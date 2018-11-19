@@ -1,4 +1,5 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if(!defined('BASEPATH')) exit('No direct script access allowed');
+
 
 $lang['system_info_apache_loaded_modules']                  = 'Apache loaded modules';
 $lang['system_info_apache_user']                            = 'Apache user';
@@ -6,6 +7,8 @@ $lang['system_info_apache_version']                         = 'Apache version';
 $lang['system_info_cache_file_size']                        = 'Cache file size';
 $lang['system_info_code_igniter_varsion']                   = 'CodeIgniter version';
 $lang['system_info_database_connection_info']               = 'Database connection';
+$lang['system_info_disk_free_space']                        = 'Free space';
+$lang['system_info_disk_usage']                             = 'Disk usage';
 $lang['system_info_file_manager_allowed_upload_extensions'] = 'File manager allowed uploaded extensions';
 $lang['system_info_installation_path']                      = 'Installation path';
 $lang['system_info_installation_path_writeable']            = 'Is installation path writeable?';
@@ -19,6 +22,7 @@ $lang['system_info_owner_of_installation_path']             = 'Owner of INSTALLA
 $lang['system_info_pages_cache']                            = 'Pages\' cache';
 $lang['system_info_peak_memory_usage_for_this_request']     = 'Peak memory usage for this request';
 $lang['system_info_pepiscms_version']                       = 'PepisCMS version';
+$lang['system_info_php_disabled_functions']                 = 'PHP disabled functions';
 $lang['system_info_php_include_path']                       = 'PHP include_path';
 $lang['system_info_php_loaded_extensions']                  = 'PHP loaded extensions';
 $lang['system_info_php_open_basedir']                       = 'PHP open_basedir';
@@ -29,4 +33,3 @@ $lang['system_info_system_production_ready']                = 'Is system product
 $lang['system_info_time_on_server_local']                   = 'Time on the server (local)';
 $lang['system_info_total_occupied_space']                   = 'Total occupied space';
 $lang['system_info_upload_maximum_size']                    = 'Upload maximum file size';
-$lang['system_info_php_disabled_functions']                 = 'PHP disabled functions';
