@@ -28,15 +28,15 @@ class Widget extends ContainerAware
 {
     public function __construct()
     {
-       // For compatibility reasons - PHP 7.1 throws the below message
+        // For compatibility reasons - PHP 7.1 throws the below message
 
         /**
-        An uncaught Exception was encountered
-        Type: Error
-
-        Message: Cannot call constructor
-
-        Filename: /var/www/html/modules/events/events_widget.php
+         * An uncaught Exception was encountered
+         * Type: Error
+         *
+         * Message: Cannot call constructor
+         *
+         * Filename: /var/www/html/modules/events/events_widget.php
          */
     }
 
@@ -52,10 +52,12 @@ class Widget extends ContainerAware
      *
      * @param string $attributeName
      * @param object $attributeValue
+     * @return Widget
      */
     public function assign($attributeName, $attributeValue)
     {
         $this->response_attributes[$attributeName] = $attributeValue;
+        return $this;
     }
 
     /**

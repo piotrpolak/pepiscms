@@ -3,7 +3,6 @@
 
 $lang['about_label_theme_preview']                  = 'Podgląd szablonu';
 $lang['dashboard_group_default']                    = 'Skróty';
-$lang['dashboard_info']                             = 'To jest standardowa strona pulpitu.';
 $lang['dashboard_system_status']                    = 'Status systemu';
 $lang['dashboard_test_error_cache_not_writeable']   = 'Katalog cache nie ma prawa do zapisu.';
 $lang['dashboard_test_error_development_release']   = 'Korzystasz z wersji developerskiej PepisCMS. Nie zapomnij zaktualizować systemu.';

@@ -56,15 +56,15 @@ class About extends AbstractDashboardController
 
         $dashboard_elements_builder->addItem()
             ->withLabel($this->lang->line('global_reload_privileges'))
-            ->withController('login')
-            ->withMethod('refresh_session')
-            ->withIconUrl('pepiscms/theme/img/utilities/flush_privileges_32.png')
+                ->withController('login')
+                ->withMethod('refresh_session')
+                ->withIconUrl('pepiscms/theme/img/utilities/flush_privileges_32.png')
             ->end()
             ->addItem()
-            ->withLabel($this->lang->line('global_logout'))
-            ->withController('logout')
-            ->withMethod('')
-            ->withIconUrl('pepiscms/theme/img/about/logout_32.png')
+                ->withLabel($this->lang->line('global_logout'))
+                ->withController('logout')
+                ->withMethod('')
+                ->withIconUrl('pepiscms/theme/img/about/logout_32.png')
             ->end();
 
         $dashboard_elements = array_merge($dashboard_elements, $dashboard_elements_builder->build());
