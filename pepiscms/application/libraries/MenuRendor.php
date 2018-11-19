@@ -60,9 +60,10 @@ class MenuRendor extends ContainerAware
      * @param string $method
      * @param string $language_code
      * @param bool $pull_submenu_from_controller
+     * @param bool $current_module
      * @return string
      */
-    public function render($controller, $method, $language_code = '', $pull_submenu_from_controller = false)
+    public function render($controller, $method, $language_code = '', $pull_submenu_from_controller = false, $current_module = false)
     {
         $menu = $this->config->item('menu');
 
@@ -71,7 +72,9 @@ class MenuRendor extends ContainerAware
         }
 
         // Get currently running module
-        $current_module = is_object($this->modulerunner) ? $this->modulerunner->getRunningModuleName() : false;
+        if (!$current_module) {
+            $current_module = is_object($this->modulerunner) ? $this->modulerunner->getRunningModuleName() : false;
+        }
 
         $cache_var_name = 'menu_c:' . $controller . '_m:' . $method . '_lc:' . $language_code . '_psfc:' . $pull_submenu_from_controller . '_cm:' . $current_module . '_lng:' . $this->lang->getCurrentLanguage();
 
