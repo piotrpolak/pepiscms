@@ -108,7 +108,8 @@ class Generic_model extends PEPISCMS_Model implements EntitableInterface, Moveab
      * @return Generic_model
      * @local
      */
-    public function setFlagOnDelete($delete_flag_field_name, $delete_flag_field_value, $hide_from_feed_marked_as_deleted = false)
+    public function setFlagOnDelete($delete_flag_field_name, $delete_flag_field_value,
+                                    $hide_from_feed_marked_as_deleted = false)
     {
         $this->delete_flag_field_name = $delete_flag_field_name;
         $this->delete_flag_field_value = $delete_flag_field_value;
@@ -368,7 +369,8 @@ class Generic_model extends PEPISCMS_Model implements EntitableInterface, Moveab
         // Important, this must be after applying filters but before setting anything else
         $db2 = clone $this->db();
 
-        $this->db->select($columns . ', ' . $this->getTable() . '.' . $this->getIdFieldName() . ' AS ' . $this->getIdFieldName())->limit($rowcount, $offset);
+        $this->db->select($columns . ', ' . $this->getTable() . '.' . $this->getIdFieldName() .
+            ' AS ' . $this->getIdFieldName())->limit($rowcount, $offset);
         $db2->select('count(*) AS rowcount');
 
         // Order by is not important for rowcount and in some situations can break the rowcount query
@@ -549,7 +551,8 @@ class Generic_model extends PEPISCMS_Model implements EntitableInterface, Moveab
             $fields = $fields . ', '; // Just appending the coma
         }
 
-        return $this->db->select($fields . '' . $this->getTable() . '.' . $this->getIdFieldName() . ' AS ' . $this->getIdFieldName())
+        return $this->db->select($fields . '' . $this->getTable() . '.' . $this->getIdFieldName() .
+            ' AS ' . $this->getIdFieldName())
             ->where($this->getTable() . '.' . $this->getIdFieldName(), $id)
             ->limit(1)
             ->get($this->getTable())
@@ -656,7 +659,8 @@ class Generic_model extends PEPISCMS_Model implements EntitableInterface, Moveab
      * @return bool
      * @local
      */
-    public function move($id, $direction, $table = false, $constraint_field_name = false, $item_order_field_name = 'item_order', $id_field_name = 'id')
+    public function move($id, $direction, $table = false, $constraint_field_name = false,
+                         $item_order_field_name = 'item_order', $id_field_name = 'id')
     {
         // When no table is specified, taking table from the object
         if (!$table) {
@@ -670,7 +674,9 @@ class Generic_model extends PEPISCMS_Model implements EntitableInterface, Moveab
         }
 
         // Lets set up the initial values if there are any nulls
-        $this->db->set($item_order_field_name, '0')->where($item_order_field_name . ' IS NULL', false, false)->update($table);
+        $this->db->set($item_order_field_name, '0')
+            ->where($item_order_field_name . ' IS NULL', false, false)
+            ->update($table);
 
 
         $relations = array('down' => '>=', 'up' => '<=');
@@ -697,7 +703,9 @@ class Generic_model extends PEPISCMS_Model implements EntitableInterface, Moveab
         }
 
         // Getting the number of elements
-        $this->db->select('count(*) as count')->where($item_order_field_name . ' ' . $relation, $item_order)->where($id_field_name . ' !=', $id);
+        $this->db->select('count(*) as count')->where($item_order_field_name . ' ' . $relation, $item_order)
+            ->where($id_field_name . ' !=', $id);
+
         if ($constraint_field_name) {
             $this->db->where($constraint_field_name, $constraint_field_name_value);
         }
@@ -852,7 +860,8 @@ class Generic_model extends PEPISCMS_Model implements EntitableInterface, Moveab
      * @return array|bool
      * @local
      */
-    public function getAssocPairs($key_column_name, $value_column_name, $table = false, $imitial_array = false, $possible_keys = false, $where_conditions = false)
+    public function getAssocPairs($key_column_name, $value_column_name, $table = false, $imitial_array = false,
+                                  $possible_keys = false, $where_conditions = false)
     {
         if (!$table) {
             $table = $this->getTable();
@@ -931,7 +940,8 @@ class Generic_model extends PEPISCMS_Model implements EntitableInterface, Moveab
      * @return bool
      * @local
      */
-    public function enableJournaling($journaling_table = false, $include_fields = array(), $exclude_fields = array(), $tag = null, $serialization_method = null, $unserialization_method = null)
+    public function enableJournaling($journaling_table = false, $include_fields = array(), $exclude_fields = array(),
+                                     $tag = null, $serialization_method = null, $unserialization_method = null)
     {
         if (!$tag) {
             $tag = $this->getTable();
