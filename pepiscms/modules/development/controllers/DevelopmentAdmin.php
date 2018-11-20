@@ -193,8 +193,12 @@ class DevelopmentAdmin extends ModuleAdminController
             redirect(admin_url());
         }
 
-        $this->assign('users', $this->User_model->getAssocPairs('user_id', 'user_email'));
-        $this->display();
+        $this->assign('users', $this->User_model->getAssocPairs('user_id', 'user_email',
+            false,
+            false,
+            false,
+            array('status' => 1)))
+            ->display();
     }
 
     public function module_make()
