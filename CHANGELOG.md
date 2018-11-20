@@ -2,30 +2,34 @@
 
 ### New features
 
- * PepisCMS codebase is cleaned up an the project is released as open source!
+ * **PepisCMS codebase is cleaned up and the PepisCMS core is released as open source!**
  * PepisCMS is now Composer compatible and supports Composer autoload!
- * Dropped support for PHP5.5 and lower. The code is now PHP5.6 to PHP7.2 compatible.
- * Codebase cleaned up from any proprietary code
+ * Dropped support for PHP 5.5 and lower. The code is now PHP 5.6 to PHP 7.2 compatible
  * Site and module configuration is now stored in database with a fallback to files!
  * Improved installer and migration scripts, implemented command line unattended installer
  * Installation script now reads default values from ENV variables
- * Implemented automatic loading of module models upon first use
- * Dropped support for Spanish and Romanian languages
- * Added basic Behat smoke tests
+ * Implemented automatic loading of module models upon first use (for modules)
+ * Added Behat end-to-end tests covering core features
  * Implemented `CrudDefinitionBuilder` and `CrudFieldDefinitionBuilder` aiming to simplify CRUD definition setup
  * Improved module generation, implemented new module file structure with fallback to the legacy module structure (pre 1.0.0)
  * Fixed file manager previews
  * Improved backup utility now works even without `mysqldump` command available
  * Implemented fluent API for most used libraries
- * Dropped support for deprecated features
  * CodeIgniter upgraded to version 3.1.9
  * CKE Editor updated to 4.9.0
+ * Migrated to the latest `phpspreadsheet` library
  * Implemented lazy image load for `DataGrid`, File Manager and CRUD modules to improve performance
  * Added password history (and check) for improved password security
  * Reviewed application translations
  * Added new utility library `Query_helper`
  * Extracted pages as a separate module
+ * Added possibility to display widgets on the admin dashboard
+ * Improved cache invalidation
+ * Implemented password history feature that prohibits from reusing previously set passwords (needs to be configured separately)
+ * Improved development features and developer's experience
  * Dropped support for PHPTal, FCKEditor
+ * Dropped support for Spanish and Romanian languages
+ * Dropped support for features previously marked as deprecated
 
 ### API Changes in 1.0.0.x branch
 
