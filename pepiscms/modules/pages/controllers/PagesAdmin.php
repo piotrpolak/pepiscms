@@ -84,8 +84,11 @@ class PagesAdmin extends ModuleAdminController
         $page_id = $this->input->getParam('page_id');
 
 
-        $input_groups = array('document' => $this->lang->line('pages_label_document_contents'),
-            'info' => $this->lang->line('pages_label_document_info'));
+        $input_groups = array(
+            'document' => $this->lang->line('pages_label_document_contents'),
+            'menu' => $this->lang->line('pages_input_group_menu'),
+            'seo' => $this->lang->line('pages_input_group_seo')
+        );
 
         list($definition, $menu_item) = $this->_getPageEditDefinition($input_groups, $page_id, $site_language);
 
@@ -97,6 +100,7 @@ class PagesAdmin extends ModuleAdminController
             ->setCallback(array($this, '_on_page_read_callback'), FormBuilder::CALLBACK_ON_READ)
             ->setDefinition($definition)
             ->setTitle($input_groups['document'])
+            ->setRenderer(new FloatingFormRenderer())
             ->getRenderer()->setErrorDelimiters(get_warning_begin(), get_warning_end());
 
 
@@ -466,13 +470,6 @@ class PagesAdmin extends ModuleAdminController
             'description' => $this->lang->line('pages_label_document_title_desc'),
             'input_type' => FormBuilder::TEXTFIELD,
         );
-        $definition['page_description'] = array(
-            'input_group' => $input_groups['document'],
-            'validation_rules' => '',
-            'label' => $this->lang->line('pages_label_description'),
-            'description' => $this->lang->line('pages_label_description_desc'),
-            'input_type' => FormBuilder::TEXTAREA,
-        );
         $definition['page_contents'] = array(
             'input_group' => $input_groups['document'],
             'validation_rules' => '',
@@ -480,15 +477,24 @@ class PagesAdmin extends ModuleAdminController
             'description' => $this->lang->line('pages_label_contents_desc'),
             'input_type' => FormBuilder::RTF,
         );
+
+
+        $definition['page_description'] = array(
+            'input_group' => $input_groups['seo'],
+            'validation_rules' => '',
+            'label' => $this->lang->line('pages_label_description'),
+            'description' => $this->lang->line('pages_label_description_desc'),
+            'input_type' => FormBuilder::TEXTAREA,
+        );
         $definition['page_keywords'] = array(
-            'input_group' => $input_groups['document'],
+            'input_group' => $input_groups['seo'],
             'validation_rules' => '',
             'label' => $this->lang->line('pages_label_keywords'),
             'description' => $this->lang->line('pages_label_keywords_desc'),
             'input_type' => FormBuilder::TEXTFIELD,
         );
         $definition['page_is_displayed_in_sitemap'] = array(
-            'input_group' => $input_groups['document'],
+            'input_group' => $input_groups['seo'],
             'validation_rules' => '',
             'input_default_value' => 1,
             'label' => $this->lang->line('pages_label_display_in_sitemap'),
@@ -496,7 +502,7 @@ class PagesAdmin extends ModuleAdminController
             'input_type' => FormBuilder::CHECKBOX,
         );
         $definition['page_uri'] = array(
-            'input_group' => $input_groups['document'],
+            'input_group' => $input_groups['seo'],
             'validation_rules' => 'trim|niceuri',
             'label' => $this->lang->line('pages_label_document_uri'),
             'description' => $this->lang->line('pages_label_document_uri_desc'),
@@ -518,14 +524,14 @@ class PagesAdmin extends ModuleAdminController
         }
 
         $definition['parent_item_id'] = array(
-            'input_group' => $input_groups['document'],
+            'input_group' => $input_groups['menu'],
             'label' => $this->lang->line('pages_label_location_in_menu'),
             'values' => $menu_values,
             'input_type' => FormBuilder::SELECTBOX,
             'input_default_value' => ($this->input->getParam('parent_item_id') ? $this->input->getParam('parent_item_id') : -1) // Default -1 but if there is a get param set, use the get param
         );
         $definition['item_name'] = array(
-            'input_group' => $input_groups['document'],
+            'input_group' => $input_groups['menu'],
             'label' => $this->lang->line('pages_label_menu_item_name'),
             'input_type' => FormBuilder::TEXTFIELD,
             'validation_rules' => '',
