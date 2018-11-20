@@ -145,12 +145,15 @@ class LogsAdmin extends ModuleAdminController
 
     public function mylogin()
     {
-        $this->load->library('DataGrid')
-            ->setTable($this->config->item('database_table_logs'), array('user_id' => $this->auth->getUserId(), 'collection' => 'LOGIN'))
-            ->setItemsPerPage(400)
-            ->setDefaultOrder('timestamp', 'desc')
-            ->setBaseUrl(module_url('logs') . '/mylogin')
-            ->setRowCssClassFormattingFunction(array($this, '_datagrid_row_callback'));
+        $this->load->library('DataGrid');
+        $this->datagrid->setTable($this->config->item('database_table_logs'), array(
+            'user_id' => $this->auth->getUserId(),
+            'collection' => 'LOGIN'
+        ))
+        ->setItemsPerPage(400)
+        ->setDefaultOrder('timestamp', 'desc')
+        ->setBaseUrl(module_url('logs') . '/mylogin')
+        ->setRowCssClassFormattingFunction(array($this, '_datagrid_row_callback'));
 
         $module_name = 'logs';
         $definition = array(
