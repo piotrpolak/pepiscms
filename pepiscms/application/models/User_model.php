@@ -51,7 +51,7 @@ class User_model extends Generic_model
         parent::__construct();
         $this->setTable($this->config->item('database_table_users'));
         $this->setIdFieldName('user_id');
-        $this->setAcceptedPostFields(array('title', 'phone_number', 'image_path', 'birth_date', 'alternative_email', 'note', 'status'));
+        $this->setAcceptedPostFields(array('title','phone_number', 'image_path', 'birth_date', 'alternative_email', 'note', 'status'));
 
         // Reading password constraints from config
         if ($this->config->item('security_minimum_allowed_password_length') > 0 || $this->config->item('security_minimum_allowed_password_length') === 0) {
