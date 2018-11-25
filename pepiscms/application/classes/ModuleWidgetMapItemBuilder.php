@@ -72,12 +72,11 @@ class ModuleWidgetMapItemBuilder
     {
         return array(
             'label' => $this->label,
+            'module_name' => $this->moduleName,
+            'widget_name' => $this->widgetName,
+            'widget_parameters' => $this->widgetParameters,
             'show_in_main_pane' => true,
             'show_in_side_pane' => true,
-            'widget_html' => call_user_func_array(array(
-                CI_Controller::get_instance()->widget->create($this->moduleName, $this->widgetName),
-                'render'
-            ), $this->widgetParameters)
         );
     }
 }

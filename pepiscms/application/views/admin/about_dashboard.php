@@ -6,7 +6,11 @@
     <div class="left_option_pane">
             <?php foreach($widgets as $widget): if(!$widget['show_in_side_pane']) continue?>
                 <h1 class="contrasted"><?= $widget['label'] ?></h1>
-                <?=$widget['widget_html']?>
+
+                <?=call_user_func_array(array(
+                    $this->widget->create($widget['module_name'], $widget['widget_name']),
+                    'render'
+                ), $widget['widget_parameters'])?>
             <?php endforeach ?>
     </div>
 
