@@ -172,7 +172,7 @@ class Cachedobjectmanager extends ContainerAware
             // Testing if serialization worked
             @include($file_path);
             /** @noinspection PhpUndefinedVariableInspection */
-            if (!$object) {
+            if (!isset($object) || !$object) {
                 $this->benchmark->mark('cached_object_manager_failsafe_store_object_' . $collection . '_' . $hash . '_start');
 
                 // Serializing and saving - method #2
