@@ -338,7 +338,7 @@ class Module extends AdminController
         $is_install = $this->input->getParam('install') == 1;
         $module_name = $this->formbuilder->getId();
 
-        if (empty($data['is_displayed_in_menu']) || $data['is_displayed_in_menu'] < 1) {
+        if (empty($data['is_displayed_in_menu']) || $data['parent_module_id'] < 1) {
             $data['parent_module_id'] = null;
         }
 
