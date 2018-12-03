@@ -106,18 +106,22 @@ class Acl extends AdminController
                 header('Content-type: application/xml');
                 die($xml);
             } else {
-                file_put_contents($policy_save_path, $xml);
 
-                SecurityManager::flushCache();
-                // Setting the message and redirecting
                 $this->load->library('SimpleSessionMessage');
-                $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS);
-                $this->simplesessionmessage->setMessage('global_header_success');
+                if (!@file_put_contents($policy_save_path, $xml)) {
+                    $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_ERROR);
+                    $this->simplesessionmessage->setMessage('act_unable_to_write_policy_file');
+                } else {
+                    SecurityManager::flushCache();
+                    // Setting the message and redirecting
 
-                if (!isset($_POST['apply'])) {
-                    redirect(admin_url() . 'acl');
+                    $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS);
+                    $this->simplesessionmessage->setMessage('global_header_success');
+
+                    if (!isset($_POST['apply'])) {
+                        redirect(admin_url() . 'acl');
+                    }
                 }
-                // else simple apply
             }
 
             // Reading one more time after save
