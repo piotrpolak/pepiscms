@@ -25,3 +25,4 @@ $lang['acl_userspace_modules']                      = 'User space modules';
 $lang['acl_warning_policy_read_only']               = 'You cannot modify core security policy in the production release system. The following form is read-only.';
 $lang['acl_write']                                  = 'Write';
 $lang['act_security_policy_for']                    = 'Security policy for %s';
+$lang['act_unable_to_write_policy_file']            = 'Unable to save policy. File not writable.';
