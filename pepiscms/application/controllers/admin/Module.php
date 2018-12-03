@@ -293,8 +293,13 @@ class Module extends AdminController
             $method = 'index';
         }
 
-        if (!$this->modulerunner->runAdminModule($module_name, $method)) {
-            show_404();
+        try {
+            if (!$this->modulerunner->runAdminModule($module_name, $method)) {
+                show_404();
+            }
+        } catch (\PiotrPolak\PepisCMS\Security\AccessDeniedException $exception) {
+            Logger::warning('Security policy violation for module ' . $module_name . '/' . $method, 'SECURITY');
+            $this->display('admin/no_sufficient_priviliges');
         }
     }
 

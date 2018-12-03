@@ -95,14 +95,8 @@ class ModuleRunner extends ContainerAware
         }
 
         if (!$this->securitymanager->hasAccess($module_name, $method, $module_name)) {
-            Logger::warning('Security policy violation for module ' . $module_name . '/' . $method, 'SECURITY');
-            ob_start();
-            $this->display('admin/no_sufficient_priviliges', true, false);
-            $out = ob_get_contents();
-            ob_end_clean();
-            die($out);
+            throw new \PiotrPolak\PepisCMS\Security\AccessDeniedException("Access denied");
         }
-
 
         $controller_path = $this->modulepathresolver->getAdminControllerPath($module_name);
         if ($controller_path !== false) {
