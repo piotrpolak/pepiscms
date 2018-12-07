@@ -19,9 +19,19 @@ defined('BASEPATH') or exit('No direct script access allowed');
  */
 class PagesAdmin extends ModuleAdminController
 {
+    /**
+     * Base path for file uploads
+     *
+     * @var String
+     */
+    private $uploads_base_path = './application/cache/tmp/'; // Overwritten by constructor
+
     public function __construct()
     {
         parent::__construct();
+
+        // Overwriting uploads base path
+        $this->uploads_base_path = $this->config->item('uploads_path') . 'pages/';
 
         $this->load->library('SimpleSessionMessage');
         $this->load->library('Cachedobjectmanager');
@@ -313,8 +323,8 @@ class PagesAdmin extends ModuleAdminController
             }
 
             // Setting the message and redirecting
-            $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_ERROR);
-            $this->simplesessionmessage->setMessage('pages_dialog_menu_contains_submenu_error', $menuelement->item_name);
+            $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_ERROR)
+                ->setMessage('pages_dialog_menu_contains_submenu_error', $menuelement->item_name);
         }
 
         $this->redirectBack();
@@ -478,7 +488,17 @@ class PagesAdmin extends ModuleAdminController
             'input_type' => FormBuilder::RTF,
         );
 
-
+        $definition['page_image_path'] = array(
+            'input_group' => $input_groups['seo'],
+            'label' => $this->lang->line('pages_label_image_path'),
+            'description' => $this->lang->line('pages_label_image_path_desc'),
+            'input_type' => FormBuilder::IMAGE,
+            'upload_path' => $this->uploads_base_path,
+            'upload_display_path' => $this->uploads_base_path,
+            'show_in_form' => TRUE,
+            'validation_rules' => 'max_length[500]',
+            'upload_complete_callback' => array($this, '_fb_callback_make_filename_seo_friendly'),
+        );
         $definition['page_description'] = array(
             'input_group' => $input_groups['seo'],
             'validation_rules' => '',
@@ -604,5 +624,86 @@ class PagesAdmin extends ModuleAdminController
         }
 
         redirect(module_url() . 'index/language_code-' . $language_code . ($view ? '/view-' . $view : ''));
+    }
+
+    /**
+     * Callback function changing the name of the file to SEO friendly
+     *
+     * @version: 1.2.3
+     * @date: 2015-06-11
+     *
+     * @param $filename
+     * @param $base_path
+     * @param $data
+     * @param $current_image_field_name
+     * @return bool
+     */
+    public function _fb_callback_make_filename_seo_friendly(&$filename, $base_path, &$data, $current_image_field_name)
+    {
+        // List of the fields to be used, if no value is present for a given key
+        // then the key will be ignored. By default all values of the keys
+        // specified will be concatenated
+        $title_field_names = array('name', 'title', 'label', 'page_title');
+
+        $this->load->helper('string');
+        $path = $base_path . $filename;
+        $path_parts = pathinfo($path);
+
+        // Attempt to build a name
+        $new_base_filename = '';
+        foreach ($title_field_names as $title_field_name) {
+            // Concatenating all the elements
+            if (isset($data[$title_field_name]) && $data[$title_field_name]) {
+                $new_base_filename .= '-' . $data[$title_field_name];
+            }
+        }
+
+        // Making it web safe
+        if ($new_base_filename) {
+            $new_base_filename = niceuri($new_base_filename);
+        }
+
+        // This should not be an else statement as niceuri can return empty string sometimes
+        if (!$new_base_filename) {
+            $new_base_filename = niceuri($path_parts['filename']);
+        }
+
+        // This should normally never happen, but who knows - this is bulletproof
+        if (!$new_base_filename) {
+            $new_base_filename = md5(time() + rand(1000, 9999));
+        }
+
+        $new_base_path = '';
+//        $new_base_path = date('Y-m-d').'/'; // Will create directory based on date
+//        $new_base_path = $new_name_base.'/'; // Will create directory based on the niceuri value
+//        @mkdir($base_path.$new_base_path); // Do not forget!
+        // We don't like upper case extensions
+        $extension = strtolower($path_parts['extension']);
+        $new_name = $new_base_filename . '.' . $extension;
+
+        // Protection against existing files
+        $i = 2;
+        while (file_exists($base_path . $new_base_path . $new_name)) {
+            $new_name = $new_base_filename . '-' . $i . '.' . $extension;
+            if ($i++ > 50 || strlen($i) > 2) // strlen is a protection against the infinity loop for md5 checksums
+            {
+                // This is ridiculous but who knowss
+                $i = md5(time() + rand(1000, 9999));
+            }
+        }
+
+        // No need to change filename? Then we are fine
+        if ($filename == $new_name) {
+            return TRUE;
+        }
+
+        // Finally here we go!
+        if (rename($path, $base_path . $new_base_path . $new_name)) {
+            $data[$current_image_field_name] = $new_base_path . $new_name;
+            $filename = $new_base_path . $new_name;
+
+            return TRUE;
+        }
+        return FALSE;
     }
 }
