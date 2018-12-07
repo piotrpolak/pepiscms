@@ -22,7 +22,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
  */
 class Document extends ContainerAware
 {
-
     /** @var int */
     private $id;
     /** @var string */
@@ -49,6 +48,8 @@ class Document extends ContainerAware
     private $menu_item_id = null; // To be checked if needed
     /** @var Menu */
     private $menu = null; // Kind of cache
+    /** @var string */
+    private $image_relative_path = null;
 
     /**
      * Document constructor.
@@ -429,5 +430,27 @@ class Document extends ContainerAware
     {
         $this->page_javascript = $javascript;
         return $this;
+    }
+
+    /**
+     * Sets image relative path
+     *
+     * @param $image_relative_path
+     * @return $this
+     */
+    public function setImageRelativePath($image_relative_path)
+    {
+        $this->image_relative_path = $image_relative_path;
+        return $this;
+    }
+
+    /**
+     * Returns image relative path
+     *
+     * @return string
+     */
+    public function getImageRelativePath()
+    {
+        return $this->image_relative_path;
     }
 }

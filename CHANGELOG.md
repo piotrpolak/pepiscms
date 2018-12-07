@@ -17,6 +17,7 @@
  * Implemented fluent API for most used libraries
  * CodeIgniter upgraded to version 3.1.9
  * CKE Editor updated to 4.9.0
+ * Pages got the possibility to define a page image
  * Migrated to the latest `phpspreadsheet` library
  * Implemented lazy image load for `DataGrid`, File Manager and CRUD modules to improve performance
  * Added password history (and check) for improved password security
