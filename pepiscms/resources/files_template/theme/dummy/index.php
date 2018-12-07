@@ -23,6 +23,16 @@ $menu = $document->getMenu();
 	<?= $document->getPageStyles() ?>
 	<?= $document->getPageJavaScript() ?>
 
+    <meta property="og:url" content="<?= current_url() ?>"/>
+    <meta property="og:type" content="article"/>
+    <meta property="og:title" content="<?= $document->getTitle() ?>"/>
+    <meta property="og:description" content="<?= $document->getDescription() ?>"/>
+
+    <? // https://stackoverflow.com/a/18846258 ?>
+    <?php if (!empty($document->getImageRelativePath())): ?>
+    <meta property="og:image" content="<?= base_url() . $document->getImageRelativePath() ?>"/>
+    <?php endif; ?>
+
 	<!--[if lt IE 9]>
 	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
