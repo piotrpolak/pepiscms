@@ -218,7 +218,7 @@ class Log_model extends Generic_model
             ->where('level', Logger::MESSAGE_LEVEL_WARNING)
             ->where('timestamp > "' . date('Y-m-d h:i:s', time() - ($days_before * 24 * 3600)) . '"')
             ->group_by('date')
-            ->order_by('timestamp')
+            ->order_by('date')
             ->get()
             ->result();
 
