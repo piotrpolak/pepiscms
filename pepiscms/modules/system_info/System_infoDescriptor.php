@@ -76,6 +76,7 @@ class System_infoDescriptor extends ModuleDescriptor
         return ModuleWidgetMapBuilder::create()
             ->addItem()
                 ->withLabel($this->lang->line($this->module_name . '_disk_usage'))
+                ->withLabelIcon(module_icon_small_url($this->module_name))
                 ->withModuleName('system_info')
                 ->withWidgetName('disk_usage')
                 ->withCacheTtl(3600)
