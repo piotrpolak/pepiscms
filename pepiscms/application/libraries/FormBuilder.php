@@ -25,6 +25,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  */
 class FormBuilder extends ContainerAware
 {
+    const POST_ID_FIELD_NAME = 'form_builder_id';
 
     /**
      * Textfield input
@@ -912,7 +913,7 @@ class FormBuilder extends ContainerAware
     {
         if (!$this->id) {
             // TODO Rewrite POST parameter access
-            $this->id = isset($_POST['form_builder_id']) ? $_POST['form_builder_id'] : false;
+            $this->id = isset($_POST[self::POST_ID_FIELD_NAME]) ? $_POST[self::POST_ID_FIELD_NAME] : false;
         }
 
         return $this->id;
@@ -1108,12 +1109,11 @@ class FormBuilder extends ContainerAware
         // Default value
         $save_success = true;
 
-
         // Checking if the request was sent by a form builder generated form
         // Saving if POST form_builder_id is present
-        if (isset($_POST['form_builder_id'])) {
-            $this->setId($_POST['form_builder_id']);
-            unset($_POST['form_builder_id']);
+        if (isset($_POST[self::POST_ID_FIELD_NAME])) {
+            $this->setId($_POST[self::POST_ID_FIELD_NAME]);
+            unset($_POST[self::POST_ID_FIELD_NAME]);
 
             $validation_rules = $this->generateBuildUpValidationRules();
 
@@ -1130,11 +1130,7 @@ class FormBuilder extends ContainerAware
                 // TODO Check if the file field is editable, if not, remove it from the save array
 
                 $this->generateFixBooleanTypes($save_array);
-
-                // CALLBACK before save
-                if (isset($this->callbacks[self::CALLBACK_BEFORE_SAVE])) {
-                    call_user_func_array($this->callbacks[self::CALLBACK_BEFORE_SAVE], array(&$save_array));
-                }
+                $this->callBeforeSaveCallbackIfNeccesary($save_array);
 
                 try {
                     $save_success = $this->generateDoSave($save_array);
@@ -1146,8 +1142,6 @@ class FormBuilder extends ContainerAware
                 }
 
                 if ($save_success) {
-                    $is_apply = $this->input->post('apply') !== null;
-
                     if (!$this->getId()) { // There were no ID, try to determine it after the form is saved
                         $this->generateRefreshId($save_success);
                     }
@@ -1160,27 +1154,18 @@ class FormBuilder extends ContainerAware
                         $this->generateSetSuccessMessage();
                     }
 
-                    if (isset($this->callbacks[self::CALLBACK_AFTER_SAVE])) {
-                        call_user_func_array($this->callbacks[self::CALLBACK_AFTER_SAVE], array(&$save_array));
-                    }
-
-                    $this->generateHandleRedirectOnSuccess($is_apply);
+                    $this->callAfterSaveCallbackIfNeccesary($save_array);
+                    $this->generateHandleRedirectOnSuccess($this->input->post('apply') !== null);
                 } else {
                     $this->generateSetErrorMessage();
-
-                    if (isset($this->callbacks[self::CALLBACK_ON_SAVE_FAILURE])) {
-                        call_user_func_array($this->callbacks[self::CALLBACK_ON_SAVE_FAILURE], array(&$save_array));
-                    }
+                    $this->callOnSaveFailureCallbackIfNeccesary($save_array);
                 }
             }
 
             // !
             // Regenerating the object from POST
             $this->generateRecreateObjectFromSaveArray($save_array);
-        } // END POST, END OF FORM SAVE
-
-
-        else {
+        } else {
             // Executed for situation where not a POST save and no object found
             // This is called if there is no POST - reading object from the database
             if (!$this->object) {
@@ -1189,20 +1174,8 @@ class FormBuilder extends ContainerAware
             }
         }
 
-        foreach ($this->fields as &$field) {
-            if ($field['foreign_key_table']) {
-                $this->generateForeignKeyFetchObjectValues($field);
-                $this->generateForeignKeyFillFieldPossibleValues($field);
-            }
-        }
-
-
-        // CALLBACK
-        if (isset($this->callbacks[self::CALLBACK_BEFORE_RENDER])) {
-            call_user_func_array($this->callbacks[self::CALLBACK_BEFORE_RENDER], array(&$this->object));
-        }
-
-        // Returns rendered HTML
+        $this->handleForeignKeys();
+        $this->callBeforeRenderCallbackIfNeccesary();
         return $this->getRenderer()->render($this, $save_success);
     }
 
@@ -1245,11 +1218,11 @@ class FormBuilder extends ContainerAware
     private function generateSetSuccessMessage()
     {
         if (count($this->getUploadWarnings())) {
-            $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_NOTIFICATION);
-            $this->simplesessionmessage->setRawMessage($this->lang->line('formbuilder_form_successfully_saved') . '<br><br><b>' . $this->lang->line('formbuilder_upload_warnings') . ':</b><br>' . implode('<br>', $this->getUploadWarnings()));
+            $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_NOTIFICATION)
+                ->setRawMessage($this->lang->line('formbuilder_form_successfully_saved') . '<br><br><b>' . $this->lang->line('formbuilder_upload_warnings') . ':</b><br>' . implode('<br>', $this->getUploadWarnings()));
         } else {
-            $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS);
-            $this->simplesessionmessage->setMessage('formbuilder_form_successfully_saved');
+            $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS)
+                ->setMessage('formbuilder_form_successfully_saved');
         }
     }
 
@@ -1371,7 +1344,7 @@ class FormBuilder extends ContainerAware
      * @param $save_array
      * @return void
      */
-    private function generateHandleForeignKeyManyToManyUpdate($save_array)
+    private function generateHandleForeignKeyManyToManyUpdate(&$save_array)
     {
         foreach ($this->fields as $field) {
             // As we are already looping, lets do some magic
@@ -1741,6 +1714,54 @@ class FormBuilder extends ContainerAware
 
             $message = 'Unable to save the form. Model save method returned false.' . $error_suffix;
             Logger::error($message, 'FORMBUILDER');
+        }
+    }
+
+    /**
+     * @param array $save_array
+     */
+    private function callBeforeSaveCallbackIfNeccesary(&$save_array)
+    {
+        // CALLBACK before save
+        if (isset($this->callbacks[self::CALLBACK_BEFORE_SAVE])) {
+            call_user_func_array($this->callbacks[self::CALLBACK_BEFORE_SAVE], array(&$save_array));
+        }
+    }
+
+    /**
+     * @param array $save_array
+     */
+    private function callAfterSaveCallbackIfNeccesary(&$save_array)
+    {
+        if (isset($this->callbacks[self::CALLBACK_AFTER_SAVE])) {
+            call_user_func_array($this->callbacks[self::CALLBACK_AFTER_SAVE], array(&$save_array));
+        }
+    }
+
+    /**
+     * @param array $save_array
+     */
+    private function callOnSaveFailureCallbackIfNeccesary(&$save_array)
+    {
+        if (isset($this->callbacks[self::CALLBACK_ON_SAVE_FAILURE])) {
+            call_user_func_array($this->callbacks[self::CALLBACK_ON_SAVE_FAILURE], array(&$save_array));
+        }
+    }
+
+    private function handleForeignKeys()
+    {
+        foreach ($this->fields as &$field) {
+            if ($field['foreign_key_table']) {
+                $this->generateForeignKeyFetchObjectValues($field);
+                $this->generateForeignKeyFillFieldPossibleValues($field);
+            }
+        }
+    }
+
+    private function callBeforeRenderCallbackIfNeccesary()
+    {
+        if (isset($this->callbacks[self::CALLBACK_BEFORE_RENDER])) {
+            call_user_func_array($this->callbacks[self::CALLBACK_BEFORE_RENDER], array(&$this->object));
         }
     }
 }
