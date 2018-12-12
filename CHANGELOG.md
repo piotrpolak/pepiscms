@@ -8,6 +8,7 @@
  * Site and module configuration is now stored in database with a fallback to files!
  * Improved installer and migration scripts, implemented command line unattended installer
  * Installation script now reads default values from ENV variables
+ * Improved security, added password history to prevent reusing old passwords, added timeout on consecutive unsuccesfull authentications
  * Implemented automatic loading of module models upon first use (for modules)
  * Added Behat end-to-end tests covering core features
  * Implemented `CrudDefinitionBuilder` and `CrudFieldDefinitionBuilder` aiming to simplify CRUD definition setup
