@@ -66,22 +66,7 @@ class ModuleGenerator extends ContainerAware
         $this->load->helper('inflector');
         $this->load->library('Cachedobjectmanager');
 
-        $definition = false;
-
-        if ($parse_database_schema) {
-            $this->load->moduleLibrary('crud', 'TableUtility', array('database_group' => $database_group));
-
-            if (!$this->tableutility->tableExists($module_database_table_name)) {
-                return false;
-            }
-
-            $definition = $this->tableutility->getDefinitionFromTable($module_database_table_name);
-            if (!$definition) {
-                return false;
-            }
-
-            $definition = $this->tableutility->orderFieldsByImportance($definition);
-        }
+        $definition = $this->getDefinition($module_database_table_name, $parse_database_schema, $database_group);
 
         $template_base_path = APPPATH . '../resources/module_template/';
 
@@ -95,11 +80,7 @@ class ModuleGenerator extends ContainerAware
         $created_at_field_name = false;
         $updated_at_field_name = false;
         $filters_element = '';
-
-        // Setting default translations when no translations are selected
-        if (!$translations || count($translations) == 0) {
-            $translations = array('polish', 'english');
-        }
+        $translations = $this->makeSureTranslationsAreNotEmpty($translations);
 
 
         // Building directory structure
@@ -220,49 +201,14 @@ class ModuleGenerator extends ContainerAware
             $image_field_name, $description_field_name, $order_field_name, $updated_at_field_name, $filters_element,
             $module_model_name);
 
-        // Making admin controller
-        $file_admin_controller = $directory . $this->moduleLocator->getAdminControllerPath($module_name_lower_case);
-        if (!file_exists($file_admin_controller)) {
-            $this->generateAdminCrudController($is_crud, $template_base_path, $file_admin_controller, $data);
-        }
-
         $this->buildTranslations($module_name, $translations, $module_label, $language_pairs, $directory, $module_name_lower_case);
-
-
-        // Building and writing model
-        $file_model_path = $directory . $this->moduleLocator->getModelPath($module_name_lower_case, $module_name_singular . '_model');
-        if (!file_exists($file_model_path)) {
-            file_put_contents($file_model_path, PatternCompiler::compile(file_get_contents($template_base_path . '_model.php'), $data));
-        } else {
-            $this->generateModuleModel($file_model_path, $data);
-        }
-
+        $this->generateOrRegenerateModel($directory, $module_name_lower_case, $module_name_singular, $template_base_path, $data);
         $this->generateModuleDescriptor($directory, $module_name_lower_case, $template_base_path, $data);
-
-        if (!$is_crud) {
-            $this->generateAdminNonCrudController($directory, $template_base_path, $data);
-        }
-
-        if ($generate_public_controller) {
-            $this->generatePublicController($directory, $module_name_lower_case, $template_base_path, $data);
-            $this->generatePublicIndexView($directory, $template_base_path, $data);
-            $this->generatePublicItemView($directory, $template_base_path, $data);
-        }
-
-
-        if ($generate_security_policy) {
-            $policy_save_path = SecurityPolicy::getModulePolicyPath($module_name);
-            if (!file_exists($policy_save_path)) {
-                $this->generateSecurityPolicy($module_name, $module_name_singular, $policy_save_path);
-            }
-        }
-
+        $this->generateCrudStuffIfNeccesary($is_crud, $directory, $template_base_path, $data);
+        $this->generatePublicStuffIfNeccesary($generate_public_controller, $directory, $module_name_lower_case, $template_base_path, $data);
+        $this->generateSecurityPolicyIfNeccesary($module_name, $generate_security_policy, $module_name_singular);
         $this->copyIcons($directory, $template_base_path);
-
-        if ($auto_install) {
-            $this->Module_model->install($module_name, true, false);
-            $this->cleanupCache();
-        }
+        $this->doAutoinstallIfNeccesary($module_name, $auto_install);
 
         return true;
     }
@@ -551,7 +497,7 @@ class ModuleGenerator extends ContainerAware
      * @param $template_base_path
      * @param $data
      */
-    private function generateAdminNonCrudController($directory, $template_base_path, $data)
+    private function generateAdminNonCrudAdminView($directory, $template_base_path, $data)
     {
         @mkdir($directory . 'views/admin');
         $file_view_index = $directory . 'views/admin/index.php';
@@ -581,7 +527,7 @@ class ModuleGenerator extends ContainerAware
      * @param $data
      * @return string
      */
-    private function generateModuleModel($file_model_path, $data)
+    private function regenerateSetAcceptedFieldsForExistingModel($file_model_path, $data)
     {
         // Replace acceptable fields
         $model_file_contents_exploded = file($file_model_path, FILE_IGNORE_NEW_LINES);
@@ -645,7 +591,7 @@ class ModuleGenerator extends ContainerAware
      * @param $file_admin_controller
      * @param $data
      */
-    private function generateAdminCrudController($is_crud, $template_base_path, $file_admin_controller, $data)
+    private function generateAdminController($is_crud, $template_base_path, $file_admin_controller, $data)
     {
         if ($is_crud) {
             $template_file_admin_controller_path = $template_base_path . '_admin_controller.php';
@@ -937,5 +883,127 @@ class ModuleGenerator extends ContainerAware
             $definition_output .= $tabs . '    ' . $this->generateBuilderMethodCall($v_key, $v_value) . "\n";
         }
         return $definition_output;
+    }
+
+    /**
+     * @param $module_database_table_name
+     * @param $parse_database_schema
+     * @param $database_group
+     * @return bool
+     * @throws Exception
+     */
+    private function getDefinition($module_database_table_name, $parse_database_schema, $database_group)
+    {
+        $definition = false;
+
+        if ($parse_database_schema) {
+            $this->load->moduleLibrary('crud', 'TableUtility', array('database_group' => $database_group));
+
+            if (!$this->tableutility->tableExists($module_database_table_name)) {
+                throw new \Exception('Specified table does not exist for table ' . $module_database_table_name);
+            }
+
+            $definition = $this->tableutility->getDefinitionFromTable($module_database_table_name);
+            if (!$definition) {
+                throw new \Exception('Parsed table definition is empty for table ' . $module_database_table_name);
+            }
+
+            $definition = $this->tableutility->orderFieldsByImportance($definition);
+        }
+        return $definition;
+    }
+
+    /**
+     * @param $generate_public_controller
+     * @param $directory
+     * @param $module_name_lower_case
+     * @param $template_base_path
+     * @param array $data
+     */
+    private function generatePublicStuffIfNeccesary($generate_public_controller, $directory, $module_name_lower_case, $template_base_path, array $data)
+    {
+        if ($generate_public_controller) {
+            $this->generatePublicController($directory, $module_name_lower_case, $template_base_path, $data);
+            $this->generatePublicIndexView($directory, $template_base_path, $data);
+            $this->generatePublicItemView($directory, $template_base_path, $data);
+        }
+    }
+
+    /**
+     * @param $is_crud
+     * @param $directory
+     * @param $template_base_path
+     * @param array $data
+     */
+    private function generateCrudStuffIfNeccesary($is_crud, $directory, $template_base_path, array $data)
+    {
+        // Making admin controller
+        $file_admin_controller = $directory . $this->moduleLocator->getAdminControllerPath($module_name_lower_case);
+        if (!file_exists($file_admin_controller)) {
+            $this->generateAdminController($is_crud, $template_base_path, $file_admin_controller, $data);
+        }
+
+        if (!$is_crud) {
+            $this->generateAdminNonCrudAdminView($directory, $template_base_path, $data);
+        }
+    }
+
+    /**
+     * @param $module_name
+     * @param $generate_security_policy
+     * @param $module_name_singular
+     * @throws ReflectionException
+     */
+    private function generateSecurityPolicyIfNeccesary($module_name, $generate_security_policy, $module_name_singular)
+    {
+        if ($generate_security_policy) {
+            $policy_save_path = SecurityPolicy::getModulePolicyPath($module_name);
+            if (!file_exists($policy_save_path)) {
+                $this->generateSecurityPolicy($module_name, $module_name_singular, $policy_save_path);
+            }
+        }
+    }
+
+    /**
+     * @param $module_name
+     * @param $auto_install
+     */
+    private function doAutoinstallIfNeccesary($module_name, $auto_install)
+    {
+        if ($auto_install) {
+            $this->Module_model->install($module_name, true, false);
+            $this->cleanupCache();
+        }
+    }
+
+    /**
+     * @param $directory
+     * @param $module_name_lower_case
+     * @param $module_name_singular
+     * @param $template_base_path
+     * @param array $data
+     */
+    private function generateOrRegenerateModel($directory, $module_name_lower_case, $module_name_singular, $template_base_path, array $data)
+    {
+        // Building and writing model
+        $file_model_path = $directory . $this->moduleLocator->getModelPath($module_name_lower_case, $module_name_singular . '_model');
+        if (!file_exists($file_model_path)) {
+            file_put_contents($file_model_path, PatternCompiler::compile(file_get_contents($template_base_path . '_model.php'), $data));
+        } else {
+            $this->regenerateSetAcceptedFieldsForExistingModel($file_model_path, $data);
+        }
+    }
+
+    /**
+     * @param $translations
+     * @return array
+     */
+    private function makeSureTranslationsAreNotEmpty($translations)
+    {
+        // Setting default translations when no translations are selected
+        if (!$translations || count($translations) == 0) {
+            return array('polish', 'english');
+        }
+        return $translations;
     }
 }
