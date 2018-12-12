@@ -595,12 +595,35 @@ class Generic_model extends PEPISCMS_Model implements EntitableInterface, Moveab
             return false;
         }
 
+        // The filtered output array
+        $data_to_save = $this->_saveByIdFilterData($data, $accepted_post_fields);
+
+        // Checking if there is anything to be saved
+        if (!count($data_to_save)) {
+            trigger_error('Method Generic_model::saveById() has no fields to save. Make sure there are accepted fields set.');
+            return false;
+        }
+
+        // Journaling if case
+        if ($id && $this->getJournalingIsEnabled()) {
+            $this->journalingPersistPreSave($id, $data_to_save);
+        }
+
+        return $this->_saveByIdSaveOrUpdate($id, $data_to_save);
+
+    }
+
+    /**
+     * @param $data
+     * @param array $accepted_post_fields
+     * @return array
+     */
+    private function _saveByIdFilterData($data, $accepted_post_fields)
+    {
         // Reading fields that should be nullified when empty
         $nullify_on_empty_post_fields = $this->getNullifyOnEmptyPostFields();
 
-        // The filtered output array
         $data_to_save = array();
-
         foreach ($data as $_param_name => $_param_value) {
             // Checking if the field is allowed
             if (!in_array($_param_name, $accepted_post_fields)) {
@@ -615,31 +638,7 @@ class Generic_model extends PEPISCMS_Model implements EntitableInterface, Moveab
             // Building save array
             $data_to_save[$_param_name] = $_param_value;
         }
-
-        // Checking if there is anything to be saved
-        if (!count($data_to_save)) {
-            trigger_error('Method Generic_model::saveById() has no fields to save. Make sure there are accepted fields set.');
-            return false;
-        }
-
-        // Journaling if case
-        if ($id && $this->getJournalingIsEnabled()) {
-            $this->journalingPersistPreSave($id, $data_to_save);
-        }
-
-        // Building query
-        $this->db->set($data_to_save);
-
-        if ($id !== false && $id !== '') {
-            // Updating for existing records
-            $this->db->where($this->getIdFieldName(), $id);
-            $success = $this->db->update($this->getTable());
-        } else {
-            // Inserting for new records
-            $success = $this->db->insert($this->getTable());
-        }
-
-        return $success;
+        return $data_to_save;
     }
 
     /**
@@ -1250,5 +1249,22 @@ class Generic_model extends PEPISCMS_Model implements EntitableInterface, Moveab
     public function getJournalingUnserializationMethod()
     {
         return $this->journaling_unserialization_method;
+    }
+
+    /**
+     * @param $id
+     * @param array $data_to_save
+     * @return bool
+     */
+    private function _saveByIdSaveOrUpdate($id, array $data_to_save)
+    {
+// Building query
+        $this->db->set($data_to_save);
+
+        if ($id !== false && $id !== '') {
+            return $this->db->where($this->getIdFieldName(), $id)->update($this->getTable());
+        } else {
+            return $this->db->insert($this->getTable());
+        }
     }
 }
