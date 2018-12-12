@@ -77,7 +77,7 @@ class PagesAdmin extends ModuleAdminController
             ->assign('site_languages', $this->Site_language_model->getLanguages());
 
         $this->benchmark->mark('pages_gather_data_end');
-        
+
         $this->display($this->getAttribute('view') == 'tree' ? false : 'index_simple');
     }
 
@@ -100,14 +100,15 @@ class PagesAdmin extends ModuleAdminController
         $input_groups = array(
             'document' => $this->lang->line('pages_label_document_contents'),
             'menu' => $this->lang->line('pages_input_group_menu'),
-            'seo' => $this->lang->line('pages_input_group_seo')
+            'seo' => $this->lang->line('pages_input_group_seo'),
+            'info' => $this->lang->line('pages_input_info')
         );
 
+        $this->formbuilder->setId($page_id);
         list($definition, $menu_item) = $this->_getPageEditDefinition($input_groups, $page_id, $site_language);
 
 
         $this->formbuilder->setTable('pages', false, 'page_id')
-            ->setId($page_id)
             ->setBackLink(module_url() . 'index/language_code-' . $site_language->code . ($view ? '/view-' . $view : ''))
             ->setCallback(array($this, '_on_page_save_callback'), FormBuilder::CALLBACK_ON_SAVE)
             ->setCallback(array($this, '_on_page_read_callback'), FormBuilder::CALLBACK_ON_READ)

@@ -64,3 +64,4 @@ $lang['pages_site_languages_are_not_defined']                 = 'Site languages 
 $lang['pages_view']                                           = 'View';
 $lang['pages_view_simple']                                    = 'simple';
 $lang['pages_view_tree']                                      = 'tree';
+$lang['pages_input_info']                                     = 'Info';
