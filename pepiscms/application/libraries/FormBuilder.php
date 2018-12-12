@@ -1141,7 +1141,7 @@ class FormBuilder extends ContainerAware
                 } catch (Exception $e) {
                     $save_success = false;
                     $this->setValidationErrorMessage($e->getMessage());
-                    Logger::error('Unable to save. Exception ' . get_class($e) . ' ' . $e->getTraceAsString(),
+                    Logger::error('Unable to save. Exception ' . get_class($e) . ' ' . $e->getMessage() . $e->getTraceAsString(),
                         'FORMBUILDER');
                 }
 
@@ -1726,7 +1726,9 @@ class FormBuilder extends ContainerAware
 
     private function generateSetErrorMessage()
     {
-        $this->setValidationErrorMessage($this->lang->line('formbuilder_label_unable_to_save'));
+        if (empty($this->getValidationErrorMessage())) {
+            $this->setValidationErrorMessage($this->lang->line('formbuilder_label_unable_to_save'));
+        }
 
         // Sometimes there is no DB configured at all
         if (isset($this->db)) {
