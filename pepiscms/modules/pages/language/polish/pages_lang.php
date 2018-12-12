@@ -22,6 +22,7 @@ $lang['pages_dialog_write_new_success']                       = 'Nowa strona dod
 $lang['pages_header_pages_not_pinned_to_menu']                = 'Strony nieprzypięte do menu';
 $lang['pages_header_pages_pinned_to_menu']                    = 'Strony przypięte do menu';
 $lang['pages_input_group_menu']                               = 'Osadzenie w menu';
+$lang['pages_input_group_seo']                                = 'SEO i media społecznościowe';
 $lang['pages_label_all_unsaved_changes_will_be_lost_proceed'] = 'Wszystkie niezapisane zmiany zostaną utracone. Czy kontynuować?';
 $lang['pages_label_contents']                                 = 'Treść strony';
 $lang['pages_label_contents_desc']                            = 'Do formatowania treści strony używaj nagłówków 1-6 oraz standardowych styli. Unikaj zmieniania kolorów oraz czcionki tekstu. Aby dodać link do treści strony, zaznacz tekst i kliknij w ikonkę z kotwicą. Użyj gumki aby wyczyścić styl danego elementu.';

@@ -19,6 +19,13 @@ defined('BASEPATH') or exit('No direct script access allowed');
  */
 class LogsWidget extends Widget
 {
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->moduleLanguage('logs');
+    }
+
     public function warnings($days_before)
     {
         $this->load->model('Log_model');
@@ -27,7 +34,7 @@ class LogsWidget extends Widget
         $values = fill_date_spectrum_values($this->Log_model->getWarningStatistics($days_before), time(), $days_before);
 
         $this->load->library('Google_chart_helper');
-        return $this->google_chart_helper->drawSimpleLineChart($values, 'Date', 'Warnings',
+        return $this->google_chart_helper->drawSimpleLineChart($values, $this->lang->line('logs_timestamp'), $this->lang->line('logs_issues'),
             '100%', 200, 50, 'date', 'number', array('red'));
     }
 

@@ -5,7 +5,7 @@
 <div id="two_pane_layout">
     <div class="left_option_pane">
             <?php foreach($widgets as $widget): if(!$widget['show_in_side_pane']) continue?>
-                <h1 class="contrasted"><?= $widget['label'] ?></h1>
+                <h1 class="contrasted"> <?= $widget['label'] ?></h1>
 
                 <?php
                 $cache_key = 'dashboard_widget_' . $widget['module_name'] . '_' . $widget['widget_name'] . $widget['cache_key'];

@@ -1,8 +1,10 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if(!defined('BASEPATH')) exit('No direct script access allowed');
+
 
 $lang['cms_users_access_denied']                           = 'Brak dostępu';
 $lang['cms_users_activate']                                = 'Aktywuj konto';
 $lang['cms_users_add']                                     = 'Zarejestruj użytkownika';
+$lang['cms_users_add_description']                         = 'Zarejestruj nowego administratora';
 $lang['cms_users_alternative_email']                       = 'Alternatywny adres email';
 $lang['cms_users_birth_date']                              = 'Data urodzin';
 $lang['cms_users_dialog_email_already_in_database']        = 'Email %s jest już w bazie danych.';

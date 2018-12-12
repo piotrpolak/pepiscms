@@ -215,7 +215,7 @@ class Log_model extends Generic_model
     {
         $result = $this->db->select('DATE(timestamp) as date, count(id) as count')
             ->from($this->getTable())
-            ->where('level', Logger::MESSAGE_LEVEL_WARNING)
+            ->where_in('level', array(Logger::MESSAGE_LEVEL_WARNING, Logger::MESSAGE_LEVEL_ERROR))
             ->where('timestamp > "' . date('Y-m-d h:i:s', time() - ($days_before * 24 * 3600)) . '"')
             ->group_by('date')
             ->order_by('date')
