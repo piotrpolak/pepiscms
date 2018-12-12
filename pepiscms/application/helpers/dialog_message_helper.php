@@ -27,7 +27,6 @@ if (!function_exists('display_error')) {
         $o = '<div class="dialog_box error"><img src="pepiscms/theme/img/dialog/messages/error_32.png" alt="" />' . "\n";
         $o .= '<p>' . $message . '</p>' . "\n";
         $o .= '</div>' . "\n";
-        $o .= '<div style="clear: both"></div>' . "\n";
 
         return $o;
     }
@@ -46,7 +45,6 @@ if (!function_exists('display_warning')) {
         $o = '<div class="dialog_box warning"><img src="pepiscms/theme/img/dialog/messages/warning_32.png" alt="" />' . "\n";
         $o .= '<p>' . $message . '</p>' . "\n";
         $o .= '</div>' . "\n";
-        $o .= '<div style="clear: both"></div>' . "\n";
 
         return $o;
     }
@@ -65,7 +63,6 @@ if (!function_exists('display_notification')) {
         $o = '<div class="dialog_box notification"><img src="pepiscms/theme/img/dialog/messages/notification_32.png" alt="" />' . "\n";
         $o .= '<p>' . $message . '</p>' . "\n";
         $o .= '</div>' . "\n";
-        $o .= '<div style="clear: both"></div>' . "\n";
 
         return $o;
     }
@@ -84,7 +81,6 @@ if (!function_exists('display_success')) {
         $o = '<div class="dialog_box success"><img src="pepiscms/theme/img/dialog/messages/success_32.png" alt="" />' . "\n";
         $o .= '<p>' . $message . '</p>' . "\n";
         $o .= '</div>' . "\n";
-        //$o .= '<div style="clear: both"></div>'."\n";
 
         return $o;
     }
@@ -103,7 +99,6 @@ if (!function_exists('display_tip')) {
         $o = '<div class="dialog_box tip"><img src="pepiscms/theme/img/dialog/messages/tip_32.png" alt="" />' . "\n";
         $o .= '<p>' . $message . '</p>' . "\n";
         $o .= '</div>' . "\n";
-        //$o .= '<div style="clear: both"></div>'."\n";
 
         return $o;
     }
@@ -196,7 +191,7 @@ if (!function_exists('get_warning_end')) {
      */
     function get_warning_end()
     {
-        return '</p>' . "\n" . '</div>' . "\n" . '<div style="clear: both"></div>';
+        return '</p>' . "\n" . '</div>' . "\n";
     }
 }
 
