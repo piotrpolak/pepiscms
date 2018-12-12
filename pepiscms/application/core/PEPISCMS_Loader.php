@@ -85,7 +85,7 @@ class PEPISCMS_Loader extends CI_Loader
      *
      * This function lets users load and instantiate models.
      *
-     * @param    string    the name of the class
+     * @param    string|array    the name of the class
      * @param    string    name for the model
      * @param    bool    database connection
      * @param    bool $hardfail

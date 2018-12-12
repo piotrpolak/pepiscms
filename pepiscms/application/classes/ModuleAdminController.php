@@ -102,6 +102,7 @@ abstract class ModuleAdminController extends AdminController
             return false;
         }
 
+        $this->benchmark->mark('view_display_start');
 
         $return_html = '';
 
@@ -143,6 +144,8 @@ abstract class ModuleAdminController extends AdminController
         // Resetting
         $this->response_attributes = array();
         $this->already_displayed = true;
+
+        $this->benchmark->mark('view_display_end');
 
         if ($return) {
             return $return_html;
