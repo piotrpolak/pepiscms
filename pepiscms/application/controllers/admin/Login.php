@@ -25,6 +25,7 @@ class Login extends EnhancedController
     private function _oninit()
     {
         $this->load->library('Auth');
+        $this->load->language('global');
 
         // Important 1! There should be 2 separate IFs otherwise some of the auth drivers will not work
         // Important 2! $this->auth->isAuthorized() should not be cached in a variable!
