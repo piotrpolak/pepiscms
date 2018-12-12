@@ -49,6 +49,7 @@ class WidgetRenderer extends ContainerAware
      */
     public function render()
     {
+        $this->benchmark->mark('widget_'.$this->module_name.'_'.$this->module_name.'_render_start');
         $controller_path = $this->modulepathresolver->getWidgetControllerPath($this->module_name);
 
         if ($controller_path) {
@@ -80,6 +81,8 @@ class WidgetRenderer extends ContainerAware
                 $contents = call_user_func_array(array($obj, $this->method), $args);
 
                 $this->modulerunner->setRunningModuleName($previously_running_module);
+
+                $this->benchmark->mark('widget_'.$this->module_name.'_'.$this->module_name.'_render_end');
                 return $contents;
             } else {
                 $error_msg = 'Unable to run widget ' . $this->module_name . '. Class ' . $class . ' not found.';
