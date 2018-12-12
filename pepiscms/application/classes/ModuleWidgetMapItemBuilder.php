@@ -28,6 +28,7 @@ class ModuleWidgetMapItemBuilder
     private $widgetParameters = array();
     private $cacheTtl = 30;
     private $cacheKey = '';
+    private $labelIcon = false;
 
     /**
      * ModuleWidgetMapItemBuilder constructor.
@@ -41,6 +42,12 @@ class ModuleWidgetMapItemBuilder
     public function withLabel($label)
     {
         $this->label = $label;
+        return $this;
+    }
+
+    public function withLabelIcon($labelIcon)
+    {
+        $this->labelIcon = $labelIcon;
         return $this;
     }
 
@@ -92,6 +99,7 @@ class ModuleWidgetMapItemBuilder
     {
         return array(
             'label' => $this->label,
+            'label_icon' => $this->labelIcon,
             'module_name' => $this->moduleName,
             'widget_name' => $this->widgetName,
             'widget_parameters' => $this->widgetParameters,

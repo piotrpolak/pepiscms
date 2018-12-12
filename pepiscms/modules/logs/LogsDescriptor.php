@@ -117,7 +117,8 @@ class LogsDescriptor extends ModuleDescriptor
     {
         return ModuleWidgetMapBuilder::create()
             ->addItem()
-                ->withLabel($this->lang->line('logs_errors_and_warnings_in_last_30_days'))
+                ->withLabel($this->lang->line($this->module_name . '_errors_and_warnings_in_last_30_days'))
+                ->withLabelIcon(module_resources_url($this->module_name) . 'icon_errors_16.png')
                 ->withModuleName('logs')
                 ->withWidgetName('warnings')
                 ->withWidgetParameters(30)
