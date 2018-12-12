@@ -61,6 +61,7 @@ class PagesAdmin extends ModuleAdminController
 
     public function index()
     {
+        $this->benchmark->mark('pages_gather_data_start');
         $site_language = $this->getAttribute('site_language');
         $pages = $menu = array();
 
@@ -75,6 +76,8 @@ class PagesAdmin extends ModuleAdminController
             ->assign('pages', $pages)
             ->assign('site_languages', $this->Site_language_model->getLanguages());
 
+        $this->benchmark->mark('pages_gather_data_end');
+        
         $this->display($this->getAttribute('view') == 'tree' ? false : 'index_simple');
     }
 
