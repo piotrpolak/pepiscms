@@ -89,6 +89,7 @@ class About extends AbstractDashboardController
      */
     private function getDashboardWidgetMap()
     {
+        $this->benchmark->mark('computing_dashboard_widget_map_start');
         $module_names = $this->modulerunner->getInstalledModulesNamesCached();
 
         $dashboard_widgets = array();
@@ -105,6 +106,8 @@ class About extends AbstractDashboardController
 
             $dashboard_widgets = array_merge($dashboard_widgets, $module_dashboard_widgets);
         }
+
+        $this->benchmark->mark('computing_dashboard_widget_map_end');
         return $dashboard_widgets;
     }
 

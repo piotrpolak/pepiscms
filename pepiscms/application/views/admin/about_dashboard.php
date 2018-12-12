@@ -7,10 +7,19 @@
             <?php foreach($widgets as $widget): if(!$widget['show_in_side_pane']) continue?>
                 <h1 class="contrasted"><?= $widget['label'] ?></h1>
 
-                <?=call_user_func_array(array(
-                    $this->widget->create($widget['module_name'], $widget['widget_name']),
-                    'render'
-                ), $widget['widget_parameters'])?>
+                <?php
+                $cache_key = 'dashboard_widget_' . $widget['module_name'] . '_' . $widget['widget_name'] . $widget['cache_key'];
+                $rendered = $this->cachedobjectmanager->getObject($cache_key, $widget['cache_ttl'], 'widgets');
+                if ($rendered === false) {
+                    $rendered = call_user_func_array(array(
+                        $this->widget->create($widget['module_name'], $widget['widget_name']),
+                        'render'
+                    ), $widget['widget_parameters']);
+                    $this->cachedobjectmanager->setObject($cache_key, $rendered, 'widgets');
+                }
+                echo $rendered;
+                ?>
+
             <?php endforeach ?>
     </div>
 
