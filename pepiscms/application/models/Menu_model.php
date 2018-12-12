@@ -211,7 +211,8 @@ class Menu_model extends Generic_model implements BackupableInterface
             ->where('parent_item_id', $parent_item_id)
             ->where($this->config->item('database_table_menu') . '.language_code', $language_code)
             ->order_by('item_order')
-            ->get()->result_array();
+            ->get()
+            ->result_array();
     }
 
     /**
