@@ -78,6 +78,7 @@ class System_infoDescriptor extends ModuleDescriptor
                 ->withLabel('Disk usage')
                 ->withModuleName('system_info')
                 ->withWidgetName('disk_usage')
+                ->withCacheTtl(3600)
                 ->withWidgetParameters()
             ->end()
             ->build();

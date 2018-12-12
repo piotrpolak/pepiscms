@@ -25,7 +25,9 @@ class ModuleWidgetMapItemBuilder
     private $label;
     private $moduleName;
     private $widgetName;
-    private $widgetParameters;
+    private $widgetParameters = array();
+    private $cacheTtl = 30;
+    private $cacheKey = '';
 
     /**
      * ModuleWidgetMapItemBuilder constructor.
@@ -54,6 +56,24 @@ class ModuleWidgetMapItemBuilder
         return $this;
     }
 
+    public function withCacheTtl($cacheTtl)
+    {
+        $this->cacheTtl = $cacheTtl;
+        return $this;
+    }
+
+    /**
+     * Set cache key if your widget serves different content to different users.
+     *
+     * @param $cacheKey
+     * @return $this
+     */
+    public function withCacheKey($cacheKey)
+    {
+        $this->cacheKey = $cacheKey;
+        return $this;
+    }
+
     public function withWidgetParameters()
     {
         $this->widgetParameters = func_get_args();
@@ -77,6 +97,8 @@ class ModuleWidgetMapItemBuilder
             'widget_parameters' => $this->widgetParameters,
             'show_in_main_pane' => true,
             'show_in_side_pane' => true,
+            'cache_ttl' => $this->cacheTtl,
+            'cache_key' => $this->cacheKey
         );
     }
 }
