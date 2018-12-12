@@ -141,9 +141,11 @@ class Login extends EnhancedController
 
             if ($user_id) {
                 $number_of_consecutive_ua_max = $this->config->item('security_number_of_unsuccessfull_authorizations_to_lock_account');
-                if ($number_of_consecutive_ua_max) {
-                    $number_of_consecutive_ua = $this->User_model->getNumberOfConsecutiveUnsuccessfullAuthorizationsByUserId($user_id);
 
+
+                $number_of_consecutive_ua = $this->User_model->getNumberOfConsecutiveUnsuccessfullAuthorizationsByUserId($user_id);
+
+                if ($number_of_consecutive_ua_max) {
                     if ($number_of_consecutive_ua > $number_of_consecutive_ua_max) {
                         $account_is_locked = true;
                     } elseif ($number_of_consecutive_ua == $number_of_consecutive_ua_max) {
@@ -173,6 +175,11 @@ class Login extends EnhancedController
                         // Need to be the basic method to be able to detect user ID
                         Logger::log('Unable to login ' . $user_email, Logger::MESSAGE_LEVEL_WARNING, 'LOGIN', $user_id, $user_id);
                         $auth_error = true;
+
+
+                        if ($number_of_consecutive_ua >= 2) {
+                            sleep(4);
+                        }
                     }
                 }
             } else {
