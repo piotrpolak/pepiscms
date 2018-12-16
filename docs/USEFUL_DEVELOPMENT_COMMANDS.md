@@ -66,7 +66,7 @@ optipng *.png
 ## Validating build locally (it deletes the local app working directory!)
 
 ```bash
-sudo rm -rf app/ && docker-compose rm --stop -f && docker-compose up --build && \
+sudo rm -rf tmp/ && docker-compose rm --stop -f && docker-compose up --build --force-recreate && \
 docker exec -it pepiscms_web_1 sh -c \
 "composer install && composer require --no-update phpoffice/phpspreadsheet 1.5.* && composer --no-update require twig/twig && ./vendor/bin/phpunit -c ./vendor/piotrpolak/pepiscms/phpunit.xml.dist && vendor/bin/behat"
 ```
