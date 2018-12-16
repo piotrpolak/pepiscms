@@ -49,18 +49,7 @@ class PEPISCMS_Input extends CI_Input
 
     public function getParam($paramName)
     {
-        if ($this->get_parameters == -1) {
-            $CI = get_instance();
-            $this->get_parameters = array();
-            $total_segments = $CI->uri->total_segments();
-            for ($i = 0; $i <= $total_segments; $i++) {
-                $segment = $CI->uri->segment($i);
-                if (strpos($segment, '-') !== false) {
-                    $segment = explode('-', $segment, 2); // 2 is required here as we accept - in the valie
-                    $this->get_parameters[$segment[0]] = $segment[1];
-                }
-            }
-        }
+        $this->computeGetParamsOnFirstUse();
 
         return (isset($this->get_parameters[$paramName]) ? $this->get_parameters[$paramName] : '');
     }
@@ -105,5 +94,21 @@ class PEPISCMS_Input extends CI_Input
     public function setMethodName($method)
     {
         $this->method = $method;
+    }
+
+    private function computeGetParamsOnFirstUse()
+    {
+        if ($this->get_parameters == -1) {
+            $CI = get_instance();
+            $this->get_parameters = array();
+            $total_segments = $CI->uri->total_segments();
+            for ($i = 0; $i <= $total_segments; $i++) {
+                $segment = $CI->uri->segment($i);
+                if (strpos($segment, '-') !== false) {
+                    $segment = explode('-', $segment, 2); // 2 is required here as we accept - in the valie
+                    $this->get_parameters[$segment[0]] = $segment[1];
+                }
+            }
+        }
     }
 }

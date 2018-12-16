@@ -1257,19 +1257,15 @@ class FormBuilder extends ContainerAware
      */
     private function generateEnsureUploadDirectoryExits($field)
     {
-        // If file exist, then checking if not a directory
-        if (file_exists($field['upload_path'])) {
-            // Checking if something else than a directory
-            if (!is_dir($field['upload_path'])) {
-                Logger::error('Upload path is a regular file and not a directory ' . $field['upload_path'], 'FORMBUILDER');
-                return false;
-            }
-        } else {
+
+        if (file_exists($field['upload_path']) && !is_dir($field['upload_path'])) {
+            // If file exist, then checking if not a directory
+            Logger::error('Upload path is a regular file and not a directory ' . $field['upload_path'], 'FORMBUILDER');
+            return false;
+        } elseif (!@mkdir($field['upload_path'])) {
             // If the file does not exist, attempt to create the path
-            if (!@mkdir($field['upload_path'])) {
-                Logger::error('Unable to create directory ' . $field['upload_path'], 'FORMBUILDER');
-                return false;
-            }
+            Logger::error('Unable to create directory ' . $field['upload_path'], 'FORMBUILDER');
+            return false;
         }
 
         return true;

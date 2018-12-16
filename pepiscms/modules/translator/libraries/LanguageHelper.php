@@ -276,11 +276,7 @@ class LanguageHelper extends ContainerAware
      */
     public function getModuleLanguages($module, $return_dirs = false)
     {
-        if ($module == self::SYSTEM) {
-            $path = APPPATH . 'language/';
-        } else {
-            $path = $this->load->resolveModuleDirectory($module) . 'language/';
-        }
+        $path = $this->getLanguagePath($module);
 
         $language_dirs = glob($path . '*', GLOB_ONLYDIR);
         if ($return_dirs) {
@@ -305,11 +301,7 @@ class LanguageHelper extends ContainerAware
      */
     public function getModuleLanguageFiles($module, $return_dirs = false)
     {
-        if ($module == self::SYSTEM) {
-            $path = APPPATH . 'language/';
-        } else {
-            $path = $this->load->resolveModuleDirectory($module) . 'language/';
-        }
+        $path = $this->getLanguagePath($module);
 
         $language_dirs = glob($path . '*/*_lang.php');
         if ($return_dirs) {
@@ -332,7 +324,6 @@ class LanguageHelper extends ContainerAware
      */
     private function getModuleLanguagePath($module, $lang_name, $language_file)
     {
-        $path = false;
         if ($module == self::SYSTEM) {
             // pepiscms translation
             $path = APPPATH . 'language/';
@@ -341,10 +332,11 @@ class LanguageHelper extends ContainerAware
             if (!file_exists($path . $lang_name . '/' . $language_file)) {
                 $path = APPPATH . '../../codeigniter/language/';
             }
+
+            return $path;
         } else {
-            $path = $this->load->resolveModuleDirectory($module) . 'language/';
+            return $this->load->resolveModuleDirectory($module) . 'language/';
         }
-        return $path;
     }
 
     /**
@@ -358,5 +350,19 @@ class LanguageHelper extends ContainerAware
             $language_file = $module . '_lang.php';
         }
         return $language_file;
+    }
+
+    /**
+     * @param $module
+     * @return string
+     */
+    private function getLanguagePath($module)
+    {
+        if ($module == self::SYSTEM) {
+            $path = APPPATH . 'language/';
+        } else {
+            $path = $this->load->resolveModuleDirectory($module) . 'language/';
+        }
+        return $path;
     }
 }

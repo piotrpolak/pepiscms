@@ -50,16 +50,9 @@ class BackupAdmin extends ModuleAdminController
             show_error($this->lang->line('backup_dump_disabled_on_windows'));
         }
 
-        require(INSTALLATIONPATH . '/application/config/database.php');
-        if (!isset($db)) {
-            show_error($this->lang->line('backup_database_settings_not_found'));
-        }
+        $db_settings = $this->getDatabaseSettings();
 
-        if (!($db[$active_group]['dbdriver'] == 'mysql' || $db[$active_group]['dbdriver'] == 'mysqli')) {
-            show_error($this->lang->line('backup_dump_works_only_with_mysql'));
-        }
-
-        $dump = mysqldump($db[$active_group]['hostname'], $db[$active_group]['database'], $db[$active_group]['username'], $db[$active_group]['password']);
+        $dump = mysqldump($db_settings['hostname'], $db_settings['database'], $db_settings['username'], $db_settings['password']);
         if ($dump) {
             Logger::info('Doing full database dump', 'BACKUP');
             $file_name = niceuri($this->config->item('site_name')) . '-' . date('Y-m-d_H-i-s') . '.sql';
@@ -82,18 +75,9 @@ class BackupAdmin extends ModuleAdminController
             show_error($this->lang->line('backup_dump_disabled_on_windows'));
         }
 
-        require(INSTALLATIONPATH . '/application/config/database.php');
-        if (!isset($db)) {
-            show_error($this->lang->line('backup_database_settings_not_found'));
-        }
+        $db_settings = $this->getDatabaseSettings();
 
-        // TODO $active_group is replaced with another variable in CI3
-
-        if (!($db[$active_group]['dbdriver'] == 'mysql' || $db[$active_group]['dbdriver'] == 'mysqli')) {
-            show_error($this->lang->line('backup_dump_works_only_with_mysql'));
-        }
-
-        $dump = mysqldump($db[$active_group]['hostname'], $db[$active_group]['database'], $db[$active_group]['username'], $db[$active_group]['password'], array($this->config->item('database_table_groups'), $this->config->item('database_table_group_to_entity')), false, false);
+        $dump = mysqldump($db_settings['hostname'], $db_settings['database'], $db_settings['username'], $db_settings['password'], array($this->config->item('database_table_groups'), $this->config->item('database_table_group_to_entity')), false, false);
         if ($dump) {
             Logger::info('Doing partial database dump', 'BACKUP');
             $file_name = niceuri('groups-' . $this->config->item('site_name')) . '-' . date('Y-m-d_H-i-s') . '.sql';
@@ -231,5 +215,22 @@ class BackupAdmin extends ModuleAdminController
             }
             return false;
         }
+    }
+
+    /**
+     * @return array
+     */
+    private function getDatabaseSettings()
+    {
+        require(INSTALLATIONPATH . '/application/config/database.php');
+        if (!isset($db)) {
+            show_error($this->lang->line('backup_database_settings_not_found'));
+        }
+
+        if (!($db[$active_group]['dbdriver'] == 'mysql' || $db[$active_group]['dbdriver'] == 'mysqli')) {
+            show_error($this->lang->line('backup_dump_works_only_with_mysql'));
+        }
+
+        return $db[$active_group];
     }
 }
