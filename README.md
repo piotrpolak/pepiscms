@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/piotrpolak/pepiscms.svg?branch=master)](https://travis-ci.org/piotrpolak/pepiscms)
 [![Maintainability](https://api.codeclimate.com/v1/badges/63fd33946e2cd355a561/maintainability)](https://codeclimate.com/github/piotrpolak/pepiscms/maintainability)
 
-PepisCMS is a content management system. Its main feature is the [CRUD module generator](#generating-a-crud-module)
+PepisCMS is a content management system. Its main feature consists in the [CRUD module generator](#generating-a-crud-module)
 which makes it easy to set up an entire administration panel based on the database schema definition within minutes.
 The generated administration panel consists of [modules](#modules) that can be further customized (or just left as they
 are if you don't care about the presentation details).
@@ -45,7 +45,7 @@ allows to be swapped/upgraded with no or minimal changes in the project code.
 
 ## Live demo
 
-The demo application is automatically deployed to Heroku and can be reached at:
+The demo application is automatically deployed to [Heroku](https://www.heroku.com/) and can be reached at:
 
 * [https://pepiscms-demo.herokuapp.com/](https://pepiscms-demo.herokuapp.com/)
 
@@ -58,7 +58,7 @@ The sources for the demo application can be found at [https://github.com/piotrpo
 
 ## Some history
 
-PepisCMS was started in 2007 as a coursework project. Shortly after the first release the system was serving several
+PepisCMS was started in 2007 as a coursework project. Shortly after its first release the system was serving several
 production websites and CRM systems.
 
 [CodeIgniter](https://codeigniter.com/) was picked as the application framework, back then there were few serious
@@ -71,7 +71,7 @@ As 2018, the project is **fully functional** and **well tested**. Some automatic
 core components and Behat for smoke tests). Due to the minimal footprint and literally no overhead of the framework,
 project built on top of PepisCMS are really fast.
 
-As PepisCMS 1.0.0 the support for composer dependency management has been implemented.
+As PepisCMS 1.0.0 the support for [Composer dependency management](https://getcomposer.org/) has been implemented.
 Additionally some of the code has been rewritten in the PSR style and benefits from PSR class autoloading.
 Version 1.0.0 plays well both with PHP5 and PHP7.
 
@@ -85,7 +85,7 @@ framework than just an upgrade.*
 ## Development philosophy
 
 The project has been developed using a very conservative approach and manually tested on multiple deployments prior
-to releasing a stable version. This made it possible to keep regression to minimum but in time.
+to releasing a stable version. This made it possible to keep regression to minimum.
 
 
 
@@ -95,8 +95,9 @@ to releasing a stable version. This made it possible to keep regression to minim
 
 On the "10th birthday" the project was released as open source under the [MIT license](LICENSE.txt).
 
-Prior to pushing the project to github its code has been slightly refactored, cleaned up from any proprietary code,
-described by some tests and released as a composer dependency.
+Prior to pushing the project to [GitHub](https://github.com/piotrpolak/pepiscms) its code has been slightly refactored,
+cleaned up from any proprietary code, described by some tests and released as a
+[composer dependency](https://packagist.org/packages/piotrpolak/pepiscms).
 
 Being a composer module PepisCMS now benefits from the component management. Upgrading any of its dependencies is now
 simplified to incrementing composer versions.
@@ -122,7 +123,7 @@ product.
     
     Read more about [modules](#modules).
   
-* **Advanced user and user right management**
+* **Advanced user and user rights management**
 
     The user is granted a certain right above a business entity.
     Every single controller method has associated a minimal right above a certain entity.
@@ -259,7 +260,7 @@ product.
 
 # Requirements
 
-* PHP 5.6+ with mysqli, gd (recommended), mbstring (recommended)
+* PHP 5.6+/7.0+ with mysqli, gd (recommended), mbstring (recommended)
 * Apache 2 with mod_rewrite
 * MySQL or MariaDB database
 * composer
@@ -851,8 +852,8 @@ PepisCMS provides some base models that can be extended in order make developmen
 | Name                                                                            | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 |---------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [Generic_model](#generic-model)                                                 | Generic model is the improved version od CodeIgniter model. It implements methods specified by both [EntitableInterface](./pepiscms/application/classes/EntitableInterface.php) and [AdvancedDataFeedableInterface](./pepiscms/application/classes/AdvancedDataFeedableInterface.php) interfaces. In most cases this class should be extended and parametrized in the constructor but it is left as a non-abstract for DataGrid and FormBuilder components that initialize and parametrize Generic_model "on-the-fly" using prototype design pattern. |
-| [Array_model](./pepiscms/application/models/Array_model.php) | Provides Generic_model capabilities that can be applied to data sources other than database.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| [Ssh_model](./pepiscms/application/models/Ssh_model.php)     | Provides Generic_model and Array_model capabilities for data parsed over SSH                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| [Array_model](./pepiscms/application/models/Array_model.php)                    | Provides Generic_model capabilities that can be applied to data sources other than database.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| [Ssh_model](./pepiscms/application/models/Ssh_model.php)                        | Provides Generic_model and Array_model capabilities for data parsed over SSH                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 
 #### View 
 
