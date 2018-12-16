@@ -476,15 +476,11 @@ class DefaultFormRenderer extends ContainerAware implements FormRenderableInterf
     private function computeValue($field_name, $object, $field)
     {
         if ($object && isset($object->$field_name)) {
-            $value = $object->$field_name;
-        } else {
-            if (isset($field['input_default_value']) && $field['input_default_value']) {
-                $value = $field['input_default_value'];
-            } else {
-                $value = '';
-            }
+            return $object->$field_name;
+        } elseif (isset($field['input_default_value']) && $field['input_default_value']) {
+            return $field['input_default_value'];
         }
-        return $value;
+        return '';
     }
 
     /**

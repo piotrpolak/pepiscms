@@ -79,9 +79,7 @@ class TranslatorAdmin extends ModuleAdminController
         }
 
         $language_files = $this->languagehelper->getModuleLanguageFiles($module);
-        if (!$file_name && count($language_files) == 1) {
-            redirect(module_url() . 'show/module-' . $module . '/file_name-' . $language_files[0]);
-        }
+        $this->redirectToFirstFilenameIfNoFileSpecified($file_name, $language_files, $module);
 
         $languages = $this->languagehelper->getModuleLanguages($module);
 
@@ -188,5 +186,17 @@ class TranslatorAdmin extends ModuleAdminController
         $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS);
         $this->simplesessionmessage->setMessage('global_header_success');
         redirect(module_url() . 'show/module-' . $module . '/file_name-' . $file_name);
+    }
+
+    /**
+     * @param $file_name
+     * @param $language_files
+     * @param $module
+     */
+    private function redirectToFirstFilenameIfNoFileSpecified($file_name, $language_files, $module)
+    {
+        if (!$file_name && count($language_files) == 1) {
+            redirect(module_url() . 'show/module-' . $module . '/file_name-' . $language_files[0]);
+        }
     }
 }
