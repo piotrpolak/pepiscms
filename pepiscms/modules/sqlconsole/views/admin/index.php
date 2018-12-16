@@ -118,7 +118,7 @@ if( $is_utilities_only_module )
                     <h4><?=$this->lang->line('sqlconsole_query')?> <b><?=$table?></b></h4>
                     <ul>
                         <?php $keys = '('.implode(', ', array_keys($fields)).')'; ?>
-                        <?php $values = '('.implode(', ', array_fill(0, count($keys), "'?'")).')'; ?>
+                        <?php $values = '('.implode(', ', array_fill(0, count($fields), "'?'")).')'; ?>
 
                         <li><a href="#" title="SELECT * FROM <?=$table?>" class="sql replace focus">SELECT * FROM <?=$table?></a></li>
                         <li><a href="#" title="INSERT INTO <?=$table?> <?=$keys?> VALUES <?=$values?>" class="sql replace focus">INSERT INTO <?=$table?></a></li>
