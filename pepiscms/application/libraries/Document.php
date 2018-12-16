@@ -41,9 +41,9 @@ class Document extends ContainerAware
     /** @var string */
     private $page_style;
     /** @var array */
-    private $page_stylesheets;
+    private $page_stylesheets = array();
     /** @var array */
-    private $page_javascript;
+    private $page_javascript = array();
     /** @var int */
     private $menu_item_id = null; // To be checked if needed
     /** @var Menu */
