@@ -1168,7 +1168,8 @@ class FormBuilder extends ContainerAware
         } else {
             // Executed for situation where not a POST save and no object found
             // This is called if there is no POST - reading object from the database
-            if (!$this->object) {
+            if (empty($this->object)) {
+                $this->object = new stdClass();
                 $this->generateDoReadObject();
                 $this->generateDoAssignDefaultValuesForEmptyReadFields();
             }
@@ -1368,10 +1369,6 @@ class FormBuilder extends ContainerAware
 
     private function generateDoReadObject()
     {
-        if (empty($this->object)) {
-            $this->object = new stdClass();
-        }
-
         if (isset($this->callbacks[self::CALLBACK_ON_READ])) {
             // There is on read callback, the object is retrieved using the callback function
             // The callback function must take the object (empty) by reference and must fill it
@@ -1384,14 +1381,9 @@ class FormBuilder extends ContainerAware
     private function generateDoAssignDefaultValuesForEmptyReadFields()
     {
         // Assigning default values for fields that have no value storied in the database
-        if ($this->object) {
-            // For every field from the form definition
-            foreach ($this->fields as &$field) {
-                // If there is no value, lets try to get the implicit value
-
-                if (!isset($this->object->{$field['field']})) {
-                    $this->object->{$field['field']} = (isset($field['input_default_value']) && $field['input_default_value'] !== false ? $field['input_default_value'] : '');
-                }
+        foreach ($this->fields as &$field) {
+            if (!isset($this->object->{$field['field']})) {
+                $this->object->{$field['field']} = (isset($field['input_default_value']) && $field['input_default_value'] !== false ? $field['input_default_value'] : '');
             }
         }
     }
@@ -1492,7 +1484,6 @@ class FormBuilder extends ContainerAware
     }
 
     /**
-     * @param $is_ci3
      * @return array
      */
     private function generateBuildUpValidationRules()
@@ -1567,7 +1558,7 @@ class FormBuilder extends ContainerAware
             && $field['foreign_key_junction_id_field_right']
             && $field['foreign_key_junction_id_field_left']) {
             // This IF prevents from overwriting when the validation fails
-            if (isset($this->object->{$field['field']}) && !$this->object->{$field['field']}) {
+            if (!$this->object->{$field['field']}) {
                 // Building where conditions based on the user input and the object ID
                 // Since 0.2.4.3 $where_conditions is read from foreign_key_junction_where_conditions instead of foreign_key_where_conditions
                 // The elseif( is_array($field['foreign_key_where_conditions']) ) remains ONLY for backward compatibility
@@ -1748,7 +1739,9 @@ class FormBuilder extends ContainerAware
     {
         foreach ($this->fields as &$field) {
             if ($field['foreign_key_table']) {
-                $this->generateForeignKeyFetchObjectValues($field);
+                if ($this->getId()) {
+                    $this->generateForeignKeyFetchObjectValues($field);
+                }
                 $this->generateForeignKeyFillFieldPossibleValues($field);
             }
         }
