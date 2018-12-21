@@ -19,6 +19,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
  */
 class Changepassword extends AdminController
 {
+    const NEW_PASSWORD_FIELD_NAME = 'new_password';
+    const CONFIRM_NEW_PASSWORD_FIELD_NAME = 'confirm_new_password';
+    const CURRENT_PASSWORD_FIELD_NAME = 'current_password';
+
     public function index()
     {
         if (!$this->auth->getDriver()->isPasswordChangeSupported()) {
@@ -40,18 +44,18 @@ class Changepassword extends AdminController
 
         if (!$is_password_expired) {
             $builder
-                ->withField('current_password')
+                ->withField(self::CURRENT_PASSWORD_FIELD_NAME)
                     ->withInputType(FormBuilder::PASSWORD)
                     ->withLabel($this->lang->line('changepassword_label_current_password'))
                 ->end();
         }
 
         $builder
-            ->withField('new_password')
+            ->withField(self::NEW_PASSWORD_FIELD_NAME)
                 ->withInputType(FormBuilder::PASSWORD)
                 ->withLabel($this->lang->line('changepassword_label_new_password'))
             ->end()
-            ->withField('confirm_new_password')
+            ->withField(self::CONFIRM_NEW_PASSWORD_FIELD_NAME)
                 ->withInputType(FormBuilder::PASSWORD)
                 ->withLabel($this->lang->line('changepassword_label_confirm_new_password'))
             ->end();
@@ -59,29 +63,34 @@ class Changepassword extends AdminController
         $that = &$this;
         $this->formbuilder->setCallback(function ($data) use ($that, $is_password_expired) {
             if (!$is_password_expired) {
-                if (!$that->User_model->validateByEmail($that->auth->getUser(), $data['current_password'])) {
+                if (!$that->User_model->validateByEmail($that->auth->getUser(), $data[self::CURRENT_PASSWORD_FIELD_NAME])) {
                     $that->formbuilder->setValidationErrorMessage($that->lang->line('changepassword_dialog_incorrect_current_password'));
                     return false;
                 }
 
-                if ($data['new_password'] == $data['current_password']) {
-                    $that->formbuilder->setValidationErrorMessage($that->lang->line('changepassword_dialog_new_password_must_be_different_from_the_old_one'));
+                if ($data[self::NEW_PASSWORD_FIELD_NAME] == $data[self::CURRENT_PASSWORD_FIELD_NAME]) {
+                    $that->formbuilder->setValidationErrorMessage(
+                        $that->lang->line('changepassword_dialog_new_password_must_be_different_from_the_old_one'));
                     return false;
                 }
             }
 
-            if ($data['new_password'] != $data['confirm_new_password']) {
+            if ($data[self::NEW_PASSWORD_FIELD_NAME] != $data[self::CONFIRM_NEW_PASSWORD_FIELD_NAME]) {
                 $that->formbuilder->setValidationErrorMessage($that->lang->line('changepassword_dialog_new_password_no_match'));
                 return false;
             }
 
-            $password_last_used = $that->Password_history_model->getPasswordLastUsedDatetime($that->auth->getUserId(), $data['new_password']);
+            $password_last_used = $that->Password_history_model->getPasswordLastUsedDatetime($that->auth->getUserId(),
+                $data[self::NEW_PASSWORD_FIELD_NAME]);
+
             if ($password_last_used) {
-                $that->formbuilder->setValidationErrorMessage(sprintf($that->lang->line('changepassword_dialog_password_already_used_in_past'), $password_last_used));
+                $that->formbuilder->setValidationErrorMessage(sprintf(
+                    $that->lang->line('changepassword_dialog_password_already_used_in_past'), $password_last_used
+                ));
                 return false;
             }
 
-            if ($that->User_model->changePasswordByUserId($that->auth->getUserId(), $data['new_password'])) {
+            if ($that->User_model->changePasswordByUserId($that->auth->getUserId(), $data[self::NEW_PASSWORD_FIELD_NAME])) {
                 $that->auth->refreshSession();
                 LOGGER::info('Changing own password', 'USER');
 
@@ -91,7 +100,10 @@ class Changepassword extends AdminController
 
                 redirect(admin_url());
             } else {
-                $that->formbuilder->setValidationErrorMessage(sprintf($that->lang->line('changepassword_dialog_new_password_is_not_strong_enough'), $this->User_model->getMinimumAllowedPasswordLenght()));
+                $that->formbuilder->setValidationErrorMessage(sprintf(
+                    $that->lang->line('changepassword_dialog_new_password_is_not_strong_enough'),
+                    $this->User_model->getMinimumAllowedPasswordLenght()
+                ));
                 return false;
             }
         }, FormBuilder::CALLBACK_ON_SAVE);
