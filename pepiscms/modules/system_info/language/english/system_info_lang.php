@@ -37,3 +37,7 @@ $lang['system_info_total_occupied_space']                   = 'Total occupied sp
 $lang['system_info_upload_maximum_size']                    = 'Upload maximum file size';
 $lang['system_info_usage_in_megabytes']                     = 'Usage in megabytes';
 $lang['system_info_disk_usage']                             = 'Disk usage';
+$lang['system_info_max_quota_in_mb']                        = 'Quota in MB';
+$lang['system_info_max_quota_in_mb_description']            = 'Overwrite quota value. When unset or zero, the value of available disk space is used to compute usage.';
+$lang['system_info_watch_dir']                              = 'Watch directory';
+$lang['system_info_watch_dir_description']                  = 'Directory to watch relative to INSTALLATIONPATH. Only specify if the watched directory is different from the INSTALLATIONPATH.';

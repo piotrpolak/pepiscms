@@ -83,4 +83,21 @@ class System_infoDescriptor extends ModuleDescriptor
             ->end()
             ->build();
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getConfigVariables()
+    {
+        return CrudDefinitionBuilder::create()
+            ->withField('system_info_max_quota_in_mb')
+                ->withValidationRules('numeric')
+                ->withDescription('system_info_max_quota_in_mb_description')
+            ->end()
+            ->withField('system_info_watch_dir')
+                ->withNoValidationRules()
+                ->withDescription('system_info_watch_dir_description')
+            ->end()
+            ->build();
+    }
 }
