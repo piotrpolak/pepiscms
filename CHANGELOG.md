@@ -8,7 +8,8 @@
  * Site and module configuration is now stored in database with a fallback to files!
  * Improved installer and migration scripts, implemented command line unattended installer
  * Installation script now reads default values from ENV variables
- * Improved security, added password history to prevent reusing old passwords, added timeout on consecutive unsuccesfull authentications
+ * Implemented password history feature that prohibits from reusing previously set passwords (needs to be configured separately)
+ * Improved authentication security: added timeout on consecutive unsuccessful authentications
  * Implemented automatic loading of module models upon first use (for modules)
  * Added Behat end-to-end tests covering core features
  * Implemented `CrudDefinitionBuilder` and `CrudFieldDefinitionBuilder` aiming to simplify CRUD definition setup
@@ -21,13 +22,11 @@
  * Pages got the possibility to define a page image
  * Migrated to the latest `phpspreadsheet` library
  * Implemented lazy image load for `DataGrid`, File Manager and CRUD modules to improve performance
- * Added password history (and check) for improved password security
  * Reviewed application translations
  * Added new utility library `Query_helper`
  * Extracted pages as a separate module
  * Added possibility to display widgets on the admin dashboard
  * Improved cache invalidation
- * Implemented password history feature that prohibits from reusing previously set passwords (needs to be configured separately)
  * Improved development features and developer's experience
  * Dropped support for PHPTal, FCKEditor
  * Dropped support for Spanish and Romanian languages
