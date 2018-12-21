@@ -274,6 +274,8 @@ class PagesAdmin extends ModuleAdminController
 
         LOGGER::info('Deleting page', 'PAGES', $page_id);
 
+        $this->_onDelete($page_id);
+
         $success = $this->Page_model->deleteById($page_id);
         $this->_clear_cache();
 
@@ -302,6 +304,7 @@ class PagesAdmin extends ModuleAdminController
             $page_id = $this->Menu_model->getPageIdByItemId($item_id); // Must before the deletion code
             $this->Menu_model->deleteById($item_id);
             if ($page_id) {
+                $this->_onDelete($page_id);
                 $success = $this->Page_model->deleteById($page_id);
                 LOGGER::info('Deleting page', 'PAGES', $page_id);
             }
@@ -709,5 +712,20 @@ class PagesAdmin extends ModuleAdminController
             return TRUE;
         }
         return FALSE;
+    }
+
+    /**
+     * @param $page_id
+     */
+    private function _onDelete($page_id)
+    {
+        $page = $this->Page_model->getById($page_id);
+        if (!$page) {
+            show_404();
+        }
+
+        if ($page->page_image_path) {
+            unlink($this->uploads_base_path . $page->page_image_path);
+        }
     }
 }
