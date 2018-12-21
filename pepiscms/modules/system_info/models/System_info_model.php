@@ -21,10 +21,10 @@ class System_info_model extends PEPISCMS_Model
         return disk_free_space(INSTALLATIONPATH);
     }
 
-    public function getOccupiedSpace()
+    public function getOccupiedSpace($relative_dir = '')
     {
         $this->load->helper('file');
-        $files = get_filenames(INSTALLATIONPATH, TRUE);
+        $files = get_filenames(INSTALLATIONPATH . $relative_dir, TRUE);
         $filesize_all = 0;
         foreach ($files as $file) {
             if (is_file($file)) {

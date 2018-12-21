@@ -20,13 +20,22 @@ class System_infoWidget extends Widget
     {
         parent::__construct();
         $this->load->moduleLanguage('system_info');
+        $this->load->moduleConfig('system_info');
     }
 
     public function disk_usage()
     {
+        $quota = intval($this->config->item('system_info_max_quota_in_mb')) * 1024 * 1024;
+
+        if ($quota < 1) {
+            $quota = $this->System_info_model->getFreeSpace();
+        }
+
+        $occupied_space = $this->System_info_model->getOccupiedSpace($this->config->item('system_info_watch_dir'));
+
         $this->load->library('Google_chart_helper');
-        return $this->assign('free_space', $this->System_info_model->getFreeSpace())
-            ->assign('occupied_space', $this->System_info_model->getOccupiedSpace())
+        return $this->assign('free_space', $quota)
+            ->assign('occupied_space', $occupied_space)
             ->display('disk_usage');
     }
 }
