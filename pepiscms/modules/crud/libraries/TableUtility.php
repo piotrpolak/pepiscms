@@ -41,8 +41,7 @@ class TableUtility extends ContainerAware
             $this->db_instance = $this->db;
         }
 
-        $this->load->library('DataGrid');
-        $this->load->library('FormBuilder');
+        $this->load->library(array('DataGrid', 'FormBuilder'));
 
         $this->raw_table_description_cache = array();
     }
@@ -199,8 +198,6 @@ class TableUtility extends ContainerAware
      */
     public function getTableLabelFieldName($table, $exclude_field_names = array())
     {
-        $foreign_key_label_field = 'id';
-
         // Try from set of possible labels
         $allowed_labels = array('name', 'label', 'username', 'login', 'fitst_name', 'last_name', 'code', 'id');
         $fk_table_definition = $this->getDefinitionFromTable($table, false);
@@ -263,7 +260,7 @@ class TableUtility extends ContainerAware
             $is_null = strtolower($collumn['Null']) == 'yes';
             $validation_rules = array();
             $db_type = self::resolveDBType($collumn['Type']);
-            $max_input_length = self::resolveLengthFronDBType($collumn['Type']);
+            $max_input_length = self::resolveLengthFromDBType($collumn['Type']);
             $input_type = self::getInputType(self::resolveDBType($collumn['Type']), $field_name);
             $is_numeric = self::isDbTypeNumeric($db_type);
             $is_boolean = $is_numeric && ($db_type == 'smallint' || $db_type == 'tinyint');
@@ -428,7 +425,7 @@ class TableUtility extends ContainerAware
      * @param string $type
      * @return bool|string
      */
-    public static function resolveLengthFronDBType($type)
+    public static function resolveLengthFromDBType($type)
     {
         $pos = strpos($type, '(');
         if ($pos !== false) {
