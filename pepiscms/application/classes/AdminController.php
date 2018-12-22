@@ -34,11 +34,7 @@ abstract class AdminController extends EnhancedController
 
         $this->benchmark->mark('admin_controller_construct_start');
 
-        $this->load->library('Auth');
-        $this->load->library('Logger');
-        $this->load->library('SecurityPolicy');
-        $this->load->library('SecurityManager');
-        $this->load->library('ModuleRunner');
+        $this->load->library(array('Auth', 'Logger', 'SecurityPolicy', 'SecurityManager', 'ModuleRunner'));
         $this->load->helper('cookie');
 
         // Authorization
@@ -52,17 +48,9 @@ abstract class AdminController extends EnhancedController
         }
 
         // Determining user language
-        $language = $this->lang->getCurrentLanguage();
-        if (!$language) {
-            $language = $this->config->item('language');
-        }
+        $language = $this->getCurrentLanguage();
 
-        $this->lang->load('core', $language);
-        $this->lang->load('modules', $language);
-        $this->lang->load('login', $language);
-        $this->lang->load('utilities', $language);
-        $this->lang->load('global', $language);
-        $this->lang->load('changepassword', $language);
+        $this->lang->load(array('core', 'modules', 'login', 'utilities', 'global', 'changepassword'), $language);
 
         // Determining controller and method names
         $controller = $this->uri->segment(2);
@@ -121,14 +109,7 @@ abstract class AdminController extends EnhancedController
         // Checking user access rights
         $this->assign('security_policy_violaton', false);
         if (!SecurityManager::hasAccess($controller, $method)) {
-            Logger::warning('Security policy violation ' . $controller . '/' . $method, 'SECURITY');
-
-            ob_start();
-            $this->assign('security_policy_violaton', true)
-                ->display('admin/no_sufficient_priviliges', true, true);
-            $out = ob_get_contents();
-            ob_end_clean();
-            die($out);
+            $this->handleAccessDenied($controller, $method);
         }
 
         $this->benchmark->mark('admin_controller_construct_end');
@@ -183,5 +164,33 @@ abstract class AdminController extends EnhancedController
         if ($return) {
             return $return_html;
         }
+    }
+
+    /**
+     * @return string|null
+     */
+    private function getCurrentLanguage()
+    {
+        $language = $this->lang->getCurrentLanguage();
+        if ($language) {
+            return $language;
+        }
+        return $this->config->item('language');
+    }
+
+    /**
+     * @param $controller
+     * @param $method
+     */
+    private function handleAccessDenied($controller, $method)
+    {
+        Logger::warning('Security policy violation ' . $controller . '/' . $method, 'SECURITY');
+
+        ob_start();
+        $this->assign('security_policy_violaton', true)
+            ->display('admin/no_sufficient_priviliges', true, true);
+        $out = ob_get_contents();
+        ob_end_clean();
+        die($out);
     }
 }
