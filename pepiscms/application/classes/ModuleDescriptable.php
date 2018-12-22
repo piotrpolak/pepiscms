@@ -17,7 +17,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 /**
  * Deprecated, please use ModuleDescriptableInterface
  *
- * @deprecated as 1.0.0
+ * @deprecated as PepisCMS 1.0.0
  */
 interface ModuleDescriptable extends ModuleDescriptableInterface
 {

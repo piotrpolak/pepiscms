@@ -56,6 +56,8 @@
     * `AssetMinimifier`,
     * `CrossDomainAuth`,
     * `CommonHook`
+ * Removed constants:
+    * `DataGrid::FILTER_CONDITION_EQAL` (typo)
  * `ModuleAdminController` and `ModuleController` are now abstract.
  * Automatic loading of module models
  * Removed deprecated customized `MY_DB_Cache`
