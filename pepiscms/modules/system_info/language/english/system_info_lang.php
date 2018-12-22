@@ -1,6 +1,7 @@
 <?php if(!defined('BASEPATH')) exit('No direct script access allowed');
 
 
+$lang['system__info_view_all_stats']                        = 'More statistics';
 $lang['system_info_apache_loaded_modules']                  = 'Apache loaded modules';
 $lang['system_info_apache_user']                            = 'Apache user';
 $lang['system_info_apache_version']                         = 'Apache version';
@@ -14,6 +15,8 @@ $lang['system_info_free']                                   = 'Free';
 $lang['system_info_installation_path']                      = 'Installation path';
 $lang['system_info_installation_path_writeable']            = 'Is installation path writeable?';
 $lang['system_info_is_email_smtp_enabled']                  = 'Is email SMTP enabled?';
+$lang['system_info_max_quota_in_mb']                        = 'Quota in MB';
+$lang['system_info_max_quota_in_mb_description']            = 'Overwrite quota value. When unset or zero, the value of available disk space is used to compute usage.';
 $lang['system_info_minutes']                                = 'minutes';
 $lang['system_info_module_description']                     = 'Displays system information and component\'s version';
 $lang['system_info_module_name']                            = 'System information';
@@ -30,14 +33,13 @@ $lang['system_info_php_loaded_extensions']                  = 'PHP loaded extens
 $lang['system_info_php_open_basedir']                       = 'PHP open_basedir';
 $lang['system_info_php_version']                            = 'PHP Version';
 $lang['system_info_post_maximum_size']                      = 'POST maximum size';
+$lang['system_info_quota']                                  = 'Quota';
+$lang['system_info_quota_usage']                            = 'Quota usage';
 $lang['system_info_system_path']                            = 'System path';
 $lang['system_info_system_production_ready']                = 'Is system production ready?';
 $lang['system_info_time_on_server_local']                   = 'Time on the server (local)';
 $lang['system_info_total_occupied_space']                   = 'Total occupied space';
 $lang['system_info_upload_maximum_size']                    = 'Upload maximum file size';
 $lang['system_info_usage_in_megabytes']                     = 'Usage in megabytes';
-$lang['system_info_disk_usage']                             = 'Disk usage';
-$lang['system_info_max_quota_in_mb']                        = 'Quota in MB';
-$lang['system_info_max_quota_in_mb_description']            = 'Overwrite quota value. When unset or zero, the value of available disk space is used to compute usage.';
 $lang['system_info_watch_dir']                              = 'Watch directory';
 $lang['system_info_watch_dir_description']                  = 'Directory to watch relative to INSTALLATIONPATH. Only specify if the watched directory is different from the INSTALLATIONPATH.';

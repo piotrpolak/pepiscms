@@ -80,6 +80,7 @@ class System_infoDescriptor extends ModuleDescriptor
                 ->withModuleName('system_info')
                 ->withWidgetName('disk_usage')
                 ->withCacheTtl(3600)
+                ->withCacheKey($this->auth->getUserId())
             ->end()
             ->build();
     }

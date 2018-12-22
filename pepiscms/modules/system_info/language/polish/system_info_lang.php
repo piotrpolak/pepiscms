@@ -1,6 +1,7 @@
 <?php if(!defined('BASEPATH')) exit('No direct script access allowed');
 
 
+$lang['system__info_view_all_stats']                        = 'Więcej statystyk';
 $lang['system_info_apache_loaded_modules']                  = 'Załadowane moduły apache';
 $lang['system_info_apache_user']                            = 'Użytkownik Apache';
 $lang['system_info_apache_version']                         = 'Wersja Apache';
@@ -14,6 +15,8 @@ $lang['system_info_free']                                   = 'Wolne';
 $lang['system_info_installation_path']                      = 'Ścieżka instalacji';
 $lang['system_info_installation_path_writeable']            = 'Czy ścieżka instalacji ma prawo do zapisu?';
 $lang['system_info_is_email_smtp_enabled']                  = 'Czy wysyłka email przez SMTP jest włączona?';
+$lang['system_info_max_quota_in_mb']                        = 'Quota w MB';
+$lang['system_info_max_quota_in_mb_description']            = 'Nadpisuje wartość quoty. Ustaw na zero aby pobierać wartość quoty z systemowej wartości dostępnego miejsca na dysku.';
 $lang['system_info_minutes']                                = 'minut';
 $lang['system_info_module_description']                     = 'Wyświetla informacje o systemie i wersje systemów';
 $lang['system_info_module_name']                            = 'Informacje o systemie';
@@ -30,9 +33,13 @@ $lang['system_info_php_loaded_extensions']                  = 'Załadowane rozsz
 $lang['system_info_php_open_basedir']                       = 'PHP open_basedir';
 $lang['system_info_php_version']                            = 'Wersja PHP';
 $lang['system_info_post_maximum_size']                      = 'Maksymalna wielkość danych w POST';
+$lang['system_info_quota']                                  = 'Quota';
+$lang['system_info_quota_usage']                            = 'Wykorzystanie quoty';
 $lang['system_info_system_path']                            = 'Ścieżka systemowa';
 $lang['system_info_system_production_ready']                = 'Czy wydanie produkcyjne?';
 $lang['system_info_time_on_server_local']                   = 'Czas na serwerze (lokalny)';
 $lang['system_info_total_occupied_space']                   = 'Całkowita zajmowana przestrzeń';
 $lang['system_info_upload_maximum_size']                    = 'Maksymalny rozmiar ładowanych plików';
 $lang['system_info_usage_in_megabytes']                     = 'Wykorzystanie w megabajtach';
+$lang['system_info_watch_dir']                              = 'Obserwowany katalog';
+$lang['system_info_watch_dir_description']                  = 'Obserwowany katalog, relatywnie do INSTALLATIONPATH. Napisz wartość tylko wtedy kiedy obserwowany katalog jest różny od INSTALLATIONPATH.';

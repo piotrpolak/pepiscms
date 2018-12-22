@@ -25,5 +25,6 @@ $lang['logs_town']                                = 'Miasto';
 $lang['logs_url']                                 = 'URL';
 $lang['logs_user_details']                        = 'Szczegóły dotyczące użytkownika';
 $lang['logs_user_id']                             = 'Użytkownik';
+$lang['logs_view_all']                            = 'Zobacz wszystkie logi systemowe';
 $lang['users_user_ips']                           = 'Adresy IP powiązane z użytkownikiem';
 $lang['users_using_this_ip']                      = 'Inni użytkownicy korzystający z tego samego IP';
