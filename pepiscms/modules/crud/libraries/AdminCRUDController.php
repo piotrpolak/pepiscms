@@ -495,7 +495,7 @@ abstract class AdminCRUDController extends ModuleAdminController
     protected function getBackLinkForEdit()
     {
         if (!$this->back_link_for_edit) {
-            return $this->getModuleBaseUrl() . 'index' . ($this->input->getParam('order_by') ? '/order_by-' . $this->input->getParam('order_by') : '') . ($this->input->getParam('order') ? '/order-' . $this->input->getParam('order') : '') . ($this->input->getParam('filters') ? '/filters-' . $this->input->getParam('filters') : '') . ($this->getForcedFilters() ? '/forced_filters-' . DataGrid::encodeFiltersString($this->getForcedFilters()) : '') . ($this->input->getParam('layout') ? '/layout-' . $this->input->getParam('layout') : '');
+            return $this->getModuleBaseUrl() . 'index' . $this->getCommonPathParamsString();
         }
 
         return $this->back_link_for_edit;
@@ -1370,17 +1370,17 @@ abstract class AdminCRUDController extends ModuleAdminController
         $action_out = '';
         $running_module = $this->getAttribute('running_module');
         if ($this->isPreviewable() && SecurityManager::hasAccess($running_module, 'preview', $running_module)) {
-            $action_out .= '<a href="' . $this->getModuleBaseUrl() . 'preview/id-' . $line->$id_field_name . ($this->input->getParam('order_by') ? '/order_by-' . $this->input->getParam('order_by') : '') . ($this->input->getParam('order') ? '/order-' . $this->input->getParam('order') : '') . ($this->input->getParam('filters') ? '/filters-' . $this->input->getParam('filters') : '') . ($this->input->getParam('layout') ? '/layout-' . $this->input->getParam('layout') : '') . ($this->getForcedFilters() ? '/forced_filters-' . DataGrid::encodeFiltersString($this->getForcedFilters()) : '') . '" class="preview ' . (($this->isPopupEnabled()) ? 'popup' : '') . '">' . $this->lang->line('crud_label_preview') . '</a>';
+            $action_out .= '<a href="' . $this->getModuleBaseUrl() . 'preview/id-' . $line->$id_field_name . $this->getCommonPathParamsString() . '" class="preview ' . (($this->isPopupEnabled()) ? 'popup' : '') . '">' . $this->lang->line('crud_label_preview') . '</a>';
         }
         if ($this->isEditable() && $this->is_edit_action_displayed_in_grid && SecurityManager::hasAccess($running_module, 'edit', $running_module)) {
-            $action_out .= '<a href="' . $this->getModuleBaseUrl() . 'edit/id-' . $line->$id_field_name . ($this->input->getParam('order_by') ? '/order_by-' . $this->input->getParam('order_by') : '') . ($this->input->getParam('order') ? '/order-' . $this->input->getParam('order') : '') . ($this->input->getParam('filters') ? '/filters-' . $this->input->getParam('filters') : '') . ($this->input->getParam('layout') ? '/layout-' . $this->input->getParam('layout') : '') . ($this->getForcedFilters() ? '/forced_filters-' . DataGrid::encodeFiltersString($this->getForcedFilters()) : '') . '" class="edit ' . (($this->isPopupEnabled()) ? 'popup' : '') . '">' . $this->lang->line('crud_label_modify') . '</a>';
+            $action_out .= '<a href="' . $this->getModuleBaseUrl() . 'edit/id-' . $line->$id_field_name . $this->getCommonPathParamsString() . '" class="edit ' . (($this->isPopupEnabled()) ? 'popup' : '') . '">' . $this->lang->line('crud_label_modify') . '</a>';
         }
         if ($this->isDeletable() && SecurityManager::hasAccess($running_module, 'delete', $running_module)) {
-            $action_out .= '<a href="' . $this->getModuleBaseUrl() . 'delete/id-' . $line->$id_field_name . ($this->input->getParam('order_by') ? '/order_by-' . $this->input->getParam('order_by') : '') . ($this->input->getParam('order') ? '/order-' . $this->input->getParam('order') : '') . ($this->input->getParam('filters') ? '/filters-' . $this->input->getParam('filters') : '') . ($this->input->getParam('layout') ? '/layout-' . $this->input->getParam('layout') : '') . ($this->getForcedFilters() ? '/forced_filters-' . DataGrid::encodeFiltersString($this->getForcedFilters()) : '') . '" class="ask_for_confirmation delete">' . $this->lang->line('crud_label_delete') . '</a>';
+            $action_out .= '<a href="' . $this->getModuleBaseUrl() . 'delete/id-' . $line->$id_field_name . $this->getCommonPathParamsString() . '" class="ask_for_confirmation delete">' . $this->lang->line('crud_label_delete') . '</a>';
         }
 
         if ($this->isJournaleable() && SecurityManager::hasAccess($running_module, 'revisions', $running_module)) {
-            $action_out .= '<a href="' . $this->getModuleBaseUrl() . 'revisions/id-' . $line->$id_field_name . ($this->input->getParam('order_by') ? '/order_by-' . $this->input->getParam('order_by') : '') . ($this->input->getParam('order') ? '/order-' . $this->input->getParam('order') : '') . ($this->input->getParam('filters') ? '/filters-' . $this->input->getParam('filters') : '') . ($this->input->getParam('layout') ? '/layout-' . $this->input->getParam('layout') : '') . ($this->getForcedFilters() ? '/forced_filters-' . DataGrid::encodeFiltersString($this->getForcedFilters()) : '') . '" class="revisions popup" title="' . $this->lang->line('crud_revisions_show') . '">' . $this->lang->line('crud_revisions_show') . '</a>';
+            $action_out .= '<a href="' . $this->getModuleBaseUrl() . 'revisions/id-' . $line->$id_field_name . $this->getCommonPathParamsString() . '" class="revisions popup" title="' . $this->lang->line('crud_revisions_show') . '">' . $this->lang->line('crud_revisions_show') . '</a>';
         }
 
         foreach ($this->datagrid_meta_actions as &$action) {
@@ -2357,5 +2357,14 @@ abstract class AdminCRUDController extends ModuleAdminController
         } else {
             redirect($this->getModuleBaseUrl());
         }
+    }
+
+    protected function getCommonPathParamsString()
+    {
+        return ($this->input->getParam('order_by') ? '/order_by-' . $this->input->getParam('order_by') : '') .
+            ($this->input->getParam('order') ? '/order-' . $this->input->getParam('order') : '') .
+            ($this->input->getParam('filters') ? '/filters-' . $this->input->getParam('filters') : '') .
+            ($this->getForcedFilters() ? '/forced_filters-' . DataGrid::encodeFiltersString($this->getForcedFilters()) : '') .
+            ($this->input->getParam('layout') ? '/layout-' . $this->input->getParam('layout') : '');
     }
 }
