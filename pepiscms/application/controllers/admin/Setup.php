@@ -132,12 +132,10 @@ class Setup extends AdminController
         );
         $definition['cms_customization_logo'] = array(
             'label' => $this->lang->line('setup_cms_customization_logo'),
+            'description' => $this->lang->line('setup_cms_customization_logo_desc'),
             'validation_rules' => '',
             'input_group' => 'setup_input_group_customization',
-            'input_type' => FormBuilder::IMAGE,
-            'upload_path' => $this->config->item('theme_path'),
-            'upload_display_path' => $this->config->item('theme_path'),
-            'upload_complete_callback' => array($this, '_fb_callback_make_filename_seo_friendly'),
+            'input_type' => FormBuilder::TEXTFIELD,
         );
         $definition['cms_customization_site_public_url'] = array(
             'label' => $this->lang->line('setup_cms_customization_site_public_url'),
