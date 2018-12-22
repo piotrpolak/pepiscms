@@ -1154,7 +1154,7 @@ class Generic_model extends PEPISCMS_Model implements EntitableInterface, Moveab
      */
     public function getJournalingIsEnabled()
     {
-        return $this->journaling_is_enabled && $this->db->table_exists($this->getJournalingTable());
+        return $this->journaling_is_enabled;
     }
 
     /**
