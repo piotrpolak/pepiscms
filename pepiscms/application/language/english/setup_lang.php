@@ -3,7 +3,8 @@
 $lang['setup_cache_expires']                           = 'Cache time to live in minutes for website HTML cache';
 $lang['setup_cache_expires_desc']                      = 'PepisCMS stores pages in its cache for a specified number of minutes to increase efficiency. Set to 0 to disable cache.';
 $lang['setup_cms_customization_login_view_path']       = 'Path of the login form\'s view';
-$lang['setup_cms_customization_logo']                  = 'Logo customization (PNG 25px high)';
+$lang['setup_cms_customization_logo']                  = 'Logo customization path';
+$lang['setup_cms_customization_logo_desc']             = 'Should be a PNG image 25px high';
 $lang['setup_cms_customization_logo_predefined']       = 'Predefined logo';
 $lang['setup_cms_customization_on_login_redirect_url'] = 'Address of redirection after logging in';
 $lang['setup_cms_customization_site_public_url']       = 'URL to the front page used in logo anchor in administration panel';

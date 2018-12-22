@@ -67,6 +67,7 @@ class Siteconfig_model extends Generic_model
      * @param array $data
      * @return bool
      * @local
+     * @throws Exception
      */
     public function saveAllConfigurationVariables($data)
     {
@@ -82,18 +83,18 @@ class Siteconfig_model extends Generic_model
 
                 $customization_logo_path_new_location = INSTALLATIONPATH . $this->config->item('theme_path') . $customization_logo_path_new_name;
 
-                if (copy($customization_logo_path, $customization_logo_path_new_location)) {
+                if (@copy($customization_logo_path, $customization_logo_path_new_location)) {
                     $data['cms_customization_logo'] = $customization_logo_path_new_name;
+                } else {
+                    throw new \Exception('Unable to copy predefined logo to ' . $customization_logo_path_new_location);
                 }
             }
         } else {
             unset($data['cms_customization_logo_predefined']);
         }
 
-        if (isset($data['cms_customization_logo']) && $data['cms_customization_logo']) {
-            $data['cms_customization_logo'] = $this->config->item('theme_path') . $data['cms_customization_logo'];
-        } else {
-            unset($data['cms_customization_logo_predefined']);
+        if (!isset($data['cms_customization_logo']) && $data['cms_customization_logo']) {
+            $data['cms_customization_logo_predefined'] = null;
         }
 
         foreach ($data as $key => $value) {
@@ -475,10 +476,10 @@ class Siteconfig_model extends Generic_model
             $configuration_tests['error_cache_not_writeable'] = true;
         } else {
             $tmp_cache_path = $cache_path . '/_test_' . rand(9999, 10000) . '/';
-            if (!mkdir($tmp_cache_path)) {
+            if (!@mkdir($tmp_cache_path)) {
                 $configuration_tests['error_cache_not_writeable'] = true;
             } else {
-                if (!rmdir($tmp_cache_path)) {
+                if (!@rmdir($tmp_cache_path)) {
                     $configuration_tests['error_cache_not_writeable'] = true;
                 }
             }
@@ -562,44 +563,4 @@ class Siteconfig_model extends Generic_model
 
         return $value1 === $value2;
     }
-
-    //    /**
-//     * @param $data
-//     * @param $booleans
-//     * @param $config_files
-//     * @return string
-//     * @deprecated
-//     */
-//    private function writeToDisk($data, $booleans, $config_files)
-//    {
-//        $config_files = array('_pepiscms.php', 'debug.php', 'email.php');
-//
-//        $error = false;
-//        $config_search = $config_replace = array();
-//        foreach ($data as $key => $value) {
-//            if (in_array($key, $booleans)) {
-//                $value = $value > 0 ? 'TRUE' : 'FALSE';
-//            }
-//
-//            $config_search[] = 'TEMPLATE_' . strtoupper($key);
-//            $config_replace[] = $value;
-//        }
-//
-//        foreach ($config_files as $config_file) {
-//            $content_config = file_get_contents(APPPATH . '../resources/config_template/template_' . $config_file);
-//
-//            if (!$content_config) {
-//                $error = 'Unable to read template_' . $config_file;
-//            }
-//
-//            if (!isset($error)) {
-//                $config_path = INSTALLATIONPATH . 'application/config/' . $config_file;
-//                if (!file_put_contents($config_path, str_replace($config_search, $config_replace, $content_config))) {
-//                    $error = 'Unable to write ' . $config_file;
-//                }
-//                \PiotrPolak\PepisCMS\Modulerunner\OpCacheUtil::safeInvalidate($config_path);
-//            }
-//        }
-//        return $error;
-//    }
 }
