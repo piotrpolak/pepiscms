@@ -346,17 +346,6 @@ abstract class AdminCRUDController extends ModuleAdminController
     private $base_module_url = false;
 
     /**
-     * @deprecated as PepisCMS 0.2.4.1
-     */
-    private $related_module_name = false;
-
-    /**
-     * @deprecated as PepisCMS 0.2.4.1
-     */
-    private $related_module_filter_name = false;
-
-
-    /**
      * Default constructor
      */
     public function __construct()
@@ -1278,24 +1267,6 @@ abstract class AdminCRUDController extends ModuleAdminController
     }
 
     /**
-     * Sets related module
-     * Experimental!
-     *
-     * @param String $related_module_name
-     * @param String $related_module_filter_name
-     * @deprecated as PepisCMS 0.2.4
-     * @return AdminCRUDController
-     */
-    public function setRelatedModule($related_module_name, $related_module_filter_name)
-    {
-        trigger_error('AdminCRUDController::setRelatedModule() is deprecated.', E_USER_DEPRECATED);
-        $this->related_module_name = $related_module_name;
-        $this->related_module_filter_name = $related_module_filter_name;
-
-        return $this;
-    }
-
-    /**
      * Returns the list of forced filers
      *
      * @return array
@@ -1881,8 +1852,6 @@ abstract class AdminCRUDController extends ModuleAdminController
         $this->assign('title', $this->getPageTitle());
         $this->assign('back_to_items_label', $this->getBackToItemsLabel());
         $this->assign('back_link_for_edit', $this->getBackLinkForEdit());
-        $this->assign('related_module_name', $this->related_module_name); // TODO Deprecated as PepisCMS 0.2.4.1
-        $this->assign('related_module_filter_name', $this->related_module_filter_name); // TODO Deprecated as PepisCMS 0.2.4.1
         $this->assign('actions', $this->actions_for_edit);
         $this->assign('module_name', $this->getModuleName());
 
