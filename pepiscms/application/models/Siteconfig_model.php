@@ -39,7 +39,7 @@ class Siteconfig_model extends Generic_model
         parent::__construct();
         $this->setTable('cms_siteconfig');
         $this->setIdFieldName('id');
-//        $this->enableJournaling();
+        $this->enableJournaling();
 
         $this->cache_ttl = 600;
         $this->cache_collection = 'siteconfig';

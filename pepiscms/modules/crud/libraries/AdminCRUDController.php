@@ -1419,7 +1419,7 @@ abstract class AdminCRUDController extends ModuleAdminController
         }
 
         if ($this->isJournaleable() && SecurityManager::hasAccess($running_module, 'revisions', $running_module)) {
-            $action_out .= '<a href="' . $this->getModuleBaseUrl() . 'revisions/id-' . $line->$id_field_name . ($this->input->getParam('order_by') ? '/order_by-' . $this->input->getParam('order_by') : '') . ($this->input->getParam('order') ? '/order-' . $this->input->getParam('order') : '') . ($this->input->getParam('filters') ? '/filters-' . $this->input->getParam('filters') : '') . ($this->input->getParam('layout') ? '/layout-' . $this->input->getParam('layout') : '') . ($this->getForcedFilters() ? '/forced_filters-' . DataGrid::encodeFiltersString($this->getForcedFilters()) : '') . '" class="revisions popup">' . $this->lang->line('crud_revisions_show') . '</a>';
+            $action_out .= '<a href="' . $this->getModuleBaseUrl() . 'revisions/id-' . $line->$id_field_name . ($this->input->getParam('order_by') ? '/order_by-' . $this->input->getParam('order_by') : '') . ($this->input->getParam('order') ? '/order-' . $this->input->getParam('order') : '') . ($this->input->getParam('filters') ? '/filters-' . $this->input->getParam('filters') : '') . ($this->input->getParam('layout') ? '/layout-' . $this->input->getParam('layout') : '') . ($this->getForcedFilters() ? '/forced_filters-' . DataGrid::encodeFiltersString($this->getForcedFilters()) : '') . '" class="revisions popup" title="' . $this->lang->line('crud_revisions_show') . '">' . $this->lang->line('crud_revisions_show') . '</a>';
         }
 
         foreach ($this->datagrid_meta_actions as &$action) {
@@ -1784,15 +1784,13 @@ abstract class AdminCRUDController extends ModuleAdminController
         }
 
         $revision_summary = $this->getModel()->journalingGetRevisionSummary($id);
-        $author = $this->db->select('author')->from($this->getTable())->where('id', $id)->get()->result();
 
-        $this->assign('id', $id);
-        $this->assign('title', $this->getPageTitle());
-        $this->assign('revision_summary', $revision_summary);
-        $this->assign('back_to_items_label', $this->getBackToItemsLabel());
-        $this->assign('back_link_for_edit', $this->getBackLinkForEdit());
-        $this->assign('module_name', $this->getModuleName());
-        $this->assign('author', $author);
+        $this->assign('id', $id)
+            ->assign('title', $this->getPageTitle())
+            ->assign('revision_summary', $revision_summary)
+            ->assign('back_to_items_label', $this->getBackToItemsLabel())
+            ->assign('back_link_for_edit', $this->getBackLinkForEdit())
+            ->assign('module_name', $this->getModuleName());
 
         if (file_exists($this->current_module_template_path . 'revisions.php')) {
             $this->display($this->current_module_template_path . 'revisions.php');
