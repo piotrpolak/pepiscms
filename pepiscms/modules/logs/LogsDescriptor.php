@@ -122,6 +122,8 @@ class LogsDescriptor extends ModuleDescriptor
                 ->withModuleName('logs')
                 ->withWidgetName('warnings')
                 ->withWidgetParameters(30)
+                ->withCacheTtl(30)
+                ->withCacheKey($this->auth->getUserId())
             ->end()
             ->build();
     }

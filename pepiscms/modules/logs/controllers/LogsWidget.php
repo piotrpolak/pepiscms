@@ -34,8 +34,7 @@ class LogsWidget extends Widget
         $values = fill_date_spectrum_values($this->Log_model->getWarningStatistics($days_before), time(), $days_before);
 
         $this->load->library('Google_chart_helper');
-        return $this->google_chart_helper->drawSimpleLineChart($values, $this->lang->line('logs_timestamp'), $this->lang->line('logs_issues'),
-            '100%', 200, 50, 'date', 'number', array('red'));
+        return $this->assign('values', $values)->display('warnings');
     }
 
 
