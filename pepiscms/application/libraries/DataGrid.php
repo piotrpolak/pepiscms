@@ -54,9 +54,6 @@ class DataGrid extends ContainerAware
     /*
      * Filter conditions
      */
-
-    /** @deprecated as PepisCMS 0.2.4.4 */
-    const FILTER_CONDITION_EQAL = 'eq';
     const FILTER_CONDITION_EQUAL = 'eq';
     const FILTER_CONDITION_NOT_EQUAL = 'ne';
     const FILTER_CONDITION_GREATER = 'gt';
@@ -1318,7 +1315,7 @@ class DataGrid extends ContainerAware
      */
     public function getRowCssClassFormatingFunction()
     {
-        return getRowCssClassFormatingFunction();
+        return $this->getRowCssClassFormattingFunction();
     }
 
     /**
