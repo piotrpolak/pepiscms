@@ -28,13 +28,10 @@ class Acl extends AdminController
             show_error($this->lang->line('global_feature_not_enabled'));
         }
         $this->load->language('acl');
-        $this->load->library('ModuleRunner');
-        $this->load->library('SimpleSessionMessage');
-        $this->load->library('SecurityPolicy');
-        $this->load->library('SecurityPolicyBuilder');
+        $this->load->library(array('ModuleRunner', 'SimpleSessionMessage', 'SecurityPolicy', 'SecurityPolicyBuilder'));
 
-        $this->assign('use_extended_utilities_view', true);
-        $this->assign('title', $this->lang->line('acl_label_security_policy'));
+        $this->assign('use_extended_utilities_view', true)
+            ->assign('title', $this->lang->line('acl_label_security_policy'));
     }
 
     /** Callback * */
@@ -62,8 +59,8 @@ class Acl extends AdminController
             $installed_modules[$module_group][] = $module->name;
         }
 
-        $this->assign('installed_modules', $installed_modules);
-        $this->display();
+        $this->assign('installed_modules', $installed_modules)
+            ->display();
     }
 
     public function edit()
@@ -109,14 +106,14 @@ class Acl extends AdminController
 
                 $this->load->library('SimpleSessionMessage');
                 if (!@file_put_contents($policy_save_path, $xml)) {
-                    $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_ERROR);
-                    $this->simplesessionmessage->setMessage('act_unable_to_write_policy_file');
+                    $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_ERROR)
+                        ->setMessage('act_unable_to_write_policy_file');
                 } else {
                     SecurityManager::flushCache();
                     // Setting the message and redirecting
 
-                    $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS);
-                    $this->simplesessionmessage->setMessage('global_header_success');
+                    $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS)
+                        ->setMessage('global_header_success');
 
                     if (!isset($_POST['apply'])) {
                         redirect(admin_url() . 'acl');

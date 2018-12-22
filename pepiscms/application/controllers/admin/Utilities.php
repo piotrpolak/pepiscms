@@ -29,9 +29,10 @@ class Utilities extends AbstractDashboardController
         $this->load->language('setup');
 
         $this->load->model('Module_model');;
-        $this->load->library('SimpleSessionMessage');
+        $this->load->library(array('SimpleSessionMessage', 'Cachedobjectmanager'));
+
         $this->load->helper('number');
-        $this->load->library('Cachedobjectmanager');
+
 
         $this->assign('title', $this->lang->line('label_utilities_and_settings'));
     }

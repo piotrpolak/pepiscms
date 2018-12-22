@@ -114,17 +114,17 @@ class Ajaxfilemanager extends AdminController
      */
     public function editorbrowse()
     {
-        $this->assign('is_editor', true);
-        $this->assign('popup_layout', true);
-        $this->assign('adminmenu', '');
+        $this->assign('is_editor', true)
+            ->assign('popup_layout', true)
+            ->assign('adminmenu', '');
+
         $this->browse();
     }
 
     public function browse()
     {
-        //$is_editor = $this->getAttribute( 'is_editor' );
-        $this->assign('upload_allowed_types', explode('|', $this->config->item('upload_allowed_types')));
-        $this->display('admin/ajaxfilemanager_browse.php');
+        $this->assign('upload_allowed_types', explode('|', $this->config->item('upload_allowed_types')))
+            ->display('admin/ajaxfilemanager_browse.php');
     }
 
     public function sendcommand()

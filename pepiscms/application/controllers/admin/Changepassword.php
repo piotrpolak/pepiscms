@@ -38,7 +38,7 @@ class Changepassword extends AdminController
             $this->assign('adminmenu', '');
         }
 
-        $this->load->library('FormBuilder');
+        $this->load->library(array('FormBuilder', 'SimpleSessionMessage'));
 
         $builder = CrudDefinitionBuilder::create();
 
@@ -94,7 +94,6 @@ class Changepassword extends AdminController
                 $that->auth->refreshSession();
                 LOGGER::info('Changing own password', 'USER');
 
-                $that->load->library('SimpleSessionMessage');
                 $that->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS)
                     ->setMessage('changepassword_dialog_pasword_changed');
 
