@@ -21,8 +21,7 @@ class Welcome extends CI_Controller
 {
     public function index()
     {
-        $this->load->library('Auth');
-        $this->load->library('SecurityManager');
+        $this->load->library(array('Auth', 'SecurityManager'));
 
         if (!$this->auth->isAuthorized()) {
             redirect(admin_url() . 'login');

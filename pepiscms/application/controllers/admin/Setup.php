@@ -352,6 +352,7 @@ class Setup extends AdminController
      * Must overwrite the save procedure and return true or false
      * @param array $data_array associative array made of filtered POST variables
      * @return bool
+     * @throws Exception
      */
     public function _fb_callback_on_save(&$data_array)
     {

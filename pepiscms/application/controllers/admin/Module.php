@@ -23,12 +23,14 @@ class Module extends AdminController
     {
         parent::__construct();
         $this->load->model('Module_model');
-        $this->load->library('SimpleSessionMessage');
-        $this->load->library('FormBuilder');
-        $this->load->library('ConfigBuilder');
-        $this->load->library('ModuleRunner');
-        $this->load->library('Cachedobjectmanager');
-        $this->load->library('User_agent');;
+        $this->load->library(array(
+            'SimpleSessionMessage',
+            'FormBuilder',
+            'ConfigBuilder',
+            'ModuleRunner',
+            'Cachedobjectmanager',
+            'User_agent'
+        ));
         $this->assign('title', $this->lang->line('modules_installed_modules'));
     }
 
