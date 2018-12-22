@@ -356,8 +356,7 @@ abstract class AdminCRUDController extends ModuleAdminController
 
         $this->base_module_url = module_url();
 
-        $this->load->library('DataGrid');
-        $this->load->library('FormBuilder');
+        $this->load->library(array('DataGrid', 'FormBuilder'));
 
         $this->load->moduleLanguage('crud', 'crud');
         $this->template_path = module_path('crud') . '/views/admin/';
@@ -452,7 +451,6 @@ abstract class AdminCRUDController extends ModuleAdminController
      */
     protected function setBackActionForIndex($action)
     {
-        // TODO solve it with back URL (not action)
         if (!isset($action['icon'])) {
             $action['icon'] = 'pepiscms/theme/img/dialog/actions/back_16.png';
         }
@@ -899,11 +897,7 @@ abstract class AdminCRUDController extends ModuleAdminController
      */
     protected function getTable()
     {
-        if ($this->getFeedObject()) {
-            return $this->getFeedObject()->getTable();
-        } else {
-            return $this->table;
-        }
+        return $this->getFeedObject() ? $this->getFeedObject()->getTable() : $this->table;
     }
 
     /**
@@ -925,11 +919,7 @@ abstract class AdminCRUDController extends ModuleAdminController
      */
     protected function getIdFieldName()
     {
-        if ($this->getFeedObject()) {
-            return $this->getFeedObject()->getIdFieldName();
-        } else {
-            return $this->id_field_name;
-        }
+        return $this->getFeedObject() ? $this->getFeedObject()->getIdFieldName() : $this->id_field_name;
     }
 
     /**
@@ -1583,8 +1573,8 @@ abstract class AdminCRUDController extends ModuleAdminController
 
             $this->load->library('Spreadsheet');
             if ($this->spreadsheet->isFullyEnabled()) {
-                $this->addActionForIndex(array('link' => $this->getModuleBaseUrl() . 'export/format-xls', 'name' => $this->lang->line('crud_label_export') . ' (XLS - Excel 97)', 'icon' => module_resources_url('crud') . 'export_12.png'));
-                $this->addActionForIndex(array('link' => $this->getModuleBaseUrl() . 'export/format-xlsx', 'name' => $this->lang->line('crud_label_export') . ' (XLSX - Excel 2007)', 'icon' => module_resources_url('crud') . 'export_12.png'));
+                $this->addActionForIndex(array('link' => $this->getModuleBaseUrl() . 'export/format-xls', 'name' => $this->lang->line('crud_label_export') . ' (XLS - Excel 97)', 'icon' => module_resources_url('crud') . 'export_12.png'))
+                    ->addActionForIndex(array('link' => $this->getModuleBaseUrl() . 'export/format-xlsx', 'name' => $this->lang->line('crud_label_export') . ' (XLSX - Excel 2007)', 'icon' => module_resources_url('crud') . 'export_12.png'));
             }
         }
 
@@ -1618,27 +1608,26 @@ abstract class AdminCRUDController extends ModuleAdminController
             }
         }
 
-        $this->datagrid->setTitle($this->getPageTitle());
-        $this->datagrid->setBaseUrl($this->getModuleBaseUrl() . $this->getMethodName() . ($this->getForcedFilters() ? '/forced_filters-' . DataGrid::encodeFiltersString($this->getForcedFilters()) : '') . ($this->input->getParam('layout') ? '/layout-' . $this->input->getParam('layout') : ''));
-        $this->datagrid->setDefinition($definition);
+        $this->datagrid->setTitle($this->getPageTitle())
+            ->setBaseUrl($this->getModuleBaseUrl() . $this->getMethodName() . ($this->getForcedFilters() ? '/forced_filters-' . DataGrid::encodeFiltersString($this->getForcedFilters()) : '') . ($this->input->getParam('layout') ? '/layout-' . $this->input->getParam('layout') : ''))
+            ->setDefinition($definition);
 
-        $this->assign('datagrid', $this->datagrid->generate($this->datagrid_generate_parameter));
-        $this->assign('title', $this->getPageTitle());
-        $this->assign('add_new_item_label', $this->getAddNewItemLabel());
-        $this->assign('is_addable', $this->isAddable());
-        $this->assign('tooltip_text', $this->tooltip_text_for_index);
-        $this->assign('is_popup_enabled', $this->isPopupEnabled());
-        $this->assign('actions', $this->actions_for_index);
-        $this->assign('back_action_for_index', $this->back_action_for_index);
-        $this->assign('module_name', $this->getModuleName());
-        $this->assign('method_name', $this->getMethodName());
-        $this->assign('module_base_url', $this->getModuleBaseUrl());
-
-        $this->assign('forced_filters', $this->getForcedFilters());
-        $this->assign('layout', $this->input->getParam('layout'));
-        $this->assign('filters', $this->input->getParam('filters'));
-        $this->assign('order', $this->input->getParam('order'));
-        $this->assign('order_by', $this->input->getParam('order_by'));
+        $this->assign('datagrid', $this->datagrid->generate($this->datagrid_generate_parameter))
+            ->assign('title', $this->getPageTitle())
+            ->assign('add_new_item_label', $this->getAddNewItemLabel())
+            ->assign('is_addable', $this->isAddable())
+            ->assign('tooltip_text', $this->tooltip_text_for_index)
+            ->assign('is_popup_enabled', $this->isPopupEnabled())
+            ->assign('actions', $this->actions_for_index)
+            ->assign('back_action_for_index', $this->back_action_for_index)
+            ->assign('module_name', $this->getModuleName())
+            ->assign('method_name', $this->getMethodName())
+            ->assign('module_base_url', $this->getModuleBaseUrl())
+            ->assign('forced_filters', $this->getForcedFilters())
+            ->assign('layout', $this->input->getParam('layout'))
+            ->assign('filters', $this->input->getParam('filters'))
+            ->assign('order', $this->input->getParam('order'))
+            ->assign('order_by', $this->input->getParam('order_by'));
 
         // Displaying
         if (!$display_view) {
@@ -1687,8 +1676,8 @@ abstract class AdminCRUDController extends ModuleAdminController
         } else {
             if ($success) {
                 $this->load->library('SimpleSessionMessage');
-                $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS);
-                $this->simplesessionmessage->setMessage('crud_revision_field_successfully_restored');
+                $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS)
+                    ->setMessage('crud_revision_field_successfully_restored');
             }
 
             redirect($this->getModuleBaseUrl() . 'revisions/id-' . $id . ($this->getForcedFilters() ? '/forced_filters-' . DataGrid::encodeFiltersString($this->getForcedFilters()) : '') . ($this->input->getParam('layout') ? '/layout-' . $this->input->getParam('layout') : ''));
@@ -1727,14 +1716,14 @@ abstract class AdminCRUDController extends ModuleAdminController
             }
         }
 
-        $this->assign('id', $id);
-        $this->assign('title', $this->getPageTitle());
-        $this->assign('revision_id', $revision_id);
-        $this->assign('revision', $revision);
-        $this->assign('revision_current', $revision_current);
-        $this->assign('key_names', $key_names);
-        $this->assign('is_identical', $is_identical);
-        $this->assign('module_name', $this->getModuleName());
+        $this->assign('id', $id)
+            ->assign('title', $this->getPageTitle())
+            ->assign('revision_id', $revision_id)
+            ->assign('revision', $revision)
+            ->assign('revision_current', $revision_current)
+            ->assign('key_names', $key_names)
+            ->assign('is_identical', $is_identical)
+            ->assign('module_name', $this->getModuleName());
 
         if (file_exists($this->current_module_template_path . 'revision.php')) {
             $this->display($this->current_module_template_path . 'revision.php');
@@ -1754,11 +1743,9 @@ abstract class AdminCRUDController extends ModuleAdminController
             show_404();
         }
 
-        $revision_summary = $this->getModel()->journalingGetRevisionSummary($id);
-
         $this->assign('id', $id)
             ->assign('title', $this->getPageTitle())
-            ->assign('revision_summary', $revision_summary)
+            ->assign('revision_summary', $this->getModel()->journalingGetRevisionSummary($id))
             ->assign('back_to_items_label', $this->getBackToItemsLabel())
             ->assign('back_link_for_edit', $this->getBackLinkForEdit())
             ->assign('module_name', $this->getModuleName());
@@ -1822,9 +1809,9 @@ abstract class AdminCRUDController extends ModuleAdminController
             $definition[$field_name]['filter_type'] = false;
         }
 
-        $this->formbuilder->setId($id);
-        $this->formbuilder->setBackLink($this->getBackLinkForEdit() . ($this->getForcedFilters() ? '/forced_filters-' . DataGrid::encodeFiltersString($this->getForcedFilters()) : '') . ($this->input->getParam('layout') ? '/layout-' . $this->input->getParam('layout') : ''));
-        $this->formbuilder->setDefinition($definition);
+        $this->formbuilder->setId($id)
+            ->setBackLink($this->getBackLinkForEdit() . ($this->getForcedFilters() ? '/forced_filters-' . DataGrid::encodeFiltersString($this->getForcedFilters()) : '') . ($this->input->getParam('layout') ? '/layout-' . $this->input->getParam('layout') : ''))
+            ->formbuilder->setDefinition($definition);
 
         if ($this->getFeedObject()) {
             $this->formbuilder->setFeedObject($this->getFeedObject());
@@ -1844,16 +1831,16 @@ abstract class AdminCRUDController extends ModuleAdminController
             show_404();
         }
 
-        $this->assign('form', $form);
-        $this->assign('id', $id);
-        $this->assign('is_preview', $is_preview);
-        $this->assign('is_editable', $this->isEditable());
-        $this->assign('is_previewable', $this->isPreviewable());
-        $this->assign('title', $this->getPageTitle());
-        $this->assign('back_to_items_label', $this->getBackToItemsLabel());
-        $this->assign('back_link_for_edit', $this->getBackLinkForEdit());
-        $this->assign('actions', $this->actions_for_edit);
-        $this->assign('module_name', $this->getModuleName());
+        $this->assign('form', $form)
+            ->assign('id', $id)
+            ->assign('is_preview', $is_preview)
+            ->assign('is_editable', $this->isEditable())
+            ->assign('is_previewable', $this->isPreviewable())
+            ->assign('title', $this->getPageTitle())
+            ->assign('back_to_items_label', $this->getBackToItemsLabel())
+            ->assign('back_link_for_edit', $this->getBackLinkForEdit())
+            ->assign('actions', $this->actions_for_edit)
+            ->assign('module_name', $this->getModuleName());
 
         if (!$is_preview) {
             // This should be defined after the form is generated - this allows to be changed using form callbacks
@@ -1947,11 +1934,11 @@ abstract class AdminCRUDController extends ModuleAdminController
         $this->load->library('Spreadsheet');
 
 
-        $this->formbuilder->clear();
-        $this->formbuilder->setTitle($this->lang->line('crud_label_import'));
-        $this->formbuilder->setSubmitLabel($this->lang->line('crud_label_import_from_file'));
-        $this->formbuilder->setCallback(array($this, '_fb_callback_on_import'), FormBuilder::CALLBACK_ON_SAVE);
-        $this->formbuilder->setBackLink($this->getModuleBaseUrl()); // TODO Add applied filters to the back link, the same as edit
+        $this->formbuilder->clear()
+            ->setTitle($this->lang->line('crud_label_import'))
+            ->setSubmitLabel($this->lang->line('crud_label_import_from_file'))
+            ->setCallback(array($this, '_fb_callback_on_import'), FormBuilder::CALLBACK_ON_SAVE)
+            ->setBackLink($this->getModuleBaseUrl()); // TODO Add applied filters to the back link, the same as edit
 
         $upload_allowed_types = 'csv';
         if ($this->spreadsheet->isFullyEnabled()) {
@@ -1980,12 +1967,12 @@ abstract class AdminCRUDController extends ModuleAdminController
             )
         ));
 
-        $this->assign('tip', sprintf($this->lang->line($tip_key), implode(', ', $this->getModel()->getAcceptedPostFields()), $this->getModel()->getIdFieldName()));
-        $this->assign('title', $this->getPageTitle());
-        $this->assign('back_to_items_label', $this->getBackToItemsLabel());
-        $this->assign('back_link_for_edit', $this->getBackLinkForEdit());
-        $this->assign('formbuilder', $this->formbuilder->generate());
-        $this->assign('module_name', $this->getModuleName());
+        $this->assign('tip', sprintf($this->lang->line($tip_key), implode(', ', $this->getModel()->getAcceptedPostFields()), $this->getModel()->getIdFieldName()))
+            ->assign('title', $this->getPageTitle())
+            ->assign('back_to_items_label', $this->getBackToItemsLabel())
+            ->assign('back_link_for_edit', $this->getBackLinkForEdit())
+            ->assign('formbuilder', $this->formbuilder->generate())
+            ->assign('module_name', $this->getModuleName());
 
         if (file_exists($this->current_module_template_path . 'import.php')) {
             $this->display($this->current_module_template_path . 'import.php');
@@ -2004,8 +1991,8 @@ abstract class AdminCRUDController extends ModuleAdminController
             show_404();
         }
 
-        $this->formbuilder->setTitle($this->lang->line('crud_label_preview'));
-        $this->formbuilder->setReadOnly();
+        $this->formbuilder->setTitle($this->lang->line('crud_label_preview'))
+            ->setReadOnly();
         $this->_edit(true, $display_view);
     }
 
@@ -2031,13 +2018,7 @@ abstract class AdminCRUDController extends ModuleAdminController
             }
         }
 
-        // Smart redirect
-        $this->load->library('User_agent');
-        if ($this->agent->referrer()) {
-            redirect($this->agent->referrer());
-        } else {
-            redirect($this->getModuleBaseUrl());
-        }
+        $this->redirectBack();
     }
 
     /**
@@ -2066,20 +2047,14 @@ abstract class AdminCRUDController extends ModuleAdminController
         }
 
         if ($success) {
-            $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS);
-            $this->simplesessionmessage->setMessage('global_header_success');
+            $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS)
+                ->setMessage('global_header_success');
         } else {
-            $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_WARNING);
-            $this->simplesessionmessage->setMessage('crud_unable_to_delete');
+            $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_WARNING)
+                ->setMessage('crud_unable_to_delete');
         }
 
-        // Smart redirect
-        $this->load->library('User_agent');
-        if ($this->agent->referrer()) {
-            redirect($this->agent->referrer());
-        } else {
-            redirect($this->getModuleBaseUrl());
-        };
+        $this->redirectBack();;
     }
 
     /**
@@ -2108,16 +2083,10 @@ abstract class AdminCRUDController extends ModuleAdminController
             die(json_encode(array('status' => 1, 'message' => 'OK')));
         }
 
-        $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS);
-        $this->simplesessionmessage->setMessage('global_header_success');
+        $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS)
+            ->setMessage('global_header_success');
 
-        // Smart redirect
-        $this->load->library('User_agent');
-        if ($this->agent->referrer()) {
-            redirect($this->agent->referrer());
-        } else {
-            redirect($this->getModuleBaseUrl());
-        }
+        $this->redirectBack();
     }
 
     /**
@@ -2296,8 +2265,8 @@ abstract class AdminCRUDController extends ModuleAdminController
     public function _closePopupAndDisplaySuccess($message = 'global_header_success')
     {
         $this->load->library('SimpleSessionMessage');
-        $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS);
-        $this->simplesessionmessage->setMessage($message);
+        $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS)
+            ->setMessage($message);
 
         $this->_closePopup();
     }
@@ -2377,6 +2346,16 @@ abstract class AdminCRUDController extends ModuleAdminController
             return '<a href="' . $this->getModuleBaseUrl() . '/move/id-' . $line->$id_field_name . '/direction-' . $up . ($this->getForcedFilters() ? '/forced_filters-' . DataGrid::encodeFiltersString($this->getForcedFilters()) : '') . ($this->input->getParam('layout') ? '/layout-' . $this->input->getParam('layout') : '') . '" class="moveUp json"><img src="pepiscms/theme/img/dialog/datagrid/up_16.png" alt="" /></a> <a href="' . $this->getModuleBaseUrl() . '/move/id-' . $line->$id_field_name . '/direction-' . $down . '" class="moveDown json"><img src="pepiscms/theme/img/dialog/datagrid/down_16.png" alt="" /></a>';
         } else {
             return $content;
+        }
+    }
+
+    private function redirectBack()
+    {
+        $this->load->library('User_agent');
+        if ($this->agent->referrer()) {
+            redirect($this->agent->referrer());
+        } else {
+            redirect($this->getModuleBaseUrl());
         }
     }
 }
