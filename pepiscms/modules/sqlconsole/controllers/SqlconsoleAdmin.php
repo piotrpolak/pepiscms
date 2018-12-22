@@ -70,7 +70,7 @@ class SqlconsoleAdmin extends ModuleAdminController
 
                 if (!$rs) {
                     $error = $this->db->error();
-                    if (is_array($error)) {
+                    if (is_array($error) && $error['code'] !== 0) {
                         $this->assign('query_error', $error['code'] . ' - ' . $error['message']);
                     }
                 } else {
