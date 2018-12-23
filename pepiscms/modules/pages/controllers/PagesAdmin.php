@@ -280,10 +280,10 @@ class PagesAdmin extends ModuleAdminController
         $this->_clear_cache();
 
         // Setting the message and redirecting
-        $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS);
-        $this->simplesessionmessage->setMessage('pages_dialog_delete_page_success');
+        $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS)
+            ->setMessage('pages_dialog_delete_page_success');
 
-        if ($this->input->getParam('json') == 1) {
+        if ($this->expectsJsonResponse()) {
             if ($success) {
                 $this->jsonResponse(true, 'OK');
             } else {
@@ -311,7 +311,7 @@ class PagesAdmin extends ModuleAdminController
 
             $this->_clear_cache();
 
-            if ($this->input->getParam('json') == 1) {
+            if ($this->expectsJsonResponse()) {
                 if ($success) {
                     $this->jsonResponse(true, 'OK');
                 } else {
@@ -321,7 +321,7 @@ class PagesAdmin extends ModuleAdminController
         } else {
             $menuelement = $this->Menu_model->getById($item_id);
 
-            if ($this->input->getParam('json') == 1) {
+            if ($this->expectsJsonResponse()) {
                 if ($success) {
                     $this->jsonResponse(true, 'OK');
                 } else {
@@ -345,7 +345,7 @@ class PagesAdmin extends ModuleAdminController
         $this->Generic_model->move($id, $direction, $this->Menu_model->getTable(), 'parent_item_id', 'item_order', 'item_id');
         $this->_clear_cache();
 
-        if ($this->input->getParam('json') == 1) {
+        if ($this->expectsJsonResponse()) {
             $this->jsonResponse(true, 'OK');
         }
 
@@ -535,7 +535,6 @@ class PagesAdmin extends ModuleAdminController
             'description' => $this->lang->line('pages_label_document_uri_desc'),
         );
 
-        $menu_item = false;
         $menu_item = $page_id ? $this->Menu_model->getElementByPageId($page_id) : false;
 
         $menu = array('-1' => $this->lang->line('pages_dialog_hidden_menu'), '0' => $this->lang->line('pages_dialog_main_menu'));
@@ -727,5 +726,13 @@ class PagesAdmin extends ModuleAdminController
         if ($page->page_image_path) {
             unlink($this->uploads_base_path . $page->page_image_path);
         }
+    }
+
+    /**
+     * @return bool
+     */
+    private function expectsJsonResponse()
+    {
+        return $this->input->getParam('json') == 1;
     }
 }
