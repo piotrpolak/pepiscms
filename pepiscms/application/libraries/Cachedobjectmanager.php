@@ -78,6 +78,30 @@ class Cachedobjectmanager extends ContainerAware
     }
 
     /**
+     * The recommended convenience method to compute and get cache.
+     *
+     * @param $name
+     * @param $collection
+     * @param $callback
+     * @param int $time_to_live
+     * @return bool|mixed
+     */
+    public function get($name, $collection, $callback, $time_to_live = 3600)
+    {
+        $object = $this->getObject($name, $time_to_live, $collection);
+        if ($object) {
+            return $object;
+        }
+
+        $object = call_user_func($callback);
+        $this->setObject($name, $object, $collection);
+
+        return $object;
+    }
+
+    /**
+     * TIP: Use get() function to get/set cache using a callback.
+     *
      * Retrieves object from persistent memory
      *
      * @param string $name
@@ -116,7 +140,9 @@ class Cachedobjectmanager extends ContainerAware
     }
 
     /**
-     * Sets object by name. If store on destruct is set to true, the object will be storied with a delay
+     * TIP: Use get() function to get/set cache using a callback.
+     *
+     * Sets object by name. If store on destruct is set to true, the object will be storied with a delay.
      *
      * @param string $name
      * @param object $object
