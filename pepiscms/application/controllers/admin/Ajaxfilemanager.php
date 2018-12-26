@@ -19,6 +19,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
  */
 class Ajaxfilemanager extends AdminController
 {
+
+    private $uploadsPath = '';
+
     public function __construct()
     {
         parent::__construct();
@@ -30,6 +33,8 @@ class Ajaxfilemanager extends AdminController
         $this->load->language('filemanager');
 
         $this->assign('title', $this->lang->line('filemanager_label'));
+
+        $this->uploadsPath = $this->config->item('uploads_path');
     }
 
     public function index()
@@ -40,7 +45,7 @@ class Ajaxfilemanager extends AdminController
     public function getjsonfilelist()
     {
         $files = $dirs = array();
-        $user_files_dir = $this->config->item('uploads_path');
+        $user_files_dir = $this->uploadsPath;
         $current_path = isset($_POST['path']) ? str_replace('//', '/', str_replace('../', '', $_POST['path'] . '/')) : '/';
 
         if (is_dir($user_files_dir . $current_path)) {
@@ -106,7 +111,8 @@ class Ajaxfilemanager extends AdminController
             ->set_header('Pragma: no-cache')
             ->set_header('Content-type: application/x-javascript');
 
-        echo json_encode($response);
+
+        $this->output->append_output(json_encode($response));
     }
 
     /**
@@ -131,7 +137,6 @@ class Ajaxfilemanager extends AdminController
     {
         $command = $_POST['command'];
         $currentRelativePath = $_POST['path'];
-        $baseDir = $this->config->item('uploads_path');
 
         /**
          * @var \PiotrPolak\PepisCMS\Filemanager\Command\CommandInterface[]
@@ -147,7 +152,7 @@ class Ajaxfilemanager extends AdminController
         $command = $this->getMatchedCommand($commands, $command);
 
         try {
-            $command->execute($baseDir, $currentRelativePath, $this->input);
+            $command->execute($this->uploadsPath, $currentRelativePath, $this->input);
         } catch (\PiotrPolak\PepisCMS\Filemanager\Command\CommandException $e) {
             return $this->sendStatus($e->getMessage());
         }
@@ -175,7 +180,7 @@ class Ajaxfilemanager extends AdminController
 
         $error = false;
 
-        $config['upload_path'] = $this->config->item('uploads_path') . $current_path;
+        $config['upload_path'] = $this->uploadsPath . $current_path;
         $config['allowed_types'] = $this->config->item('upload_allowed_types');
 
         $this->load->library('upload', $config);
@@ -262,7 +267,7 @@ class Ajaxfilemanager extends AdminController
             }
         }
 
-        $image_path = $absolute ? '' : $this->config->item('uploads_path');
+        $image_path = $absolute ? '' : $this->uploadsPath;
 
         $cache_path = $this->config->item('cache_path');
         $cache_path = ($cache_path === '') ? 'application/cache/' : $cache_path;
@@ -319,14 +324,13 @@ class Ajaxfilemanager extends AdminController
     {
         parse_str(substr($_SERVER['REQUEST_URI'], strpos($_SERVER['REQUEST_URI'], '?') + 1), $_GET);
         $_GET['term'] = str_replace('../', '', $_GET['term']);
-        $path = $this->config->item('uploads_path') . $_GET['term'] . '*';
+        $path = $this->uploadsPath . $_GET['term'] . '*';
 
-        $len = strlen($this->config->item('uploads_path'));
+        $len = strlen($this->uploadsPath);
 
         $paths = glob($path, GLOB_ONLYDIR);
         foreach ($paths as &$path) {
             $path = substr($path, $len);
-            $path = ltrim($path, '/');
         }
 
         echo json_encode($paths);
@@ -354,7 +358,7 @@ class Ajaxfilemanager extends AdminController
             $current_path = substr($current_path, 1);
         }
 
-        $current_path = INSTALLATIONPATH . $this->config->item('uploads_path') . $current_path;
+        $current_path = INSTALLATIONPATH . $this->uploadsPath . $current_path;
 
         if (!file_exists($current_path)) {
             LOGGER::notice('Error 404, accessing inexisting file: ' . $current_path, 'FILEMANAGER');
