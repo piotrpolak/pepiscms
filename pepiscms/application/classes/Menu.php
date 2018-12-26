@@ -20,7 +20,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  *
  * @since 0.2
  */
-class Menu
+class Menu extends ContainerAware
 {
     /** @var array|null */
     private $children = null;
@@ -35,7 +35,7 @@ class Menu
         // Initializing children
         if ($this->children == null) {
             $this->initializeChildren();
-            $menu_items_array = get_instance()->Menu_model->getSubMenu($this->getId(), Dispatcher::getSiteLanguage()->code); // Hardcoded, to be fixed
+            $menu_items_array = get_instance()->Menu_model->getSubMenuCached($this->getId(), Dispatcher::getSiteLanguage()->code); // Hardcoded, to be fixed
             foreach ($menu_items_array as &$item) {
                 $menu_item = new MenuItem();
                 $menu_item->setLabel($item['item_name']);
