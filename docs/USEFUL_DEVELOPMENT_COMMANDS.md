@@ -71,6 +71,11 @@ docker exec -it pepiscms_web_1 sh -c \
 "composer install && composer require --no-update phpoffice/phpspreadsheet 1.5.* && composer --no-update require twig/twig && ./vendor/bin/phpunit -c ./vendor/piotrpolak/pepiscms/phpunit.xml.dist && vendor/bin/behat"
 ```
 
+## Testing manual installation
+
+When testing manuall installation, please add the `PEPIS_CMS_IS_UNATTENDED_INSTALL: 'false'` to the
+`docker-compose.yml` file. This will disable the default unattended installation.
+
 ## Rebuilding assets
 
 ### Installing compass utility

@@ -13,6 +13,7 @@ services:
       PEPIS_CMS_SITE_EMAIL: piotr@polak.ro
       PEPIS_CMS_SITE_NAME: Demonstration
       PEPIS_CMS_OBJECT_CACHE_OBJECT_IS_ENABLED: 'true'
+#      PEPIS_CMS_IS_UNATTENDED_INSTALL: 'false'
     ports:
       - "80:80"
     links:
@@ -28,6 +29,7 @@ services:
       - ./tests:/var/www/html/vendor/piotrpolak/pepiscms/tests
       - ./phpunit.xml.dist:/var/www/html/vendor/piotrpolak/pepiscms/phpunit.xml.dist
       - ./CHANGELOG.md:/var/www/html/vendor/piotrpolak/pepiscms/CHANGELOG.md
+      - ./install.php:/var/www/html/vendor/piotrpolak/pepiscms/install.php
       - ./composer.json:/var/www/html/untouchable/composer.json:ro
       - ./.php_cs.dist:/var/www/html/.php_cs.dist
       - ./tmp/.composer/:/root/.composer/

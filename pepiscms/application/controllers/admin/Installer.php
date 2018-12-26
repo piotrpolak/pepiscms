@@ -442,6 +442,13 @@ class Installer extends AdminController
             redirect(admin_url() . 'installer/build_success');
         }, FormBuilder::CALLBACK_ON_SAVE);
 
+
+        $modules_installed_in_menu = array();
+
+        if ($this->get_installation_data('cms_instance_type') == Installer_helper::FULL_FEATURED_WEB_CMS) {
+            $modules_installed_in_menu[] = 'pages';
+        }
+
         $modules = ModuleRunner::getAvailableModules();
 
         $definition = array();
@@ -453,7 +460,7 @@ class Installer extends AdminController
                 'input_group' => $input_group,
                 'label' => $this->lang->line('installer_installed_in_menu'),
                 'validation_rules' => '',
-                'input_default_value' => 0,
+                'input_default_value' => in_array($module, $modules_installed_in_menu)
             );
 
             $definition[$module . '__is_installed_utilities'] = array(

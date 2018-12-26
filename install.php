@@ -13,7 +13,7 @@
  * 4. Run install.php from your browser and follow the instructions
  */
 
-if (file_exists('pepiscms')) {
+if (file_exists('pepiscms') && file_exists('tests')) {
     die('Access blocked. Please copy this file into your project directory and configure the $vendor_path.');
 }
 
