@@ -64,13 +64,13 @@ function FileManagerUI(transtlation_map, is_intranet) {
                 extension = extension.toLowerCase();
 
                 if (!(allowed_extensions instanceof Array) || allowed_extensions.length == 0) {
-                    displayError(dialog.list_of_supported_filetypes_is_empty);
+                    displayErrors([dialog.list_of_supported_filetypes_is_empty]);
                     return;
                 }
 
                 extension = extension.toString().trim();
                 if (allowed_extensions.indexOf(extension) == -1) {
-                    displayError(dialog.filetype_not_allowed + extension + ".");
+                    displayErrors([dialog.filetype_not_allowed + extension + "."]);
                     return;
                 }
                 ajaxUpload.setData({
@@ -118,12 +118,11 @@ function FileManagerUI(transtlation_map, is_intranet) {
     //
     //--------------------------------------------------------------------------------
     function getParentPath(path) {
-        var last_index = path.lastIndexOf('/');
         if (path.length != -1) {
             path = path.substr(0, path.length - 1);
         }
 
-        last_index = path.lastIndexOf('/');
+        var last_index = path.lastIndexOf('/');
         if (last_index == -1) {
             return "";
         }
@@ -141,12 +140,6 @@ function FileManagerUI(transtlation_map, is_intranet) {
 
         return Math.round(filesize, 0) + ' b';
     }
-
-    function date_format(ts) {
-        var date = new Date(ts * 1000);
-        return date.getDay() + '-' + date.getMonth() + '-' + date.getFullYear() + ' ' + date.getHours() + ':' + date.getMinutes();
-    }
-
 
     function redrawPathBar(path) {
         path = path.split('/');
@@ -193,7 +186,7 @@ function FileManagerUI(transtlation_map, is_intranet) {
                     window.location = base_path + browse_path;
                 }
                 else {
-                    displayError(dialog.uploads_directory_is_missing);
+                    displayErrors([dialog.uploads_directory_is_missing]);
                 }
                 return false;
             }
@@ -237,8 +230,6 @@ function FileManagerUI(transtlation_map, is_intranet) {
                         html += '<td><a href="' + base_path + browse_path + '#' + current_path + item.name + '" title="' + current_path + item.name + '" class="filemanager_nav_link label"><b>' + item.name + '</b></a></td>';
                         html += '<td class="link"><a class="rename_button" value="' + item.name + '" href="#"><img src="pepiscms/theme/img/ajaxfilemanager/rename_16.png" alt="" /></a></td>';
                         html += '<td class="link">-</td>';
-                        //html += '<td>'+date_format(item.ctime)+'</td>';
-                        //html += '<td>'+date_format(item.mtime)+'</td>';
                         html += '</tr>';
                     });
 
@@ -270,8 +261,6 @@ function FileManagerUI(transtlation_map, is_intranet) {
 
                         html += '<td class="link"><a class="rename_button" value="' + item.name + '" href="#"><img src="pepiscms/theme/img/ajaxfilemanager/rename_16.png" alt="" /></a></td>';
                         html += '<td>' + size_format(item.size) + '</td>';
-                        //html += '<td>'+date_format(item.ctime)+'</td>';
-                        //html += '<td>'+date_format(item.mtime)+'</td>';
                         html += '</tr>';
                     });
                 }
@@ -355,9 +344,6 @@ function FileManagerUI(transtlation_map, is_intranet) {
                 $("#move_files_box").hide();
                 $("#create_folder_box").hide();
 
-                // 2 - partial error
-                displayErrors(data.errors);
-
                 $("#filemanager").show();
 
                 redrawTable(current_path);
@@ -369,12 +355,9 @@ function FileManagerUI(transtlation_map, is_intranet) {
                 }
             }
 
-        }, 'json');
-    }
-
-    function displayError(message) {
-        var errors = [{message: message}];
-        return displayErrors(errors);
+        }, 'json').fail(function(response) {
+            alert('Error: ' + response.responseText);
+        });
     }
 
     function displayErrors(errors) {
@@ -382,7 +365,7 @@ function FileManagerUI(transtlation_map, is_intranet) {
         html = '';
         for (var i = 0; i < errors.length; i++) {
             html += '<div class="dialog_box error"><img src="pepiscms/theme/img/dialog/messages/error_32.png" alt="" />';
-            html += '<p>' + errors[i].message + '</p>';
+            html += '<p>' + errors[i] + '</p>';
             html += '</div>';
             html += '<div style="clear: both"></div>';
         }
@@ -475,5 +458,6 @@ function FileManagerUI(transtlation_map, is_intranet) {
 
         $("#filemanager").show();
         $("#create_folder_box, #move_files_box, #delete_files_box, #select_files_box").hide();
+        $('#move_files_box .filelistContainer *').remove();
     });
 }
