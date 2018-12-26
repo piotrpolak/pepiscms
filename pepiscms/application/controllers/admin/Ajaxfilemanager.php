@@ -130,140 +130,35 @@ class Ajaxfilemanager extends AdminController
     public function sendcommand()
     {
         $command = $_POST['command'];
-        $current_path = $_POST['path'];
-        $files = explode('/', $_POST['files']);
-        $user_files_dir = $this->config->item('uploads_path');
-        $e_status = 2;
-        $error_messages = array();
+        $currentRelativePath = $_POST['path'];
+        $baseDir = $this->config->item('uploads_path');
 
-        switch ($command) {
-            case 'create':
-                $new_path = isset($_POST['new_location']) ? $_POST['new_location'] : false;
-                $new_path = str_replace('/', '_', $new_path);
-                $new_path = str_replace('\\', '_', $new_path);
-
-                if (strlen($new_path)) {
-                    if (!file_exists($user_files_dir . $current_path . $new_path)) {
-                        LOGGER::info('Creating a new directory: ' . $current_path . $new_path, 'FILEMANAGER');
-                        mkdir($user_files_dir . $current_path . $new_path);
-                    } else {
-                        $e_status = 0;
-                        $error_messages[] = $this->lang->line('filemanager_dialog_file_already_exists');
-                    }
-                }
-                break;
-
-            case 'delete':
-                foreach ($files as $file) {
-                    if (is_file($user_files_dir . $current_path . $file)) {
-                        if (@unlink($user_files_dir . $current_path . $file)) {
-                            LOGGER::info('Deleting file: ' . $current_path . $file, 'FILEMANAGER');
-                        } else {
-                            $error_messages[] = sprintf($this->lang->line('filemanager_dialog_unable_to_delete_file'), htmlentities($file));
-                        }
-                    } elseif (is_dir($user_files_dir . $current_path . $file)) {
-                        if (@rmdir($user_files_dir . $current_path . $file)) {
-                            LOGGER::info('Deleting directory: ' . $current_path . $file, 'FILEMANAGER');
-                        } else {
-                            $error_messages[] = sprintf($this->lang->line('filemanager_dialog_unable_to_delete_nonempty_directory'), htmlentities($file));
-                        }
-                    }
-                }
-                break;
-
-            case 'move':
-                $new_path = isset($_POST['new_location']) ? $_POST['new_location'] : false;
-
-                if (!is_dir($user_files_dir . '/' . $new_path)) {
-                    $error_messages[] = 'New location does not exist';
-                    $e_status = 0;
-                    break;
-                }
-
-                if (strpos($new_path, '../') != null || $new_path == $current_path) {
-                    $error_messages[] = 'New location not set';
-                    $e_status = 0;
-                    break;
-                }
-
-                foreach ($files as $file) {
-                    if (!file_exists($user_files_dir . '/' . $new_path . '/' . $file)) {
-                        @rename($user_files_dir . $current_path . $file, $user_files_dir . '/' . $new_path . '/' . $file);
-                        LOGGER::info('Moving file or directory: ' . $current_path . $file . ' to ' . $new_path . $file, 'FILEMANAGER');
-                    } else {
-                        $error_messages[] = sprintf($this->lang->line('filemanager_dialog_unable_to_move'), htmlentities($file));
-                    }
-                }
-                break;
-
-            case 'rename':
-                if (count($files) < 1) {
-                    $error_messages[] = 'Wrong command syntax, you must submit at least 2 file names.';
-                    $e_status = 0;
-                    break;
-                }
-
-                $new_name = str_replace('/', '_', $files[1]);
-                $new_name = str_replace('\\', '_', $new_name);
-
-                $file_name = str_replace('/', '_', $files[0]);
-                $file_name = str_replace('\\', '_', $file_name);
-
-                if (is_file($user_files_dir . $current_path . $file_name)) {
-                    $upload_allowed_types = $this->config->item('upload_allowed_types');
-                    $upload_allowed_types = explode('|', $upload_allowed_types);
-
-                    $ext = mb_strtolower(str_replace('.', '', strrchr($new_name, '.')));
-                    if (in_array($ext, $upload_allowed_types)) {
-                        $can_rename = true;
-                    } else {
-                        $error_messages[] = $this->lang->line('filemanager_dialog_file_extension_illegal');
-                        $e_status = 0;
-                        break;
-                    }
-                } else { // For directories
-                    $can_rename = true;
-                }
-
-                if ($can_rename) {
-                    if ($file_name != $new_name) {
-                        if (!file_exists($user_files_dir . $current_path . $new_name)) {
-                            rename($user_files_dir . $current_path . $file_name, $user_files_dir . $current_path . $new_name);
-                            LOGGER::info('Renaming: ' . $current_path . $file_name . ' to ' . $current_path . $new_name, 'FILEMANAGER');
-                        } else {
-                            $error_messages[] = $this->lang->line('filemanager_dialog_file_already_exists');
-                            $e_status = 0;
-                            break;
-                        }
-                    }
-                }
-
-            default:
-                break;
-        }
-
-        $count_errors = count($error_messages);
-
-
-        $response = array(
-            'status' => ($count_errors > 0 ? $e_status : 1),
-            'errors' => array(),
+        /**
+         * @var \PiotrPolak\PepisCMS\Filemanager\Command\CommandInterface[]
+         */
+        $commands = array(
+            new \PiotrPolak\PepisCMS\Filemanager\Command\CreateCommand(),
+            new \PiotrPolak\PepisCMS\Filemanager\Command\DeleteCommand(),
+            new \PiotrPolak\PepisCMS\Filemanager\Command\MoveCommand(),
+            new \PiotrPolak\PepisCMS\Filemanager\Command\RenameCommand(),
         );
 
-        if ($count_errors) {
-            foreach ($error_messages as $e) {
-                $response['errors'][] = $e;
-            }
+
+        $command = $this->getMatchedCommand($commands, $command);
+
+        try {
+            $command->execute($baseDir, $currentRelativePath, $this->input);
+        } catch (\PiotrPolak\PepisCMS\Filemanager\Command\CommandException $e) {
+            return $this->sendStatus($e->getMessage());
         }
 
-        header('Content-type: application/x-javascript');
-        echo json_encode($response);
+        $this->sendStatus();
     }
 
     public function upload()
     {
         if (!isset($_POST['path'])) {
-            echo json_encode(array('status' => 0, 'message' => 'Path not found'));
+            $this->sendStatus('Path not found');
             return;
         }
 
@@ -274,7 +169,7 @@ class Ajaxfilemanager extends AdminController
         echo $this->genericupload($_POST['path']);
     }
 
-    public function genericupload($current_path = '', $json = true, $file_field_name = 'file')
+    private function genericupload($current_path = '', $file_field_name = 'file')
     {
         $make_filenames_nice = true;
 
@@ -310,17 +205,9 @@ class Ajaxfilemanager extends AdminController
             }
 
             LOGGER::info('Uploading file: ' . $current_path . $udata['file_name'], 'FILEMANAGER');
-            if ($json) {
-                return json_encode(array('status' => 1, 'message' => 'Upload success'));
-            } else {
-                return 'OK';
-            }
+            return $this->sendStatus();
         } else {
-            if ($json) {
-                return json_encode(array('status' => 1, 'message' => 'Upload success', 'error' => array('message' => $error)));
-            } else {
-                return 'Error: ' . $error;
-            }
+            return $this->sendStatus($error);
         }
     }
 
@@ -485,5 +372,37 @@ class Ajaxfilemanager extends AdminController
         header('Content-Disposition: inline; filename="' . $basename . '"');
         readfile($current_path);
         die();
+    }
+
+    /**
+     * @param array $commands
+     * @param $command
+     * @return \PiotrPolak\PepisCMS\Filemanager\Command\CommandInterface
+     */
+    private function getMatchedCommand(array $commands, $command)
+    {
+        foreach ($commands as $c) {
+            if ($c->getName() == $command) {
+                return $c;
+            }
+        }
+
+        throw new \RuntimeException('No command handler found for ' . $command);
+    }
+
+    private function sendStatus($errorMessage = false)
+    {
+        $errors = array();
+        if ($errorMessage) {
+            $errors[] = $errorMessage;
+        }
+
+        $response = array(
+            'status' => $errorMessage ? 0 : 1,
+            'errors' => $errors,
+        );
+
+        header('Content-type: application/x-javascript');
+        die(json_encode($response));
     }
 }
