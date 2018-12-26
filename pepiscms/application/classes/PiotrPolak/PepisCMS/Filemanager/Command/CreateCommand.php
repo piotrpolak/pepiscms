@@ -35,7 +35,7 @@ class CreateCommand extends \ContainerAware implements CommandInterface
             throw new CommandException($this->lang->line('filemanager_dialog_file_already_exists'));
         }
 
-        if (mkdir($baseDir . $currentRelativePath . $newLocation)) {
+        if (@mkdir($baseDir . $currentRelativePath . $newLocation)) {
             \LOGGER::info('Created a new directory: ' . $currentRelativePath . $newLocation, 'FILEMANAGER');
         } else {
             \LOGGER::error('Unable to create a new directory: ' . $currentRelativePath . $newLocation, 'FILEMANAGER');
