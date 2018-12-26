@@ -34,6 +34,8 @@ class Menu_model extends Generic_model implements BackupableInterface
             'page_id',
             'item_url'
         ));
+
+        $this->load->library('Cachedobjectmanager');
     }
 
     /**
@@ -180,8 +182,6 @@ class Menu_model extends Generic_model implements BackupableInterface
      */
     public function getMenuCached($parent_item_id = 0, $language_code = 'en')
     {
-        $this->load->library('Cachedobjectmanager');
-
         $object_name = 'menu_' . $parent_item_id . '_' . $language_code;
         $object = $this->cachedobjectmanager->getObject($object_name, 3600 * 24, 'pages');
 
@@ -213,6 +213,27 @@ class Menu_model extends Generic_model implements BackupableInterface
             ->order_by('item_order')
             ->get()
             ->result_array();
+    }
+
+
+    /**
+     * Returns menu structure (recursive) Cached
+     *
+     * @param int $parent_item_id
+     * @param string $language_code
+     * @return array menu structure
+     */
+    public function getSubMenuCached($parent_item_id = 0, $language_code = 'en')
+    {
+        $object_name = 'submenu_' . $parent_item_id . '_' . $language_code;
+        $object = $this->cachedobjectmanager->getObject($object_name, 3600 * 24, 'pages');
+
+        if ($object === false) {
+            $object = $this->getSubMenu($parent_item_id, $language_code);
+            $this->cachedobjectmanager->setObject($object_name, $object, 'pages');
+        }
+
+        return $object;
     }
 
     /**
