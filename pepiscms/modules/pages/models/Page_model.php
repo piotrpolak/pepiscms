@@ -19,7 +19,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  *
  * @since 0.1.0
  */
-class Page_model extends Generic_model implements BackupableInterface
+class Page_model extends Generic_model
 {
     public function __construct()
     {
@@ -209,50 +209,6 @@ class Page_model extends Generic_model implements BackupableInterface
             ->where('page_is_displayed_in_sitemap = \'1\'')// TODO
             ->get($this->config->item('database_table_pages'))
             ->result();
-    }
-
-    // ------------------------------------------------------------------------
-    // Implementation of BackupableInterface
-    // ------------------------------------------------------------------------
-
-    public function doBackupProjection()
-    {
-        // Used for backup only
-        return $this->db->select('page_id,page_uri, page_title, page_description, page_keywords, page_contents, page_is_default, page_is_displayed_in_sitemap, language_code, page_image_path')
-            ->order_by('page_uri')
-            ->get($this->config->item('database_table_pages'))
-            ->result();
-    }
-
-    public function doBackupRestore(&$items, $user_id = null)
-    {
-        foreach ($items as $item) {
-            $this->db->set('page_id', $item->page_id)
-                ->set('page_uri', '' . $item->page_uri)
-                ->set('page_title', '' . $item->page_title)
-                ->set('page_description', '' . (strlen($item->page_description) > 0 ? $item->page_description : ''))
-                ->set('page_keywords', '' . (strlen($item->page_keywords) > 0 ? $item->page_keywords : ''))
-                ->set('page_contents', '' . (strlen($item->page_contents) > 0 ? $item->page_contents : ''))
-                ->set('page_image_path', '' . (isset($item->page_image_path) && strlen($item->page_image_path) > 0 ? $item->page_image_path : ''))
-                ->set('user_id_modified', $user_id)
-                ->set('user_id_created', $user_id)
-                ->set('timestamp_created', date('Y-m-d H:i:s'))
-                ->set('page_is_default', '' . $item->page_is_default)
-                ->set('page_is_displayed_in_sitemap', '' . $item->page_is_displayed_in_sitemap)
-                ->set('language_code', '' . $item->language_code)
-                ->insert($this->config->item('database_table_pages'));
-        }
-    }
-
-    public function doBackupPrepare()
-    {
-        // Removes all the items
-        $this->db->from($this->config->item('database_table_pages'))
-            ->where('1 = 1', false, false)
-            ->delete();
-
-        // Trunkates table
-        $this->db->truncate($this->config->item('database_table_pages'));
     }
 
     /**

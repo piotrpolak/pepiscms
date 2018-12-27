@@ -51,13 +51,4 @@ if( $is_utilities_only_module )
 
 <?php require APPPATH . 'views/admin/_partials/module_dashboard_from_submenu.php' ?>
 
-<?php if ($this->modulerunner->isModuleInstalled('pages')): ?>
-<h1 class="contrasted"><?=$this->lang->line('backup_xml_backup')?></h1>
-
-<ul class="dashboard_actions clear">
-    <?= dashboard_box($this->lang->line('backup_xml_do'), module_url() . 'xml_do', module_resources_url() . 'do_backup_32.png', $this->lang->line('backup_xml_do_description')) ?>
-    <?= dashboard_box($this->lang->line('backup_xml_restore'), module_url() . 'xml_restore', module_resources_url() . 'restore_backup_32.png', $this->lang->line('backup_xml_restore_description')) ?>
-</ul>
-<?php endif; ?>
-
 <?=$this->widget->create('logs', 'logs')->render( 'BACKUP' );
