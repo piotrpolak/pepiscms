@@ -364,7 +364,7 @@ class PagesAdmin extends ModuleAdminController
     private function _clear_cache()
     {
         try {
-            $this->Page_model->clean_pages_cache();
+            $this->Page_model->cleanPagesCache();
         } catch (Exception $e) {
         }
         $this->cachedobjectmanager->cleanup('pages');
@@ -414,7 +414,7 @@ class PagesAdmin extends ModuleAdminController
         $this->load->language('utilities');
         $this->auth->refreshSession();
         try {
-            $stats = $this->Page_model->clean_pages_cache();
+            $stats = $this->Page_model->cleanPagesCache();
 
             $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS)
                 ->setMessage('utilities_cache_successfully_cleaned', $stats['count'], byte_format($stats['size']));
