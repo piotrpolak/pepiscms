@@ -217,7 +217,7 @@ class Page_model extends Generic_model
      * @return array|bool
      * @throws Exception
      */
-    public function clean_pages_cache()
+    public function cleanPagesCache()
     {
         $return = array('size' => 0, 'count' => 0);
 
