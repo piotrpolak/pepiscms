@@ -45,3 +45,5 @@ DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
 CREATE INDEX `cms_logs_timestamp` ON `cms_logs` (`timestamp`);
+
+ALTER TABLE `cms_logs` ADD COLUMN `referer` VARCHAR(2048) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ;

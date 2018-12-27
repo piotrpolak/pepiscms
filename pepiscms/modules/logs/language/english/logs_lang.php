@@ -28,3 +28,4 @@ $lang['logs_user_id']                             = 'User';
 $lang['logs_view_all']                            = 'View all system logs';
 $lang['users_user_ips']                           = 'User IPs';
 $lang['users_using_this_ip']                      = 'Other users using this IP';
+$lang['logs_referer']                             = 'Referer';
