@@ -68,6 +68,8 @@ class Logger
         }
         $url = 'http' . ((!empty($_SERVER['HTTPS'])) ? 's' : '') . '://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 
+        $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null;
+
         if (!$timestamp) {
             $timestamp = utc_timestamp();
         }
@@ -75,6 +77,9 @@ class Logger
         $CI->db->set('message', substr($message, 0, 2048))->set('timestamp', $timestamp)->set('level', $level)->set('ip', $ip);
         if ($user_id) {
             $CI->db->set('user_id', $user_id);
+        }
+        if ($referer) {
+            $CI->db->set('referer', $referer);
         }
 
         $CI->db->set('collection', $collection)->set('resource_id', $resource_id)->set('url', $url);

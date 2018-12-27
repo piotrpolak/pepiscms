@@ -31,6 +31,7 @@
  * Dropped support for PHPTal, FCKEditor
  * Dropped support for Spanish and Romanian languages
  * Dropped support for features previously marked as deprecated
+ * System logs now store an additional referer field
 
 ### API Changes in 1.0.0.x branch
 

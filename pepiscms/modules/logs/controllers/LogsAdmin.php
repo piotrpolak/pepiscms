@@ -96,6 +96,10 @@ class LogsAdmin extends ModuleAdminController
             'url' => array(
                 'grid_formating_callback' => array($this, '_datagrid_format_url_column')
             ),
+            'referer' => array(
+                'show_in_grid' => false,
+                'grid_formating_callback' => array($this, '_datagrid_format_url_column')
+            ),
         );
 
         // Getting translations and setting input groups

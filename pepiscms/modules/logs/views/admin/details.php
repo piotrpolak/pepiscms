@@ -67,5 +67,13 @@ $actions = array(
             <td class="optionsname"><?=$this->lang->line('logs_ip')?></td>
             <td><a href="<?=module_url()?>ip/ip-<?=$item->ip?>"><?=$item->ip?></a</td>
         </tr>
+        <tr>
+            <td class="optionsname"><?=$this->lang->line('logs_url')?></td>
+            <td><a href="<?=$item->url?>"><?=$item->url?></a</td>
+        </tr>
+        <tr>
+            <td class="optionsname"><?=$this->lang->line('logs_referer')?></td>
+            <td><a href="<?=$item->referer?>"><?=$item->referer?></a</td>
+        </tr>
 	</table>
 </div>
