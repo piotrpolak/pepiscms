@@ -82,11 +82,11 @@ class Cachedobjectmanager extends ContainerAware
      *
      * @param $name
      * @param $collection
-     * @param $callback
      * @param int $time_to_live
+     * @param $callback
      * @return bool|mixed
      */
-    public function get($name, $collection, $callback, $time_to_live = 3600)
+    public function get($name, $collection, $time_to_live, $callback)
     {
         $object = $this->getObject($name, $time_to_live, $collection);
         if ($object) {
