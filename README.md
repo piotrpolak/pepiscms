@@ -178,7 +178,7 @@ product.
   
 * **Backup utility**
 
-    Create and restore web site contents from XML backup, create SQL dumps.
+    Allows to create and download MySQL SQL dumps.
   
 * **Intranet options**
 
@@ -563,9 +563,7 @@ See the [codeigniter-symfony2-bridge project](https://github.com/piotrpolak/code
 
 #### Backup
 
-Allows to export/import pages structure to/from XML.
-
-Pages feature must be enabled to use this module.
+Allows to create and download MySQL SQL dumps.
 
 #### CRUD
 
@@ -1497,11 +1495,6 @@ CodeIgniter helpers customization or extension:
     * `site_theme_url($theme_name = false)` - Returns relative theme path. If no theme is specified then the system configured theme is used.
     * `module_icon_small_url($module_name = false)` - Returns admin module icon URL. If no module is specified, the currently running module is used.
     * `current_url()` - Returns absolute URL for the current request.
-    
-* [PEPISCMS_xml](./pepiscms/application/helpers/PEPISCMS_xml_helper.php)
-    extension to CodeIgniter xml helper.
-    
-    * `reflect2xml($object, &$properties_array, $pre_string = '')` - Serializes object properties into XML, used to generate backup.
 
 
 

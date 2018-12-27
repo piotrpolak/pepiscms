@@ -19,7 +19,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  *
  * @since 0.1.2
  */
-class Site_language_model extends Generic_model implements BackupableInterface
+class Site_language_model extends Generic_model
 {
     /**
      * Cache
@@ -242,37 +242,5 @@ class Site_language_model extends Generic_model implements BackupableInterface
         $this->makeSureThereIsOneLanguageDefault();
 
         return $this->db->trans_status();
-    }
-
-    // ------------------------------------------------------------------------
-    // Implementation of BackupableInterface
-    // ------------------------------------------------------------------------
-
-    public function doBackupProjection()
-    {
-        return $this->db->select('*')
-            ->order_by('code')
-            ->get($this->getTable())
-            ->result();
-    }
-
-    public function doBackupRestore(&$items, $user_id = null)
-    {
-        foreach ($items as $item) {
-            $this->db->set('code', '' . $item->code)
-                ->set('label', '' . $item->label)
-                ->set('is_default', '' . $item->is_default)
-                ->set('ci_language', '' . $item->ci_language)
-                ->insert($this->getTable());
-        }
-    }
-
-    public function doBackupPrepare()
-    {
-        $this->db->from($this->getTable())
-            ->where('1 = 1', false, false)
-            ->delete();
-
-        $this->db->truncate($this->getTable());
     }
 }

@@ -32,7 +32,7 @@
  * Dropped support for Spanish and Romanian languages
  * Dropped support for features previously marked as deprecated
  * System logs now store an additional referer field
- * Multiple UI improvements and bugfixes
+ * Multiple UI improvements and bug fixes
 
 ### API Changes in 1.0.0.x branch
 
@@ -54,10 +54,12 @@
     * `FormBuilder::addImageField()`,
     * `FormBuilder::MULTIPLEIMAGES`,
     * `MenuRendor::getMenuModules()`,
+    * `reflect2xml()` helper
  * Deleted utilities:
     * `AssetMinimifier`,
     * `CrossDomainAuth`,
     * `CommonHook`
+    * `Backup`, `BackupCompatibilityTransformationUtility`, `BackupableInterface` (XML export)
  * Removed constants:
     * `DataGrid::FILTER_CONDITION_EQAL` (typo)
  * `ModuleAdminController` and `ModuleController` are now abstract.

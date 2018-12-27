@@ -19,7 +19,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  *
  * @since 0.1.0
  */
-class Menu_model extends Generic_model implements BackupableInterface
+class Menu_model extends Generic_model
 {
     public function __construct()
     {
@@ -341,86 +341,6 @@ class Menu_model extends Generic_model implements BackupableInterface
         }
 
         return array_reverse($path);
-    }
-
-    // ------------------------------------------------------------------------
-    // Implementation of BackupableInterface
-    // ------------------------------------------------------------------------
-
-    /**
-     * Projects the table for backup
-     *
-     * @return array
-     */
-    public function doBackupProjection()
-    {
-        // Used for backup only
-        return $this->db->select('*')
-            ->order_by('item_id')
-            ->get($this->config->item('database_table_menu'))
-            ->result();
-    }
-
-    /**
-     * Restores table's content from backup
-     *
-     * @param array $items
-     * @param int|null $user_id
-     * @return void
-     */
-    public function doBackupRestore(&$items, $user_id = null)
-    {
-        $this->db->query('ALTER TABLE ' . $this->config->item('database_table_menu') . ' DISABLE KEYS');
-        $this->db->query('SET FOREIGN_KEY_CHECKS=0');
-
-        $fields = array('item_id', 'parent_item_id', 'item_order', 'item_name', 'language_code', 'item_url', 'page_id');
-
-        foreach ($items as $item) {
-            foreach ($fields as $field) {
-                $this->db->set($field, '' . $item->$field);
-            }
-
-            if (strlen('' . $item->parent_item_id) == 0) {
-                $this->db->set('parent_item_id', null);
-            }
-
-            $success = $this->db->insert($this->config->item('database_table_menu'));
-
-            if ($success) {
-                if ($item->item_id == 0) {
-                    $this->db->set('item_id', 0)
-                        ->where('item_id = 1')
-                        ->update($this->config->item('database_table_menu'));
-                }
-            }
-        }
-
-        $this->db->query('SET FOREIGN_KEY_CHECKS=1');
-        $this->db->query('ALTER TABLE ' . $this->config->item('database_table_menu') . ' ENABLE KEYS');
-    }
-
-    /**
-     * Prepares for backup restore (cleans the table)
-     */
-    public function doBackupPrepare()
-    {
-        // Removes all the items
-        $result = $this->db->select('item_id')
-            ->order_by('parent_item_id DESC')
-            ->get($this->config->item('database_table_menu'))->result();
-
-        foreach ($result as $row) {
-            if ($row->item_id == 0) {
-                continue;
-            }
-
-            $this->db->where('item_id', $row->item_id)
-                ->from($this->config->item('database_table_menu'))
-                ->delete();
-        }
-
-        // Trunkates table
-        $this->db->truncate($this->config->item('database_table_menu'));
     }
 
     /**
