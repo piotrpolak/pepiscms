@@ -59,6 +59,8 @@ class Siteconfig_model extends Generic_model
 
         // Clone database to avoid query clash
         $this->setDatabase('default');
+
+        $this->load->library('Cachedobjectmanager');
     }
 
     /**
@@ -182,21 +184,18 @@ class Siteconfig_model extends Generic_model
      */
     public function getValueByNameCached($name)
     {
-        $this->load->library('Cachedobjectmanager');
-        $output = $this->cachedobjectmanager->getObject($this->cache_variable_name, $this->cache_ttl, $this->cache_collection);
-
-        if (!$output) {
-
-            // This protection is required for cases when installer is run to clean up database
-            if (php_sapi_name() == 'cli') {
-                if (!$this->db->table_exists($this->getTable())) {
-                    return null;
+        $output = $this->cachedobjectmanager->get($this->cache_variable_name, $this->cache_collection, $this->cache_ttl,
+            function () {
+                // This protection is required for cases when installer is run to clean up database
+                if (php_sapi_name() == 'cli') {
+                    if (!$this->db->table_exists($this->getTable())) {
+                        return null;
+                    }
                 }
-            }
 
-            $output = $this->getPairsForAll();
-            $this->cachedobjectmanager->setObject($this->cache_variable_name, $output, $this->cache_collection);
-        }
+                return $this->getPairsForAll();
+            }
+        );
 
         if (isset($output[$name])) {
             return $output[$name];

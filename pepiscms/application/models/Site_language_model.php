@@ -37,6 +37,8 @@ class Site_language_model extends Generic_model
         $this->setIdFieldName('code');
         $this->setTable($this->config->item('database_table_site_languages'));
         $this->setAcceptedPostFields(array('code', 'label', 'is_default', 'ci_language'));
+
+        $this->load->library('Cachedobjectmanager');
     }
 
     /**
@@ -75,16 +77,10 @@ class Site_language_model extends Generic_model
      */
     public function getLanguageByCodeCached($language_code)
     {
-        $this->load->library('Cachedobjectmanager');
-
         $object_name = 'language_' . $language_code;
-        $object = $this->cachedobjectmanager->getObject($object_name, 3600 * 24, 'pages');
-        if ($object === false) {
-            $object = $this->getLanguageByCode($language_code);
-            $this->cachedobjectmanager->setObject($object_name, $object, 'pages');
-        }
-
-        return $object;
+        return $this->cachedobjectmanager->get($object_name, 'pages', 3600 * 24, function () use ($language_code) {
+            return $this->getLanguageByCode($language_code);
+        });
     }
 
     /**

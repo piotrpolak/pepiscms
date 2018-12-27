@@ -125,17 +125,15 @@ class SecurityManager
      */
     private static function getSystemSecurityPolicyCached()
     {
-        $policy_name = '_system_security_policy';
-        $CI = get_instance();
-        $CI->load->library('Cachedobjectmanager');
+        get_instance()->load->library('Cachedobjectmanager');
 
-        $policy = $CI->cachedobjectmanager->getObject($policy_name, 3600 * 24, self::$cached_objects_collection_name);
-        if (!$policy) {
-            $CI->load->library('SecurityPolicy');
-            $policy = $CI->securitypolicy->getSystemSecurityPolicy();
-            $CI->cachedobjectmanager->setObject($policy_name, $policy, self::$cached_objects_collection_name);
-        }
-        return $policy;
+        $policy_name = '_system_security_policy';
+        return get_instance()->cachedobjectmanager->get($policy_name, self::$cached_objects_collection_name, 3600 * 24,
+            function () {
+                get_instance()->load->library('SecurityPolicy');
+                return get_instance()->securitypolicy->getSystemSecurityPolicy();
+            }
+        );
     }
 
     /**
@@ -146,17 +144,15 @@ class SecurityManager
      */
     private static function getModuleSecurityPolicyCached($module)
     {
-        $policy_name = 'module_security_policy_' . $module;
-        $CI = get_instance();
-        $CI->load->library('Cachedobjectmanager');
+        get_instance()->load->library('Cachedobjectmanager');
 
-        $policy = $CI->cachedobjectmanager->getObject($policy_name, 3600 * 24, self::$cached_objects_collection_name);
-        if (!$policy) {
-            $CI->load->library('SecurityPolicy');
-            $policy = $CI->securitypolicy->getModuleSecurityPolicy($module);
-            $CI->cachedobjectmanager->setObject($policy_name, $policy, self::$cached_objects_collection_name);
-        }
-        return $policy;
+        $policy_name = 'module_security_policy_' . $module;
+        return get_instance()->cachedobjectmanager->get($policy_name, self::$cached_objects_collection_name, 3600 * 24,
+            function () use ($module) {
+                get_instance()->load->library('SecurityPolicy');
+                return get_instance()->securitypolicy->getModuleSecurityPolicy($module);
+            }
+        );
     }
 
     /**

@@ -40,6 +40,8 @@ class Page_model extends Generic_model
             'page_is_displayed_in_sitemap',
             'language_code'
         ));
+
+        $this->load->library('Cachedobjectmanager');
     }
 
     /**
@@ -86,16 +88,12 @@ class Page_model extends Generic_model
      */
     public function getPageByUriCached($page_uri, $language_code = 'en')
     {
-        $this->load->library('Cachedobjectmanager');
-
         $object_name = 'uri_page_' . md5($page_uri) . '_' . $language_code;
-        $object = $this->cachedobjectmanager->getObject($object_name, 3600 * 24, 'pages');
-        if ($object === false) {
-            $object = $this->getPageByUri($page_uri, $language_code);
-            $this->cachedobjectmanager->setObject($object_name, $object, 'pages');
-        }
-
-        return $object;
+        return $this->cachedobjectmanager->get($object_name, 'pages', 3600 * 24,
+            function () use ($language_code, $page_uri) {
+                return $this->getPageByUri($page_uri, $language_code);
+            }
+        );
     }
 
     /**
@@ -140,16 +138,12 @@ class Page_model extends Generic_model
      */
     public function getDefaultPageCached($language_code = 'en')
     {
-        $this->load->library('Cachedobjectmanager');
-
         $object_name = 'default_page_' . $language_code;
-        $object = $this->cachedobjectmanager->getObject($object_name, 3600 * 24, 'pages');
-        if ($object === false) {
-            $object = $this->getDefaultPage($language_code);
-            $this->cachedobjectmanager->setObject($object_name, $object, 'pages');
-        }
-
-        return $object;
+        return $this->cachedobjectmanager->get($object_name, 'pages', 3600 * 24,
+            function () use ($language_code) {
+                return $this->getDefaultPage($language_code);
+            }
+        );
     }
 
     /**
