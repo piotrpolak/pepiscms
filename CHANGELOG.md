@@ -32,6 +32,7 @@
  * Dropped support for Spanish and Romanian languages
  * Dropped support for features previously marked as deprecated
  * System logs now store an additional referer field
+ * Multiple UI improvements and bugfixes
 
 ### API Changes in 1.0.0.x branch
 
@@ -145,7 +146,7 @@ A mature version of 0.2.3 with minimal backward incompatibility, CodeIgniter upg
  * Refactored logs widget, used in backup module
  * Improved file manager
  * Form builder now displays errors related to file uploads, multiple fixes
- * Added command line utility: `php index.php tools`
+ * Added command line utilities: `php index.php tools`
  * Improved development tools
  * Added security policy builder, changed security policy format (backward compatible)
 

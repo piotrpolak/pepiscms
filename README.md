@@ -389,6 +389,7 @@ PEPIS_CMS_AUTH_PASSWORD=demodemo
 PEPIS_CMS_SITE_EMAIL=piotr@polak.ro
 PEPIS_CMS_SITE_NAME=Demonstration
 PEPIS_CMS_OBJECT_CACHE_OBJECT_IS_ENABLED=true # Set false for cloud deployment
+PEPIS_CMS_IS_UNATTENDED_INSTALL=true # Set false for manual installer
 ```
 
 The command line for unattended installation:

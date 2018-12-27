@@ -78,6 +78,7 @@ class ModuleRunner extends ContainerAware
      * @param string $module_name
      * @param string $method
      * @return bool
+     * @throws \PiotrPolak\PepisCMS\Security\AccessDeniedException
      */
     public function runAdminModule($module_name, $method)
     {
