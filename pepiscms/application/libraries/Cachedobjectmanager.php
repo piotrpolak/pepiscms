@@ -88,12 +88,15 @@ class Cachedobjectmanager extends ContainerAware
      */
     public function get($name, $collection, $time_to_live, $callback)
     {
+        /** @noinspection PhpDeprecationInspection */
         $object = $this->getObject($name, $time_to_live, $collection);
         if ($object) {
             return $object;
         }
 
         $object = call_user_func($callback);
+
+        /** @noinspection PhpDeprecationInspection */
         $this->setObject($name, $object, $collection);
 
         return $object;
@@ -107,6 +110,8 @@ class Cachedobjectmanager extends ContainerAware
      * @param string $name
      * @param string $time_to_live
      * @param string $collection
+     *
+     * @deprecated use get() function.
      *
      * @return bool
      */
@@ -148,6 +153,8 @@ class Cachedobjectmanager extends ContainerAware
      * @param object $object
      * @param string $collection
      * @param bool $store_on_destruct
+     *
+     * @deprecated use get() function.
      *
      * @return bool
      */

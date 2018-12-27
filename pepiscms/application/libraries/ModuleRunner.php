@@ -39,8 +39,7 @@ class ModuleRunner extends ContainerAware
      */
     public function __construct()
     {
-        $this->load->library('Logger');
-        $this->load->library('ModulePathResolver');
+        $this->load->library(array('Logger', 'ModulePathResolver', 'Cachedobjectmanager'));
     }
 
     /**
@@ -249,16 +248,13 @@ class ModuleRunner extends ContainerAware
      */
     public static function getInstalledModulesNamesDisplayedInMenuCached()
     {
-        $CI = get_instance();
-        $CI->load->library('Cachedobjectmanager');
-
-        $object = $CI->cachedobjectmanager->getObject('module_names_in_menu', 3600 * 24, 'modules');
-        if ($object === false) {
-            $CI->load->model('Module_model');
-            $object = $CI->Module_model->getInstalledModulesNamesDisplayedInMenu();
-            $CI->cachedobjectmanager->setObject('module_names_in_menu', $object, 'modules');
-        }
-        return $object;
+        $object_name = 'module_names_in_menu';
+        return get_instance()->cachedobjectmanager->get($object_name, 'modules', 3600 * 24,
+            function () {
+                get_instance()->load->model('Module_model');
+                return get_instance()->Module_model->getInstalledModulesNamesDisplayedInMenu();
+            }
+        );
     }
 
     /**
@@ -268,16 +264,13 @@ class ModuleRunner extends ContainerAware
      */
     public static function getInstalledModulesDisplayedInMenuCached()
     {
-        $CI = get_instance();
-        $CI->load->library('Cachedobjectmanager');
-
-        $object = $CI->cachedobjectmanager->getObject('modules_in_menu', 3600 * 24, 'modules');
-        if ($object === false) {
-            $CI->load->model('Module_model');
-            $object = $CI->Module_model->getInstalledModulesDisplayedInMenu();
-            $CI->cachedobjectmanager->setObject('modules_in_menu', $object, 'modules');
-        }
-        return $object;
+        $object_name = 'modules_in_menu';
+        return get_instance()->cachedobjectmanager->get($object_name, 'modules', 3600 * 24,
+            function () {
+                get_instance()->load->model('Module_model');
+                return get_instance()->Module_model->getInstalledModulesDisplayedInMenu();
+            }
+        );
     }
 
     /**
@@ -287,16 +280,13 @@ class ModuleRunner extends ContainerAware
      */
     public static function getInstalledModulesNamesCached()
     {
-        $CI = get_instance();
-        $CI->load->library('Cachedobjectmanager');
-
-        $object = $CI->cachedobjectmanager->getObject('module_names_installed', 3600 * 24, 'modules');
-        if ($object === false) {
-            $CI->load->model('Module_model');
-            $object = $CI->Module_model->getInstalledModulesNames();
-            $CI->cachedobjectmanager->setObject('module_names_installed', $object, 'modules');
-        }
-        return $object;
+        $object_name = 'module_names_installed';
+        return get_instance()->cachedobjectmanager->get($object_name, 'modules', 3600 * 24,
+            function () {
+                get_instance()->load->model('Module_model');
+                return get_instance()->Module_model->getInstalledModulesNames();
+            }
+        );
     }
 
     /**
@@ -318,16 +308,13 @@ class ModuleRunner extends ContainerAware
      */
     public static function getInstalledModulesNamesDisplayedInUtilitiesCached()
     {
-        $CI = get_instance();
-        $CI->load->library('Cachedobjectmanager');
-
-        $object = $CI->cachedobjectmanager->getObject('modules_in_utilities', 3600 * 24, 'modules');
-        if ($object === false) {
-            $CI->load->model('Module_model');
-            $object = $CI->Module_model->getInstalledModulesNamesDisplayedInUtilities();
-            $CI->cachedobjectmanager->setObject('modules_in_utilities', $object, 'modules');
-        }
-        return $object;
+        $object_name = 'modules_in_utilities';
+        return get_instance()->cachedobjectmanager->get($object_name, 'modules', 3600 * 24,
+            function () {
+                get_instance()->load->model('Module_model');
+                return get_instance()->Module_model->getInstalledModulesNamesDisplayedInUtilities();
+            }
+        );
     }
 
     /**
@@ -381,12 +368,9 @@ class ModuleRunner extends ContainerAware
      */
     public static function getParentModuleName($module_name = false)
     {
-        $CI = get_instance();
-        $CI->load->library('Cachedobjectmanager');
-
         // No module name specified
         if (!$module_name) {
-            $module_name = $CI->modulerunner->getRunningModuleName();
+            $module_name = get_instance()->modulerunner->getRunningModuleName();
         }
 
         // No running module specified nor detected
@@ -394,21 +378,17 @@ class ModuleRunner extends ContainerAware
             return false;
         }
 
-        // Cache key
-        $cache_key = 'parent_module_name_' . $module_name;
+        $object_name = 'parent_module_name_' . $module_name;
+        return get_instance()->cachedobjectmanager->get($object_name, 'modules', 3600 * 24,
+            function () use ($module_name) {
+                $parent_module = get_instance()->Module_model->getParentInfoByName($module_name);
+                if ($parent_module) {
+                    return $parent_module->name;
+                }
 
-        $object = $CI->cachedobjectmanager->getObject($cache_key, 3600 * 24, 'modules');
-        if ($object === false) {
-            // Need to store null not false
-            $object = null;
-            $parent_module = $CI->Module_model->getParentInfoByName($module_name);
-
-            if ($parent_module) {
-                $object = $parent_module->name;
+                return null;
             }
-            $CI->cachedobjectmanager->setObject($cache_key, $object, 'modules');
-        }
-        return $object;
+        );
     }
 
     /**

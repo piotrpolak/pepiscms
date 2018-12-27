@@ -183,19 +183,18 @@ abstract class Array_model extends PEPISCMS_Model implements BasicDataFeedableIn
 
         // Only if the cache is used
         if ($this->cache_ttl > 0) {
-            $collection = $this->getCacheCollectionName();
             $cache_variable_name = 'array_feed_cache_' . __CLASS__ . '_' . serialize(array($extra_param, $this->cache_param));
 
             // Reading cache
             $this->load->library('Cachedobjectmanager');
-            $output = $this->cachedobjectmanager->getObject($cache_variable_name, $this->cache_ttl, $collection);
 
-            // No cache - then read the the feed from the object and save it in cache
-            if (!$output) {
-                $this->load->model('Module_model');
-                $output = $this->getBasicFeed($extra_param);
-                $this->cachedobjectmanager->setObject($cache_variable_name, $output, $collection);
-            }
+
+            $output = $this->cachedobjectmanager->get($cache_variable_name, $this->getCacheCollectionName(), $this->cache_ttl,
+                function () use ($extra_param) {
+                    $this->load->model('Module_model');
+                    return $this->getBasicFeed($extra_param);
+                }
+            );
         } else {
             // No cache, read the feed directly from the object
             $output = $this->getBasicFeed($extra_param);
@@ -304,6 +303,7 @@ abstract class Array_model extends PEPISCMS_Model implements BasicDataFeedableIn
      *
      * @param $output
      * @param $filters
+     * @throws Exception
      */
     protected function applyFilters(&$output, $filters)
     {

@@ -183,14 +183,11 @@ class Menu_model extends Generic_model
     public function getMenuCached($parent_item_id = 0, $language_code = 'en')
     {
         $object_name = 'menu_' . $parent_item_id . '_' . $language_code;
-        $object = $this->cachedobjectmanager->getObject($object_name, 3600 * 24, 'pages');
-
-        if ($object === false) {
-            $object = $this->getMenu($parent_item_id, $language_code);
-            $this->cachedobjectmanager->setObject($object_name, $object, 'pages');
-        }
-
-        return $object;
+        return $this->cachedobjectmanager->get($object_name, 'pages', 3600 * 24,
+            function () use ($parent_item_id, $language_code) {
+                return $this->getMenu($parent_item_id, $language_code);
+            }
+        );
     }
 
     /**
@@ -226,14 +223,11 @@ class Menu_model extends Generic_model
     public function getSubMenuCached($parent_item_id = 0, $language_code = 'en')
     {
         $object_name = 'submenu_' . $parent_item_id . '_' . $language_code;
-        $object = $this->cachedobjectmanager->getObject($object_name, 3600 * 24, 'pages');
-
-        if ($object === false) {
-            $object = $this->getSubMenu($parent_item_id, $language_code);
-            $this->cachedobjectmanager->setObject($object_name, $object, 'pages');
-        }
-
-        return $object;
+        return $this->cachedobjectmanager->get($object_name, 'pages', 3600 * 24,
+            function () use ($parent_item_id, $language_code) {
+                return $this->getSubMenu($parent_item_id, $language_code);
+            }
+        );
     }
 
     /**
