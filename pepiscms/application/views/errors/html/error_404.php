@@ -7,30 +7,9 @@ header ( 'HTTP/1.1 404 Not Found' );
 include( INSTALLATIONPATH.'application/config/_pepiscms.php' );
 
 
-if( file_exists(INSTALLATIONPATH.'theme/' . $config['current_theme'] . '/404.php') )
-{
-	return include( INSTALLATIONPATH.'theme/' . $config['current_theme'] . '/404.php' );
-
-	/*  SAMPLE:
-
-	 	include INSTALLATIONPATH . 'application/config/database.php';
-		get_instance()->load->database($db[$active_group]);
-		get_instance()->load->library('Document');
-		$document = new Document();
-
-		$document->setTitle('Eroare 404');
-		$document->setContents('<p>Pagina nu a fost găsită :(</p>');
-		$document->setDescription('');
-		$document->setKeywords('404');
-		$document->setRelativeUrl('');
-		$document->setDefault(FALSE);
-
-		$use_no_fb_like = true;
-
-		$use_no_fb_like = true;
-		include(__DIR__ . '/index.php');
-	 */
-
+$error404ThemeFile = INSTALLATIONPATH . 'theme/' . $config['current_theme'] . '/404.php';
+if (file_exists($error404ThemeFile)) {
+    return include($error404ThemeFile);
 }
 ?>
 <?php header("HTTP/1.1 404 Not Found");
