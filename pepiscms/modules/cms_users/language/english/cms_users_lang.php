@@ -12,7 +12,6 @@ $lang['cms_users_dialog_user_registered_success']          = 'The new user has b
 $lang['cms_users_display_name']                            = 'Real name';
 $lang['cms_users_email']                                   = 'E-mail';
 $lang['cms_users_groups']                                  = 'Groups';
-$lang['cms_users_image_path']                              = 'Image';
 $lang['cms_users_inactivate']                              = 'Inactivate account';
 $lang['cms_users_index_tip_password_change_not_supported'] = 'You are using <b>%s</b> that does not support adding new users nor changing password using this panel.<br><br>You can block an user using <b>%s</b> system (globally) or by deactivating his account in this panel (only this system).';
 $lang['cms_users_input_group_main']                        = 'User';

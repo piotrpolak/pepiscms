@@ -140,14 +140,6 @@ class Cms_usersAdmin extends AdminCRUDController
                 'validation_rules' => false,
                 'input_group' => 'cms_users_input_group_secondary',
             ),
-            'image_path' => array(
-                'show_in_grid' => false,
-                'input_type' => FormBuilder::IMAGE,
-                'upload_path' => INSTALLATIONPATH . 'application/users/',
-                'upload_display_path' => 'application/users/',
-                'upload_complete_callback' => array($this, '_fb_callback_make_filename_seo_friendly'),
-                'input_group' => 'cms_users_input_group_secondary',
-            ),
             'phone_number' => array(
                 'validation_rules' => '',
                 'filter_type' => DataGrid::FILTER_BASIC,
@@ -215,7 +207,6 @@ class Cms_usersAdmin extends AdminCRUDController
         $this->setDefinition($definition);
         $this->setMetaOrderField('display_name', $this->lang->line($lang_field_prefix . 'display_name'));
         $this->setMetaTitlePattern(array($this, '_fb_format_title_and_modify_option'));
-        $this->setMetaImageField('image_path', 'application/users/');
     }
 
     public function _fb_format_title_and_modify_option($content, $line)
@@ -487,82 +478,5 @@ class Cms_usersAdmin extends AdminCRUDController
         } else {
             redirect(module_url());
         }
-    }
-
-    /**
-     * Callback function changing the name of the file to SEO friendly
-     *
-     * @version: 1.2.1
-     * @date: 2015-03-04
-     * @param string $filename
-     * @param type $base_path
-     * @param string $data
-     * @param string $current_image_field_name
-     * @return bool
-     */
-    public function _fb_callback_make_filename_seo_friendly(&$filename, $base_path, &$data, $current_image_field_name)
-    {
-        // List of the fields to be used, if no value is present for a given key
-        // then the key will be ignored. By default all values of the keys
-        // specified will be concatenated
-        $title_field_names = array('name', 'title', 'label');
-
-        $this->load->helper('string');
-        $path = $base_path . $filename;
-        $path_parts = pathinfo($path);
-
-        // Attempt to build a name
-        $new_base_filename = '';
-        foreach ($title_field_names as $title_field_name) {
-            // Concatenating all the elements
-            if (isset($data[$title_field_name]) && $data[$title_field_name]) {
-                $new_base_filename .= '-' . $data[$title_field_name];
-            }
-        }
-
-        // Making it web safe
-        if ($new_base_filename) {
-            $new_base_filename = niceuri($new_base_filename);
-        }
-
-        // This should not be an else statement as niceuri can return empty string sometimes
-        if (!$new_base_filename) {
-            $new_base_filename = niceuri($path_parts['filename']);
-        }
-
-        // This should normally never happen, but who knows - this is bulletproof
-        if (!$new_base_filename) {
-            $new_base_filename = md5(time() + rand(1000, 9999));
-        }
-
-        $new_base_path = '';
-
-        // We don't like upper case extensions
-        $extension = strtolower($path_parts['extension']);
-        $new_name = $new_base_filename . '.' . $extension;
-
-        // Protection against existing files
-        $i = 2;
-        while (file_exists($base_path . $new_base_path . $new_name)) {
-            $new_name = $new_base_filename . '-' . $i . '.' . $extension;
-            if ($i++ > 50 || strlen($i) > 2) { // strlen is a protection against the infinity loop for md5 checksums
-                // This is ridiculous but who knowss
-                $i = md5(time() + rand(1000 - 9999));
-            }
-        }
-
-        // No need to change filename? Then we are fine
-        if ($filename == $new_name) {
-            return true;
-        }
-
-        // Finally here we go!
-        if (rename($path, $base_path . $new_base_path . $new_name)) {
-            $data[$current_image_field_name] = $new_base_path . $new_name;
-            $filename = $new_base_path . $new_name;
-
-            return true;
-        }
-        return false;
     }
 }
