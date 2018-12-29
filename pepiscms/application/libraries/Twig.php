@@ -110,9 +110,9 @@ class Twig extends ContainerAware
         $dirname = realpath(dirname($path));
         $basename = basename($path);
 
-        self::getTwig()->getLoader()->setPaths(array($this->getSiteThemeBasepath(), $dirname));
+        $this->getTwig()->getLoader()->setPaths(array($this->getSiteThemeBasepath(), $dirname));
 
-        $rendered_html = self::getTwig()->render($basename, $variables);
+        $rendered_html = $this->getTwig()->render($basename, $variables);
 
         $this->benchmark->mark('twig_render_end');
 
