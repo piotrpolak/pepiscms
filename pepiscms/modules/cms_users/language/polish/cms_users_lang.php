@@ -13,7 +13,6 @@ $lang['cms_users_dialog_user_registered_success']          = 'Nowy użytkownik d
 $lang['cms_users_display_name']                            = 'Imię i nazwisko';
 $lang['cms_users_email']                                   = 'E-mail';
 $lang['cms_users_groups']                                  = 'Grupy';
-$lang['cms_users_image_path']                              = 'Zdjęcie';
 $lang['cms_users_inactivate']                              = 'Deaktywuj konto';
 $lang['cms_users_index_tip_password_change_not_supported'] = 'Używasz <b>%s</b>, który nie obsługuje dodawania nowych użytkowników ani zmiany hasła z poziomu panelu administracyjnego.<br><br>Możesz zablokować użytkownika za pomocą systemu <b>%s</b> (globalnie) albo deaktywując konto użytkownika w tej zakładce (dotyczy tylko tego panelu).';
 $lang['cms_users_input_group_main']                        = 'Użytkownik';
