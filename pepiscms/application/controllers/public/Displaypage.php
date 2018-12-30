@@ -140,7 +140,7 @@ class DisplayPage extends EnhancedController
         if ($intranet) {
             $this->load->library('Auth');
 
-            if (!$this->auth->isAuthorized()) {
+            if (!$this->auth->isAuthenticated()) {
                 if ($uri) {
                     $_SESSION['request_redirect'] = $uri . $this->config->item('url_suffix');
                 } else {

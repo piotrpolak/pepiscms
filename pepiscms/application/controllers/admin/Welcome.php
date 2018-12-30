@@ -23,7 +23,7 @@ class Welcome extends CI_Controller
     {
         $this->load->library(array('Auth', 'SecurityManager'));
 
-        if (!$this->auth->isAuthorized()) {
+        if (!$this->auth->isAuthenticated()) {
             redirect(admin_url() . 'login');
         } else {
             if ($this->config->item('cms_customization_on_login_redirect_url')) {

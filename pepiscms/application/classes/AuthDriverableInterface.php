@@ -40,7 +40,7 @@ interface AuthDriverableInterface
      * @param string $password
      * @return bool
      */
-    public function authorize($user_email_or_login, $password);
+    public function authenticate($user_email_or_login, $password);
 
     /**
      * Terminates session

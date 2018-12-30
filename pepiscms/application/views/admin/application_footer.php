@@ -3,7 +3,7 @@
 </div>
 
 <?php if (!$popup_layout): ?>
-    <?php if ($this->auth->isAuthorized()): ?>		
+    <?php if ($this->auth->isAuthenticated()): ?>
         <footer>
             <p class="rFloated"><span><?php if ($this->config->item('cms_customization_support_line')): ?><?= $this->config->item('cms_customization_support_line') ?><?php endif; ?><?php if ($this->config->item('cms_customization_support_link')): ?> <a href="<?= $this->config->item('cms_customization_support_link') ?>" title="Help">Help</a><?php endif; ?></span></p>
             <p>PepisCMS <?= PEPISCMS_VERSION ?>
@@ -24,7 +24,7 @@
     </div>
 
 <?php endif; ?>
-    <?php $html_customization_prefix = 'html_customization_'.($this->auth->isAuthorized() ? 'logged_in' : 'not_logged_in'); ?>
+    <?php $html_customization_prefix = 'html_customization_'.($this->auth->isAuthenticated() ? 'logged_in' : 'not_logged_in'); ?>
     <?=$this->config->item($html_customization_prefix.'_body_append')?>
 
     <div id="heavy_operation_indicator">

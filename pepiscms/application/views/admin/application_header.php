@@ -1,7 +1,7 @@
 <!DOCTYPE html> 
 <html dir="ltr" lang="en" class="<?php if ($popup_layout): ?>popup<?php else: ?>plain<?php endif; ?> <?php if ($this->input->getParam('direct') == 1): ?>direct<?php endif; ?>"> 
     <head>
-        <?php $this->load->config('_html_customization'); $html_customization_prefix = 'html_customization_'.($this->auth->isAuthorized() ? 'logged_in' : 'not_logged_in');
+        <?php $this->load->config('_html_customization'); $html_customization_prefix = 'html_customization_'.($this->auth->isAuthenticated() ? 'logged_in' : 'not_logged_in');
         echo $this->config->item($html_customization_prefix.'_head_prepend')?> 
         <base href="<?= base_url() ?>">
         <meta http-equiv="content-type" content="text/html; charset=utf-8">
@@ -71,7 +71,7 @@
                         <?php endif; ?>
                     </a>
 
-                    <?php if ($this->auth->isAuthorized()): ?>
+                    <?php if ($this->auth->isAuthenticated()): ?>
                         <div id="optional_actions_bar">
                             <span id="isLogged"><?= $user ?></span>
                             <?php if (SecurityManager::hasAccess('changepassword') && $this->auth->getDriver()->isPasswordChangeSupported()): ?>	
@@ -96,7 +96,7 @@
                         </ul>
                     </div>
 
-                    <?php if ($this->auth->isAuthorized()): ?>
+                    <?php if ($this->auth->isAuthenticated()): ?>
                         <a href="<?= admin_url(FALSE) ?>logout" id="logout_link" class="hasIcon" title="<?= $this->lang->line('global_logout') ?> &raquo;">
                             <img src="pepiscms/theme/default/images/icons/logout_icon.png" alt="">
                             <?= $this->lang->line('global_logout') ?>
@@ -106,7 +106,7 @@
             </header>
         <?php endif; ?>
 
-        <?php if ($this->auth->isAuthorized() && !$popup_layout): ?>
+        <?php if ($this->auth->isAuthenticated() && !$popup_layout): ?>
             <div id="session_counter" style="display: none;">
                 <a href="#" class="help_icon" data-hint="<?= $this->lang->line('session_expires_description') ?>"><?= $this->lang->line('session_expires_help') ?> &raquo;</a>
                 <p><?= $this->lang->line('session_expires_in_min') ?> <span class="left">{min}</span>. <a href="<?= admin_url() ?>" class="refresh"><?= $this->lang->line('session_expires_refresh') ?></a></p>
@@ -123,7 +123,7 @@
             <?= isset($adminmenu) ? $adminmenu : '' ?>
             <div id="content_wrapper">
                 <div id="content">
-                    <?php if ($this->auth->isAuthorized()): ?>
+                    <?php if ($this->auth->isAuthenticated()): ?>
                         <?php
                         $this->load->config('licence');
                         $licence_expiration_timestamp = $this->config->item('licence_expiration_timestamp');

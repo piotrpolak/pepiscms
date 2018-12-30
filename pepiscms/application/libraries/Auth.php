@@ -21,6 +21,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  */
 class Auth extends ContainerAware
 {
+    const LOGGED_COOKIE_NAME = 'pepiscms_logged';
     /**
      * Auth update timeout in seconds
      *
@@ -36,11 +37,11 @@ class Auth extends ContainerAware
     private $session_must_match_ip = false;
 
     /**
-     * Indicates if authorized, cache variable
+     * Indicates if authenticated, cache variable
      *
      * @var bool
      */
-    private $is_authorized = null;
+    private $is_authenticated = null;
 
     /**
      * Auth update timeout in seconds
@@ -104,32 +105,19 @@ class Auth extends ContainerAware
     }
 
     /**
-     * Authorizes user, tell whenether user-password correct
+     * Authenticates user, tells whenever user-password is correct
      *
      * @param string $user_email_or_login
      * @param string $password
      * @return bool
      */
-    public function authorize($user_email_or_login, $password)
+    public function authenticate($user_email_or_login, $password)
     {
-        $this->load->model('User_model');
-
-        $row = $this->driver->authorize($user_email_or_login, $password);
+        $row = $this->driver->authenticate($user_email_or_login, $password);
 
         if ($row) {
             $time = time();
-            $this->setSessionVariable('user_access', $this->User_model->getUserAccess($row->user_id))
-                ->setSessionVariable('user_id', $row->user_id)
-                ->setSessionVariable('is_root', $row->is_root)
-                ->setSessionVariable('user_email', $row->user_email)
-                ->setSessionVariable('auth_last_update', $time)
-                ->setSessionVariable('auth_last_activity', $time)
-                ->setSessionVariable('auth_ip', $this->input->ip_address())
-                ->setSessionVariable('auth_instance_key', md5(INSTALLATIONPATH))
-                ->setSessionVariable('is_user_password_expired', null)
-                ->setSessionVariable('user_data', $row)
-                ->setSessionVariable('pepiscms_version', PEPISCMS_VERSION);
-            setcookie('pepiscms_logged', 1, 0, '/');
+            $this->doAuthenticate($row);
             return true;
         }
 
@@ -142,12 +130,12 @@ class Auth extends ContainerAware
      * @param bool $force_do_all_checks_again
      * @return bool
      */
-    public function isAuthorized($force_do_all_checks_again = false)
+    public function isAuthenticated($force_do_all_checks_again = false)
     {
         if (!$force_do_all_checks_again) {
-            if ($this->is_authorized !== null) {
+            if ($this->is_authenticated !== null) {
                 // Kind of cache
-                return $this->is_authorized;
+                return $this->is_authenticated;
             }
         }
 
@@ -177,9 +165,9 @@ class Auth extends ContainerAware
                     }
                     if ($success) {
                         $this->setSessionVariable('auth_last_activity', $time);
-                        $this->is_authorized = true;
+                        $this->is_authenticated = true;
 
-                        return $this->is_authorized;
+                        return $this->is_authenticated;
                     }
                 } else {
                     Logger::notice('Too long inactivity. Logging out.', 'LOGIN');
@@ -190,12 +178,12 @@ class Auth extends ContainerAware
         }
 
         $this->logout();
-        $this->is_authorized = false;
-        return $this->is_authorized;
+        $this->is_authenticated = false;
+        return $this->is_authenticated;
     }
 
     /**
-     * Returns user data. The user must be authorized, otherwise returns FALSE
+     * Returns user data. The user must be authenticated, otherwise returns FALSE
      *
      * @return Object
      */
@@ -373,22 +361,7 @@ class Auth extends ContainerAware
         $row = $this->User_model->getActiveById($user_id);
 
         if ($row) {
-            $time = time();
-
-            $this->setSessionVariable('user_access', $this->User_model->getUserAccess($row->user_id))
-                ->setSessionVariable('user_id', $row->user_id)
-                ->setSessionVariable('is_root', $row->is_root)
-                ->setSessionVariable('user_email', $row->user_email)
-                ->setSessionVariable('auth_last_update', $time)
-                ->setSessionVariable('auth_last_activity', $time)
-                ->setSessionVariable('auth_ip', $this->input->ip_address())
-                ->setSessionVariable('auth_instance_key', md5(INSTALLATIONPATH))
-                ->setSessionVariable('user_data', $row)
-                ->setSessionVariable('pepiscms_version', PEPISCMS_VERSION)
-                ->setSessionVariable('is_user_password_expired', null);
-
-            setcookie('pepiscms_logged', 1, 0, '/');
-
+            $this->doAuthenticate($row);
             return true;
         }
 
@@ -403,7 +376,7 @@ class Auth extends ContainerAware
      */
     public function refreshSession()
     {
-        if ($this->isAuthorized()) {
+        if ($this->isAuthenticated()) {
             $user_id = $this->getUserId();
             $this->unsetSession()
                 ->renewUserData($user_id);
@@ -418,7 +391,7 @@ class Auth extends ContainerAware
      */
     public function unsetSession()
     {
-        setcookie('pepiscms_logged', 0, 20, '/');
+        setcookie(self::LOGGED_COOKIE_NAME, 0, 20, '/');
         unset($_SESSION[$this->session_variable_preffix]);
         return $this;
     }
@@ -461,5 +434,27 @@ class Auth extends ContainerAware
         }
 
         return new $driver_class_name($this);
+    }
+
+    /**
+     * @param $row
+     */
+    private function doAuthenticate($row)
+    {
+        $time = time();
+
+        $this->setSessionVariable('user_access', $this->User_model->getUserAccess($row->user_id))
+            ->setSessionVariable('user_id', $row->user_id)
+            ->setSessionVariable('is_root', $row->is_root)
+            ->setSessionVariable('user_email', $row->user_email)
+            ->setSessionVariable('auth_last_update', $time)
+            ->setSessionVariable('auth_last_activity', $time)
+            ->setSessionVariable('auth_ip', $this->input->ip_address())
+            ->setSessionVariable('auth_instance_key', md5(INSTALLATIONPATH))
+            ->setSessionVariable('user_data', $row)
+            ->setSessionVariable('pepiscms_version', PEPISCMS_VERSION)
+            ->setSessionVariable('is_user_password_expired', null);
+
+        setcookie(self::LOGGED_COOKIE_NAME, 1, 0, '/');
     }
 }
