@@ -1,4 +1,4 @@
-## New in version 1.0.0 (xx.xx.2018)
+## New in version 1.0.0 (30.12.2018)
 
 ### New features
 
