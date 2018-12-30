@@ -1336,7 +1336,7 @@ abstract class AdminCRUDController extends ModuleAdminController
                 }
 
                 if ($is_real_image) {
-                    $image_path = 'admin/ajaxfilemanager/absolutethumb/50/' . $this->meta_image_base_url . $line->$image_field_name;
+                    $image_path = 'admin/ajaxfilemanager/thumb/' . $this->getRelativeUploadsPath() . $line->$image_field_name;
                 } elseif (file_exists(APPPATH . '/../theme/file_extensions/file_extension_' . $image_extension . '.png')) {
                     $image_path = 'pepiscms/theme/file_extensions/file_extension_' . $image_extension . '.png';
                 }
@@ -1345,7 +1345,7 @@ abstract class AdminCRUDController extends ModuleAdminController
             } elseif (is_callable($this->meta_image_field)) {
                 $image_field_name = call_user_func_array($this->meta_image_field, array($content, &$line));
                 if ($image_field_name) {
-                    $image_out = '<img class="image" data-src="' . admin_url() . 'ajaxfilemanager/absolutethumb/50/' . $this->meta_image_base_url . $image_field_name . '" alt="" />';
+                    $image_out = '<img class="image" data-src="' . admin_url() . 'ajaxfilemanager/thumb/' . $this->getRelativeUploadsPath() . $image_field_name . '" alt="" />';
                 } else {
                     $image_out = '<img class="image" src="pepiscms/theme/img/dialog/datagrid/noimage_50.png" alt="" />';
                 }
@@ -2366,5 +2366,18 @@ abstract class AdminCRUDController extends ModuleAdminController
             ($this->input->getParam('filters') ? '/filters-' . $this->input->getParam('filters') : '') .
             ($this->getForcedFilters() ? '/forced_filters-' . DataGrid::encodeFiltersString($this->getForcedFilters()) : '') .
             ($this->input->getParam('layout') ? '/layout-' . $this->input->getParam('layout') : '');
+    }
+
+    /**
+     * @return bool|string
+     */
+    private function getRelativeUploadsPath()
+    {
+        $uploads_path = $this->config->item('uploads_path');
+        if (strpos($this->meta_image_base_url, $uploads_path) === 0) {
+            return substr($this->meta_image_base_url, strlen($uploads_path));
+        }
+
+        return $this->meta_image_base_url;
     }
 }
