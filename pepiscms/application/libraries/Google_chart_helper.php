@@ -166,19 +166,7 @@ google.load("visualization", "1", {packages: ["corechart"]});
             $out .= '	data.addColumn("' . $column2_datatype . '", "' . $collumn2_desc . '");' . "\n";
         }
 
-        $final_data_feed = array();
-        if (isset($data_feed[0]) && is_array($data_feed[0])) {
-            foreach ($data_feed[0] as $key => $value) {
-                $final_data_feed[$key] = array();
-                foreach ($data_feed as $f) {
-                    $final_data_feed[$key][] = $f[$key];
-                }
-            }
-        } else {
-            $final_data_feed = $data_feed;
-        }
-        unset($data_feed);
-
+        $final_data_feed = $this->transformDataFeed($data_feed);
 
         foreach ($final_data_feed as $name => $value) {
             if (is_array($value)) {
@@ -256,19 +244,7 @@ google.load("visualization", "1", {packages: ["corechart"]});
             $out .= '	data.addColumn("' . $column2_datatype . '", "' . $collumn2_desc . '");' . "\n";
         }
 
-        $final_data_feed = array();
-        if (isset($data_feed[0]) && is_array($data_feed[0])) {
-            foreach ($data_feed[0] as $key => $value) {
-                $final_data_feed[$key] = array();
-                foreach ($data_feed as $f) {
-                    $final_data_feed[$key][] = $f[$key];
-                }
-            }
-        } else {
-            $final_data_feed = $data_feed;
-        }
-        unset($data_feed);
-
+        $final_data_feed = $this->transformDataFeed($data_feed);
 
         foreach ($final_data_feed as $name => $value) {
             if (is_array($value)) {
@@ -291,5 +267,25 @@ google.load("visualization", "1", {packages: ["corechart"]});
         $out .= '<div id="' . $id . '"></div>' . "\n";
 
         return $out;
+    }
+
+    /**
+     * @param $data_feed
+     * @return array
+     */
+    private function transformDataFeed($data_feed)
+    {
+        $final_data_feed = array();
+        if (isset($data_feed[0]) && is_array($data_feed[0])) {
+            foreach ($data_feed[0] as $key => $value) {
+                $final_data_feed[$key] = array();
+                foreach ($data_feed as $f) {
+                    $final_data_feed[$key][] = $f[$key];
+                }
+            }
+        } else {
+            $final_data_feed = $data_feed;
+        }
+        return $final_data_feed;
     }
 }
