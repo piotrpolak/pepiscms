@@ -74,7 +74,7 @@ If you wish to restart the environment simply use
 sudo rm -rf ./tmp/ && docker-compose up --force-recreate --build
 ```
 
-The default admin credentials are `demo@example.com' / `demodemo'.
+The default admin credentials are `demo@example.com` / `demodemo`.
 
 See other [useful development commands](docs/USEFUL_DEVELOPMENT_COMMANDS.md).
 
