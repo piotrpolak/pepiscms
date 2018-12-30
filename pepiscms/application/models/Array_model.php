@@ -216,6 +216,7 @@ abstract class Array_model extends PEPISCMS_Model implements BasicDataFeedableIn
      * @param Mixed $extra_param
      * @return array
      * @local
+     * @throws Exception
      */
     public function getAdvancedFeed($columns, $offset, $rowcount, $order_by_column, $order, $filters, $extra_param)
     {
@@ -422,6 +423,7 @@ abstract class Array_model extends PEPISCMS_Model implements BasicDataFeedableIn
      * @param mixed $id
      * @return stdClass|bool
      * @local
+     * @throws Exception
      */
     public function getById($id)
     {

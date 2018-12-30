@@ -52,124 +52,118 @@ class Cms_usersAdmin extends AdminCRUDController
             $this->setTooltipTextForIndex(sprintf($this->lang->line($lang_field_prefix . 'index_tip_password_change_not_supported'), $driver_name, $driver_name));
         }
 
-        $this->formbuilder->setCallback(array($this, '_fb_callback_on_save'), FormBuilder::CALLBACK_ON_SAVE);
-        $this->formbuilder->setCallback(array($this, '_fb_callback_before_render'), FormBuilder::CALLBACK_BEFORE_RENDER);
-        $this->formbuilder->setApplyButtonEnabled(true);
+        $this->formbuilder->setCallback(array($this, '_fb_callback_on_save'), FormBuilder::CALLBACK_ON_SAVE)
+            ->setCallback(array($this, '_fb_callback_before_render'), FormBuilder::CALLBACK_BEFORE_RENDER)
+            ->formbuilder->setApplyButtonEnabled(true);
 
         $this->load->helper('string');
-        $definition = array(
-            'display_name' => array(
-                'filter_type' => DataGrid::FILTER_BASIC,
-                'validation_rules' => 'required',
-                'show_in_grid' => false,
-                'input_group' => 'cms_users_input_group_main',
-            ),
-            'user_email' => array(
-                'description' => $this->lang->line('cms_users_user_email_description'),
-                'filter_type' => DataGrid::FILTER_BASIC,
-                'show_in_grid' => false,
-                'validation_rules' => 'strtolower|trim|required|valid_email',
-                'input_group' => 'cms_users_input_group_main',
-            ),
-            'password' => array(
-                'show_in_grid' => false,
-                'validation_rules' => 'trim|min_length[4]',
-                'input_type' => FormBuilder::PASSWORD,
-                'input_group' => 'cms_users_input_group_main',
-            ),
-            'groups_label' => array(
-                'label' => $this->lang->line('cms_users_groups'),
-                'show_in_form' => false,
-                'grid_is_orderable' => false,
-                'grid_formating_callback' => array($this, '_datagrid_format_groups_label_column'),
-                'input_group' => 'cms_users_input_group_main',
-            ),
-            'is_root' => array(
-                'description' => $this->lang->line('cms_users_is_root_description'),
-                'input_type' => FormBuilder::CHECKBOX,
-                'show_in_grid' => false,
-                'validation_rules' => '',
-                'input_default_value' => 1,
-                'values' => array(0 => $this->lang->line('global_dialog_no'), 1 => $this->lang->line('global_dialog_yes')),
-                'input_group' => 'cms_users_input_group_main',
-            ),
-            'groups' => array(
-                'input_type' => FormBuilder::MULTIPLECHECKBOX,
-                'show_in_grid' => false,
-                'validation_rules' => '',
-                'foreign_key_relationship_type' => FormBuilder::FOREIGN_KEY_MANY_TO_MANY,
-                'foreign_key_table' => $this->config->item('database_table_groups'),
-                'foreign_key_field' => 'group_id',
-                'foreign_key_label_field' => 'group_name',
-                'foreign_key_junction_id_field_right' => 'group_id',
-                'foreign_key_junction_id_field_left' => 'user_id',
-                'foreign_key_junction_table' => $this->config->item('database_table_user_to_group'),
-                'input_group' => 'cms_users_input_group_main',
-            ),
-            'status' => array(
-                'description' => $this->lang->line('cms_users_status_description'),
-                'input_type' => FormBuilder::SELECTBOX,
-                'values' => array(0 => $this->lang->line('cms_users_status_inactive'), 1 => $this->lang->line('cms_users_status_active')),
-                'input_default_value' => 1,
-                'input_group' => 'cms_users_input_group_main',
-            ),
-            'is_locked' => array(
-                'description' => $this->lang->line('cms_users_is_locked_description'),
-                'input_type' => FormBuilder::CHECKBOX,
-                'input_is_editable' => false,
-                'input_default_value' => 0,
-                'validation_rules' => '',
-                'values' => array(0 => $this->lang->line('cms_users_status_is_locked_no'), 1 => $this->lang->line('cms_users_status_is_locked_yes')),
-                'input_group' => 'cms_users_input_group_main',
-            ),
-            'send_email_notification' => array(
-                'description' => $this->lang->line('cms_users_send_email_notification_description'),
-                'input_type' => FormBuilder::CHECKBOX,
-                'show_in_grid' => false,
-                'validation_rules' => '',
-                'input_group' => 'cms_users_input_group_main',
-            ),
-            'user_login' => array(
-                'description' => $this->lang->line('cms_users_user_login_description'),
-                'filter_type' => DataGrid::FILTER_BASIC,
-                'show_in_grid' => true,
-                'validation_rules' => 'strtolower|trim|min_length[4]|alpha_numeric|max_length[128]',
-                'input_group' => 'cms_users_input_group_secondary',
-            ),
-            'title' => array(
-                'validation_rules' => false,
-                'input_group' => 'cms_users_input_group_secondary',
-            ),
-            'phone_number' => array(
-                'validation_rules' => '',
-                'filter_type' => DataGrid::FILTER_BASIC,
-                'validation_rules' => 'remove_separators|valid_phone_number',
-                'input_group' => 'cms_users_input_group_secondary',
-            ),
-            'birth_date' => array(
-                'input_type' => FormBuilder::DATE,
-                'label' => $this->lang->line('cms_users_birth_date'),
-                'show_in_grid' => false,
-                'validation_rules' => '',
-                'input_group' => 'cms_users_input_group_secondary',
-            ),
-            'password_last_changed_timestamp' => array(
-                'show_in_form' => false,
-                'input_group' => 'cms_users_input_group_main',
-            ),
-            'alternative_email' => array(
-                'input_type' => FormBuilder::DATE,
-                'show_in_grid' => false,
-                'validation_rules' => 'strtolower|trim|valid_email',
-                'input_group' => 'cms_users_input_group_secondary',
-            ),
-            'note' => array(
-                'validation_rules' => '',
-                'show_in_grid' => false,
-                'input_type' => FormBuilder::TEXTAREA,
-                'input_group' => 'cms_users_input_group_secondary',
-            ),
-        );
+
+        $definition = CrudDefinitionBuilder::create()
+            ->withField('display_name')
+                ->withShowInGrid(false)
+                ->withFilterType( DataGrid::FILTER_BASIC)
+                ->withValidationRules('required')
+                ->withInputGroup('cms_users_input_group_main')
+            ->end()
+            ->withField('user_email') //  $this->lang->line('cms_users_user_email_description'),
+                ->withShowInGrid(false)
+                ->withFilterType( DataGrid::FILTER_BASIC)
+                ->withValidationRules('strtolower|trim|required|valid_email')
+                ->withInputGroup('cms_users_input_group_main')
+            ->end()
+            ->withField('password')
+                ->withInputType(FormBuilder::PASSWORD)
+                ->withShowInGrid(false)
+                ->withValidationRules('trim|min_length[4]')
+                ->withInputGroup('cms_users_input_group_main')
+            ->end()
+            ->withField('groups_label')
+                ->withLabel('cms_users_groups')
+                ->withShowInForm(false)
+                ->withGridIsOrderable(false)
+                ->withGridFormattingCallback(array($this, '_datagrid_format_groups_label_column'))
+                ->withInputGroup('cms_users_input_group_main')
+            ->end()
+            ->withField('is_root') //  $this->lang->line('cms_users_is_root_description')
+                ->withInputType(FormBuilder::CHECKBOX)
+                ->withShowInGrid(false)
+                ->withValidationRules('')
+                ->withInputDefaultValue(1)
+                ->withValues(array(0 => $this->lang->line('global_dialog_no'), 1 => $this->lang->line('global_dialog_yes')))
+                ->withInputGroup('cms_users_input_group_main')
+            ->end()
+            ->withField('groups')
+                ->withInputType(FormBuilder::MULTIPLECHECKBOX)
+                ->withShowInGrid(false)
+                ->withForeignKeyRelationshipType(FormBuilder::FOREIGN_KEY_MANY_TO_MANY)
+                ->withForeignKeyTable($this->config->item('database_table_groups'))
+                ->withForeignKeyIdField('group_id')
+                ->withForeignKeyLabelField('group_name')
+                ->withForeignKeyJunctionIdFieldRight('group_id')
+                ->withForeignKeyJunctionIdFieldLeft('user_id')
+                ->withForeignKeyJunctionTable($this->config->item('database_table_user_to_group'))
+                ->withValidationRules('')
+                ->withInputGroup('cms_users_input_group_main')
+            ->end()
+            ->withField('status') //  $this->lang->line('cms_users_status_description')
+                ->withInputType(FormBuilder::SELECTBOX)
+                ->withInputDefaultValue(1)
+                ->withValues(array(0 => $this->lang->line('cms_users_status_inactive'), 1 => $this->lang->line('cms_users_status_active')))
+                ->withValidationRules('')
+                ->withInputGroup('cms_users_input_group_main')
+            ->end()
+            ->withField('is_locked')
+                ->withInputType(FormBuilder::CHECKBOX)
+                ->withInputIsEditable(false)
+                ->withInputDefaultValue(0)
+                ->withValues(array(0 => $this->lang->line('cms_users_status_is_locked_no'), 1 => $this->lang->line('cms_users_status_is_locked_yes')))
+                ->withValidationRules('')
+                ->withInputGroup('cms_users_input_group_main')
+            ->end()
+            ->withField('send_email_notification') // $this->lang->line('cms_users_send_email_notification_description')
+                ->withInputType(FormBuilder::CHECKBOX)
+                ->withShowInGrid(false)
+                ->withValidationRules('')
+                ->withInputGroup('cms_users_input_group_main')
+            ->end()
+            ->withField('user_login')
+                ->withFilterType( DataGrid::FILTER_BASIC)
+                ->withValidationRules('strtolower|trim|min_length[4]|alpha_numeric|max_length[128]')
+                ->withInputGroup('cms_users_input_group_secondary')
+            ->end()
+            ->withField('title')
+                ->withValidationRules('')
+                ->withInputGroup('cms_users_input_group_secondary')
+            ->end()
+            ->withField('phone_number')
+                ->withFilterType( DataGrid::FILTER_BASIC)
+                ->withValidationRules('remove_separators|valid_phone_number')
+                ->withInputGroup('cms_users_input_group_secondary')
+            ->end()
+            ->withField('birth_date')
+                ->withInputType(FormBuilder::DATE)
+                ->withShowInGrid(false)
+                ->withValidationRules('')
+                ->withInputGroup('cms_users_input_group_secondary')
+            ->end()
+            ->withField('password_last_changed_timestamp')
+                ->withInputType(FormBuilder::DATE)
+                ->withShowInForm(false)
+                ->withInputGroup('cms_users_input_group_main')
+            ->end()
+            ->withField('alternative_email')
+                ->withShowInGrid(false)
+                ->withValidationRules('strtolower|trim|valid_email')
+                ->withInputGroup('cms_users_input_group_secondary')
+            ->end()
+            ->withField('note')
+                ->withInputType(FormBuilder::TEXTAREA)
+                ->withShowInGrid(false)
+                ->withValidationRules('')
+                ->withInputGroup('cms_users_input_group_secondary')
+            ->end()
+            ->withImplicitTranslations($this->module_name, $this->lang)
+            ->build();
 
 
         if (!$this->auth->getDriver()->isPasswordChangeSupported()) {
@@ -179,29 +173,6 @@ class Cms_usersAdmin extends AdminCRUDController
             unset($definition['is_locked']);
         }
 
-
-        // Getting translations and setting input groups
-        foreach ($definition as $field => &$def) {
-            $key = isset($def['field']) ? $def['field'] : $field;
-
-            // Getting label
-            if (!isset($def['label'])) {
-                $def['label'] = $this->lang->line($module_name . '_' . $key);
-            }
-
-            // Getting description
-            if (!isset($def['description'])) {
-                $description = $this->lang->line($module_name . '_' . $key . '_description', false);
-                if ($description !== false) {
-                    $def['description'] = $description;
-                }
-            }
-
-            // Setting default input group
-            if (!isset($def['input_group']) || !$def['input_group']) {
-                $def['input_group'] = 'default';
-            }
-        }
 
         $this->datagrid->setRowCssClassFormattingFunction(array($this, '_datagrid_row_callback'));
         $this->setDefinition($definition);
@@ -405,8 +376,8 @@ class Cms_usersAdmin extends AdminCRUDController
         $this->User_model->inactivateById($user_id);
 
         // Setting the message and redirecting
-        $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS);
-        $this->simplesessionmessage->setMessage('global_header_success');
+        $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS)
+            ->setMessage('global_header_success');
 
         // Smart redirect
         $this->load->library('User_agent');
@@ -424,8 +395,8 @@ class Cms_usersAdmin extends AdminCRUDController
         $this->User_model->activateById($user_id);
 
         // Setting the message and redirecting
-        $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS);
-        $this->simplesessionmessage->setMessage('global_header_success');
+        $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS)
+            ->setMessage('global_header_success');
 
         // Smart redirect
         $this->load->library('User_agent');
@@ -443,8 +414,8 @@ class Cms_usersAdmin extends AdminCRUDController
         $this->User_model->unlockById($user_id);
 
         // Setting the message and redirecting
-        $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS);
-        $this->simplesessionmessage->setMessage('global_header_success');
+        $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS)
+            ->setMessage('global_header_success');
 
         // Smart redirect
         $this->load->library('User_agent');
@@ -464,11 +435,11 @@ class Cms_usersAdmin extends AdminCRUDController
         $user_id = $this->input->getParam('id');
 
         if ($this->User_model->resetPasswordByUserId($user_id)) {
-            $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS);
-            $this->simplesessionmessage->setMessage('global_header_success');
+            $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS)
+                ->setMessage('global_header_success');
         } else {
-            $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_ERROR);
-            $this->simplesessionmessage->setRawMessage('Unable to reset password. Please try again.');
+            $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_ERROR)
+                ->setRawMessage('Unable to reset password. Please try again.');
         }
 
         // Smart redirect
