@@ -58,9 +58,13 @@ class CrudDefinitionBuilder
     /**
      * @param $fieldName
      * @return CrudFieldDefinitionBuilder
+     * @throws Exception
      */
     public function withField($fieldName)
     {
+        if (!$fieldName) {
+            throw new \Exception('Field name must be specified.');
+        }
         $fieldBuilder = new CrudFieldDefinitionBuilder($fieldName, $this);
         $this->fieldBuilders[$fieldName] = $fieldBuilder;
         return $fieldBuilder;
