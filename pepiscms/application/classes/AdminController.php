@@ -40,7 +40,7 @@ abstract class AdminController extends EnhancedController
         // Authorization
         if (!$skip_authorization) {
             $this->benchmark->mark('authorization_start');
-            if (!$this->auth->isAuthorized()) {
+            if (!$this->auth->isAuthenticated()) {
                 $_SESSION['request_redirect'] = $this->uri->uri_string();
                 redirect(admin_url() . 'login/sessionexpired');
             }

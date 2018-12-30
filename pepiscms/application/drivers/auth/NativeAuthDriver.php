@@ -42,7 +42,7 @@ class NativeAuthDriver extends ContainerAware implements AuthDriverableInterface
     /**
      * @inheritdoc
      */
-    public function authorize($user_email_or_login, $password)
+    public function authenticate($user_email_or_login, $password)
     {
         if (strpos($user_email_or_login, '@') !== false) {
             $row = $this->User_model->validateByEmail($user_email_or_login, $password);

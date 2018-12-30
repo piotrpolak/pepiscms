@@ -65,7 +65,7 @@ class CasAuthDriver extends ContainerAware implements AuthDriverableInterface
     /**
      * @inheritdoc
      */
-    public function authorize($user_email_or_login, $password)
+    public function authenticate($user_email_or_login, $password)
     {
         return false;
     }

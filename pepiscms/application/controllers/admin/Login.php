@@ -28,13 +28,13 @@ class Login extends EnhancedController
         $this->load->language('global');
 
         // Important 1! There should be 2 separate IFs otherwise some of the auth drivers will not work
-        // Important 2! $this->auth->isAuthorized() should not be cached in a variable!
+        // Important 2! $this->auth->isAuthenticated() should not be cached in a variable!
 
-        if (!$this->auth->isAuthorized()) {
+        if (!$this->auth->isAuthenticated()) {
             $this->auth->onAuthRequest();
         }
 
-        if ($this->auth->isAuthorized(true)) {
+        if ($this->auth->isAuthenticated(true)) {
             $this->_do_post_login_redirect_if_case();
 
             $this->load->library('SecurityManager');
@@ -161,7 +161,7 @@ class Login extends EnhancedController
                 }
 
                 if (!$prevent_from_logging_in) {
-                    if ($this->auth->authorize($user_email, $this->input->post('password'))) {
+                    if ($this->auth->authenticate($user_email, $this->input->post('password'))) {
                         Logger::info('Login', 'LOGIN');
 
                         $this->_do_post_login_redirect_if_case();
@@ -208,7 +208,7 @@ class Login extends EnhancedController
         $this->load->library('Auth');
 
         $success = array('success' => 0);
-        if ($this->auth->isAuthorized()) {
+        if ($this->auth->isAuthenticated()) {
             $success = array('success' => 1);
         }
 
