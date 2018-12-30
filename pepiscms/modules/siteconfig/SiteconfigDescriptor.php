@@ -4,8 +4,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * siteconfig descriptor class
- * 
- * @author piotr@polak.ro
+ *
  * @date 2018-11-05
  * @classTemplateVersion 20180406
  */
