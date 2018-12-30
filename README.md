@@ -11,9 +11,10 @@ are if you don't care about the presentation details).
 The application is designed as a core library on top of the [CodeIgniter framework](https://codeigniter.com/) and it
 allows to be swapped/upgraded with no or minimal changes in the project code.
 
-* [Features](#features)
 * [Live-demo](#live-demo)
+* [Setting up a local development environment](#setting-up-a-local-development-environment)
 * [Requirements](#requirements)
+* [Features](#features)
 * [Installation](#installation)
 * [Command line interface](#command-line-interface)
 * [Modules](#modules)
@@ -35,7 +36,6 @@ allows to be swapped/upgraded with no or minimal changes in the project code.
 * [Naming convention inconsistency](docs/NAMING_CONVENTION_INCONSISTENCY.md)
 * [Changes comparing to CodeIgniter](#changes-comparing-to-codeigniter)
 * [Enabling library and models autocomplete predictions](#enabling-library-and-models-autocomplete-prediction)
-* [Useful development commands](docs/USEFUL_DEVELOPMENT_COMMANDS.md)
 * [Optional Libraries](#optional-libraries)
 
 ![System logs](docs/screens/MODULES_SYSTEM_LOGS.png)
@@ -52,6 +52,33 @@ The demo application is automatically deployed to [Heroku](https://www.heroku.co
 The sources for the demo application can be found at [https://github.com/piotrpolak/pepiscms-demo](https://github.com/piotrpolak/pepiscms-demo).
 
 *Please note that the contents of the demo deployment are automatically cleaned up each time a new version is deployed.*
+
+
+
+
+
+## Setting up a local development environment
+
+PepisCMS is meant to be used as a library. However, for the local development process, a `Docker` environment with
+a sample implementation project can be set using:
+
+```bash
+docker-compose up
+```
+
+Once a Docker setup is started, all the generated files can be found in the `tmp/` directory.
+
+If you wish to restart the environment simply use
+
+```bash
+sudo rm -rf ./tmp/ && docker-compose up --force-recreate --build
+```
+
+The default admin credentials are `demo@example.com' / `demodemo'.
+
+See other [useful development commands](docs/USEFUL_DEVELOPMENT_COMMANDS.md).
+
+
 
 
 
@@ -384,9 +411,9 @@ PEPIS_CMS_DATABASE_USERNAME=pepiscms
 PEPIS_CMS_DATABASE_PASSWORD=pepiscms
 PEPIS_CMS_DATABASE_DATABASE=pepiscms
 PEPIS_CMS_AUTH_DRIVER=native
-PEPIS_CMS_AUTH_EMAIL=piotr@polak.ro
+PEPIS_CMS_AUTH_EMAIL=demo@example.com
 PEPIS_CMS_AUTH_PASSWORD=demodemo
-PEPIS_CMS_SITE_EMAIL=piotr@polak.ro
+PEPIS_CMS_SITE_EMAIL=demo@example.com
 PEPIS_CMS_SITE_NAME=Demonstration
 PEPIS_CMS_OBJECT_CACHE_OBJECT_IS_ENABLED=true # Set false for cloud deployment
 PEPIS_CMS_IS_UNATTENDED_INSTALL=true # Set false for manual installer

@@ -5,7 +5,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
 /**
  * siteconfig admin controller
  *
- * @author piotr@polak.ro
  * @date 2018-11-05
  * @see AdminCRUDController for the list of the methods you can use in your constructor
  * @classTemplateVersion 20181105
