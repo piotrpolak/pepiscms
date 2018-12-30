@@ -216,41 +216,12 @@ class Ajaxfilemanager extends AdminController
         }
     }
 
-    public function absolutethumb()
-    {
-        $start_word = 'thumb';
-        $pos = strpos($_SERVER['REQUEST_URI'], $start_word);
-        $current_path = str_replace('/../', '', substr($_SERVER['REQUEST_URI'], $pos + strlen($start_word)) . '/');
-        $current_path = str_replace('//', '/', $current_path);
-
-
-        $i = strlen($current_path) - 1;
-        if ($current_path{$i} == '/') {
-            $current_path = substr($current_path, 0, $i);
-        }
-        if ($current_path{0} == '/') {
-            $current_path = substr($current_path, 1);
-        }
-
-        $current_path = explode('/', $current_path);
-
-        $size = $current_path[0];
-        array_shift($current_path);
-        $current_path = implode('/', $current_path);
-
-        if (!($size > 0 && $size < 1000)) {
-            $size = 100;
-        }
-
-        return $this->genericthumb(true, $size, $current_path);
-    }
-
     public function thumb()
     {
         return $this->genericthumb();
     }
 
-    private function genericthumb($absolute = false, $size = 60, $current_path = false)
+    private function genericthumb($absolute = false, $size = 50, $current_path = false)
     {
         if (!$current_path) {
             $start_word = 'thumb';
