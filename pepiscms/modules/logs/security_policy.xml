@@ -1,25 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<security_policy generated_at="2015-04-14 03:45:49" version="1.1">
+<security_policy generated_at="2018-12-30 20:53:57" version="1.1">
   <policy module="logs">
     <controller name="logs">
       <method name="index">
         <entity name="logs" access="READ"/>
       </method>
+    </controller>
+    <controller name="logs">
       <method name="performance_test">
         <entity name="logs" access="NONE"/>
       </method>
+    </controller>
+    <controller name="logs">
       <method name="mylogin">
         <entity name="own_account" access="READ"/>
       </method>
+    </controller>
+    <controller name="logs">
       <method name="details">
         <entity name="logs" access="READ"/>
       </method>
+    </controller>
+    <controller name="logs">
       <method name="ip">
         <entity name="logs" access="READ"/>
       </method>
+    </controller>
+    <controller name="logs">
       <method name="user">
         <entity name="logs" access="READ"/>
       </method>
+    </controller>
+    <controller name="logs">
       <method name="reseterrorlock">
         <entity name="logs" access="FULL_CONTROL"/>
       </method>

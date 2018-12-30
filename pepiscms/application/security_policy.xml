@@ -122,16 +122,6 @@
       </method>
     </controller>
     <controller name="ajaxfilemanager">
-      <method name="genericupload">
-        <entity name="file_system" access="WRITE"/>
-      </method>
-    </controller>
-    <controller name="ajaxfilemanager">
-      <method name="absolutethumb">
-        <entity name="file_system" access="NONE"/>
-      </method>
-    </controller>
-    <controller name="ajaxfilemanager">
       <method name="thumb">
         <entity name="file_system" access="NONE"/>
       </method>

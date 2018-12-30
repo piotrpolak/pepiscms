@@ -5,12 +5,23 @@
       <method name="index">
         <entity name="translations" access="READ"/>
       </method>
+    </controller>
+    <controller name="translator">
       <method name="show">
         <entity name="translations" access="READ"/>
       </method>
+    </controller>
+    <controller name="translator">
       <method name="edit">
         <entity name="translations" access="WRITE"/>
       </method>
+    </controller>
+    <controller name="translator">
+      <method name="post_edit">
+        <entity name="translations" access="NONE"/>
+      </method>
+    </controller>
+    <controller name="translator">
       <method name="delete">
         <entity name="translations" access="WRITE"/>
       </method>
