@@ -15,7 +15,7 @@ class AuthenticationContext extends Behat\MinkExtension\Context\RawMinkContext
      */
     public function fillTheFormWithValidCredentialAndSubmitIt()
     {
-        $this->getSession()->getPage()->fillField('user_email', 'piotr@polak.ro');
+        $this->getSession()->getPage()->fillField('user_email', 'demo@example.com');
         $this->getSession()->getPage()->fillField('password', 'demodemo');
 
         $this->getSession()->getPage()->pressButton('Login');
@@ -35,7 +35,7 @@ class AuthenticationContext extends Behat\MinkExtension\Context\RawMinkContext
      */
     public function fillTheFormWithInvalidCredentialAndSubmitIt()
     {
-        $this->getSession()->getPage()->fillField('user_email', 'piotr@polak.ro');
+        $this->getSession()->getPage()->fillField('user_email', 'demo@example.com');
         $this->getSession()->getPage()->fillField('password', 'incorrect-password');
         $this->getSession()->getPage()->pressButton('Login');
     }
