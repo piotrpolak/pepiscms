@@ -38,7 +38,7 @@ allows to be swapped/upgraded with no or minimal changes in the project code.
 * [Enabling library and models autocomplete predictions](#enabling-library-and-models-autocomplete-prediction)
 * [Optional Libraries](#optional-libraries)
 
-![System logs](docs/screens/MODULES_SYSTEM_LOGS.png)
+![PepisCMS Dashboard](docs/screens/DASHBOARD.png)
 
 
 
