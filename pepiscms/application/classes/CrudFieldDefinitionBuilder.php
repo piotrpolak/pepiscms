@@ -618,29 +618,41 @@ class CrudFieldDefinitionBuilder
     public function build()
     {
         $definition = $this->definition;
-
-        // Getting label
-        if (!isset($definition[self::LABEL_KEY])) {
-            if ($this->lang !== null) {
-                $definition[self::LABEL_KEY] = $this->lang->line($this->moduleName . '_' . $this->fieldName);
-            }
-        }
-
-        // Getting description
-        if (!isset($definition[self::DESCRIPTION_KEY])) {
-            if ($this->lang !== null) {
-                $description = $this->lang->line($this->moduleName . '_' . $this->fieldName . '_description', false);
-                if ($description !== false) {
-                    $definition[self::DESCRIPTION_KEY] = $description;
-                }
-            }
-        }
-
+        $definition[self::LABEL_KEY] = $this->getTranslatedValue($definition, self::LABEL_KEY);
+        $definition[self::DESCRIPTION_KEY] = $this->getTranslatedValue($definition, self::DESCRIPTION_KEY, '_description');
         // Setting default input group
         if (!isset($definition[self::INPUT_GROUP_KEY]) || !$definition[self::INPUT_GROUP_KEY]) {
             $definition[self::INPUT_GROUP_KEY] = 'default';
         }
 
         return $definition;
+    }
+
+    /**
+     * @param array $definition
+     * @param $fieldKey
+     * @param $suffix
+     * @return array
+     */
+    private function getTranslatedValue(array $definition, $fieldKey, $suffix = '')
+    {
+
+        $translatedValue = false;
+        if ($this->lang !== null) {
+            if (!isset($definition[$fieldKey])) {
+                $translatedValue = $this->lang->line($this->moduleName . '_' . $this->fieldName . $suffix, false);
+            } else {
+                if (strpos($definition[$fieldKey], ' ') === false) {
+                    $translatedValue = $this->lang->line($definition[$fieldKey], false);
+                }
+            }
+        }
+
+
+        if ($translatedValue) {
+            return $translatedValue;
+        }
+
+        return isset($definition[$fieldKey]) ? $definition[$fieldKey] : false;
     }
 }
