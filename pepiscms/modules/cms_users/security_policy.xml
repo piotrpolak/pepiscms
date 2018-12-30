@@ -5,45 +5,73 @@
       <method name="edit">
         <entity name="cms_user" access="WRITE"/>
       </method>
+    </controller>
+    <controller name="cms_users">
       <method name="inactivate">
         <entity name="cms_user" access="WRITE"/>
       </method>
+    </controller>
+    <controller name="cms_users">
       <method name="activate">
         <entity name="cms_user" access="WRITE"/>
       </method>
+    </controller>
+    <controller name="cms_users">
       <method name="unlock">
         <entity name="cms_user" access="WRITE"/>
       </method>
+    </controller>
+    <controller name="cms_users">
       <method name="reset_password">
         <entity name="cms_user" access="WRITE"/>
       </method>
+    </controller>
+    <controller name="cms_users">
       <method name="index">
         <entity name="cms_user" access="READ"/>
       </method>
+    </controller>
+    <controller name="cms_users">
       <method name="revisionrestorefield">
         <entity name="cms_user" access="NONE"/>
       </method>
+    </controller>
+    <controller name="cms_users">
       <method name="revision">
         <entity name="cms_user" access="NONE"/>
       </method>
+    </controller>
+    <controller name="cms_users">
       <method name="revisions">
         <entity name="cms_user" access="NONE"/>
       </method>
+    </controller>
+    <controller name="cms_users">
       <method name="export">
         <entity name="cms_user" access="FULL_CONTROL"/>
       </method>
+    </controller>
+    <controller name="cms_users">
       <method name="import">
         <entity name="cms_user" access="FULL_CONTROL"/>
       </method>
+    </controller>
+    <controller name="cms_users">
       <method name="preview">
         <entity name="cms_user" access="READ"/>
       </method>
+    </controller>
+    <controller name="cms_users">
       <method name="move">
         <entity name="cms_user" access="FULL_CONTROL"/>
       </method>
+    </controller>
+    <controller name="cms_users">
       <method name="delete">
         <entity name="cms_user" access="WRITE"/>
       </method>
+    </controller>
+    <controller name="cms_users">
       <method name="star">
         <entity name="cms_user" access="WRITE"/>
       </method>
