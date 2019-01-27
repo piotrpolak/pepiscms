@@ -46,4 +46,4 @@ if (!function_exists('menurendor_render_submenu')) {
 }
 
 ?>
-<nav id="primary_navigation"><?= menurendor_render_submenu($menu_items) ?></nav>;
+<nav id="primary_navigation"><?= menurendor_render_submenu($menu_items) ?></nav>
