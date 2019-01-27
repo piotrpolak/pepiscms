@@ -59,7 +59,7 @@ $config['theme_path'] = 'theme/';
 | Upload allowed file extensions
 |--------------------------------------------------------------------------
 */
-$config['upload_allowed_types'] = 'mov|torrent|dwg|dxf|pln|psd|ai|svg|wks|mdb|sql|accdb|drw|eps|ps|log|msg|wpd|wps|efx|gif|bmp|tiff|vcf|tif|jpg|png|zip|zipx|7z|rar|doc|docx|xls|xlsx|cvs|pdf|txt|html|htm|mp3|wav|avi|html|htm|rtf|swf|css|xml|ppt|pps|pptx';
+$config['upload_allowed_types'] = 'mov|torrent|dwg|dxf|pln|psd|ai|svg|wks|mdb|sql|accdb|drw|eps|ps|log|msg|wpd|wps|efx|gif|bmp|tiff|vcf|tif|jpg|jpeg|png|zip|zipx|7z|rar|doc|docx|xls|xlsx|cvs|pdf|txt|html|htm|mp3|wav|avi|html|htm|rtf|swf|css|xml|ppt|pps|pptx';
 
 
 /*
