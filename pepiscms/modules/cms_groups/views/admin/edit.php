@@ -4,7 +4,7 @@ else:
 	$label = $lang->line('cms_groups_header_group_add');
 endif; ?>
 
-<?php $is_utilities_only_module = FALSE; ?>
+<?php $is_utilities_only_module = false; ?>
 <?php if ($this->input->getParam('layout') != 'popup'): ?>
     <?php
     $breadcrumb_array = array(module_url() => $this->lang->line('cms_groups_module_name'), module_url().'edit'.(isset($group->group_id) ? '/id-'.$group->group_id : '') => $label);
@@ -22,7 +22,7 @@ endif; ?>
         // If module is displayed in UTILITIES and not in MENU then display a back link
         if( ModuleRunner::isModuleDisplayedInUtilities($this->modulerunner->getRunningModuleName()) )
         {
-            $is_utilities_only_module = TRUE;
+            $is_utilities_only_module = true;
             $breadcrumb_array = array_merge(array(admin_url() . 'utilities' => $this->lang->line('label_utilities_and_settings')), $breadcrumb_array);
         }
     }
@@ -121,7 +121,7 @@ if( $is_utilities_only_module )
         <?php if(isset($group->group_id)): ?>
         <?=button_apply()?>
         <?php endif; ?>
-		<?=button_save('', FALSE, $this->lang->line('global_button_save_and_close'))?>
+		<?=button_save('', false, $this->lang->line('global_button_save_and_close'))?>
 	</div>
 </form>
 

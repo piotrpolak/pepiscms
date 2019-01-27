@@ -87,7 +87,7 @@ function fast_cache_set_cache_for_uri($uri, $output, $expires_in_seconds = 0)
     }
 
     if (!$fp = @fopen($filepath, 'wb')) {
-        die("UNABLE TO WRITE"); //return FALSE;
+        die("UNABLE TO WRITE"); //return false;
     }
 
     $expire = time() + $expires_in_seconds;

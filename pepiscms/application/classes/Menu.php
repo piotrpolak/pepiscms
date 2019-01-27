@@ -102,7 +102,7 @@ class Menu extends ContainerAware
     }
 
     /**
-     * Compatibility, will always return FALSE
+     * Compatibility, will always return false
      *
      * @return bool
      */
@@ -113,7 +113,7 @@ class Menu extends ContainerAware
 
     /**
      * Initializes children, to be ready to use
-     * Returns FALSE if children already initialized
+     * Returns false if children already initialized
      *
      * @return bool
      */

@@ -21,7 +21,7 @@
         // If module is displayed in UTILITIES and not in MENU then display a back link
         if( ModuleRunner::isModuleDisplayedInUtilities($this->modulerunner->getRunningModuleName()) )
         {
-            $is_utilities_only_module = TRUE;
+            $is_utilities_only_module = true;
             $breadcrumb_array = array_merge(array(admin_url() . 'utilities' => $this->lang->line('label_utilities_and_settings')), $breadcrumb_array);
         }
     }
@@ -62,13 +62,13 @@
                 </tr>
             </thead>
             <tbody>
-            <?php $last_date = FALSE; ?>
+            <?php $last_date = false; ?>
             <?php foreach($revision_summary as $revision_summary_line): ?>
                 <?php
-                    $is_current_revision = FALSE;
-                    if( $last_date == FALSE )
+                    $is_current_revision = false;
+                    if( $last_date == false )
                     {
-                        $is_current_revision = TRUE;
+                        $is_current_revision = true;
                     }
                     $datetime = new DateTime($revision_summary_line->revision_datetime);
                     $date = $datetime->format('Y-m-d');

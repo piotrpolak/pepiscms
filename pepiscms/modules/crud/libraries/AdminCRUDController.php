@@ -1783,7 +1783,7 @@ abstract class AdminCRUDController extends ModuleAdminController
             $this->formbuilder->setCallback(array($this, '_fb_callback_popup_close'), FormBuilder::CALLBACK_AFTER_SAVE);
         }
 
-        //$this->formbuilder->setReadOnly( FALSE );
+        //$this->formbuilder->setReadOnly( false );
         $this->_edit(false, $display_view);
     }
 
@@ -2058,7 +2058,7 @@ abstract class AdminCRUDController extends ModuleAdminController
     }
 
     /**
-     * Sets the star flag to TRUE/FALSE
+     * Sets the star flag to true/false
      */
     public function star()
     {

@@ -5,4 +5,4 @@
 
 <?=display_notification($this->lang->line('installer_build_success_message'))?>
 
-<p><?=button_next(admin_url().'installer/go_to_admin/', 'rFloated', FALSE, $this->lang->line('installer_go_to_administration_panel'))?></p>
+<p><?=button_next(admin_url().'installer/go_to_admin/', 'rFloated', false, $this->lang->line('installer_go_to_administration_panel'))?></p>

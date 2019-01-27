@@ -28,7 +28,7 @@ class PEPISCMS_Lang extends CI_Lang
      * @param bool $add_suffix Whether to add suffix to $langfile
      * @param string $alt_path Alternative path to look for the language file
      *
-     * @return string[]    Array containing translations, if $return is set to TRUE
+     * @return string[]    Array containing translations, if $return is set to true
      */
     public function load($langfile, $idiom = '', $return = false, $add_suffix = true, $alt_path = '')
     {

@@ -19,7 +19,7 @@ $config['debug_log_php_error'] = false;
 
 /**
  * Email address of system maintainer/administrator
- * If different from FALSE, the system will try to deliver error reports to this
+ * If different from false, the system will try to deliver error reports to this
  * address
  *
  * You can specify several adresses, separate them by spaces

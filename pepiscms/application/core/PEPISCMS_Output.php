@@ -58,7 +58,7 @@ class PEPISCMS_Output extends CI_Output
      *
      * @param object &$CFG CI_Config class instance
      * @param object &$URI CI_URI class instance
-     * @return bool TRUE on success or FALSE on failure
+     * @return bool true on success or false on failure
      */
     public function _display_cache(&$CFG, &$URI)
     {

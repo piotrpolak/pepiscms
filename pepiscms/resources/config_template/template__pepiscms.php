@@ -99,8 +99,8 @@ $config['cms_intranet'] = TEMPLATE_CMS_INTRANET;
 | Frontend
 |--------------------------------------------------------------------------
 |
-| For intranet applications that do not have frontent set this value to FALSE
-| WARNING: For any standard website this option must be set to TRUE!
+| For intranet applications that do not have frontent set this value to false
+| WARNING: For any standard website this option must be set to true!
 |
 */
 $config['cms_enable_frontend'] = TEMPLATE_CMS_ENABLE_FRONTEND;

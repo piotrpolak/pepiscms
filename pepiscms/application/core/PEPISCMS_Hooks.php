@@ -26,7 +26,7 @@ class PEPISCMS_Hooks extends CI_Hooks
      * Runs a particular hook.
      *
      * @param    array $data Hook details
-     * @return    bool    TRUE on success or FALSE on failure
+     * @return    bool    true on success or false on failure
      */
     protected function _run_hook($data)
     {

@@ -93,7 +93,7 @@ if (!$is_editable): $disabled = ' disabled="disabled"'; ?>
             <?php if ($is_editable): ?>
                 <?=button_cancel(admin_url() . 'acl') ?>
                 <?=button_apply()?>
-                <?=button_save('', FALSE, $lang->line('global_button_save_and_close'))?>
+                <?=button_save('', false, $lang->line('global_button_save_and_close'))?>
             <?php endif; ?>
         </div>
     <?php endif; ?>

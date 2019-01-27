@@ -24,9 +24,9 @@
 |				 odbc, pdo, postgre, sqlite, sqlite3, sqlsrv
 |	['dbprefix'] You can add an optional prefix, which will be added
 |				 to the table name when using the  Query Builder class
-|	['pconnect'] TRUE/FALSE - Whether to use a persistent connection
-|	['db_debug'] TRUE/FALSE - Whether database errors should be displayed.
-|	['cache_on'] TRUE/FALSE - Enables/disables query caching
+|	['pconnect'] true/false - Whether to use a persistent connection
+|	['db_debug'] true/false - Whether database errors should be displayed.
+|	['cache_on'] true/false - Enables/disables query caching
 |	['cachedir'] The path to the folder where cache files should be stored
 |	['char_set'] The character set used in communicating with the database
 |	['dbcollat'] The character collation used in communicating with the database
@@ -40,13 +40,13 @@
 |	['swap_pre'] A default table prefix that should be swapped with the dbprefix
 |	['encrypt']  Whether or not to use an encrypted connection.
 |	['compress'] Whether or not to use client compression (MySQL only)
-|	['stricton'] TRUE/FALSE - forces 'Strict Mode' connections
+|	['stricton'] true/false - forces 'Strict Mode' connections
 |							- good for ensuring strict SQL while developing
 |	['failover'] array - A array with 0 or more data for connections if the main should fail.
-|	['save_queries'] TRUE/FALSE - Whether to "save" all executed queries.
+|	['save_queries'] true/false - Whether to "save" all executed queries.
 | 				NOTE: Disabling this will also effectively disable both
 | 				$this->db->last_query() and profiling of DB queries.
-| 				When you run a query, with this setting set to TRUE (default),
+| 				When you run a query, with this setting set to true (default),
 | 				CodeIgniter will store the SQL statement for debugging purposes.
 | 				However, this may cause high memory usage, especially if you run
 | 				a lot of SQL queries ... disable this to avoid that problem.
@@ -59,7 +59,7 @@
 */
 
 $active_group = 'default';
-$query_builder = TRUE;
+$query_builder = true;
 
 $conf = array();
 $symfony_database_file_path = '../../app/config/parameters.yml';
@@ -85,16 +85,16 @@ $db['default'] = array(
     'database'      => $conf['database_name'],
     'dbdriver'      => 'mysqli',
     'dbprefix'      => '',
-    'pconnect'      => FALSE,
+    'pconnect'      => false,
     'db_debug'      => (ENVIRONMENT != 'production'),
-    'cache_on'      => FALSE,
+    'cache_on'      => false,
     'cachedir'      => '',
     'char_set'      => 'utf8',
     'dbcollat'      => 'utf8_general_ci',
     'swap_pre'      => '',
-    'encrypt'       => FALSE,
-    'compress'      => FALSE,
-    'stricton'      => FALSE,
+    'encrypt'       => false,
+    'compress'      => false,
+    'stricton'      => false,
     'failover'      => array(),
-    'save_queries'  => TRUE
+    'save_queries'  => true
 );

@@ -30,7 +30,7 @@ class Auth extends ContainerAware
     private $session_variable_preffix = 'pepis_cms';
 
     /**
-     * When TRUE then the auth component will check if the IP of the session matches
+     * When true then the auth component will check if the IP of the session matches
      *
      * @var bool
      */
@@ -183,7 +183,7 @@ class Auth extends ContainerAware
     }
 
     /**
-     * Returns user data. The user must be authenticated, otherwise returns FALSE
+     * Returns user data. The user must be authenticated, otherwise returns false
      *
      * @return Object
      */
@@ -252,7 +252,7 @@ class Auth extends ContainerAware
     }
 
     /**
-     * Returns TRUE for power users
+     * Returns true for power users
      *
      * @return bool
      */

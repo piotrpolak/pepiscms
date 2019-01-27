@@ -106,7 +106,7 @@ class ConfigBuilder
     private function getValue($value)
     {
         if (is_bool($value)) {
-            return ($value ? 'TRUE' : 'FALSE');
+            return ($value ? 'true' : 'false');
         } else {
             return $this->protectString($value);
         }

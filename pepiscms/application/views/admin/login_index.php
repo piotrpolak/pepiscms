@@ -19,7 +19,7 @@
                 <input name="user_email" id="user_email" type="text" class="text required" value="<?= htmlentities($user_email) ?>" size="30">
                 <label for="password"><?= $this->lang->line('login_label_password') ?></label>
                 <input name="password" id="password" type="password" class="text required" size="30">
-                <?php if (FALSE && $this->config->item('cms_enable_reset_password')): // TODO Implement reset password ?>
+                <?php if (false && $this->config->item('cms_enable_reset_password')): // TODO Implement reset password ?>
                     <a href="<?= admin_url() ?>login/resetpassword" title="<?= $this->lang->line('login_reset_password_description') ?> &raquo;"><?= $this->lang->line('login_reset_password') ?> &raquo;</a>
                 <?php endif; ?>
                 <div class="actionButtons">

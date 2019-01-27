@@ -396,7 +396,7 @@ class CrudFieldDefinitionBuilder
      * <code>
      * function(&$filename, &$basePath, &formData, $fieldName) {
      *      $filename = 'newname';
-     *      return TRUE;
+     *      return true;
      * }
      * </code>
      *

@@ -100,27 +100,27 @@
         array(
             'name' => 'One',
             'description' => 'Dolor sit amet.',
-            'active' => FALSE,
+            'active' => false,
         ),
         array(
             'name' => 'Two',
             'description' => 'Ut enim ad minim veniam.',
-            'active' => FALSE,
+            'active' => false,
         ),
         array(
             'name' => 'Three',
             'description' => 'Anim id est laborum.',
-            'active' => FALSE,
+            'active' => false,
         ),
         array(
             'name' => 'Four',
             'description' => 'Anim id est laborum.',
-            'active' => FALSE,
+            'active' => false,
         ),
         array(
             'name' => 'Five',
             'description' => 'Eenim ad minim veniam mon.',
-            'active' => TRUE,
+            'active' => true,
         ),
     );
     ?>

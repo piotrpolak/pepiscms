@@ -24,7 +24,7 @@
         // If module is displayed in UTILITIES and not in MENU then display a back link
         if( ModuleRunner::isModuleDisplayedInUtilities($this->modulerunner->getRunningModuleName()) )
         {
-            $is_utilities_only_module = TRUE;
+            $is_utilities_only_module = true;
             $breadcrumb_array = array_merge(array(admin_url() . 'utilities' => $this->lang->line('label_utilities_and_settings')), $breadcrumb_array);
         }
     }

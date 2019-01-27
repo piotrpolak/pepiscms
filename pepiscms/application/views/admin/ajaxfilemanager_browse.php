@@ -122,7 +122,7 @@
 		$query_string = '';
 
 		// Bypassing the GET parameters
-		if ( $pos !== FALSE )
+		if ( $pos !== false )
 		{
 			$query_string = substr( $_SERVER['REQUEST_URI'], ++$pos );
 

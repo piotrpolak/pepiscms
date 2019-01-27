@@ -108,7 +108,7 @@
                                 <?php endif; ?>
                             </td>
                             <td class="medium">
-                            <?php if (FALSE && SecurityManager::hasAccess('module', 'move')): ?>
+                            <?php if (false && SecurityManager::hasAccess('module', 'move')): ?>
                                 <?php if ($sub_module->is_displayed_in_menu): ?>
                                 <a href="<?= admin_url() ?>module/move/direction-up/module-<?= $sub_module->name ?>/view-<?=$view?>"><img src="pepiscms/theme/up.png" alt="up"></a>
                                 <a href="<?= admin_url() ?>module/move/direction-down/module-<?= $sub_module->name ?>/view-<?=$view?>"><img src="pepiscms/theme/down.png" alt="down"></a>

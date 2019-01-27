@@ -1,4 +1,4 @@
-<?php $is_utilities_only_module = FALSE; ?>
+<?php $is_utilities_only_module = false; ?>
 <?php if ($this->input->getParam('layout') != 'popup'): ?>
     <?php
     $breadcrumb_array = array(module_url() => $title);
@@ -16,7 +16,7 @@
         // If module is displayed in UTILITIES and not in MENU then display a back link
         if( ModuleRunner::isModuleDisplayedInUtilities($this->modulerunner->getRunningModuleName()) )
         {
-            $is_utilities_only_module = TRUE;
+            $is_utilities_only_module = true;
             $breadcrumb_array = array_merge(array(admin_url() . 'utilities' => $this->lang->line('label_utilities_and_settings')), $breadcrumb_array);
         }
     }
@@ -155,7 +155,7 @@ if( $is_utilities_only_module )
 
         <?php
         $this->load->helper(array('file', 'number'));
-        $files = get_filenames(INSTALLATIONPATH . 'application/cache', TRUE);
+        $files = get_filenames(INSTALLATIONPATH . 'application/cache', true);
         $filesize_all = 0;
         foreach ($files as $file)
         {

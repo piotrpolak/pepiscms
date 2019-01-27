@@ -82,7 +82,7 @@ class Document extends ContainerAware
     }
 
     /**
-     * Returns ID of menu item if page attached to menu, otherwise FALSE
+     * Returns ID of menu item if page attached to menu, otherwise false
      *
      * @return int
      */

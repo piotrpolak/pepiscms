@@ -35,10 +35,10 @@
                             (isset($dashboard_element['url']) && $dashboard_element['url'] ? $dashboard_element['url'] :
                                 ((isset($dashboard_element['module']) && $dashboard_element['module']) ? module_url($dashboard_element['controller']).$dashboard_element['method'] :
                                     admin_url().$dashboard_element['controller'].'/'.$dashboard_element['method'])),
-                            isset($dashboard_element['icon_url']) && $dashboard_element['icon_url'] ? $dashboard_element['icon_url'] : (isset($dashboard_element['controller']) ? module_icon_url($dashboard_element['controller']) : FALSE),
-                            isset($dashboard_element['description']) ? $dashboard_element['description'] : FALSE,
-                            isset($dashboard_element['is_popup']) ? $dashboard_element['is_popup'] : FALSE,
-                            isset($dashboard_element['target']) ? $dashboard_element['target'] : FALSE
+                            isset($dashboard_element['icon_url']) && $dashboard_element['icon_url'] ? $dashboard_element['icon_url'] : (isset($dashboard_element['controller']) ? module_icon_url($dashboard_element['controller']) : false),
+                            isset($dashboard_element['description']) ? $dashboard_element['description'] : false,
+                            isset($dashboard_element['is_popup']) ? $dashboard_element['is_popup'] : false,
+                            isset($dashboard_element['target']) ? $dashboard_element['target'] : false
                         )?>
                     <?php endforeach; ?>
                 </ul>

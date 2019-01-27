@@ -172,8 +172,8 @@ class FormBuilder extends ContainerAware
     /**
      * This callback is called on save.
      * This kind of callback should be used when no feed object specified of when you want to overwrite the default SAVE operation.
-     * The callback function takes must take the ARRAY parameter as reference and MUST return TRUE or FALSE.
-     * If the function returns FALSE, it should also set FormBuilder validation error message.
+     * The callback function takes must take the ARRAY parameter as reference and MUST return true or false.
+     * If the function returns false, it should also set FormBuilder validation error message.
      *
      * @var int
      */
@@ -498,7 +498,7 @@ class FormBuilder extends ContainerAware
     }
 
     /**
-     * Enable or disable default submit, default is TRUE
+     * Enable or disable default submit, default is true
      *
      * @param bool $is_submit_button_enabled
      * @return FormBuilder
@@ -520,7 +520,7 @@ class FormBuilder extends ContainerAware
     }
 
     /**
-     * Enable or disable apply button, default is FALSE
+     * Enable or disable apply button, default is false
      *
      * @param bool $is_apply_button_enabled
      * @return FormBuilder
@@ -920,7 +920,7 @@ class FormBuilder extends ContainerAware
     }
 
     /**
-     * The form is rendered for reading only when this set to TRUE
+     * The form is rendered for reading only when this set to true
      *
      * @param bool $read_only
      * @return FormBuilder
@@ -1246,7 +1246,7 @@ class FormBuilder extends ContainerAware
             } elseif ($field['input_type'] == FormBuilder::CHECKBOX || $field['input_type'] == FormBuilder::MULTIPLESELECT) {
                 // Meaning no POST variable was set
                 //FIXME Check validation of multiselect/multicheckbox when not selecting any values
-                //echo $field['field'] . '=' . FALSE."<br>";
+                //echo $field['field'] . '=' . false."<br>";
                 $this->object->{$field['field']} = false;
             }
         }
@@ -1462,7 +1462,7 @@ class FormBuilder extends ContainerAware
      */
     private function generateFixBooleanTypes(&$save_array)
     {
-        // Fixing boolean field values, assigning TRUE or FALSE values
+        // Fixing boolean field values, assigning true or false values
         foreach ($this->fields as &$field) {
             if ($field['input_type'] == FormBuilder::CHECKBOX) {
                 $save_array[$field['field']] = (isset($save_array[$field['field']]) && $save_array[$field['field']] ? true : false);

@@ -495,7 +495,7 @@ class PagesAdmin extends ModuleAdminController
             'input_type' => FormBuilder::IMAGE,
             'upload_path' => $this->uploads_base_path,
             'upload_display_path' => $this->uploads_base_path,
-            'show_in_form' => TRUE,
+            'show_in_form' => true,
             'validation_rules' => 'max_length[500]',
             'upload_complete_callback' => array($this, '_fb_callback_make_filename_seo_friendly'),
         );
@@ -693,7 +693,7 @@ class PagesAdmin extends ModuleAdminController
 
         // No need to change filename? Then we are fine
         if ($filename == $new_name) {
-            return TRUE;
+            return true;
         }
 
         // Finally here we go!
@@ -701,9 +701,9 @@ class PagesAdmin extends ModuleAdminController
             $data[$current_image_field_name] = $new_base_path . $new_name;
             $filename = $new_base_path . $new_name;
 
-            return TRUE;
+            return true;
         }
-        return FALSE;
+        return false;
     }
 
     /**

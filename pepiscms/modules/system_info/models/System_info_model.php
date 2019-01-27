@@ -24,7 +24,7 @@ class System_info_model extends PEPISCMS_Model
     public function getOccupiedSpace($relative_dir = '')
     {
         $this->load->helper('file');
-        $files = get_filenames(INSTALLATIONPATH . $relative_dir, TRUE);
+        $files = get_filenames(INSTALLATIONPATH . $relative_dir, true);
         $filesize_all = 0;
         foreach ($files as $file) {
             if (is_file($file)) {

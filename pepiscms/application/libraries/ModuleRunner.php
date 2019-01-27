@@ -22,7 +22,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class ModuleRunner extends ContainerAware
 {
     /**
-     * Name of the currently running module. When module action is finished, the value becomes FALSE
+     * Name of the currently running module. When module action is finished, the value becomes false
      * @var mixed
      */
     private $running_module = false;
@@ -53,7 +53,7 @@ class ModuleRunner extends ContainerAware
     }
 
     /**
-     * Returns the name of the currently running module or FALSE
+     * Returns the name of the currently running module or false
      * @return mixed
      */
     public function getRunningModuleName()

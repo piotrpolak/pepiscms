@@ -416,7 +416,7 @@ class PEPISCMS_Loader extends CI_Loader
 
     /**
      * Tells whether the module is installed in user space
-     * If it is in system space or does not exist the function will return FALSE
+     * If it is in system space or does not exist the function will return false
      *
      * @param string $module_name
      * @return bool

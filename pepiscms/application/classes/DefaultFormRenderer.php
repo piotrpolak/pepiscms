@@ -269,7 +269,7 @@ class DefaultFormRenderer extends ContainerAware implements FormRenderableInterf
             $error = $this->db->error();
 
             $message = $this->lang->line('formbuilder_label_unable_to_save') .
-                ($error['message'] ? ' (SQL: ' . $error['code'] . ': ' . $error['message'] . ')' : ' (Method saveById returned FALSE)');
+                ($error['message'] ? ' (SQL: ' . $error['code'] . ': ' . $error['message'] . ')' : ' (Method saveById returned false)');
 
             if (count($this->formbuilder->getUploadWarnings())) {
                 $message = $message . '<br><br><b>' .

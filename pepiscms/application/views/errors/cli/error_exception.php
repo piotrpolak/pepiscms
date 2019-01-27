@@ -9,7 +9,7 @@ Message: <?php echo $message; ?>
 Filename: <?php echo $exception->getFile(); ?>
 Line Number: <?php echo $exception->getLine(); ?>
 
-<?php if (defined('SHOW_DEBUG_BACKTRACE') && SHOW_DEBUG_BACKTRACE === TRUE): ?>
+<?php if (defined('SHOW_DEBUG_BACKTRACE') && SHOW_DEBUG_BACKTRACE === true): ?>
 
 Backtrace:
 	<?php foreach ($exception->getTrace() as $error): ?>

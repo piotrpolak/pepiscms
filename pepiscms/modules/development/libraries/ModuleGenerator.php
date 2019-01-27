@@ -646,7 +646,7 @@ class ModuleGenerator extends ContainerAware
             'date' => date('Y-m-d'),
             'image_meta_code_element' => $image_field_name ? '$this->setMetaImageField(\'' . $image_field_name . '\', $this->uploads_base_path);' : '',
             'description_meta_code_element' => $description_field_name ? '$this->setMetaDescriptionPattern(\'{' . $description_field_name . '}\', array($this, \'_fb_format_meta_description\'));' : '',
-            'order_meta_code_element' => $order_field_name ? '$this->setOrderable(TRUE, \'' . $order_field_name . '\');' : '$this->setOrderable(FALSE);',
+            'order_meta_code_element' => $order_field_name ? '$this->setOrderable(true, \'' . $order_field_name . '\');' : '$this->setOrderable(false);',
             'updated_at_code_element' => $updated_at_field_name ? '$data_array[\'' . $updated_at_field_name . '\'] = date(\'Y-m-d H:i:s\');' : '',
             'filters_element' => $filters_element,
         );
@@ -837,8 +837,8 @@ class ModuleGenerator extends ContainerAware
                 // for date filters we define extra filters
                 if ($v_value == DataGrid::FILTER_DATE) {
                     $filters_element .=
-                        '        $this->datagrid->addFilter($this->lang->line($module_name.\'_' . $key . '\').\' (\'.$this->lang->line(\'crud_label_from\').\')\', \'' . $key . '\', DataGrid::FILTER_DATE, FALSE, DataGrid::FILTER_CONDITION_GREATER_OR_EQUAL);
-        $this->datagrid->addFilter($this->lang->line($module_name.\'_' . $key . '\').\' (\'.$this->lang->line(\'crud_label_to\').\')\', \'' . $key . '\', DataGrid::FILTER_DATE, FALSE, DataGrid::FILTER_CONDITION_LESS_OR_EQUAL);
+                        '        $this->datagrid->addFilter($this->lang->line($module_name.\'_' . $key . '\').\' (\'.$this->lang->line(\'crud_label_from\').\')\', \'' . $key . '\', DataGrid::FILTER_DATE, false, DataGrid::FILTER_CONDITION_GREATER_OR_EQUAL);
+        $this->datagrid->addFilter($this->lang->line($module_name.\'_' . $key . '\').\' (\'.$this->lang->line(\'crud_label_to\').\')\', \'' . $key . '\', DataGrid::FILTER_DATE, false, DataGrid::FILTER_CONDITION_LESS_OR_EQUAL);
 ';
                     continue;
                 }
@@ -874,7 +874,7 @@ class ModuleGenerator extends ContainerAware
                 $v_value = '$this->uploads_base_path';
             } // Resolve boolan variables
             elseif (is_bool($v_value)) {
-                $v_value = ($v_value ? 'TRUE' : 'FALSE');
+                $v_value = ($v_value ? 'true' : 'false');
             } // Wrap non numeric values
             elseif (!is_numeric($v_value)) {
                 $v_value = '\'' . str_replace('\'', '\\\'', $v_value) . '\'';

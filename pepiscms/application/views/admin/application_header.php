@@ -75,7 +75,7 @@
                         <div id="optional_actions_bar">
                             <span id="isLogged"><?= $user ?></span>
                             <?php if (SecurityManager::hasAccess('changepassword') && $this->auth->getDriver()->isPasswordChangeSupported()): ?>	
-                                <a href="<?= admin_url(FALSE) ?>changepassword" title="<?= $this->lang->line('changepassword_desc') ?>"><?= $lang->line('changepassword_change_password') ?></a>
+                                <a href="<?= admin_url(false) ?>changepassword" title="<?= $this->lang->line('changepassword_desc') ?>"><?= $lang->line('changepassword_change_password') ?></a>
                             <?php endif; ?>
                         </div>
                     <?php endif; ?>
@@ -91,13 +91,13 @@
                     <div id="language_bar">
                         <ul>
                             <?php foreach ($application_languages as $l): ?>
-                                <li><a id="<?= $l[3] ?>_language" <?= ($current_language == $l[0] ? 'class="active"' : '') ?> href="<?= admin_url(FALSE) ?>language/set/<?= $l[0] ?>" title="<?= $l[1] ?>"><img src="pepiscms/theme/img/languages/<?= $l[2] ?>" alt="<?= $l[1] ?>"></a></li>
+                                <li><a id="<?= $l[3] ?>_language" <?= ($current_language == $l[0] ? 'class="active"' : '') ?> href="<?= admin_url(false) ?>language/set/<?= $l[0] ?>" title="<?= $l[1] ?>"><img src="pepiscms/theme/img/languages/<?= $l[2] ?>" alt="<?= $l[1] ?>"></a></li>
                             <?php endforeach; ?>
                         </ul>
                     </div>
 
                     <?php if ($this->auth->isAuthenticated()): ?>
-                        <a href="<?= admin_url(FALSE) ?>logout" id="logout_link" class="hasIcon" title="<?= $this->lang->line('global_logout') ?> &raquo;">
+                        <a href="<?= admin_url(false) ?>logout" id="logout_link" class="hasIcon" title="<?= $this->lang->line('global_logout') ?> &raquo;">
                             <img src="pepiscms/theme/default/images/icons/logout_icon.png" alt="">
                             <?= $this->lang->line('global_logout') ?>
                         </a>
@@ -129,8 +129,8 @@
                         $licence_expiration_timestamp = $this->config->item('licence_expiration_timestamp');
                         $now_timestamp = time();
                         $days = $hours = 0;
-                        $warning_message = FALSE;
-                        $is_expired = FALSE;
+                        $warning_message = false;
+                        $is_expired = false;
 
                         if ($licence_expiration_timestamp)
                         {
@@ -156,7 +156,7 @@
                             }
                             else
                             {
-                                $is_expired = TRUE;
+                                $is_expired = true;
                                 $warning_message = display_error('Your software licence has expired. Please contact system provider to continue using the system.');
                             }
                         }
