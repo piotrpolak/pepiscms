@@ -30,7 +30,12 @@ class PEPISCMS_Form_validation extends CI_Form_validation
     public function __construct($rules = array())
     {
         parent::__construct($rules);
+        $this->CI->load->language('pepiscms_form_validation');
+    }
 
+
+    protected function _execute($row, $rules, $postdata = NULL, $cycles = 0)
+    {
         // The following code is needed for module callbacks to work
         $module_instance = ModuleRunner::get_instance();
         if ($module_instance) {
@@ -38,7 +43,7 @@ class PEPISCMS_Form_validation extends CI_Form_validation
             $this->CI = $module_instance;
         }
 
-        $this->CI->load->language('pepiscms_form_validation');
+        return parent::_execute($row, $rules, $postdata, $cycles);
     }
 
     // --------------------------------------------------------------------
