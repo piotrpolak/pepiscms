@@ -204,7 +204,7 @@ class ModuleGenerator extends ContainerAware
         $this->buildTranslations($module_name, $translations, $module_label, $language_pairs, $directory, $module_name_lower_case);
         $this->generateOrRegenerateModel($directory, $module_name_lower_case, $module_name_singular, $template_base_path, $data);
         $this->generateModuleDescriptor($directory, $module_name_lower_case, $template_base_path, $data);
-        $this->generateCrudStuffIfNeccesary($is_crud, $directory, $template_base_path, $data);
+        $this->generateCrudStuffIfNecessary($is_crud, $directory, $template_base_path, $data, $module_name_lower_case);
         $this->generatePublicStuffIfNeccesary($generate_public_controller, $directory, $module_name_lower_case, $template_base_path, $data);
         $this->generateSecurityPolicyIfNeccesary($module_name, $generate_security_policy, $module_name_singular);
         $this->copyIcons($directory, $template_base_path);
@@ -934,8 +934,9 @@ class ModuleGenerator extends ContainerAware
      * @param $directory
      * @param $template_base_path
      * @param array $data
+     * @param $module_name_lower_case
      */
-    private function generateCrudStuffIfNeccesary($is_crud, $directory, $template_base_path, array $data)
+    private function generateCrudStuffIfNecessary($is_crud, $directory, $template_base_path, array $data, $module_name_lower_case)
     {
         // Making admin controller
         $file_admin_controller = $directory . $this->moduleLocator->getAdminControllerPath($module_name_lower_case);
