@@ -449,7 +449,7 @@ class PagesAdmin extends ModuleAdminController
         }
 
         if ($this->Menu_model->itemExists($str, $_POST['parent_item_id'])) {
-            $this->form_validation->set_message('_name_check', sprintf($this->lang->line('pages_dialog_item_already_in_selected_menu_branch'), $str));
+            $this->form_validation->set_message(__FUNCTION__, sprintf($this->lang->line('pages_dialog_item_already_in_selected_menu_branch'), $str));
             return false;
         } else {
             return true;

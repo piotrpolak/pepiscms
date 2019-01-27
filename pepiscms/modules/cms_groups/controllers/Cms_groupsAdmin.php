@@ -161,7 +161,7 @@ class Cms_groupsAdmin extends ModuleAdminController
     public function _display_name_check($str)
     {
         if ($_POST['initial_group_name'] != $str && $this->Group_model->isGroupNameTaken($str)) {
-            $this->form_validation->set_message('_display_name_check', $this->lang->line($this->module_name . '_dialog_group_already_exists'));
+            $this->form_validation->set_message(__FUNCTION__, $this->lang->line($this->module_name . '_dialog_group_already_exists'));
             return false;
         }
         return true;
