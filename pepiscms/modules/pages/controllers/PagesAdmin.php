@@ -33,17 +33,10 @@ class PagesAdmin extends ModuleAdminController
         // Overwriting uploads base path
         $this->uploads_base_path = $this->config->item('uploads_path') . 'pages/';
 
-        $this->load->library('SimpleSessionMessage');
-        $this->load->library('Cachedobjectmanager');
-
-        $this->load->library('FormBuilder');
-        $this->load->model('Menu_model');
-        $this->load->model('Page_model');
-        $this->load->model('Site_language_model');
-        $this->load->model('User_model');
-        $this->load->helper('date');
+        $this->load->library(array('SimpleSessionMessage', 'Cachedobjectmanager', 'FormBuilder'));
+        $this->load->model(array('Menu_model', 'Page_model', 'Site_language_model', 'User_model'));
+        $this->load->helper(array('date', 'string'));
         $this->load->moduleLanguage('pages');
-        $this->load->helper('string');
 
         if (!$this->db->table_exists($this->Page_model->getTable())) {
             show_error($this->lang->line('pages_pages_database_not_configured'));
