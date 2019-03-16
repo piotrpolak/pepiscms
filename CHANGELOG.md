@@ -1,3 +1,12 @@
+## New in version 1.0.1 (17.03.2019)
+
+### Bugfixes and version updates
+
+ * Fixed module validation callback not called if validation library is loaded before the module is initialized
+ * Added JPEG to allowed file types for upload
+ * Removed unnecessary semicolon from admin menu template
+ * CodeIgniter upgraded to version 3.1.10
+
 ## New in version 1.0.0 (30.12.2018)
 
 ### New features
