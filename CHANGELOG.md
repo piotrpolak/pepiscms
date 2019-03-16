@@ -2,6 +2,7 @@
 
 ### Bugfixes and version updates
 
+ * Fixed module generator admin module path
  * Fixed module validation callback not called if validation library is loaded before the module is initialized
  * Added JPEG to allowed file types for upload
  * Removed unnecessary semicolon from admin menu template
