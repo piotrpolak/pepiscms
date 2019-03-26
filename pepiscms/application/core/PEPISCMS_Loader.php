@@ -23,45 +23,6 @@ class PEPISCMS_Loader extends CI_Loader
     private $module_directory_cache = array();
 
     /**
-     * Database Loader
-     *
-     * @param string $params
-     * @param bool $return
-     * @param null $active_record
-     * @return object
-     */
-    public function database($params = '', $return = false, $active_record = null)
-    {
-        // load our version of the CI_DB_Cache class. The database library checks
-        // if this class is already loaded before instantiating it. Loading it now
-        // makes sure our version is used when a controller enables query caching
-        if (!class_exists('CI_DB_Cache')) {
-            @include(APPPATH . 'core/MY_DB_Cache.php');
-        }
-
-        // Grab the super object
-        $CI = &get_instance();
-
-        // Do we even need to load the database class?
-        if (class_exists('CI_DB') and $return == false and $active_record == null and isset($CI->db) and is_object($CI->db)) {
-            return false;
-        }
-
-        require_once(BASEPATH . 'database/DB.php');
-
-        if ($return === true) {
-            return DB($params, $active_record);
-        }
-
-        // Initialize the db variable.  Needed to prevent
-        // reference errors with some configurations
-        $CI->db = '';
-
-        // Load the DB class
-        $CI->db = &DB($params, $active_record);
-    }
-
-    /**
      * Loads a theme, a function complementary to view
      *
      * @param string $path
