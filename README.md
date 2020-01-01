@@ -1625,5 +1625,5 @@ composer require piotrpolak/codeigniter-symfony2-bridge --update-no-dev
 ### Enabling Twig support
 
 ```bash
-composer require twig/twig 2.* --update-no-dev
+composer require twig/twig 1.* --update-no-dev
 ```

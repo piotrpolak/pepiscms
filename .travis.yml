@@ -13,7 +13,7 @@ env:
 before_install:
   - echo "memory_limit=2G" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - COMPOSER_MEMORY_LIMIT=-1 travis_retry composer config -g github-oauth.github.com "$GITHUB_TOKEN"
-install: COMPOSER_MEMORY_LIMIT=-1 travis_retry composer --no-suggest require phpoffice/phpspreadsheet 1.5.* twig/twig 2.* # It is like an install + require, composer install --prefer-dist
+install: COMPOSER_MEMORY_LIMIT=-1 travis_retry composer --no-suggest require phpoffice/phpspreadsheet 1.5.* twig/twig 1.* # It is like an install + require, composer install --prefer-dist
 
 before_script:
 - chmod +x build/travis/before_script.sh && build/travis/before_script.sh
