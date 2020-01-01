@@ -1,3 +1,9 @@
+## New in version 1.0.2 (01.01.2020)
+
+### Bugfixes and version updates
+
+ * CodeIgniter upgraded to version 3.1.11
+
 ## New in version 1.0.1 (17.03.2019)
 
 ### Bugfixes and version updates
