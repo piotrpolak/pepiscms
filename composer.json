@@ -18,7 +18,7 @@
         "erusev/parsedown": "^1.7"
     },
     "require-dev": {
-        "mikey179/vfsStream": "1.1.*",
+        "mikey179/vfsstream": "1.1.*",
         "behat/mink-goutte-driver": "1.2.*",
         "behat/mink-extension": "2.1.*",
         "behat/behat": "3.2.*",

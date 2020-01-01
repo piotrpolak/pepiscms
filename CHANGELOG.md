@@ -1,4 +1,4 @@
-## New in version 1.0.2 (01.01.2020)
+## New in version 1.0.2 (02.01.2020)
 
 ### Bugfixes and version updates
 
