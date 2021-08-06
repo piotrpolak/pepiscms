@@ -389,7 +389,7 @@ abstract class AdminCRUDController extends ModuleAdminController
             $model_name = substr($model_name, 0, strlen($model_name) - 3) . 'y';
         } elseif (substr($model_name, strlen($model_name) - 2) == 'es') {
             $model_name = substr($model_name, 0, strlen($model_name) - 2);
-        } elseif ($model_name{strlen($model_name) - 1} == 's') {
+        } elseif ($model_name[strlen($model_name) - 1] == 's') {
             $model_name = substr($model_name, 0, strlen($model_name) - 1);
         }
         $model_name .= '_model';
@@ -1925,7 +1925,7 @@ abstract class AdminCRUDController extends ModuleAdminController
 
         $cache_path = $this->config->item('cache_path');
         $cache_path = ($cache_path === '') ? 'application/cache/' : $cache_path;
-        if ($cache_path{0} !== '/') {
+        if ($cache_path[0] !== '/') {
             $cache_path = INSTALLATIONPATH . $cache_path;
         }
         $cache_path .= 'tmp/';
@@ -2111,7 +2111,7 @@ abstract class AdminCRUDController extends ModuleAdminController
         // building file path
         $cache_path = $this->config->item('cache_path');
         $cache_path = ($cache_path === '') ? 'application/cache/' : $cache_path;
-        if ($cache_path{0} !== '/') {
+        if ($cache_path[0] !== '/') {
             $cache_path = INSTALLATIONPATH . $cache_path;
         }
         $cache_path .= 'tmp/';

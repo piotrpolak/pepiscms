@@ -80,10 +80,10 @@ if (!function_exists('niceuri')) {
         $name = preg_replace('/[\-]+/', '-', $name);
 
         // Trim
-        if ($name{0} == '-') {
+        if ($name[0] == '-') {
             $name = substr($name, 1);
         }
-        if ($name{strlen($name) - 1} == '-') {
+        if ($name[strlen($name) - 1] == '-') {
             $name = substr($name, 0, strlen($name) - 1);
         }
 

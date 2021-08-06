@@ -293,7 +293,7 @@ class Siteconfig_model extends Generic_model
         $themes = array();
 
         while ($file = readdir($dir)) {
-            if ($file{0} == '.') {
+            if ($file[0] == '.') {
                 continue;
             }
 
@@ -457,7 +457,7 @@ class Siteconfig_model extends Generic_model
     {
         $cache_path = $this->config->item('cache_path');
         $cache_path = ($cache_path === '') ? 'application/cache/' : $cache_path;
-        if ($cache_path{0} !== '/') {
+        if ($cache_path[0] !== '/') {
             $cache_path = INSTALLATIONPATH . $cache_path;
         }
 

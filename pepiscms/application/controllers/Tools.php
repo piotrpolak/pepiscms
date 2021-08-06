@@ -272,6 +272,6 @@ class Tools extends EnhancedController
      */
     private function isMethodNameNotAllowed($method_name)
     {
-        return $method_name{0} == '_' || in_array($method_name, $this->ignored_methods);
+        return $method_name[0] == '_' || in_array($method_name, $this->ignored_methods);
     }
 }
