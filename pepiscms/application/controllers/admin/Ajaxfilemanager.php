@@ -216,6 +216,16 @@ class Ajaxfilemanager extends AdminController
         }
     }
 
+    /**
+     * @param $size
+     * @param $path
+     */
+    public function thumbsize(int $size, ...$parts)
+    {
+        $size = max(10, min(100, $size));
+        return $this->genericthumb(false, $size, $this->getCurrentImagePath('/', '/' . join('/', $parts)));
+    }
+
     public function thumb()
     {
         return $this->genericthumb();
@@ -225,17 +235,7 @@ class Ajaxfilemanager extends AdminController
     {
         if (!$current_path) {
             $start_word = 'thumb';
-            $pos = strpos($_SERVER['REQUEST_URI'], $start_word);
-            $current_path = str_replace('/../', '', substr($_SERVER['REQUEST_URI'], $pos + strlen($start_word)) . '/');
-            $current_path = str_replace('//', '/', $current_path);
-
-            $i = strlen($current_path) - 1;
-            if ($current_path{$i} == '/') {
-                $current_path = substr($current_path, 0, $i);
-            }
-            if ($current_path{0} == '/') {
-                $current_path = substr($current_path, 1);
-            }
+            $current_path = $this->getCurrentImagePath($start_word, $_SERVER['REQUEST_URI']);
         }
 
         $image_path = $absolute ? '' : $this->uploadsPath;
@@ -379,5 +379,26 @@ class Ajaxfilemanager extends AdminController
 
         header('Content-type: application/x-javascript');
         die(json_encode($response));
+    }
+
+    /**
+     * @param string $start_word
+     * @param string $uri
+     * @return string
+     */
+    private function getCurrentImagePath(string $start_word, string $uri) : string
+    {
+        $pos = strpos($uri, $start_word);
+        $current_path = str_replace('/../', '', substr($uri, $pos + strlen($start_word)) . '/');
+        $current_path = str_replace('//', '/', $current_path);
+
+        $i = strlen($current_path) - 1;
+        if ($current_path[$i] == '/') {
+            $current_path = substr($current_path, 0, $i);
+        }
+        if ($current_path[0] == '/') {
+            $current_path = substr($current_path, 1);
+        }
+        return $current_path;
     }
 }

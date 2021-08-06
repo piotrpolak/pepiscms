@@ -108,7 +108,12 @@ class File extends AbstractComponent
             }
 
             if ($is_real_image) {
-                $image_path = 'admin/ajaxfilemanager/absolutethumb/100/' . $field['upload_display_path'] . $valueEscaped;
+                $upload_display_path = $field['upload_display_path'];
+                $uploads_path = \CI_Controller::get_instance()->config->item('uploads_path');
+                if (strpos($upload_display_path, $uploads_path) === 0) {
+                    $upload_display_path = substr($upload_display_path, strlen($uploads_path));
+                }
+                $image_path = 'admin/ajaxfilemanager/thumbsize/100/' . $upload_display_path . $valueEscaped;
             } else {
                 $image_path = $this->findImagePath($extension);
             }
