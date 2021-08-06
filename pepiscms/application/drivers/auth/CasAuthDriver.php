@@ -22,8 +22,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class CasAuthDriver extends ContainerAware implements AuthDriverableInterface
 {
     private $is_initialized = false;
-    private $conf = array();
-    private $auth = null;
+    protected $conf = array();
+    protected $auth = null;
 
     /**
      * Constructs auth driver
@@ -79,22 +79,26 @@ class CasAuthDriver extends ContainerAware implements AuthDriverableInterface
         $this->_init();
         phpCAS::forceAuthentication();
 
+        $cas_user = phpCAS::getUser();
+        // validate cas user
+        $this->validateCasUser($cas_user);
+
         // Trying to get an existing user
-        $user_id = $this->User_model->getUserIdByEmail(phpCAS::getUser());
+        $user_id = $this->User_model->getUserIdByEmail($cas_user);
 
         // Trying to register an user
         if ($user_id === false) {
             // Checking whether allowed usernames are set and whether an user is one of them
             if (isset($this->conf['allowed_usernames']) && count($this->conf['allowed_usernames']) > 0) {
-                if (!in_array(phpCAS::getUser(), $this->conf['allowed_usernames'])) {
-                    Logger::warning('Username ' . phpCAS::getUser() . ' is not allowed by AUTH driver option allowed_usernames.', 'AUTH');
+                if (!in_array($cas_user, $this->conf['allowed_usernames'])) {
+                    Logger::warning('Username ' . $cas_user . ' is not allowed by AUTH driver option allowed_usernames.', 'AUTH');
                     return false;
                 }
             }
 
             // Checking whether allowed domains are set and whether an user belongs to a trusted domain
             if (isset($this->conf['allowed_domains']) && count($this->conf['allowed_domains']) > 0) {
-                $domain = substr(phpCAS::getUser(), strpos(phpCAS::getUser(), '@') + 1);
+                $domain = substr($cas_user, strpos($cas_user, '@') + 1);
                 if (!in_array($domain, $this->conf['allowed_domains'])) {
                     Logger::warning('User domain ' . $domain . ' is not allowed.', 'AUTH');
                     return false;
@@ -111,12 +115,12 @@ class CasAuthDriver extends ContainerAware implements AuthDriverableInterface
                 $user_group_ids = $this->conf['implicit_user_group_ids'];
             }
 
-            $display_name = explode('@', phpCAS::getUser());
+            $display_name = explode('@', $cas_user);
             $display_name = ucwords(str_replace(array('.', '-', '_'), ' ', $display_name[0]));
 
             $is_root = !$this->User_model->countAll();
-            $this->User_model->register($display_name, phpCAS::getUser(), false, false, $user_group_ids, $is_root, false, array('status' => $status));
-            $user_id = $this->User_model->getUserIdByEmail(phpCAS::getUser());
+            $this->User_model->register($display_name, $cas_user, false, false, $user_group_ids, $is_root, false, array('status' => $status));
+            $user_id = $this->User_model->getUserIdByEmail($cas_user);
         }
 
         if ($user_id) {
@@ -167,5 +171,13 @@ class CasAuthDriver extends ContainerAware implements AuthDriverableInterface
             return @phpCAS::logoutWithUrl(base_url());
         }
         return true;
+    }
+
+    /**
+     * @param string $cas_user
+     */
+    protected function validateCasUser(string $cas_user)
+    {
+        // nothin here, but can be used in derived classes
     }
 }

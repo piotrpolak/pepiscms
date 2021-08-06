@@ -428,9 +428,11 @@ class Auth extends ContainerAware
     {
         $driver_class_name = ucfirst($driver_type) . 'AuthDriver';
 
-        $driver_path = APPPATH . 'drivers/auth/' . $driver_class_name . '.php';
-        if (!file_exists($driver_path)) {
-            show_error('Auth driver specified does not exist on the filesystem or driver name empty ' . $driver_path);
+        if (!class_exists($driver_class_name)) {
+            $driver_path = APPPATH . 'drivers/auth/' . $driver_class_name . '.php';
+            if (!file_exists($driver_path)) {
+                show_error('Auth driver specified does not exist on the filesystem or driver name empty ' . $driver_path);
+            }
         }
 
         return new $driver_class_name($this);
