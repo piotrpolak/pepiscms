@@ -531,7 +531,7 @@ class User_model extends Generic_model
             $email_data = array(
                 'display_name' => $user->display_name,
                 'user_email' => $user->user_email,
-                'base_url' => $this->input->is_cli_request() ? '' : base_url(), // TODO find nice solution for finding out the URL
+                'base_url' => is_cli() ? '' : base_url(), // TODO find nice solution for finding out the URL
                 'password' => $password,
                 'site_name' => $site_name
             );
