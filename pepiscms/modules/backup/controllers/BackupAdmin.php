@@ -95,15 +95,18 @@ class BackupAdmin extends ModuleAdminController
      */
     private function getDatabaseSettings()
     {
-        require(INSTALLATIONPATH . '/application/config/database.php');
-        if (!isset($db)) {
-            show_error($this->lang->line('backup_database_settings_not_found'));
-        }
+        $db = [
+            'dbdriver' => $this->db->dbdriver,
+            'hostname' => $this->db->hostname,
+            'username' => $this->db->username,
+            'password' => $this->db->password,
+            'database' => $this->db->database,
+        ];
 
-        if (!($db[$active_group]['dbdriver'] == 'mysql' || $db[$active_group]['dbdriver'] == 'mysqli')) {
+        if (!($db['dbdriver'] == 'mysql' || $db['dbdriver'] == 'mysqli')) {
             show_error($this->lang->line('backup_dump_works_only_with_mysql'));
         }
 
-        return $db[$active_group];
+        return $db;
     }
 }

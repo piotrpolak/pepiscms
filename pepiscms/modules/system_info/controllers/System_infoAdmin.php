@@ -43,11 +43,12 @@ class System_infoAdmin extends ModuleAdminController
             $owner = get_current_user();
         }
 
-        include INSTALLATIONPATH . 'application/config/database.php';
 
-        // Getting variables from included file
-        $database_config = $db[$active_group];
-        unset($database_config['password']);
+        $database_config = [
+            'hostname' => $this->db->hostname,
+            'username' => $this->db->username,
+            'database' => $this->db->database,
+        ];
 
         $this->assign('database_config', $database_config);
         $this->assign('owner', $owner);
