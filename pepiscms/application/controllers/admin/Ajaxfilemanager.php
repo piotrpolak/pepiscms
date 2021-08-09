@@ -54,6 +54,11 @@ class Ajaxfilemanager extends AdminController
                 if ($file == '..' || $file == '.') {
                     continue;
                 }
+                $f = [
+                    'mtime' => 0,
+                    'ctime' => 0,
+                    'size' => 0,
+                ];
                 $file_path = $user_files_dir . $current_path . $file;
                 $f['name'] = htmlspecialchars($file);
 
