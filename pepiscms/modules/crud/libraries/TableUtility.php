@@ -78,6 +78,9 @@ class TableUtility extends ContainerAware
             $this->foreign_keys_cache = array();
 
             foreach ($foreign_keys_a as $key) {
+                foreach ($key as $key_key => $key_value){
+                    $key[strtolower($key_key)] = $key_value;
+                }
                 $this->foreign_keys_cache[$key['table_name']][$key['column_name']] = array($key['referenced_table_name'], $key['referenced_column_name']);
             }
         }
