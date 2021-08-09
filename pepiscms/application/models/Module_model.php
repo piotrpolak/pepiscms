@@ -54,7 +54,7 @@ class Module_model extends PEPISCMS_Model
      */
     public function isCoreModule($module_name)
     {
-        $user_module_directory = 'modules/';
+        $user_module_directory = INSTALLATIONPATH . 'modules/';
         $core_module_directory = APPPATH . '../modules/';
 
         // Checks whenever system module directrory exists and if it is not overwritten by user space module
