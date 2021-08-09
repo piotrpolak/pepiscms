@@ -384,7 +384,7 @@ class PEPISCMS_Loader extends CI_Loader
      */
     public function isModuleInUserSpace($module_name)
     {
-        $user_module_directory = 'modules/';
+        $user_module_directory = INSTALLATIONPATH . 'modules/';
 
         return file_exists($user_module_directory . $module_name);
     }
@@ -406,7 +406,7 @@ class PEPISCMS_Loader extends CI_Loader
         }
 
         $core_module_directory = APPPATH . '../modules/';
-        $user_module_directory = 'modules/';
+        $user_module_directory = INSTALLATIONPATH . 'modules/';
 
         if ($this->isModuleInUserSpace($module_name)) {
             $module_directory = $user_module_directory;
