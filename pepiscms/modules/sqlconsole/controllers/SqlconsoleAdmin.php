@@ -142,8 +142,6 @@ class SqlconsoleAdmin extends ModuleAdminController
 
     private function _get_database_name()
     {
-        include INSTALLATIONPATH . 'application/config/database.php';
-        $database_config = $db[$active_group];
-        return $database_config['database'];
+        return $this->db->database;
     }
 }
