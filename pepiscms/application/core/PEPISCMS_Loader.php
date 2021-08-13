@@ -409,7 +409,11 @@ class PEPISCMS_Loader extends CI_Loader
         $user_module_directory = INSTALLATIONPATH . 'modules/';
 
         if ($this->isModuleInUserSpace($module_name)) {
-            $module_directory = $user_module_directory;
+            if ($web_path){
+                $module_directory = 'pepiscms/usermodules/';
+            } else {
+                $module_directory = $user_module_directory;
+            }
         } elseif (file_exists($core_module_directory . $module_name)) {
             if ($web_path) {
                 $module_directory = 'pepiscms/modules/';
