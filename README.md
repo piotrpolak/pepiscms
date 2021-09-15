@@ -596,10 +596,6 @@ Allows to create and download MySQL SQL dumps.
 
 This module is a base for any other CRUD module. It is not installable.
 
-#### Dmesg
-
-Displays system dmesg.
-
 #### HTML customization for admin panel
 
 Allows to inject HTML snippets to admin panel header and footer.
