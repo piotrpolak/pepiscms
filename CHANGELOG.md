@@ -6,6 +6,7 @@
  * Removed DMESG module
  * Improved MariaDB compatibility of the SQL scripts
  * `ip_ino` helper switched to use http://www.geoplugin.net/
+ * Fixed sorting in the `groups` module grid
 
 ## New in version 1.0.2 (02.01.2020)
 
