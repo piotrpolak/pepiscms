@@ -2,7 +2,7 @@ ALTER TABLE `cms_logs` CHANGE COLUMN `message` `message` VARCHAR(2048) CHARACTER
 
 CREATE TABLE IF NOT EXISTS `cms_password_history` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `user_id` INT NOT NULL REFERENCES `cms_users` (`user_id` ),
+  `user_id` INT UNSIGNED NOT NULL REFERENCES `cms_users` (`user_id` ),
   `changed_datetime` DATETIME NOT NULL COMMENT 'UTC timestamp',
   `password_encoded` VARCHAR(128) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL,
   `hashing_salt` VARCHAR(64) NOT NULL DEFAULT '',

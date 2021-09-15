@@ -221,7 +221,7 @@ class ModuleRunner extends ContainerAware
         $modules_out = array();
 
         foreach ($modules as &$module) {
-            if (is_dir($modules_dir . $module) && $module{0} != '.') {
+            if (is_dir($modules_dir . $module) && $module[0] != '.') {
                 $modules_out[] = $module;
             }
         }
@@ -230,7 +230,7 @@ class ModuleRunner extends ContainerAware
         $modules = scandir($modules_dir);
 
         foreach ($modules as &$module) {
-            if (is_dir($modules_dir . $module) && $module{0} != '.') {
+            if (is_dir($modules_dir . $module) && $module[0] != '.') {
                 $modules_out[] = $module;
             }
         }

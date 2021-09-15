@@ -41,7 +41,7 @@ class Cachedobjectmanager extends ContainerAware
         $path = ($path === '') ? 'application/cache/' : $path;
 
         // Prepending INSTALLATIONPATH for relative values
-        if ($path{0} !== '/') {
+        if ($path[0] !== '/') {
             $path = INSTALLATIONPATH . $path;
         }
         $this->cache_path = $path;

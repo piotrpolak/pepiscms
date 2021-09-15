@@ -342,7 +342,7 @@ class SecurityPolicy extends ContainerAware
                 }
 
                 $name = $method->getName();
-                if ($name{0} == '_' || in_array($name, $ignored_methods)) {
+                if ($name[0] == '_' || in_array($name, $ignored_methods)) {
                     continue;
                 }
 
