@@ -37,7 +37,7 @@ services:
     command: /install.sh
 
   db:
-    image: mariadb
+    image: mariadb:10.5
     restart: always
 # Uncomment this to persist MySQL data between concurrent runs
 #    volumes:

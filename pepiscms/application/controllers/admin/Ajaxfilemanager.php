@@ -167,7 +167,7 @@ class Ajaxfilemanager extends AdminController
             return;
         }
 
-        if ($_POST['path']{0} == '/') {
+        if ($_POST['path'][0] == '/') {
             $_POST['path'] = substr($_POST['path'], 1);
         }
 
@@ -233,7 +233,7 @@ class Ajaxfilemanager extends AdminController
             if ($current_path{$i} == '/') {
                 $current_path = substr($current_path, 0, $i);
             }
-            if ($current_path{0} == '/') {
+            if ($current_path[0] == '/') {
                 $current_path = substr($current_path, 1);
             }
         }
@@ -242,7 +242,7 @@ class Ajaxfilemanager extends AdminController
 
         $cache_path = $this->config->item('cache_path');
         $cache_path = ($cache_path === '') ? 'application/cache/' : $cache_path;
-        if ($cache_path{0} !== '/') {
+        if ($cache_path[0] !== '/') {
             $cache_path = INSTALLATIONPATH . $cache_path;
         }
         $cache_path .= '_thumbs/';
@@ -325,7 +325,7 @@ class Ajaxfilemanager extends AdminController
         if ($current_path{$i} == '/') {
             $current_path = substr($current_path, 0, $i);
         }
-        if ($current_path{0} == '/') {
+        if ($current_path[0] == '/') {
             $current_path = substr($current_path, 1);
         }
 

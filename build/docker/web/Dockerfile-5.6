@@ -1,8 +1,8 @@
-FROM php:7.4.23-apache
+FROM php:5.6.38-apache-jessie
 
 ADD install.sh /install.sh
 
-RUN apt-get update && apt-get install -yq git zip unzip libpng-dev libzip-dev && \
+RUN apt-get update && apt-get install -yq git zip unzip libpng-dev && \
     a2enmod rewrite && \
     docker-php-ext-install mysqli && \
     docker-php-ext-install gd && \

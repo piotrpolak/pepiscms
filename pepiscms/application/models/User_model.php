@@ -433,7 +433,7 @@ class User_model extends Generic_model
             }
             $password = '';
             for ($i = 0; $i < $length; $i++) {
-                $password .= $str{rand(0, $max - 1)};
+                $password .= $str[rand(0, $max - 1)];
             }
         } while (!$this->isPassowrdStrongEnough($password));
 
@@ -466,7 +466,7 @@ class User_model extends Generic_model
 
             $password = '';
             for ($i = 0; $i < $length; $i++) {
-                $password .= $str{rand(0, $max - 1)};
+                $password .= $str[rand(0, $max - 1)];
             }
 
             $rand_special_char_position = rand(1, $length - 2);
@@ -475,8 +475,8 @@ class User_model extends Generic_model
                 $rand_digit_position = rand(1, $length - 2);
             } while ($rand_digit_position == $rand_special_char_position);
 
-            $password{$rand_digit_position} = rand(0, 9);
-            $password{$rand_special_char_position} = $str_special_chars{rand(0, strlen($str_special_chars) - 1)};
+            $password[$rand_digit_position] = rand(0, 9);
+            $password[$rand_special_char_position] = $str_special_chars[rand(0, strlen($str_special_chars) - 1)];
         } while (!$this->isPassowrdStrongEnough($password));
 
         return $password;
@@ -501,7 +501,7 @@ class User_model extends Generic_model
 
         $password = '';
         for ($i = 0; $i < $length; $i++) {
-            $password .= $str{rand(0, $max - 1)};
+            $password .= $str[rand(0, $max - 1)];
         }
 
         return $password;
