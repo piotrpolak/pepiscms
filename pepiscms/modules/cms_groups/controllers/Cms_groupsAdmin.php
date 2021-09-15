@@ -39,7 +39,7 @@ class Cms_groupsAdmin extends ModuleAdminController
 
         $this->datagrid->setTitle($this->lang->line($this->module_name . '_module_name'))
             ->setFeedObject($this->Group_model)
-            ->setBaseUrl(module_url())
+            ->setBaseUrl(module_url() . "index")
             ->addColumn($this->lang->line('cms_groups_group_name'), 'group_name', array($this, '_datagrid_format_name_column'));
 
         $this->assign('datagrid', $this->datagrid->generate());

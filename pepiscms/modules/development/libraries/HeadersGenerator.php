@@ -35,8 +35,6 @@ class HeadersGenerator
         $all_components = $model_components + $pepiscms_components + $core_components;
 
 
-
-
         $output = "<?php die('This is automatically generated file and should not be runned nor included');\n/**\n";
         $output .= " * @property CI_DB_query_builder \$db\n";
 

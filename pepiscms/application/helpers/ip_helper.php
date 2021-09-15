@@ -29,27 +29,33 @@ if (!function_exists('ip_info')) {
             throw new InvalidArgumentException('IP is not valid');
         }
 
-        $response = @file_get_contents('http://www.netip.de/search?query=' . $ip);
+        $response = @file_get_contents('http://www.geoplugin.net/json.gp?ip=' . $ip);
         if (empty($response)) {
             throw new InvalidArgumentException('Error contacting Geo-IP-Server');
         }
 
-        $patterns = array();
-        $patterns['domain'] = '#Domain: (.*?)&nbsp;#i';
-        $patterns['country'] = '#Country: (.*?)&nbsp;#i';
-        $patterns['state'] = '#State/Region: (.*?)<br#i';
-        $patterns['town'] = '#City: (.*?)<br#i';
+        $data = @json_decode($response);
 
-        $ipInfo = array();
+        $ipInfo = array(
+            'domain' => '',
+            'country' => '',
+            'state' => '',
+            'town' => '',
+        );
 
-        foreach ($patterns as $key => $pattern) {
-            //store the result in array
-            $ipInfo[$key] = preg_match($pattern, $response, $value) && !empty($value[1]) ? $value[1] : false;
-            $ipInfo[$key] = trim($ipInfo[$key]);
+        $host = gethostbyaddr($ip);
+        if($host) {
+            $ipInfo['domain'] = $host;
         }
 
-        if ($ipInfo['country'] == '-') {
-            $ipInfo['country'] = false;
+        if(isset($data->geoplugin_countryName)) {
+            $ipInfo['country'] = $data->geoplugin_countryName;
+        }
+        if(isset($data->geoplugin_regionName)) {
+            $ipInfo['state'] = $data->geoplugin_regionName;
+        }
+        if(isset($data->geoplugin_regionName)) {
+            $ipInfo['town'] = $data->geoplugin_city;
         }
 
         return $ipInfo;
