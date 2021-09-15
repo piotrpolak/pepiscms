@@ -5,8 +5,9 @@
  * PHP 7.4 compatibility improvements
  * Removed DMESG module
  * Improved MariaDB compatibility of the SQL scripts
- * `ip_ino` helper switched to use http://www.geoplugin.net/
+ * `ip_info` helper switched to use http://www.geoplugin.net/
  * Fixed sorting in the `groups` module grid
+ * Fixed `pages` module installation with the latest MariaDB
 
 ## New in version 1.0.2 (02.01.2020)
 
