@@ -1,3 +1,9 @@
+## New in version 1.0.3 (xx.xx.2021)
+
+### Bugfixes and version updates
+
+ * PHP 7.4 compatibility improvements
+
 ## New in version 1.0.2 (02.01.2020)
 
 ### Bugfixes and version updates

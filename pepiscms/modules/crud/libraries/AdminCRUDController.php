@@ -389,7 +389,7 @@ abstract class AdminCRUDController extends ModuleAdminController
             $model_name = substr($model_name, 0, strlen($model_name) - 3) . 'y';
         } elseif (substr($model_name, strlen($model_name) - 2) == 'es') {
             $model_name = substr($model_name, 0, strlen($model_name) - 2);
-        } elseif ($model_name{strlen($model_name) - 1} == 's') {
+        } elseif ($model_name[strlen($model_name) - 1] == 's') {
             $model_name = substr($model_name, 0, strlen($model_name) - 1);
         }
         $model_name .= '_model';
