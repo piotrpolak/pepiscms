@@ -137,6 +137,10 @@ class ContainerAware
                 }
             }
         }
-        return $CI->$var;
+        if(isset($CI->$var)) {
+            return $CI->$var;
+        } else {
+            display_error('Library/model not found or not loaded '.$var);
+        }
     }
 }
