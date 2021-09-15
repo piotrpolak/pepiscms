@@ -102,12 +102,17 @@ class DevelopmentAdmin extends ModuleAdminController
         $output = $this->headersgenerator->generate();
 
         if (!file_exists(INSTALLATIONPATH . 'application/dev/')) {
-            mkdir(INSTALLATIONPATH . 'application/dev/');
+            @mkdir(INSTALLATIONPATH . 'application/dev/');
         }
-        file_put_contents(INSTALLATIONPATH . 'application/dev/_project_headers.php', $output);
+        if (@file_put_contents(INSTALLATIONPATH . 'application/dev/_project_headers.php', $output)) {
+            $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS)
+                ->setRawMessage('Headers successfully regenerated!');
+        } else {
+            $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_ERROR)
+                ->setRawMessage('Unable to write headers file!');
+        }
 
-        $this->simplesessionmessage->setFormattingFunction(SimpleSessionMessage::FUNCTION_SUCCESS)
-            ->setRawMessage('Headers successfully regenerated!');
+
         redirect(module_url());
     }
 

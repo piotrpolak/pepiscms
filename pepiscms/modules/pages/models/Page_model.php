@@ -208,7 +208,7 @@ class Page_model extends Generic_model
     /**
      * Cleans HTML cache and returns the number of deleted files
      *
-     * @return array|bool
+     * @return array
      * @throws Exception
      */
     public function cleanPagesCache()
@@ -225,7 +225,7 @@ class Page_model extends Generic_model
         $cache_path .= $pages_cache_path;
 
         if (!file_exists($cache_path) || !is_dir($cache_path)) {
-            return false;
+            return $return;
         }
 
         $dir = @opendir($cache_path);
