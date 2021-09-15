@@ -230,7 +230,7 @@ class Ajaxfilemanager extends AdminController
             $current_path = str_replace('//', '/', $current_path);
 
             $i = strlen($current_path) - 1;
-            if ($current_path{$i} == '/') {
+            if ($current_path[$i] == '/') {
                 $current_path = substr($current_path, 0, $i);
             }
             if ($current_path[0] == '/') {
@@ -322,7 +322,7 @@ class Ajaxfilemanager extends AdminController
         $current_path = str_replace('//', '/', $current_path);
 
         $i = strlen($current_path) - 1;
-        if ($current_path{$i} == '/') {
+        if ($current_path[$i] == '/') {
             $current_path = substr($current_path, 0, $i);
         }
         if ($current_path[0] == '/') {
