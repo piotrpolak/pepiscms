@@ -9,7 +9,7 @@ The generated administration panel consists of [modules](#modules) that can be f
 are if you don't care about the presentation details).
 
 The application is designed as a core library on top of the [CodeIgniter framework](https://codeigniter.com/) and it
-allows to be swapped/upgraded with no or minimal changes in the project code.
+allows to be swapped/upgraded with no, or minimal changes in the project code.
 
 * [Live-demo](#live-demo)
 * [Setting up a local development environment](#setting-up-a-local-development-environment)
@@ -49,7 +49,7 @@ The demo application is automatically deployed to [Heroku](https://www.heroku.co
 
 * [https://pepiscms-demo.herokuapp.com/](https://pepiscms-demo.herokuapp.com/)
 
-The sources for the demo application can be found at [https://github.com/piotrpolak/pepiscms-demo](https://github.com/piotrpolak/pepiscms-demo).
+The sources for the demo application are available at [https://github.com/piotrpolak/pepiscms-demo](https://github.com/piotrpolak/pepiscms-demo).
 
 *Please note that the contents of the demo deployment are automatically cleaned up each time a new version is deployed.*
 
@@ -59,16 +59,16 @@ The sources for the demo application can be found at [https://github.com/piotrpo
 
 ## Setting up a local development environment
 
-PepisCMS is meant to be used as a library. However, for the local development process, a `Docker` environment with
-a sample implementation project can be set using:
+PepisCMS is meant to be used as a library. A local development environment with a sample project can be initialized
+as a Docker Compose environment:
 
 ```bash
 docker-compose up
 ```
 
-Once a Docker setup is started, all the generated files can be found in the `tmp/` directory.
+Once a Docker Compose setup is started, all the PepisCMS instance project files will be stored in the `tmp/` directory.
 
-If you wish to restart the environment simply use
+To restart the environment, first remove the instance files and then recreate the Docker Compose setup:
 
 ```bash
 sudo rm -rf ./tmp/ && docker-compose up --force-recreate --build
@@ -85,25 +85,19 @@ See other [useful development commands](docs/USEFUL_DEVELOPMENT_COMMANDS.md).
 
 ## Some history
 
-PepisCMS was started in 2007 as a coursework project. Shortly after its first release the system was serving several
-production websites and CRM systems.
+PepisCMS was started in 2007 as a coursework project. Shortly after its first release the system was implemented to
+serve a couple of production websites and CRM systems.
 
-[CodeIgniter](https://codeigniter.com/) was picked as the application framework, back then there were few serious
-PHP frameworks available and CodeIgniter was a reasonable choice.
+[CodeIgniter](https://codeigniter.com/) was picked as the application framework. At the time there were few serious
+PHP frameworks available and CodeIgniter seemed to be a reasonable choice.
 
-During its lifespan, PepisCMS has been fluently ported from version CI 1.5.4 to 3.1+. One should be aware that using
-a *pre-PSR* framework implies that all the implementation is tightly coupled to the framework libraries.
+During project's lifespan, PepisCMS has been fluently ported from CodeIgniter version CI 1.5.4 to 3.1+.
+One should be aware that using a *pre-PSR* framework implies that all the implementation is tightly coupled
+to the framework libraries.
 
-As 2018, the project is **fully functional** and **well tested**. Some automatic tests were added as well (PHPUnit for
-core components and Behat for smoke tests). Due to the minimal footprint and literally no overhead of the framework,
-project built on top of PepisCMS are really fast.
+Due to the minimal footprint and literally no overhead of the framework, project built on top of PepisCMS are really fast.
 
-As PepisCMS 1.0.0 the support for [Composer dependency management](https://getcomposer.org/) has been implemented.
-Additionally some of the code has been rewritten in the PSR style and benefits from PSR class autoloading.
-Version 1.0.0 plays well both with PHP5 and PHP7.
-
-*There are no plans to migrate PepisCMS to CodeIgniter 4 - it is not about the efforts - CI4 is rather a new
-framework than just an upgrade.*
+*There are no plans to migrate PepisCMS to use CodeIgniter 4 as the framework introduced backward incompatible changes.*
 
 
 
@@ -112,7 +106,8 @@ framework than just an upgrade.*
 ## Development philosophy
 
 The project has been developed using a very conservative approach and manually tested on multiple deployments prior
-to releasing a stable version. This made it possible to keep regression to minimum.
+to releasing a stable version. Together with Behat and PHPUnit tests it made it possible to keep
+the regression to minimum.
 
 
 
@@ -126,11 +121,13 @@ Prior to pushing the project to [GitHub](https://github.com/piotrpolak/pepiscms)
 cleaned up from any proprietary code, described by some tests and released as a
 [composer dependency](https://packagist.org/packages/piotrpolak/pepiscms).
 
+Together with the first open-source release, PepisCMS 1.0.0 got support for the
+[Composer dependency management](https://getcomposer.org/) and core features got described by Behat functional tests.
+
+Some code has been rewritten in the PSR style and benefits from PSR class autoloading.
 Being a composer module PepisCMS now benefits from the component management. Upgrading any of its dependencies is now
 simplified to incrementing composer versions.
-
-All of the above makes it easy to provide hot fixes and components' updates thus it extends the expected lifespan of the
-product.
+Version 1.0.* plays well both with PHP5 and PHP. As 2021, the project is **fully functional** and **well tested*.
 
 
 
