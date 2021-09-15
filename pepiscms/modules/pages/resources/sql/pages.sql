@@ -1,3 +1,5 @@
+SET FOREIGN_KEY_CHECKS=0;
+
 DROP TABLE IF EXISTS menu2uri;
 DROP TABLE IF EXISTS page2menu;
 DROP TABLE IF EXISTS pages;
@@ -68,3 +70,5 @@ INSERT INTO menu (item_id, item_order, parent_item_id, item_name, item_url) VALU
 (0, 0, NULL, 'Main Menu', '');
 
 UPDATE menu SET item_id = '0' WHERE menu.item_id=1 LIMIT 1;
+
+SET FOREIGN_KEY_CHECKS=1;
