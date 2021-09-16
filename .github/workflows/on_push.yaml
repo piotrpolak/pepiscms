@@ -1,0 +1,44 @@
+name: PHP Build
+
+on: [push]
+
+jobs:
+  build:
+    name: Build (PHP ${{ matrix.php-versions }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php-versions: [ '5.6', '7.4' ]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Picking PHP Dockerfile
+        run: |
+          rm -rf ./build/docker/web/Dockerfile
+          cp ./build/docker/web/Dockerfile-${{ matrix.php-versions }} ./build/docker/web/Dockerfile
+      # Pull the latest image to build, and avoid caching pull-only images.
+      # (docker pull is faster than caching in most cases.)
+      - run: docker-compose pull
+      # In this step, this action saves a list of existing images,
+      # the cache is created without them in the post run.
+      # It also restores the cache if it exists.
+      - uses: satackey/action-docker-layer-caching@v0.0.11
+        # Ignore the failure of a step and avoid terminating the job.
+        continue-on-error: true
+      - name: Build the docker-compose stack
+        run: docker-compose up -d
+      - name: Wait for Docker compose setup to start
+        uses: cygnetdigital/wait_for_response@v2.0.0
+        with:
+          url: 'http://localhost:80/'
+          responseCode: '200'
+          timeout: 40000
+          interval: 1000
+      - name: Check running containers
+        run: docker ps
+      - name: Run PHP Unit tests inside a container
+        run: |
+          docker exec pepiscms_web_1 sh -c "composer require phpoffice/phpspreadsheet 1.5.* twig/twig 1.* && php vendor/bin/phpunit -c vendor/piotrpolak/pepiscms/phpunit.xml.dist"
+      - name: Run Behat acceptance tests
+        run: |
+          docker exec pepiscms_web_1 sh -c "composer install --prefer-dist && vendor/bin/behat --config vendor/piotrpolak/pepiscms/behat.yml"
