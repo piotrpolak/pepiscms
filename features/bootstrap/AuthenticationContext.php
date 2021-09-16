@@ -26,7 +26,7 @@ class AuthenticationContext extends Behat\MinkExtension\Context\RawMinkContext
      */
     public function iShouldSeeTheDashboard()
     {
-        $this->assertSession()->pageTextContains('This is the default landing page.');
+        $this->assertSession()->pageTextContains('Welcome to Demonstration');
     }
 
 

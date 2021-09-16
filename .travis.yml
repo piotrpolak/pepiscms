@@ -23,7 +23,7 @@ script:
 - php -v
 - php vendor/bin/phpunit -v
 - php vendor/bin/phpunit -c phpunit.xml.dist
-- cd app && ./vendor/bin/behat --config ./vendor/piotrpolak/pepiscms/behat.yml; cd ..
+- ./vendor/bin/behat --config ./vendor/piotrpolak/pepiscms/behat.yml
 - ./check-code.sh
 php:
 - 5.6
