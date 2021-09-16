@@ -31,6 +31,6 @@ class PagesContext extends \Behat\MinkExtension\Context\RawMinkContext
      */
     public function shouldBeDisplayedInThePagesList($text)
     {
-        $moduleItem = $this->getSession()->getPage()->find('xpath', '//a.pages_uriXX[text()="' . $arg1 . '"]');
+        $moduleItem = $this->getSession()->getPage()->find('xpath', '//a.pages_uri[text()="' . $text . '"]');
     }
 }
