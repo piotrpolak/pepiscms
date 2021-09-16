@@ -6,73 +6,39 @@ jobs:
   build:
     name: Build (PHP ${{ matrix.php-versions }})
     runs-on: ubuntu-latest
-    env:
-      PEPIS_CMS_DATABASE_CONFIG_TYPE: native
-      PEPIS_CMS_DATABASE_HOSTNAME: localhost
-      PEPIS_CMS_DATABASE_USERNAME: root
-      PEPIS_CMS_DATABASE_PASSWORD: ''
-      PEPIS_CMS_DATABASE_DATABASE: pepiscms
-      PEPIS_CMS_AUTH_DRIVER: native
-      PEPIS_CMS_AUTH_EMAIL: demo@example.com
-      PEPIS_CMS_AUTH_PASSWORD: demodemo
-      PEPIS_CMS_SITE_EMAIL: demo@example.com
-      PEPIS_CMS_SITE_NAME: Demonstration
-      PEPIS_CMS_OBJECT_CACHE_OBJECT_IS_ENABLED: true
-    services:
-      mysql:
-        image: mysql:5.7
-        env:
-          MYSQL_ALLOW_EMPTY_PASSWORD: true
-          MYSQL_ROOT_PASSWORD: ''
-          MYSQL_DATABASE: pepiscms
-        ports:
-          - 3306/tcp
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-      strategy:
-        fail-fast: false
-        matrix:
-          php-versions: [ '5.6', '7.0', '7.1', '7.2', '7.3', '7.4' ]
-
+    strategy:
+      fail-fast: false
+      matrix:
+        php-versions: [ '5.6', '7.4' ]
     steps:
       - uses: actions/checkout@v2
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-versions }}
-            extensions: mbstring, dom, fileinfo, mysql
-      - name: Start mysql service
-        run: sudo /etc/init.d/mysql start
-      - name: Get composer cache directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - name: Cache composer dependencies
-        uses: actions/cache@v2
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          # Use composer.json for key, if composer.lock is not committed.
-          # key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
-      - name: Install Composer dependencies
-        # It is like an install + require, composer install --prefer-dist
+      - name: Picking PHP Dockerfile
         run: |
-          composer --no-suggest require phpoffice/phpspreadsheet 1.5.* twig/twig 1.*
-      - name: Replace files
-          run: |
-            mkdir app && cd app && cp -a ../vendor
-            cp -a ../build/travis/travis-composer.json ./composer.json
-            cp ../pepiscms/resources/config_template/template_index.php ./index.php
-            sed -i -e 's/TEMPLATE_VENDOR_PATH/\.\/vendor\//g' ./index.php
-            cp ../pepiscms/resources/config_template/template_.htaccess ./.htaccess
-            cp -a ../composer.lock .
-            composer update piotrpolak/pepiscms --no-suggest
-            # Replace PepisCMS core and composer.json
-            rm -rf vendor/piotrpolak/pepiscms/pepiscms/ && cp -a ../pepiscms ./vendor/piotrpolak/pepiscms/pepiscms
-            rm -rf vendor/piotrpolak/pepiscms/composer.json && cp -a ../composer.json ./vendor/piotrpolak/pepiscms/
-            rm -rf vendor/piotrpolak/pepiscms/behat.yml && cp -a ../behat.yml ./vendor/piotrpolak/pepiscms/
-            rm -rf vendor/piotrpolak/pepiscms/docs && cp -a ../docs ./vendor/piotrpolak/pepiscms/
-            composer dump-autoload
-            CI_ENV=development php index.php tools install
-            CI_ENV=development php index.php tools register_admin $PEPIS_CMS_AUTH_EMAIL $PEPIS_CMS_AUTH_PASSWORD
-            chmod 0777 -R application/cache/ application/logs/
-            cd ..
+          rm -rf ./build/docker/web/Dockerfile
+          cp ./build/docker/web/Dockerfile-${{ matrix.php-versions }} ./build/docker/web/Dockerfile
+      # Pull the latest image to build, and avoid caching pull-only images.
+      # (docker pull is faster than caching in most cases.)
+      - run: docker-compose pull
+      # In this step, this action saves a list of existing images,
+      # the cache is created without them in the post run.
+      # It also restores the cache if it exists.
+      - uses: satackey/action-docker-layer-caching@v0.0.11
+        # Ignore the failure of a step and avoid terminating the job.
+        continue-on-error: true
+      - name: Build the docker-compose stack
+        run: docker-compose up -d
+      - name: Wait for Docker compose setup to start
+        uses: cygnetdigital/wait_for_response@v2.0.0
+        with:
+          url: 'http://localhost:80/'
+          responseCode: '200'
+          timeout: 40000
+          interval: 1000
+      - name: Check running containers
+        run: docker ps
+      - name: Run PHP Unit tests inside a container
+        run: |
+          docker exec pepiscms_web_1 sh -c "composer require phpoffice/phpspreadsheet 1.5.* twig/twig 1.* && php vendor/bin/phpunit -c vendor/piotrpolak/pepiscms/phpunit.xml.dist"
+      - name: Run Behat acceptance tests
+        run: |
+          docker exec pepiscms_web_1 sh -c "composer install --prefer-dist && vendor/bin/behat --config vendor/piotrpolak/pepiscms/behat.yml"

@@ -18,7 +18,7 @@ docker exec -it pepiscms_web_1 sh -c "composer --no-suggest --prefer-dist --pref
 **Smoke tests (behat)**
 
 ```bash
-docker exec -it pepiscms_web_1 sh -c "composer install --no-suggest --prefer-dist && vendor/bin/behat --config vendor/piotrpolak/pepiscms/behat.yml"
+docker exec pepiscms_web_1 sh -c "composer install --no-suggest --prefer-dist && vendor/bin/behat --config vendor/piotrpolak/pepiscms/behat.yml"
 ```
 
 **Entering bash shell**
