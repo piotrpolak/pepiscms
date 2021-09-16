@@ -9,10 +9,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        #php-versions: [ '5.6', '7.0', '7.1', '7.2', '7.3', '7.4' ]
         php-versions: [ '7.4' ]
     steps:
       - uses: actions/checkout@v2
+      - name: Picking PHP Dockerfile
+        run: |
+          rm -rf ./build/docker/web/Dockerfile
+          cp ./build/docker/web/Dockerfile-${{ matrix.php-versions }} ./build/docker/web/Dockerfile
       # Pull the latest image to build, and avoid caching pull-only images.
       # (docker pull is faster than caching in most cases.)
       - run: docker-compose pull
