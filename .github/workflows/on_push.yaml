@@ -11,7 +11,6 @@ jobs:
       matrix:
         #php-versions: [ '5.6', '7.0', '7.1', '7.2', '7.3', '7.4' ]
         php-versions: [ '7.4' ]
-
     steps:
       - uses: actions/checkout@v2
       - name: Setup PHP
@@ -34,7 +33,7 @@ jobs:
         # It is like an install + require, composer install --prefer-dist
         run: |
           composer require phpoffice/phpspreadsheet 1.5.* twig/twig 1.*
-      - name: Run PHP Unit
+      - name: Run PHP unit tests
         run: |
           php vendor/bin/phpunit -v
           php vendor/bin/phpunit -c phpunit.xml.dist
@@ -49,3 +48,6 @@ jobs:
           interval: 1000
       - name: Check running containers
         run: docker ps
+      - name: Run Behat acceptance tests
+        run: |
+          docker exec pepiscms_web_1 sh -c "composer install --prefer-dist && vendor/bin/behat --config vendor/piotrpolak/pepiscms/behat.yml"
