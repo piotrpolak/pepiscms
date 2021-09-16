@@ -13,30 +13,6 @@ jobs:
         php-versions: [ '7.4' ]
     steps:
       - uses: actions/checkout@v2
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-versions }}
-          extensions: mbstring
-      - name: Get composer cache directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - name: Cache composer dependencies
-        uses: actions/cache@v2
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          # Use composer.json for key, if composer.lock is not committed.
-          # key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
-      - name: Install Composer dependencies
-        # It is like an install + require, composer install --prefer-dist
-        run: |
-          composer require phpoffice/phpspreadsheet 1.5.* twig/twig 1.*
-      - name: Run PHP unit tests
-        run: |
-          php vendor/bin/phpunit -v
-          php vendor/bin/phpunit -c phpunit.xml.dist
       - name: Build the docker-compose stack
         run: docker-compose up -d
       - name: Wait for Docker compose setup to start
@@ -48,6 +24,9 @@ jobs:
           interval: 1000
       - name: Check running containers
         run: docker ps
+      - name: Run PHP Unit tests inside a container
+        run: |
+          docker exec pepiscms_web_1 sh -c "composer require phpoffice/phpspreadsheet 1.5.* twig/twig 1.* && php vendor/bin/phpunit -c vendor/piotrpolak/pepiscms/phpunit.xml.dist"
       - name: Run Behat acceptance tests
         run: |
           docker exec pepiscms_web_1 sh -c "composer install --prefer-dist && vendor/bin/behat --config vendor/piotrpolak/pepiscms/behat.yml"
