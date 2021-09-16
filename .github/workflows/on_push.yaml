@@ -38,3 +38,14 @@ jobs:
         run: |
           php vendor/bin/phpunit -v
           php vendor/bin/phpunit -c phpunit.xml.dist
+      - name: Build the docker-compose stack
+        run: docker-compose up -d
+      - name: Wait for Docker compose setup to start
+        uses: cygnetdigital/wait_for_response@v2.0.0
+        with:
+          url: 'http://localhost:80/'
+          responseCode: '200'
+          timeout: 40000
+          interval: 1000
+      - name: Check running containers
+        run: docker ps
