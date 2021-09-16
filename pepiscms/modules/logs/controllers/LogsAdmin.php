@@ -50,6 +50,7 @@ class LogsAdmin extends ModuleAdminController
     {
         $this->load->library('DataGrid');
         $this->load->library('SimpleSessionMessage');
+        $this->load->library('LogsRowFormattingUtility');
         $this->load->helper('text');
 
         $this->datagrid->setTitle($this->lang->line('logs_module_name'))
@@ -57,7 +58,7 @@ class LogsAdmin extends ModuleAdminController
             ->setItemsPerPage(400)
             ->setDefaultOrder('timestamp', 'desc')
             ->setBaseUrl(module_url('logs') . 'index')
-            ->setRowCssClassFormattingFunction(array($this, '_datagrid_row_callback'))
+            ->setRowCssClassFormattingFunction(array($this->logsrowformattingutility, '_datagrid_row_callback'))
             ->addFilter(array('field' => 'timestamp', 'label' => 'Date from', 'filter_type' => DataGrid::FILTER_DATE, 'filter_condition' => 'ge'))
             ->addFilter(array('field' => 'timestamp', 'label' => 'Date to', 'filter_type' => DataGrid::FILTER_DATE, 'filter_condition' => 'le'));
 
@@ -150,6 +151,7 @@ class LogsAdmin extends ModuleAdminController
     public function mylogin()
     {
         $this->load->library('DataGrid');
+        $this->load->library('LogsRowFormattingUtility');
         $this->datagrid->setTable($this->config->item('database_table_logs'), array(
             'user_id' => $this->auth->getUserId(),
             'collection' => 'LOGIN'
@@ -157,7 +159,7 @@ class LogsAdmin extends ModuleAdminController
         ->setItemsPerPage(400)
         ->setDefaultOrder('timestamp', 'desc')
         ->setBaseUrl(module_url('logs') . '/mylogin')
-        ->setRowCssClassFormattingFunction(array($this, '_datagrid_row_callback'));
+        ->setRowCssClassFormattingFunction(array($this->logsrowformattingutility, '_datagrid_row_callback'));
 
         $module_name = 'logs';
         $definition = array(
@@ -313,23 +315,5 @@ class LogsAdmin extends ModuleAdminController
         }
 
         return $content;
-    }
-
-    public function _datagrid_row_callback($line)
-    {
-        if ($line->level == Logger::MESSAGE_LEVEL_INFO) {
-            return DataGrid::ROW_COLOR_GREEN;
-        }
-        if ($line->level == Logger::MESSAGE_LEVEL_NOTICE) {
-            return DataGrid::ROW_COLOR_YELLOW;
-        }
-        if ($line->level == Logger::MESSAGE_LEVEL_WARNING) {
-            return DataGrid::ROW_COLOR_ORANGE;
-        }
-        if ($line->level == Logger::MESSAGE_LEVEL_ERROR) {
-            return DataGrid::ROW_COLOR_RED;
-        }
-
-        return '';
     }
 }
