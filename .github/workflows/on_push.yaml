@@ -27,13 +27,10 @@ jobs:
         continue-on-error: true
 
       # Composer cache (closely coupled to docker-compose volumes)
-      - name: Get composer cache directory
-        id: composer-cache
-        run: echo "::set-output name=dir::${HOME}/composer/files"
       - name: Cache dependencies
         uses: actions/cache@v2
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
+          path: ~/.composer/files
           key: ${{ runner.os }}-${{ matrix.phpversion }}-composer-${{ hashFiles('**/composer.json') }}
           restore-keys: ${{ runner.os }}-${{ matrix.phpversion }}-composer-${{ hashFiles('**/composer.json') }}
 
@@ -51,15 +48,15 @@ jobs:
       - name: Run PHP Unit tests inside a container
         if: ${{ matrix.phpversion == '5.6' || matrix.phpversion == '7.4' }}
         run: |
-          docker exec pepiscms_web_1 sh -c "composer require phpunit/phpunit 5.7.* phpoffice/phpspreadsheet 1.5.* twig/twig 1.* --dev && php vendor/bin/phpunit -c vendor/piotrpolak/pepiscms/phpunit.xml.dist"
+          docker exec pepiscms_web_1 sh -c "composer require phpunit/phpunit 5.7.* phpoffice/phpspreadsheet 1.5.* twig/twig 1.* --dev --no-progress && php vendor/bin/phpunit -c vendor/piotrpolak/pepiscms/phpunit.xml.dist"
       - name: Run Behat acceptance tests
         run: |
           docker exec pepiscms_web_1 sh -c "composer install --prefer-dist && vendor/bin/behat --config vendor/piotrpolak/pepiscms/behat.yml"
       - name: Run PHP 7 linter
         if: ${{ matrix.phpversion == '7.4' }}
         run: |
-          docker exec pepiscms_web_1 sh -c "composer require overtrue/phplint:^2.0 --dev && ./vendor/bin/phplint"
+          docker exec pepiscms_web_1 sh -c "composer require overtrue/phplint:^2.0 --dev --no-progress  && ./vendor/bin/phplint"
       - name: Run PHP 8 linter
         if: ${{ matrix.phpversion == '8.0' }}
         run: |
-          docker exec pepiscms_web_1 sh -c "composer require overtrue/phplint --dev && ./vendor/bin/phplint"
+          docker exec pepiscms_web_1 sh -c "composer require overtrue/phplint --dev --no-progress && ./vendor/bin/phplint"
