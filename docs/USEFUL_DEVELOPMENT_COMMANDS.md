@@ -11,7 +11,7 @@ and then
 **Unit tests**
 
 ```bash
-docker exec -it pepiscms_web_1 sh -c "composer --no-suggest --prefer-dist --prefer-stable require phpoffice/phpspreadsheet 1.5.* twig/twig && \
+docker exec -it pepiscms_web_1 sh -c "composer --no-suggest --prefer-dist --prefer-stable require phpunit/phpunit 5.7.* phpoffice/phpspreadsheet 1.5.* twig/twig && \
     ./vendor/bin/phpunit -c ./vendor/piotrpolak/pepiscms/phpunit.xml.dist"
 ```
 

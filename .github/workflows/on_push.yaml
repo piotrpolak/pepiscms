@@ -9,7 +9,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        phpversion: [ '5.6', '7.4' ]
+        phpversion: [ '5.6', '7.4', '8.0' ]
     steps:
       - uses: actions/checkout@v2
       - name: Picking PHP Dockerfile
@@ -49,8 +49,9 @@ jobs:
       - name: Check running containers
         run: docker ps
       - name: Run PHP Unit tests inside a container
+        if: ${{ matrix.phpversion == '5.6' || matrix.phpversion == '7.4' }}
         run: |
-          docker exec pepiscms_web_1 sh -c "composer require phpoffice/phpspreadsheet 1.5.* twig/twig 1.* && php vendor/bin/phpunit -c vendor/piotrpolak/pepiscms/phpunit.xml.dist"
+          docker exec pepiscms_web_1 sh -c "composer require phpunit/phpunit 5.7.* phpoffice/phpspreadsheet 1.5.* twig/twig 1.* --dev && php vendor/bin/phpunit -c vendor/piotrpolak/pepiscms/phpunit.xml.dist"
       - name: Run Behat acceptance tests
         run: |
           docker exec pepiscms_web_1 sh -c "composer install --prefer-dist && vendor/bin/behat --config vendor/piotrpolak/pepiscms/behat.yml"
@@ -58,3 +59,7 @@ jobs:
         if: ${{ matrix.phpversion == '7.4' }}
         run: |
           docker exec pepiscms_web_1 sh -c "composer require overtrue/phplint:^2.0 --dev && ./vendor/bin/phplint"
+      - name: Run PHP 7 linter
+        if: ${{ matrix.phpversion == '8.0' }}
+        run: |
+          docker exec pepiscms_web_1 sh -c "composer require overtrue/phplint --dev && ./vendor/bin/phplint"
