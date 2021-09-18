@@ -35,7 +35,7 @@ jobs:
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-${{ matrix.phpversion }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-${{ matrix.phpversion }}-composer-
+          restore-keys: ${{ runner.os }}-${{ matrix.phpversion }}-composer-${{ hashFiles('**/composer.json') }}
 
       - name: Build the Cocker Compose stack
         run: docker-compose up -d
