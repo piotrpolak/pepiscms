@@ -93,5 +93,5 @@ docker exec -it pepiscms_web_1 bash -c "cd pepiscms/theme && compass watch"
 ## Restarting everything
 
 ```bash
-sudo docker-compose rm --stop -f && sudo rm -rf tmp/html/ && sudo docker-compose up
+sudo rm -rf tmp/ && docker-compose rm --stop -f && docker-compose up --build --force-recreate
 ```
