@@ -73,7 +73,7 @@ docker exec -it pepiscms_web_1 sh -c \
 
 ## Testing manual installation
 
-When testing manuall installation, please add the `PEPIS_CMS_IS_UNATTENDED_INSTALL: 'false'` to the
+When testing manual installation, please add the `PEPIS_CMS_IS_UNATTENDED_INSTALL: 'false'` to the
 `docker-compose.yml` file. This will disable the default unattended installation.
 
 ## Rebuilding assets
