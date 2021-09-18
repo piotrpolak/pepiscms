@@ -32,7 +32,7 @@ jobs:
         with:
           path: ~/.composer/files
           key: ${{ runner.os }}-${{ matrix.phpversion }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-${{ matrix.phpversion }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-${{ matrix.phpversion }}-composer-
 
       - name: Build the Cocker Compose stack
         run: docker-compose up -d
