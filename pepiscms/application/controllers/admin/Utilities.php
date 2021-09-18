@@ -49,9 +49,9 @@ class Utilities extends AbstractDashboardController
     /**
      * @inheritdoc
      */
-    protected function getElements(ModuleDescriptableInterface $descriptior)
+    protected function getElements(ModuleDescriptableInterface $descriptor)
     {
-        return $descriptior->getAdminUtilitiesElements($this->lang->getCurrentLanguage());
+        return $descriptor->getAdminUtilitiesElements($this->lang->getCurrentLanguage());
     }
 
     public function flush_security_policy_cache()

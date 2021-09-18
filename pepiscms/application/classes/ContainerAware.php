@@ -120,7 +120,7 @@ class ContainerAware
         static $AVAILABLE_MODULES;
         isset($AVAILABLE_MODULES) or $AVAILABLE_MODULES = null;
 
-        // Automatic loading ofpepiscms/modules/crud/language/polish/crud_lang.php module models
+        // Automatic loading of pepiscms/modules/crud/language/polish/crud_lang.php module models
         if (!isset($CI->$var) && strpos($var, '_model') !== false) {
             $CI->load->model($var);
             if (!isset($CI->$var)) {

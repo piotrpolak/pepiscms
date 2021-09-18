@@ -107,7 +107,7 @@ abstract class AdminController extends EnhancedController
         }
 
         // Checking user access rights
-        $this->assign('security_policy_violaton', false);
+        $this->assign('security_policy_violation', false);
         if (!SecurityManager::hasAccess($controller, $method)) {
             $this->handleAccessDenied($controller, $method);
         }
@@ -187,7 +187,7 @@ abstract class AdminController extends EnhancedController
         Logger::warning('Security policy violation ' . $controller . '/' . $method, 'SECURITY');
 
         ob_start();
-        $this->assign('security_policy_violaton', true)
+        $this->assign('security_policy_violation', true)
             ->display('admin/no_sufficient_priviliges', true, true);
         $out = ob_get_contents();
         ob_end_clean();

@@ -15,7 +15,7 @@
                     <?php endif; ?>
 
                 </span>
-                <?php if (!isset($security_policy_violaton) || !$security_policy_violaton): ?> Page generated in <?= $this->benchmark->elapsed_time(); ?> seconds.<?php endif; ?>
+                <?php if (!isset($security_policy_violation) || !$security_policy_violation): ?> Page generated in <?= $this->benchmark->elapsed_time(); ?> seconds.<?php endif; ?>
 
             </p>
         </footer>

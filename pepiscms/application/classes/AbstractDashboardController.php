@@ -24,12 +24,12 @@ abstract class AbstractDashboardController extends AdminController
         $module_names = $this->modulerunner->getInstalledModulesNamesCached();
         $dashboard_elements = array();
         foreach ($module_names as $module_name) {
-            $descriptior = $this->Module_model->getModuleDescriptor($module_name);
-            if (!$descriptior) {
+            $descriptor = $this->Module_model->getModuleDescriptor($module_name);
+            if (!$descriptor) {
                 continue;
             }
 
-            $module_dashboard_elements = $this->getElements($descriptior);
+            $module_dashboard_elements = $this->getElements($descriptor);
             if (!is_array($module_dashboard_elements)) {
                 continue;
             }
@@ -75,8 +75,8 @@ abstract class AbstractDashboardController extends AdminController
     }
 
     /**
-     * @param ModuleDescriptableInterface $descriptior
+     * @param ModuleDescriptableInterface $descriptor
      * @return mixed
      */
-    protected abstract function getElements(ModuleDescriptableInterface $descriptior);
+    protected abstract function getElements(ModuleDescriptableInterface $descriptor);
 }

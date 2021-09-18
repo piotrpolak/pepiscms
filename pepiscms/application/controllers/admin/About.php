@@ -247,8 +247,8 @@ class About extends AbstractDashboardController
     /**
      * @inheritdoc
      */
-    protected function getElements(ModuleDescriptableInterface $descriptior)
+    protected function getElements(ModuleDescriptableInterface $descriptor)
     {
-        return $descriptior->getAdminDashboardElements($this->lang->getCurrentLanguage());
+        return $descriptor->getAdminDashboardElements($this->lang->getCurrentLanguage());
     }
 }
