@@ -284,7 +284,7 @@ Version 1.0.* plays well both with PHP5 and PHP. As 2021, the project is **fully
 
 # Requirements
 
-* PHP 5.6+/7.0+ with mysqli, gd (recommended), mbstring (recommended)
+* PHP 5.6+/7.0+/8.0 with mysqli, gd (recommended), mbstring (recommended)
 * Apache 2 with mod_rewrite
 * MySQL or MariaDB database
 * composer
