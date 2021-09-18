@@ -1,4 +1,4 @@
-## New in version 1.0.3 (xx.xx.2021)
+## New in version 1.0.3 (18.09.2021)
 
 ### Bugfixes and version updates
 
