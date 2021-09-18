@@ -57,6 +57,12 @@ php index.php tools index
 docker exec -it pepiscms_web_1 bash -c "composer require --dev friendsofphp/php-cs-fixer \"2.2.*\" && ./vendor/bin/php-cs-fixer fix"
 ```
 
+## Code linter
+
+```bash
+docker exec -it pepiscms_web_1 bash -c "composer require overtrue/phplint:^2.0 --dev && ./vendor/bin/phplint"
+```
+
 ## Optimizing documentation images
 
 ```bash

@@ -1,0 +1,8 @@
+path: ./pepiscms
+jobs: 10
+cache: build/phplint.cache
+extensions:
+  - php
+exclude:
+  - module_template
+warning: false
