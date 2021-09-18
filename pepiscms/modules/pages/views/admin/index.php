@@ -2,7 +2,7 @@
 
 // FIXME Remove links from table for menu elements if menu disabled for instance
 
-function formatCells($menu, $level = 1, &$lang, &$url_suffix, $site_language, $view)
+function formatCells($menu, $level, &$lang, &$url_suffix, $site_language, $view)
 {
     static $tabs = "\t\t";
 
