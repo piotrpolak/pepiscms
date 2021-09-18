@@ -198,8 +198,8 @@ class Installer extends AdminController
                 $port = '';
             }
 
-            $link = @mysqli_connect($hostname, $username, $password, $database, $port);
-            if (mysqli_connect_errno($link)) {
+            mysqli_connect($hostname, $username, $password, $database, $port);
+            if (mysqli_connect_errno()) {
                 $that->formbuilder->setValidationErrorMessage(sprintf($that->lang->line('installer_unable_to_establish_connection_to_database'), mysqli_connect_error()));
                 return false;
             }
