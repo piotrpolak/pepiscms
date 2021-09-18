@@ -20,9 +20,9 @@
     "require-dev": {
         "mikey179/vfsstream": "1.1.*",
         "behat/mink-goutte-driver": "1.2.*",
-        "behat/mink-extension": "2.1.*",
-        "behat/behat": "3.2.*",
-        "behat/mink": "1.7.*",
+        "behat/mink-extension": "2.3.*",
+        "behat/behat": "3.7.*",
+        "behat/mink": "1.8.*",
         "phpunit/phpunit": "5.7.*"
     },
     "autoload": {
