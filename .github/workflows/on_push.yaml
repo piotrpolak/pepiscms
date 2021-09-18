@@ -59,7 +59,7 @@ jobs:
         if: ${{ matrix.phpversion == '7.4' }}
         run: |
           docker exec pepiscms_web_1 sh -c "composer require overtrue/phplint:^2.0 --dev && ./vendor/bin/phplint"
-      - name: Run PHP 7 linter
+      - name: Run PHP 8 linter
         if: ${{ matrix.phpversion == '8.0' }}
         run: |
           docker exec pepiscms_web_1 sh -c "composer require overtrue/phplint --dev && ./vendor/bin/phplint"
