@@ -24,6 +24,36 @@ Feature: Pages module
     And I display the list of pages
     Then "sample-title.html" should be displayed in the pages list
 
+  Scenario: Page visit
+    When I go to Site's configuration
+    And I enable Frontend Support
+    When I visit "sample-title.html"
+    Then I should see a page displaying "Hello World!"
+
+  Scenario: Page edit with menu attachment
+    When I display the list of pages
+    When I edit page "sample-title.html"
+    Then I fill "page_title" with "Sample title updated"
+    Then I fill "page_contents" with "<p>Hello World updated!</p>"
+    Then I fill "page_description" with "Sample page description updated"
+    Then I fill "page_keywords" with "keyword1, keyword2, updated"
+    Then I fill "parent_item_id" with "0"
+    Then I fill "item_name" with "Home"
+    And I press "save"
+    And I display the list of pages
+    Then "sample-title.html" should be displayed in the pages list
+
+  Scenario: Updated page visit
+    When I visit "sample-title.html"
+    Then I should see a page displaying "Hello World updated!"
+    Then I should see a menu item "Home" linking to "sample-title.html"
+
+  Scenario: Successful Frontend Support Disabling
+    When I go to Site's configuration
+    And I disable Frontend Support
+    When I visit "sample-title.html"
+    Then I should see a page displaying "Welcome to Demonstration"
+
   Scenario: Successful module uninstalling
     When I navigate to page displaying installed modules
     And I choose to uninstall "Pages" module
