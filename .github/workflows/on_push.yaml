@@ -25,7 +25,19 @@ jobs:
       - uses: satackey/action-docker-layer-caching@v0.0.11
         # Ignore the failure of a step and avoid terminating the job.
         continue-on-error: true
-      - name: Build the docker-compose stack
+
+      # Composer cache (closely coupled to docker-compose volumes)
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::${HOME}/composer/files"
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-${{ matrix.php-versions }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-${{ matrix.php-versions }}-composer-
+
+      - name: Build the Cocker Compose stack
         run: docker-compose up -d
       - name: Wait for Docker compose setup to start
         uses: cygnetdigital/wait_for_response@v2.0.0

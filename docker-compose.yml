@@ -19,8 +19,8 @@ services:
     links:
       - db
     volumes:
-      - /home/${USER}/composer/.cache/:/root/.composer/cache/
-      - ./tmp/html:/var/www/html # Comment it out if you don't want preview/edit instance files
+      - ${HOME}/composer/.cache/:/root/.composer/cache/
+#      - ./tmp/html:/var/www/html # Comment it out if you don't want preview/edit instance files
 #      - /home/${USER}/.ssh/id_rsa:/root/.ssh/id_rsa # Uncomment if you need to pull any custom composer packages
       - ./pepiscms:/var/www/html/vendor/piotrpolak/pepiscms/pepiscms
       - ./features:/var/www/html/vendor/piotrpolak/pepiscms/features
