@@ -4,18 +4,18 @@ on: [push]
 
 jobs:
   build:
-    name: Build (PHP ${{ matrix.php-versions }})
+    name: Build (PHP ${{ matrix.phpversion }})
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        php-versions: [ '5.6', '7.4' ]
+        phpversion: [ '5.6', '7.4' ]
     steps:
       - uses: actions/checkout@v2
       - name: Picking PHP Dockerfile
         run: |
           rm -rf ./build/docker/web/Dockerfile
-          cp ./build/docker/web/Dockerfile-${{ matrix.php-versions }} ./build/docker/web/Dockerfile
+          cp ./build/docker/web/Dockerfile-${{ matrix.phpversion }} ./build/docker/web/Dockerfile
       # Pull the latest image to build, and avoid caching pull-only images.
       # (docker pull is faster than caching in most cases.)
       - run: docker-compose pull
@@ -34,8 +34,8 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-${{ matrix.php-versions }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-${{ matrix.php-versions }}-composer-
+          key: ${{ runner.os }}-${{ matrix.phpversion }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-${{ matrix.phpversion }}-composer-
 
       - name: Build the Cocker Compose stack
         run: docker-compose up -d
@@ -54,3 +54,7 @@ jobs:
       - name: Run Behat acceptance tests
         run: |
           docker exec pepiscms_web_1 sh -c "composer install --prefer-dist && vendor/bin/behat --config vendor/piotrpolak/pepiscms/behat.yml"
+      - name: Run PHP 7 linter
+        if: ${{ matrix.phpversion == '7.4' }}
+        run: |
+          docker exec pepiscms_web_1 sh -c "composer require overtrue/phplint:^2.0 --dev && ./vendor/bin/phplint"
