@@ -45,7 +45,7 @@ jobs:
           interval: 1000
       - name: Check running containers
         run: docker ps
-      - name: Run PHP Unit tests inside a container
+      - name: Run PHP Unit tests inside a container (PHP 5.6 and PHP 7.4 only)
         if: ${{ matrix.phpversion == '5.6' || matrix.phpversion == '7.4' }}
         run: |
           docker exec pepiscms_web_1 sh -c "composer require phpunit/phpunit 5.7.* phpoffice/phpspreadsheet 1.5.* twig/twig 1.* --dev --no-progress && php vendor/bin/phpunit -c vendor/piotrpolak/pepiscms/phpunit.xml.dist"
