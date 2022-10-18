@@ -1,6 +1,6 @@
 <?php
 
-function formatCells($menu, $level = 1, &$lang, &$url_suffix, $site_language)
+function formatCells($menu, $level, &$lang, &$url_suffix, $site_language)
 {
     static $tabs = "\t\t";
 

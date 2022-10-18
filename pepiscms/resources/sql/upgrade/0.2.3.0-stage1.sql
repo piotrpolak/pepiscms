@@ -8,7 +8,7 @@ RENAME TABLE groups TO cms_groups;
 RENAME TABLE group2entity TO cms_group_to_entity;
 
 ALTER TABLE cms_modules ADD item_order_utilities SMALLINT NOT NULL DEFAULT '0';
-ALTER TABLE cms_modules ADD parent_module_id INT(11) NULL DEFAULT NULL REFERENCES cms_modules(id);
+ALTER TABLE cms_modules ADD parent_module_id INT(11) NULL DEFAULT NULL REFERENCES `cms_modules`( `module_id` );
 ALTER TABLE cms_modules CHANGE item_order item_order_menu SMALLINT NOT NULL DEFAULT '0';
 
 ALTER TABLE cms_users ADD hashing_salt VARCHAR(64) NOT NULL DEFAULT '';

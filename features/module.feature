@@ -30,7 +30,7 @@ Feature: Module management
     And the module "SQL Console" should be displayed in utilities
     Then the module "Development tools" should be displayed in menu
     And the module "Development tools" should be displayed in utilities
-#    And the module "SQL Console" should be runnable
+    And the module "SQL Console" should be runnable
 
   Scenario: Executing SQL in SQL Console
     When I run module "SQL Console"
@@ -48,7 +48,7 @@ Feature: Module management
     Then I hit module's "Items" run URL
     And the module "Items" should be runnable
 
-  Scenario: Cleanning up previously build CRUD module
+  Scenario: Cleaning up previously build CRUD module
     When I navigate to page displaying installed modules
     And I choose to uninstall "Items" module
     And I physically delete "Items" module from the filesystem

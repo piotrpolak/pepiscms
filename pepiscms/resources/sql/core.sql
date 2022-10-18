@@ -10,7 +10,7 @@ COLLATE = utf8_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `group2entity` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `group_id` INT NOT NULL REFERENCES `groups` (`group_id` ) ,
+  `group_id` INT UNSIGNED NOT NULL REFERENCES `groups` (`group_id` ) ,
   `entity` VARCHAR(64) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL COMMENT 'Entity name, use lowercase and now spaces to define entities' ,
   `access` TINYINT NOT NULL DEFAULT 0 COMMENT '0 - none, 1 read, 2 - write, 3 - read and write, 4 full access,\nConstant, check AUTH constants for more iformation' ,
   PRIMARY KEY (`id`) ,
@@ -47,8 +47,8 @@ COLLATE = utf8_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `user2group` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `user_id` INT NOT NULL REFERENCES `users` (`user_id` ),
-  `group_id` INT NOT NULL REFERENCES `groups` (`group_id` ),
+  `user_id` INT UNSIGNED NOT NULL REFERENCES `users` (`user_id` ),
+  `group_id` INT UNSIGNED NOT NULL REFERENCES `groups` (`group_id` ),
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX (`user_id` ASC, `group_id` ASC) ,
   INDEX (`user_id` ASC) ,
@@ -128,7 +128,8 @@ INSERT INTO sitelanguages (code, label, is_default, ci_language ) VALUES
 
 
 ALTER TABLE `logs` CHANGE COLUMN `module` `module` VARCHAR(64) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL  ;
-ALTER TABLE `modules` CHANGE COLUMN `name` `name` VARCHAR(64) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL  , CHANGE COLUMN `label` `label` VARCHAR(64) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL;
+ALTER TABLE `modules` CHANGE COLUMN `name` `name` VARCHAR(64) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL,
+    CHANGE COLUMN `label` `label` VARCHAR(64) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL;
 ALTER TABLE `users` ADD COLUMN `user_login` VARCHAR(128) NULL DEFAULT NULL  AFTER `user_email`;
 DELETE FROM group2entity WHERE entity=0 AND access=0;
 

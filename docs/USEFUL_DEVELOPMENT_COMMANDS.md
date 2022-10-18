@@ -11,14 +11,14 @@ and then
 **Unit tests**
 
 ```bash
-docker exec -it pepiscms_web_1 sh -c "composer --no-suggest --prefer-dist --prefer-stable require phpoffice/phpspreadsheet 1.5.* twig/twig && \
+docker exec -it pepiscms_web_1 sh -c "composer --no-suggest --prefer-dist --prefer-stable require phpunit/phpunit 5.7.* phpoffice/phpspreadsheet 1.5.* twig/twig && \
     ./vendor/bin/phpunit -c ./vendor/piotrpolak/pepiscms/phpunit.xml.dist"
 ```
 
 **Smoke tests (behat)**
 
 ```bash
-docker exec -it pepiscms_web_1 sh -c "composer install --no-suggest --prefer-dist && vendor/bin/behat --config vendor/piotrpolak/pepiscms/behat.yml"
+docker exec pepiscms_web_1 sh -c "composer install --no-suggest --prefer-dist && vendor/bin/behat --config vendor/piotrpolak/pepiscms/behat.yml"
 ```
 
 **Entering bash shell**
@@ -57,6 +57,12 @@ php index.php tools index
 docker exec -it pepiscms_web_1 bash -c "composer require --dev friendsofphp/php-cs-fixer \"2.2.*\" && ./vendor/bin/php-cs-fixer fix"
 ```
 
+## Code linter
+
+```bash
+docker exec -it pepiscms_web_1 bash -c "composer require overtrue/phplint:^2.0 --dev && ./vendor/bin/phplint"
+```
+
 ## Optimizing documentation images
 
 ```bash
@@ -73,7 +79,7 @@ docker exec -it pepiscms_web_1 sh -c \
 
 ## Testing manual installation
 
-When testing manuall installation, please add the `PEPIS_CMS_IS_UNATTENDED_INSTALL: 'false'` to the
+When testing manual installation, please add the `PEPIS_CMS_IS_UNATTENDED_INSTALL: 'false'` to the
 `docker-compose.yml` file. This will disable the default unattended installation.
 
 ## Rebuilding assets
@@ -93,5 +99,5 @@ docker exec -it pepiscms_web_1 bash -c "cd pepiscms/theme && compass watch"
 ## Restarting everything
 
 ```bash
-sudo docker-compose rm --stop -f && sudo rm -rf tmp/html/ && sudo docker-compose up
+sudo rm -rf tmp/ && docker-compose rm --stop -f && docker-compose up --build --force-recreate
 ```

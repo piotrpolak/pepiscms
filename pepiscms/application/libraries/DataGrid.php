@@ -127,7 +127,7 @@ class DataGrid extends ContainerAware
 
     /**
      * Default order, column name and order (ASC or DESC)
-     * @var array
+     * @var array|bool
      */
     private $default_order;
 
@@ -363,7 +363,7 @@ class DataGrid extends ContainerAware
     {
         $order_by = str_replace('-', '.', $this->input->getParam('order_by'));
         $order = $this->input->getParam('order');
-        if (!$order_by && $this->default_order['order_by']) {
+        if (empty($order_by) && $this->default_order && $this->default_order['order_by']) {
             return $this->getDefaultOrder();
         }
 

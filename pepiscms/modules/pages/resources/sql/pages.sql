@@ -1,3 +1,5 @@
+SET FOREIGN_KEY_CHECKS=0;
+
 DROP TABLE IF EXISTS menu2uri;
 DROP TABLE IF EXISTS page2menu;
 DROP TABLE IF EXISTS pages;
@@ -22,15 +24,15 @@ DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
 
-CREATE  TABLE IF NOT EXISTS `pages` (
+CREATE TABLE IF NOT EXISTS `pages` (
   `page_id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `page_uri` VARCHAR(196) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL COMMENT 'URL component without extension and base url',
   `page_title` VARCHAR(512) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
   `page_description` VARCHAR(512) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
   `page_keywords` VARCHAR(512) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
-  `user_id_created` INT UNSIGNED NOT NULL REFERENCES `users` (`user_id` ),
+  `user_id_created` INT UNSIGNED NOT NULL REFERENCES `cms_users` (`user_id` ),
   `timestamp_created` TIMESTAMP NULL DEFAULT NULL ,
-  `user_id_modified` INT UNSIGNED NOT NULL REFERENCES `users` (`user_id` ),
+  `user_id_modified` INT UNSIGNED NOT NULL REFERENCES `cms_users` (`user_id` ),
   `timestamp_modified` TIMESTAMP NULL DEFAULT NULL ,
   `page_contents` LONGTEXT CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL ,
   `page_is_default` TINYINT NOT NULL DEFAULT 0 ,
@@ -68,3 +70,5 @@ INSERT INTO menu (item_id, item_order, parent_item_id, item_name, item_url) VALU
 (0, 0, NULL, 'Main Menu', '');
 
 UPDATE menu SET item_id = '0' WHERE menu.item_id=1 LIMIT 1;
+
+SET FOREIGN_KEY_CHECKS=1;
