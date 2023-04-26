@@ -1,0 +1,94 @@
+name: On Push to master
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+concurrency:
+  group: '${{ github.workflow }} @ ${{ github.event.pull_request.head.label || github.head_ref || github.ref }}'
+  cancel-in-progress: true
+
+
+jobs:
+  build:
+    name: Build (PHP ${{ matrix.phpversion }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        phpversion: [ '7.4', '8.0' ]
+
+    steps:
+      - name: Repository checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Picking PHP Dockerfile
+        run: |
+          rm -rf ./build/docker/web/Dockerfile
+          cp ./build/docker/web/Dockerfile-${{ matrix.phpversion }} ./build/docker/web/Dockerfile
+
+      # Pull the latest image to build, and avoid caching pull-only images.
+      # (docker pull is faster than caching in most cases.)
+      - name: Pulling Docker compose images
+        run: docker-compose pull
+
+      # In this step, this action saves a list of existing images,
+      # the cache is created without them in the post run.
+      # It also restores the cache if it exists.
+      - name: Caching Docker compose images
+        uses: satackey/action-docker-layer-caching@v0.0.11
+        # Ignore the failure of a step and avoid terminating the job.
+        continue-on-error: true
+        with:
+          key: foo-docker-cache-${{ matrix.phpversion }}-{hash}
+          restore-keys: |
+            foo-docker-cache-${{ matrix.phpversion }}
+
+      # Composer cache (closely coupled to docker-compose volumes)
+      - name: Caching dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.composer/files
+          key: ${{ runner.os }}-${{ matrix.phpversion }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-${{ matrix.phpversion }}-composer-
+
+      - name: Building the Docker Compose stack
+        run: docker-compose up -d
+
+      - name: Waiting for Docker compose setup to start
+        uses: cygnetdigital/wait_for_response@v2.0.0
+        with:
+          url: 'http://localhost:80/'
+          responseCode: '200'
+          timeout: 40000
+          interval: 1000
+
+      - name: Checking running containers
+        run: docker ps
+
+      - name: Displaying PHP version
+        run: |
+          docker exec pepiscms_web_1 sh -c "php --version"
+
+      - name: Run PHP Unit tests inside a container (PHP 7.4 only)
+        if: ${{ matrix.phpversion == '7.4' }}
+        run: |
+          docker exec pepiscms_web_1 sh -c "composer require phpunit/phpunit 5.7.* phpoffice/phpspreadsheet 1.5.* twig/twig 1.* --dev --no-progress --with-all-dependencies && php vendor/bin/phpunit -c vendor/piotrpolak/pepiscms/phpunit.xml.dist"
+
+      - name: Run Behat acceptance tests
+        run: |
+          docker exec pepiscms_web_1 sh -c "composer install --prefer-dist && vendor/bin/behat --config vendor/piotrpolak/pepiscms/behat.yml"
+
+      - name: Run PHP 7 linter
+        if: ${{ matrix.phpversion == '7.4' }}
+        run: |
+          docker exec pepiscms_web_1 sh -c "composer require overtrue/phplint:^2.0 --dev --no-progress  && ./vendor/bin/phplint"
+
+      - name: Run PHP 8 linter
+        if: ${{ matrix.phpversion == '8.0' }}
+        run: |
+          docker exec pepiscms_web_1 sh -c "composer require overtrue/phplint --dev --no-progress && ./vendor/bin/phplint"
