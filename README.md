@@ -1,6 +1,6 @@
 # PepisCMS
 
-[![PHP Build](https://github.com/piotrpolak/pepiscms/actions/workflows/on_push.yaml/badge.svg)](https://github.com/piotrpolak/pepiscms/actions/workflows/on_push.yaml)
+[![PHP Build](https://github.com/piotrpolak/pepiscms/actions/workflows/on_master.yaml/badge.svg)](https://github.com/piotrpolak/pepiscms/actions/workflows/on_master.yaml)
 [![Maintainability](https://api.codeclimate.com/v1/badges/63fd33946e2cd355a561/maintainability)](https://codeclimate.com/github/piotrpolak/pepiscms/maintainability)
 
 PepisCMS is a content management system. Its main feature consists in the [CRUD module generator](#generating-a-crud-module)

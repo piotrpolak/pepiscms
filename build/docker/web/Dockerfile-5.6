@@ -2,7 +2,11 @@ FROM php:5.6-apache-jessie
 
 ADD install.sh /install.sh
 
-RUN apt-get update && apt-get install -yq git zip unzip libpng-dev && \
+RUN echo "deb [check-valid-until=no] http://archive.debian.org/debian jessie main" > /etc/apt/sources.list.d/jessie.list
+RUN echo "deb [check-valid-until=no] http://archive.debian.org/debian jessie-backports main" > /etc/apt/sources.list.d/jessie-backports.list
+RUN sed -i '/deb http:\/\/deb.debian.org\/debian jessie-updates main/d' /etc/apt/sources.list
+
+RUN apt-get -o Acquire::Check-Valid-Until=false update && apt-get install -yq git zip unzip libpng-dev && \
     a2enmod rewrite && \
     docker-php-ext-install mysqli && \
     docker-php-ext-install gd && \

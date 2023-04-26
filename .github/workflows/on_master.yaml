@@ -1,6 +1,15 @@
-name: PHP Build
+name: On Push to master
 
-on: [push]
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+concurrency:
+  group: '${{ github.workflow }} @ ${{ github.event.pull_request.head.label || github.head_ref || github.ref }}'
+  cancel-in-progress: true
+
 
 jobs:
   build:
@@ -9,16 +18,22 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        phpversion: [ '5.6', '7.4', '8.0' ]
+        phpversion: [ '5.6', '7.4', '8.0', '8.1', '8.2' ]
+
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
       - name: Picking PHP Dockerfile
         run: |
           rm -rf ./build/docker/web/Dockerfile
           cp ./build/docker/web/Dockerfile-${{ matrix.phpversion }} ./build/docker/web/Dockerfile
+
       # Pull the latest image to build, and avoid caching pull-only images.
       # (docker pull is faster than caching in most cases.)
       - run: docker-compose pull
+
       # In this step, this action saves a list of existing images,
       # the cache is created without them in the post run.
       # It also restores the cache if it exists.
@@ -36,6 +51,7 @@ jobs:
 
       - name: Build the Cocker Compose stack
         run: docker-compose up -d
+
       - name: Wait for Docker compose setup to start
         uses: cygnetdigital/wait_for_response@v2.0.0
         with:
@@ -43,20 +59,25 @@ jobs:
           responseCode: '200'
           timeout: 40000
           interval: 1000
+
       - name: Check running containers
         run: docker ps
+
       - name: Run PHP Unit tests inside a container (PHP 5.6 and PHP 7.4 only)
         if: ${{ matrix.phpversion == '5.6' || matrix.phpversion == '7.4' }}
         run: |
           docker exec pepiscms_web_1 sh -c "composer require phpunit/phpunit 5.7.* phpoffice/phpspreadsheet 1.5.* twig/twig 1.* --dev --no-progress && php vendor/bin/phpunit -c vendor/piotrpolak/pepiscms/phpunit.xml.dist"
+
       - name: Run Behat acceptance tests
         run: |
           docker exec pepiscms_web_1 sh -c "composer install --prefer-dist && vendor/bin/behat --config vendor/piotrpolak/pepiscms/behat.yml"
+
       - name: Run PHP 7 linter
         if: ${{ matrix.phpversion == '7.4' }}
         run: |
           docker exec pepiscms_web_1 sh -c "composer require overtrue/phplint:^2.0 --dev --no-progress  && ./vendor/bin/phplint"
+
       - name: Run PHP 8 linter
-        if: ${{ matrix.phpversion == '8.0' }}
+        if: ${{ matrix.phpversion == '8.0' || matrix.phpversion == '8.1' || matrix.phpversion == '8.2' }}
         run: |
           docker exec pepiscms_web_1 sh -c "composer require overtrue/phplint --dev --no-progress && ./vendor/bin/phplint"
